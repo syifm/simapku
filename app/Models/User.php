@@ -17,10 +17,13 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    public $timestamps = false;
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
+        'foto',
+        'peran',
     ];
 
     /**
@@ -44,5 +47,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class, 'user_id');
+    }
+
+    public function wisatawan()
+    {
+        return $this->hasOne(Wisatawan::class, 'user_id');
     }
 }
