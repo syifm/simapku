@@ -15,8 +15,21 @@ class Fasilitas extends Model
         'nama',
     ];
 
-    public function fasilitas()
+    // public function fasilitas()
+    // {
+    //     return $this->hasmany(FasilitasWisataKuliner::class);
+    // }
+    // public function wisataKuliner()
+    // {
+    //     return $this->belongsToMany(WisataKuliner::class, 'fasilitas_wisata_kuliner');
+    // }
+    public function wisataKuliner()
     {
-        return $this->hasmany(FasilitasWisataKuliner::class);
+        return $this->belongsToMany(
+            WisataKuliner::class,
+            'fasilitas_wisata_kuliner',
+            'id_fasilitas',
+            'id_wisata_kuliner'
+        );
     }
 }

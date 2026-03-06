@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WisatawanController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -60,6 +61,34 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/mapwisatakuliner2', [WisatawanController::class, 'mapWisataKuliner2'])->name('map-WisataKuliner2');
     Route::post('/store', [WisatawanController::class, 'store'])->name('store');
     Route::get('/wisatawan/eventsemarang', [WisatawanController::class, 'event'])->name('event');
+    Route::get('/wisatawan/tambahwisatakuliner', [WisatawanController::class, 'halamantambah'])->name('tambahwisatakuliner');
+    Route::get('/wisatawan/wisata/api/kecamatan', [WisatawanController::class, 'getKecamatan']);
+    Route::get('/wisatawan/wisata/api/kelurahan/{districtCode}', [WisatawanController::class, 'getKelurahan']);
+    Route::post('/wisatawan/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpan'])->name('simpanwisatakuliner');
+    Route::get('/wisatawan/diarikuliner', [WisatawanController::class, 'halamanDiari'])->name('diarikuliner');
+    Route::get('/wisatawan/diarikuliner/detail/{id}', [WisatawanController::class, 'detailDiari'])->name('diarikuliner.detail');
+    Route::get('/wisatawan/diarikuliner/tambah', [WisatawanController::class, 'tambahDiari'])->name('diarikuliner.tambah');
+    Route::post('/wisatawan/diarikuliner/simpan', [WisatawanController::class, 'simpanDiari'])->name('diarikuliner.simpan');
+    Route::get('/wisatawan/diarikuliner/edit/{id}', [WisatawanController::class, 'editDiari'])->name('diarikuliner.edit');
+    Route::put('/wisatawan/diarikuliner/update/{id}', [WisatawanController::class, 'updateDiari'])->name('diarikuliner.update');
+    Route::delete('/wisatawan/diarikuliner/hapus/{id}', [WisatawanController::class, 'hapusDiari'])->name('diarikuliner.hapus');
+    Route::get('/adatag', [WisatawanController::class, 'adatags']);
+    Route::post('/wisatawan/category', [WisatawanController::class, 'getCategory'])->name('get-category');
+
+    Route::get('/selectmhs', [WisatawanController::class, 'selectmhs'])->name('select.mhs');
+    Route::get('/selectmk/{id}', [WisatawanController::class, 'selectmk'])->name('select.mk');
+    Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
+
+    // Route::get('/search-fasilitas', [WisatawanController::class, 'search']);
+
+    // Route::get('/cari', [HomeController::class, 'create']);
+    // Route::post('/simpan', [HomeController::class, 'store'])->name('save.form');
+    // Route::get('/selectmhs', [HomeController::class, 'selectmhs'])->name('select.mhs');
+    // Route::get('/selectmk/{id}', [HomeController::class, 'selectmk'])->name('select.mk');
+    // Route::get('/ngampumk/{id}', [HomeController::class, 'getngampu'])->name('getngampumk');
+
+    // Route::get('ngampumk/{id}', 'getngampu')->name('getngampumk');
+    // Route::get('nilai', 'index')->name('list.nilai');
 });
 
 require __DIR__ . '/auth.php';

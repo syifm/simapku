@@ -30,9 +30,22 @@ class WisataKuliner extends Model
         'waktu_diubah',
     ];
 
-    public function fasilitaswisatakuliner()
+    // public function fasilitaswisatakuliner()
+    // {
+    //     return $this->hasMany(FasilitasWisataKuliner::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
+    // }
+    // public function fasilitas()
+    // {
+    //     return $this->belongsToMany(Fasilitas::class, 'fasilitas_wisata_kuliner');
+    // }
+    public function fasilitas()
     {
-        return $this->hasMany(FasilitasWisataKuliner::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
+        return $this->belongsToMany(
+            Fasilitas::class,
+            'fasilitas_wisata_kuliner',
+            'id_wisata_kuliner',
+            'id_fasilitas'
+        );
     }
 
     public function menu()

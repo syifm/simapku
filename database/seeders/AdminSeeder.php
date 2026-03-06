@@ -27,7 +27,7 @@ class AdminSeeder extends Seeder
             $user = User::where('email', $data['email'])->first();
 
             if (!$user) {
-                $userPembina = User::create([
+                $userAdmin = User::create([
                     'nama' => $data['nama'],
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
@@ -36,7 +36,7 @@ class AdminSeeder extends Seeder
                 ]);
 
                 Admin::create([
-                    'user_id' => $userPembina->id,
+                    'user_id' => $userAdmin->id,
                 ]);
             }
         }

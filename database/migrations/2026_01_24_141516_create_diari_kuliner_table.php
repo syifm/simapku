@@ -15,11 +15,11 @@ return new class extends Migration
             $table->increments('id_diari_kuliner');
             $table->unsignedInteger('id_wisatawan');
             $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');
-            $table->string('judul', 100);
-            $table->string('deskripsi');
+            $table->string('judul');
+            $table->text('deskripsi');
             $table->string('foto');
-            $table->string('waktu_dibuat');
-            $table->string('waktu_diubah');
+            $table->timestamp('waktu_dibuat');
+            $table->timestamp('waktu_diubah');
         });
     }
 

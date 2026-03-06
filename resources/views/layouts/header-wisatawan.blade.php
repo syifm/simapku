@@ -126,32 +126,35 @@
 </head>
 
 <body>
-    {{-- <header class=" fixed w-full h-20 bg-[#094B3C] px-4 relative flex items-center">
-        <button id="hamburgerBtn" class="text-white text-2xl ml-4">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <div class="absolute left-1/2 -translate-x-1/2">
-            src="{{ asset('simapku.png') }}" alt="simapku" class="h-10">
-        </div>
-    </header> --}}
-
-    <header class="fixed top-0 left-0 w-full h-20 bg-[#094B3C] z-50">
-        <div class="relative h-full flex items-center px-4">
-
-            {{-- Hamburger --}}
-            <button id="hamburgerBtn" class="text-white text-lg ml-5">
-                <i class="fas fa-bars "></i>
-            </button>
-
-            {{-- Logo tengah --}}
-            <div class="absolute left-1/2 -translate-x-1/2">
-                <img src="{{ asset('simapku.png') }}" alt="simapku" class="h-12">
+    <header class="sticky top-0 left-0 w-full h-20 bg-[#094B3C] z-50">
+        {{-- <div class="grid grid-cols-[90px_1fr] items-center text-2xl relative h-full">
+            <div class="flex justify-center items-center -ml-5">
+                <button id="hamburgerBtn" class="text-white text-lg ml-5">
+                    <i class="fas fa-bars "></i>
+                </button>
             </div>
 
+            <div class="flex justify-center items-center relative">
+                <div class="absolute left-1/2 -translate-x-[55%]">
+                    <img src="{{ asset('simapku.png') }}" alt="simapku" class="h-12">
+                </div>
+            </div>
+
+        </div> --}}
+        <div class="grid grid-cols-[90px_1fr] items-center text-2xl relative h-full">
+            <div class="flex justify-center items-center -ml-5">
+                <button id="hamburgerBtn" class="text-white text-lg ml-5">
+                    <i class="fas fa-bars "></i>
+                </button>
+            </div>
+
+            <div class="flex justify-center items-center relative">
+                <div class="absolute left-1/2 -translate-x-[55%]">
+                    <img src="{{ asset('simapku.png') }}" alt="simapku" class="h-12">
+                </div>
+            </div>
         </div>
     </header>
-
 </body>
 
 </html>

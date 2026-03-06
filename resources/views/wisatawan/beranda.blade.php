@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beranda</title>
+    {{-- <link rel="icon" type="image/png" href="{{ asset('simapku.png') }}"> --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet"
@@ -41,355 +42,35 @@
             margin-bottom: 1rem;
             color: #9ca3af;
         }
-
-        /* .wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .slider {
-            display: flex;
-            gap: 16px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 10px;
-        }
-
-        .slider::-webkit-scrollbar {
-            display: none;
-        }
-
-        .card {
-            min-width: 340px;
-            display: flex;
-            gap: 12px;
-            background: #fff;
-            border-radius: 16px;
-            padding: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .card img {
-            width: 120px;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        .info h4 {
-            margin: 0;
-            font-size: 16px;
-        }
-
-        .info p {
-            margin: 2px 0;
-            font-size: 13px;
-            color: #555;
-        }
-
-        .nav {
-            background: #0f766e;
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .nav.left {
-            margin-right: 8px;
-        }
-
-        .nav.right {
-            margin-left: 8px;
-        } */
-
-        /* .slider-container {
-            overflow: hidden;
-            padding-left: 16px;
-        }
-
-        .slider {
-            display: flex;
-            gap: 16px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            padding-bottom: 12px;
-        }
-
-        .slider::-webkit-scrollbar {
-            display: none;
-        }
-
-        .card {
-            min-width: 320px;
-            height: 140px;
-            background: white;
-            border-radius: 18px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
-            scroll-snap-align: start;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-        }
-
-        .dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #d1d5db;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .dot.active {
-            width: 18px;
-            background: #0f766e;
-            border-radius: 999px;
-        } */
-        /* ----- INI YAAA */
-        /* .slider-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .viewport {
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .slider {
-            display: flex;
-            transition: transform 0.5s ease;
-            gap: 16px;
-        }
-
-        .card {
-            /* width: calc(100% / 3);
-            flex: 0 0 calc((100% - 32px) / 3);
-            /* padding: 16px;
-            box-sizing: border-box;
-        }
-
-        .card>div,
-        .card {
-            background: white;
-            height: 300px;
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-
-            padding: 16px;
-        }
-
-        .arrow {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: none;
-            background: #094B3C;
-            color: white;
-            cursor: pointer;
-        }
-
-        .dots {
-            margin-top: 12px;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #FFA319;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-
-        .dot.active {
-            width: 10px;
-            height: 10px;
-            border-radius: 999px;
-            background: #FF7D1A;
-        } */
-
-
-        /* Panah kanan kiri */
-        /* .owl-nav {
-            position: absolute;
-            top: 40%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
-        }
-
-        .owl-nav button {
-            pointer-events: all;
-            background: #022539 !important;
-            color: #fff !important;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 22px !important;
-        }
-
-        .owl-nav button:hover {
-            background: #FFA500 !important;
-        }
-
-        /* Supaya carousel nggak nambah tinggi
-        .services {
-            position: relative;
-        }
-
-        .service-item {
-            height: 320px;
-            /* FIX tinggi card
-        } */
-        /* --------------------- */
-        /* SECTION */
-        /* .services {
-            padding: 60px 0;
-            background: #f8f9fa;
-        }
-
-        /* CONTAINER TENGAH
-        .container-services {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* OWL FIX
-        .bidang-carousel .owl-stage-outer {
-            padding: 20px 0;
-        }
-
-        /* CARD BOX
-        .service-item {
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            height: 320px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-        }
-
-        /* ICON
-        .service-item .icon i {
-            font-size: 40px;
-            color: #FFA500;
-            margin-bottom: 15px;
-        }
-
-        /* PANAH
-        .owl-nav {
-            position: absolute;
-            top: 40%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
-        }
-
-        .owl-nav button {
-            pointer-events: all;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: #022539 !important;
-            color: #fff !important;
-            font-size: 22px !important;
-        }
-
-        .owl-nav button:hover {
-            background: #FFA500 !important;
-        } */
-
-        /* SECTION */
-        /* .services {
-            padding: 60px 0;
-        }
-
-        .container-fluid-services {
-            width: 100%;
-            padding-left: 180px;
-            padding-right: 90px;
-        }
-
-        .carousel-wrapper {
-            position: relative;
-        }
-
-        .service-item {
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            height: 320px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .bidang-carousel .owl-nav {
-            position: absolute;
-            top: 40%;
-            left: -70px;
-            right: -70px;
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
-        }
-
-        .bidang-carousel .owl-nav button {
-            pointer-events: all;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: #022539 !important;
-            color: #fff !important;
-            font-size: 22px !important;
-        }
-
-        .bidang-carousel .owl-nav button {
-            width: 45px;
-            height: 45px;
-            border-radius: 50% !important;
-            background: #022539 !important;
-            color: #fff !important;
-            font-size: 22px !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: all;
-        }
-
-        .bidang-carousel .owl-stage-outer {
-            padding: 80px 0;
-        } */
     </style>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false,
+                position: 'center',
+                target: document.body
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#dc2626',
+                target: document.body
+            });
+        </script>
+    @endif
     {{-- <div class="h-screen flex flex-col">
         @include('layouts.header-wisatawan')
 
@@ -436,7 +117,7 @@
     @include('layouts.sidebar-wisatawan')
 
     {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
-    <div class="pt-[100px] pl-28 pr-[30px] pb-[30px] overflow-y-auto min-h-screen">
+    <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
         <div class="flex flex-col items-center gap-2 -ml-12">
             {{-- <h2 class="text-2xl text-black font-bold mb-4">
                 Selamat datang di SIMAPKU Semarang, temukan kuliner Semarang yang cocok untuk Anda disini!

@@ -113,7 +113,7 @@ class AdminController extends Controller
         $id_wisatawan = null;
         $id_admin = null;
         if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
-            $id_admin = Wisatawan::where('user_id', Auth::id())->value('id_admin');
+            $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
         } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
             $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
         }
@@ -121,8 +121,8 @@ class AdminController extends Controller
         // $waktu_dibuat = Carbon::now()->format('d/m/Y H:i');
         // $waktu_diubah = Carbon::now()->format('d/m/Y H:i');
 
-        $waktu_dibuat = Carbon::now('Asia/Jakarta')->format('d/m/Y H:i');
-        $waktu_diubah = Carbon::now('Asia/Jakarta')->format('d/m/Y H:i');
+        $waktu_dibuat = Carbon::now('Asia/Jakarta');
+        $waktu_diubah = Carbon::now('Asia/Jakarta');
 
         $status = 'Belum Diverifikasi';
         if (Auth::check() && Auth::user()->peran === 'Admin') {

@@ -141,7 +141,7 @@
                                                 {{ $kuliner->nama }}
                                             </td>
                                             <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
-                                                {{ $kuliner->waktu_diubah }}
+                                                {{ \Carbon\Carbon::parse($kuliner->waktu_diubah)->format('d/m/Y H:i') }}
                                             </td>
                                             <td
                                                 class="px-4 py-3 text-sm border-b border-r border-black flex justify-center gap-2">

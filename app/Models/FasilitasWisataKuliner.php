@@ -13,7 +13,6 @@ class FasilitasWisataKuliner extends Model
     protected $fillable = [
         'id_wisata_kuliner',
         'id_fasilitas',
-        'deskripsi',
     ];
 
     public function wisatakuliner()
@@ -21,8 +20,12 @@ class FasilitasWisataKuliner extends Model
         return $this->belongsTo(WisataKuliner::class);
     }
 
+    // public function fasilitas()
+    // {
+    //     return $this->belongsTo(Fasilitas::class);
+    // }
     public function fasilitas()
     {
-        return $this->belongsTo(Fasilitas::class);
+        return $this->belongsTo(Fasilitas::class, 'id_fasilitas');
     }
 }

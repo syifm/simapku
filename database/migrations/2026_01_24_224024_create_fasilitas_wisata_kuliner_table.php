@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreign('id_wisata_kuliner')->references('id_wisata_kuliner')->on('wisata_kuliner')->onDelete('cascade');
             $table->unsignedInteger('id_fasilitas');
             $table->foreign('id_fasilitas')->references('id_fasilitas')->on('fasilitas')->onDelete('cascade');
-            $table->string('deskripsi');
 
             $table->primary(['id_wisata_kuliner', 'id_fasilitas']);
         });
