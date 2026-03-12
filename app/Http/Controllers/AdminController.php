@@ -67,8 +67,8 @@ class AdminController extends Controller
 
     public function kelolaWisataKuliner()
     {
-        $statuswisatakuliner = WisataKuliner::exists();
-        $wisataKuliner = WisataKuliner::paginate(5)->withQueryString();;
+        $statuswisatakuliner = WisataKuliner::where('status', 'Disetujui')->exists();
+        $wisataKuliner = WisataKuliner::where('status', 'Disetujui')->paginate(5)->withQueryString();;
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
@@ -140,6 +140,7 @@ class AdminController extends Controller
             'deskripsi' => $request->deskripsi,
             'latitude'  => $request->latitude,
             'longitude' => $request->longitude,
+            'penilaian' => 0,
             'email_pengaju' => $email_pengaju,
             'id_wisatawan' => $id_wisatawan ?? null,
             'id_admin' => $id_admin ?? null,
@@ -187,10 +188,6 @@ class AdminController extends Controller
 
     public function update(Request $request, $id)
     {
-        // $validated = $request->validate([
-        //     'aktivitas' => 'required|string',
-        //     'bukti' => 'nullable|file|mimes:pdf,png,jpg,jpeg|max:2048',
-        // ]);
         $request->validate([
             'nama' => 'required|string|max:255',
             'kecamatan' => 'required|string|max:50',
@@ -204,35 +201,13 @@ class AdminController extends Controller
             'longitude' => 'required|numeric|between:-180,180|unique:wisata_kuliner,longitude',
         ]);
 
-        // $log = LogAktivitas::findOrFail($id);
         $wisataKuliner = WisataKuliner::findOrFail($id);
 
-        // if ($request->hasFile('bukti')) {
-        //     $path = $request->file('bukti')->storeAs(
-        //         'bukti',
-        //         'bukti_' . $log->nim_nisn . '_minggu' . $log->minggu_ke . '_' . $log->bulan . '_' . $log->tahun . '.' . $request->file('bukti')->extension(),
-        //         'public'
-        //     );
-        //     $log->file_bukti = $path;
-        // }
-
-        // if ($request->hasFile('bukti')) {
-        //     $path = $request->file('bukti')->storeAs(
-        //         'bukti',
-        //         'bukti_' . $log->nim_nisn . '_minggu' . $log->minggu_ke . '_' . $log->bulan . '_' . $log->tahun . '.' . $request->file('bukti')->extension(),
-        //         'public'
-        //     );
-        //     $log->file_bukti = $path;
-        // }
-
-        // $wisataKuliner = $request->nama;
-        // $fotoPath = $request->file('foto')->storeAs(
-        //     'uploads',
-        //     'foto_' . Str::slug($wisataKuliner) . '_' . time() . '.' . $request->file('foto')->extension(),
-        //     'public'
-        // );
-
         if ($request->hasFile('foto')) {
+            if ($wisataKuliner->foto && Storage::exists('public/' . $wisataKuliner->foto)) {
+                Storage::delete('public/' . $wisataKuliner->foto);
+            }
+
             $fotoPath = $request->file('foto')->storeAs(
                 'uploads',
                 'foto_' . Str::slug($request->nama) . '_' . time() . '.' . $request->file('foto')->extension(),
@@ -245,13 +220,10 @@ class AdminController extends Controller
         $id_wisatawan = null;
         $id_admin = null;
         if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
-            $id_admin = Wisatawan::where('user_id', Auth::id())->value('id_admin');
+            $id_admin = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
         } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
             $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
         }
-
-        // $waktu_dibuat = Carbon::now()->format('d/m/Y H:i');
-        // $waktu_diubah = Carbon::now()->format('d/m/Y H:i');
 
         $waktu_diubah = Carbon::now('Asia/Jakarta')->format('d/m/Y H:i');
 
@@ -271,16 +243,13 @@ class AdminController extends Controller
             'deskripsi' => $request->deskripsi,
             'latitude'  => $request->latitude,
             'longitude' => $request->longitude,
+            'penilaian' => 0,
             'email_pengaju' => $email_pengaju,
             'id_wisatawan' => $id_wisatawan ?? null,
             'id_admin' => $id_admin ?? null,
             'status' => $status,
             'waktu_diubah' => $waktu_diubah,
         ]);
-
-        // $log->aktivitas = $validated['aktivitas'];
-        // $log->save();
-        // $wisataKuliner->update(['kapasitas' => $request->kapasitas]);
 
         return redirect()->route('kelolawisatakuliner')->with('success', 'Wisata Kuliner Berhasil Diperbarui');
     }
@@ -306,8 +275,8 @@ class AdminController extends Controller
 
     public function halamanVerifKuliner()
     {
-        $statuswisatakuliner = WisataKuliner::exists();
-        $wisataKuliner = WisataKuliner::paginate(5)->withQueryString();;
+        $statuswisatakuliner = WisataKuliner::where('status', 'Belum Diverifikasi')->exists();
+        $wisataKuliner = WisataKuliner::where('status', 'Belum Diverifikasi')->paginate(5)->withQueryString();;
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;

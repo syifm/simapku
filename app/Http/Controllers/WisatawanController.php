@@ -249,6 +249,7 @@ class WisatawanController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'latitude'  => $request->latitude,
                 'longitude' => $request->longitude,
+                'penilaian' => 0,
                 'email_pengaju' => $email_pengaju,
                 'id_wisatawan' => $id_wisatawan ?? null,
                 'id_admin' => $id_admin ?? null,

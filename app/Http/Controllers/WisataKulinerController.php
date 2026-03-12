@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WisataKuliner;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class WisataKulinerController extends Controller
 {
@@ -60,5 +60,74 @@ class WisataKulinerController extends Controller
             'wisataKuliner' => $wisataKuliner,
             'status' => $wisataKuliner->status
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        // $lat = $request->lat;
+        // $lng = $request->lng;
+        // $radius = $request->radius ?? 5;
+
+        // $query = DB::table('wisata_kuliner')
+        //     ->selectRaw("
+        //     *,
+        //     (6371 * acos(
+        //         cos(radians(?))
+        //         * cos(radians(latitude))
+        //         * cos(radians(longitude) - radians(?))
+        //         + sin(radians(?))
+        //         * sin(radians(latitude))
+        //     )) AS distance
+        // ", [$lat, $lng, $lat]);
+
+        // filter radius
+        // $query->having('distance', '<', $radius);
+
+        // keyword
+        if ($request->keyword) {
+            // $query = DB::table('wisata_kuliner')->where('nama', 'like', '%' . $request->keyword . '%');
+            $query = DB::table('wisata_kuliner')->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kelurahan', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('alamat', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('no_telp', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        // penilaian
+        if ($request->penilaian) {
+            $query = DB::table('wisata_kuliner')->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kelurahan', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('alamat', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('no_telp', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+
+
+        // filter kategori
+        // if ($request->kategori) {
+        //     $query->where('kategori', $request->kategori);
+        // }
+
+        // if ($request->rating) {
+        //     $query->having('penilaian', '>=', $request->rating);
+        // }
+
+        if ($request->fasilitas) {
+            $query->join('fasilitas_wisata_kuliner', 'wisata_kuliner.id_wisata_kuliner', '=', 'fasilitas_wisata_kuliner.id_wisata_kuliner')
+                ->whereIn('fasilitas_wisata_kuliner.id_fasilitas', $request->fasilitas);
+        }
+
+        // $data = $query->orderBy('distance')->get();
+        $data = $query->distinct()->get();
+
+        // return response()->json($data);
+        return view('wisatawan.pencarian.hasil-pencarian', compact('data'));
     }
 }

@@ -124,6 +124,10 @@
             margin-top: -4px;
         }
 
+        .select2-container--default .select2-selection__clear {
+            display: none !important;
+        }
+
         /*.select2-container {
             width: 100% !important;
         }

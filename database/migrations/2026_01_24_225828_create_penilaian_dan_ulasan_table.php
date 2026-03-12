@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id_penilaian_dan_ulasan');
             $table->unsignedInteger('id_wisata_kuliner');
             $table->foreign('id_wisata_kuliner')->references('id_wisata_kuliner')->on('wisata_kuliner')->onDelete('cascade');
-            $table->unsignedInteger('nilai');
+            $table->unsignedInteger('penilaian');
             $table->string('ulasan');
             $table->string('foto_ulasan');
             $table->string('email_pengulas', 70);

@@ -14,7 +14,7 @@ class PenilaiandanUlasan extends Model
     protected $fillable = [
         'id_penilaian_dan_ulasan',
         'id_wisata_kuliner',
-        'nilai',
+        'penilaian',
         'ulasan',
         'foto_ulasan',
         'email_pengulas',

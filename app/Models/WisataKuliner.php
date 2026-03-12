@@ -22,6 +22,7 @@ class WisataKuliner extends Model
         'deskripsi',
         'longitude',
         'latitude',
+        'penilaian',
         'email_pengaju',
         'id_wisatawan',
         'id_admin',

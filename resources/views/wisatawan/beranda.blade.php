@@ -16,6 +16,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
     <style>
         body {
@@ -123,32 +124,99 @@
                 Selamat datang di SIMAPKU Semarang, temukan kuliner Semarang yang cocok untuk Anda disini!
             </h2> --}}
             <div>
-                <p class="text-m text-black font-medium">
+                <p class="text-m text-black font-medium mt-2">
                     Ingin memasukkan kuliner yang Anda ketahui?
-                    <a href="{{ route('beranda-Wisatawan') }}" class="text-[#FFA319]  hover:underline">
+                    <a href="{{ route('tambahwisatakuliner') }}" class="text-[#FFA319]  hover:underline">
                         Tambah Kuliner
                     </a>
                 </p>
             </div>
-            <div class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium">
-                <input type="text" placeholder="Cari Kuliner Disini..." class="flex-1 px-5 py-3 focus:outline-none">
-                {{-- <div class="h-12 w-[2px] bg-gray-300"></div>
-                <div class="relative">
-                    <select class="appearance-none px-6 py-3 pr-12 bg-white focus:outline-none cursor-pointer">
-                        <option>Yogyakarta</option>
-                        <option>Solo</option>/853yb
-                        <option>Semarang</option>
-                    </select>
-                    <i
-                        class="fa fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-black pointer-events-none"></i>
-                </div> --}}
-                <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-            </div>
         </div>
 
-        <div class="mb-8">
+        <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
+            <div class="relative w-full flex justify-center">
+                {{-- <div class="flex flex-col items-center gap-2 -ml-12 mt-4"> --}}
+
+
+                <div class="absolute top-4 w-full max-w-3xl z-30 ml-[190px]">
+                    <div id="searchBar"
+                        class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium">
+                        <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
+                            class="flex-1 px-5 py-3 focus:outline-none">
+                        <button type="submit" class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <div id="searchPanel"
+                        class="hidden left-0 w-full max-w-xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
+
+                        <!-- Kuliner Terdekat -->
+                        <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
+                            Kuliner Terdekat
+                        </div>
+
+                        <!-- Advanced Search -->
+                        <div id="advancedBtn" class="flex gap-4 items-center p-3 rounded-xl cursor-pointer">
+                            <span>Advanced Search</span>
+                            <span class="leading-none">
+                                {{-- <i class="fi fi-br-angle-small-down text-xl"></i> --}}
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="3" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+
+                            </span>
+                        </div>
+
+                        <!-- Filter Advanced -->
+                        <div id="advancedFilter" class="hidden mt-3 space-y-3">
+
+                            {{-- <input type="number" name="jarak" placeholder="Jarak (km)" class="w-full border rounded-lg p-2"> --}}
+
+                            {{-- <input type="number" name="harga" placeholder="Harga Maksimal"
+                                class="w-full border rounded-lg p-2"> --}}
+
+                            {{-- <select class="w-full border rounded-lg p-2" name="jenis">
+                                <option>Jenis Makanan</option>
+                                <option>Bakso</option>
+                                <option>Soto</option>
+                                <option>Seafood</option>
+                            </select> --}}
+
+                            {{-- <select class="w-full border rounded-lg p-2" name="rating">
+                                <option>Rating Minimal</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>4.5</option>
+                            </select> --}}
+
+                            {{-- <select class="w-full border rounded-lg p-2" name="fasilitas[]" multiple>
+                                <option>Fasilitas</option>
+                                <option>Wifi</option>
+                                <option>Parkir</option>
+                                <option>AC</option>
+                            </select> --}}
+                            <input type="checkbox" name="penilaian[]" value="1"> 1
+                            <input type="checkbox" name="penilaian[]" value="2"> 2
+                            <input type="checkbox" name="penilaian[]" value="3"> 3
+                            <input type="checkbox" name="penilaian[]" value="3"> 4
+
+                            <input type="checkbox" name="fasilitas[]" value="1"> Wifi
+                            <input type="checkbox" name="fasilitas[]" value="2"> Parkir
+                            <input type="checkbox" name="fasilitas[]" value="3"> AC
+
+                            {{-- <button class="w-full bg-orange-500 text-white p-2 rounded-lg">
+                                    Cari
+                                </button> --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="mb-8 mt-[85px]">
             <p class="text-lg text-black font-bold mt-4 mb-4">
                 Event Semarang
             </p>
@@ -190,7 +258,8 @@
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
                     <img src="{{ asset('chengho.jpg') }}" alt="dugderan"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
+                    </div>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">
                             Festival Arak-Arakan Cheng Ho
@@ -201,7 +270,8 @@
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
                     <img src="{{ asset('snc.jpg') }}" alt="dugderan"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
+                    </div>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">
                             Semarang Night Carnival
@@ -524,6 +594,28 @@
             hamburger.addEventListener('click', () => {
                 sidebar.classList.toggle('expanded');
             });
+        });
+
+        const searchBar = document.getElementById("searchBar");
+        const searchPanel = document.getElementById("searchPanel");
+
+        searchBar.addEventListener("click", () => {
+            searchPanel.classList.toggle("hidden");
+        });
+
+        const advancedBtn = document.getElementById("advancedBtn");
+        const advancedFilter = document.getElementById("advancedFilter");
+
+        advancedBtn.addEventListener("click", () => {
+            advancedFilter.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", function(e) {
+
+            if (!searchBar.contains(e.target) && !searchPanel.contains(e.target)) {
+                searchPanel.classList.add("hidden");
+            }
+
         });
 
 

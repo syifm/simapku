@@ -191,28 +191,27 @@
                                     <span class="text-red-500 font-bold">*</span>
                                 </label>
 
-                                <input type="file" id="foto" name="foto" accept="image/*" required
-                                    class="file-input-wrapper">
+                                <input type="file" id="foto" name="foto" accept="image/*"
+                                    class="file-input-wrapper" {{ empty($wisataKuliner->foto) ? 'required' : '' }}>
 
-                                @if (!empty($wisataKuliner->foto))
+                                {{-- @if (!empty($wisataKuliner->foto))
                                     <div class="mt-2 w-40 relative">
                                         <img src="{{ asset('storage/' . $wisataKuliner->foto) }}"
                                             class="rounded-md border w-full h-40 object-cover">
                                     </div>
-                                @endif
+                                @endif --}}
 
                                 <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
 
                                 <!-- PREVIEW -->
-                                <div id="previewWrapper" class="mt-3 hidden relative w-40">
-                                    <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover">
-                                    <button type="button" onclick="removeFoto()"
-                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
-                                        ✕
-                                    </button>
+                                <div id="previewWrapper"
+                                    class="mt-3 relative w-40 {{ isset($wisataKuliner->foto) ? '' : 'hidden' }}">
+                                    <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover"
+                                        src="{{ $wisataKuliner->foto ? asset('storage/' . $wisataKuliner->foto) : '' }}">
                                 </div>
 
-                                <p class="text-xs text-gray-600 mt-2">
+                                <p class="text-xs
+                                        text-gray-600 mt-2">
                                     Format: JPG, JPEG, PNG | Max: 10MB
                                 </p>
                             </div>
@@ -245,6 +244,7 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div id="map">
                             </div>
 
@@ -257,29 +257,29 @@
                                 </button>
                                 {{-- <input type="hidden" id="tanggal_daftar" name="tanggal_daftar"> --}}
                             </div>
-                        </div>
                     </form>
                 </div>
-
-                <style>
-                    .fade-in {
-                        animation: fadeIn 1.5s ease-in-out forwards;
-                    }
-
-                    @keyframes fadeIn {
-                        0% {
-                            opacity: 0;
-                            transform: translateY(10px);
-                        }
-
-                        100% {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                </style>
             </div>
+
+            <style>
+                .fade-in {
+                    animation: fadeIn 1.5s ease-in-out forwards;
+                }
+
+                @keyframes fadeIn {
+                    0% {
+                        opacity: 0;
+                        transform: translateY(10px);
+                    }
+
+                    100% {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            </style>
         </div>
+    </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -363,7 +363,7 @@
 
             fotoError.classList.add('hidden');
             fotoError.textContent = '';
-            previewWrapper.classList.add('hidden');
+            // previewWrapper.classList.add('hidden');
 
             if (!file) return;
 
@@ -397,11 +397,11 @@
             fotoPreview.src = '';
         }
 
-        function removeFoto() {
-            resetInput();
-            fotoError.classList.add('hidden');
-            previewWrapper.classList.add('hidden');
-        }
+        // function removeFoto() {
+        //     resetInput();
+        //     fotoError.classList.add('hidden');
+        //     previewWrapper.classList.add('hidden');
+        // }
 
         // Peta Latitude Longitude
         const latInput = document.getElementById('latitude');

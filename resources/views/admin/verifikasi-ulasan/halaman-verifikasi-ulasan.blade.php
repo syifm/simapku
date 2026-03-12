@@ -59,11 +59,11 @@
                     @if (!$statusUlasan)
                         <table class="table-fixed w-full border-collapse border border-black">
                             <colgroup>
-                                <col style="width: 30px">
+                                <col style="width: 60px">
+                                <col style="width: 350px">
+                                <col style="width: 400px">
                                 <col style="width: 200px">
-                                <col style="width: 150px">
-                                <col style="width: 100px">
-                                <col style="width: 100px">
+                                <col style="width: 121px">
                             </colgroup>
 
                             <thead>
@@ -285,7 +285,7 @@
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('modalTitle').textContent = data.wisata_kuliner.nama;
-                        document.getElementById('nilai').textContent = data.nilai;
+                        document.getElementById('nilai').textContent = data.penilaian;
                         document.getElementById('ulasan').textContent = data.ulasan;
                         document.getElementById('email_pengulas').textContent = data.email_pengulas;
                         const foto_ulasan = document.getElementById('foto_ulasan');

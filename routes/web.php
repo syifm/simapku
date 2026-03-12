@@ -4,13 +4,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WisatawanController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WisataKulinerController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/login', function () {
+Route::get('/', function () {
     return view('auth/login');
 });
 
@@ -78,6 +79,8 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/selectmhs', [WisatawanController::class, 'selectmhs'])->name('select.mhs');
     Route::get('/selectmk/{id}', [WisatawanController::class, 'selectmk'])->name('select.mk');
     Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
+
+    Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'search'])->name('wisatakulinerhalaman');
 
     // Route::get('/search-fasilitas', [WisatawanController::class, 'search']);
 

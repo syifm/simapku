@@ -54,24 +54,24 @@
         //     console.log(document.elementFromPoint(e.clientX, e.clientY));
         // });
         $(document).ready(function() {
-            //     $("#selectmhs").select2({
-            //         placeholder: 'Pilih Wisata Kuliner',
-            //         ajax: {
-            //             url: "{{ route('select.mhs') }}",
-            //             processResults: function({
-            //                 data
-            //             }) {
-            //                 return {
-            //                     results: $.map(data, function(item) {
-            //                         return {
-            //                             id: item.id_wisata_kuliner,
-            //                             text: item.nama
-            //                         }
-            //                     })
-            //                 }
+            // $("#selectmhs").select2({
+            //     placeholder: 'Pilih Wisata Kuliner',
+            //     ajax: {
+            //         url: "{{ route('select.mhs') }}",
+            //         processResults: function({
+            //             data
+            //         }) {
+            //             return {
+            //                 results: $.map(data, function(item) {
+            //                     return {
+            //                         id: item.id_wisata_kuliner,
+            //                         text: item.nama
+            //                     }
+            //                 })
             //             }
             //         }
-            //     });
+            //     }
+            // });
             $("#selectmhs").select2({
                 placeholder: 'Pilih Wisata Kuliner',
                 tags: true,

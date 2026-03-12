@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('foto');
             $table->double('latitude')->unique();
             $table->double('longitude')->unique();
+            $table->double('penilaian');
             $table->string('email_pengaju', 70);
             $table->unsignedInteger('id_wisatawan')->nullable();
             $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');

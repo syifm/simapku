@@ -59,10 +59,10 @@
                     @if (!$statuswisatakuliner)
                         <table class="table-fixed w-full border-collapse border border-black">
                             <colgroup>
-                                <col style="width: 30px">
-                                <col style="width: 200px">
-                                <col style="width: 160px">
-                                <col style="width: 100px">
+                                <col style="width: 60px">
+                                <col style="width: 600px">
+                                <col style="width: 300px">
+                                <col style="width: 171px">
                             </colgroup>
 
                             <thead>
@@ -159,35 +159,6 @@
                                                         <span class="ml-1">Detail</span>
                                                     </button>
                                                 @endif
-
-                                                {{-- <button type="button"
-                                                    onclick="window.location.href='{{ route('kelolawisatakuliner.edit', $kuliner->id_wisata_kuliner) }}'"
-                                                    class="bg-[#FFA319] hover:bg-[#F19305] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                        class="size-4">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                                                    </svg>
-                                                    <span class="ml-1">Edit</span>
-                                                </button> --}}
-                                                {{-- <form id="delete-form-{{ $kuliner->id_wisata_kuliner }}"
-                                                    action="{{ route('kelolawisatakuliner.hapus', $kuliner->id_wisata_kuliner) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button"
-                                                        onclick="konfirmasiHapus({{ $kuliner->id_wisata_kuliner }})"
-                                                        class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor"
-                                                            class="size-5">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                                        </svg>
-                                                        <span class="ml-1">Hapus</span>
-                                                    </button>
-                                                </form> --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -202,7 +173,7 @@
 
                     <div id="detailModal"
                         class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
-                        <div class="relative top-20 mx-auto p-5 border w-[450px] shadow-lg rounded-xl bg-white">
+                        <div class="relative top-5 mx-auto p-5 border w-[450px] shadow-lg rounded-xl bg-white">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold flex-1 text-center" id="modalTitle"></h3>
                                 <button onclick="tutupModalVerifikasi()" class="text-gray-400 hover:text-gray-500">
@@ -314,264 +285,6 @@
                     </div>
                 </div>
             </div>
-            {{-- </div> --}}
-
-            {{-- <a href="{{ route('beranda-Admin') }}"
-            class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Admin') ? 'active' : 'text-white' }}">
-            <div class="-ml-1.2 mr-3 -mt-0.5">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                    stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                </svg>
-            </div>
-            <span class="font-bold">Beranda</span>
-        </a> --}}
-            {{-- @if (!$statuswisatakuliner)
-            <div class="mt-[50px] bg-white p-10 rounded-lg shadow-lg text-center fade-in border border-gray-300">
-                <div class="flex flex-col items-center">
-                    <div class="relative w-20 h-20 flex items-center justify-center bg-gray-100 rounded-full shadow-lg">
-                        <svg class="w-14 h-14 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="orange"
-                            viewBox="0 0 24 24">
-                            <path
-                                d="M12 2a5 5 0 00-5 5v4H6a2 2 0 00-2 2v7a2 2 0 002 2h12a2 2 0 002-2v-7a2 2 0 00-2-2h-1V7a5 5 0 00-5-5zm-3 9V7a3 3 0 016 0v4H9zm3 4a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" />
-                        </svg>
-                    </div>
-
-                    <h2 class="text-2xl font-bold text-gray-800 mt-4">Mohon maaf, halaman ini tidak dapat diakses.</h2>
-                    <p class="text-gray-600 mt-2">Daftar wisata kuliner belum tersedia.</p>
-                </div>
-            </div> --}}
-            {{-- @else
-            <div class="bg-white rounded-lg shadow-md h-[calc(100vh-120px)] overflow-auto fade-in">
-                {{-- <div class="ml-6 mt-4">
-                    <form method="GET" action="{{ route('logaktivitas') }}">
-                        <select name="bulantahun" onchange="this.form.submit()">
-                            @foreach ($months as $m)
-                                <option value="{{ $m['bulan'] }}-{{ $m['tahun'] }}"
-                                    {{ (int) $bulan_angka == $m['bulan'] && $tahun == $m['tahun'] ? 'selected' : '' }}>
-                                    {{ $m['label'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </form>
-                </div>
-
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Wisata Kuliner</th>
-                            <th>Update Terakhir</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($wisataKuliner as $wkuliner)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $wkuliner->nama }}</td>
-                                <td>
-                                    {{-- Detail
-                                    <a href="{{ route('wkuliner.detail', $wkuliner->id) }}">
-                                        Detail
-                                    </a>
-
-                                    {{-- Edit
-                                    <a href="{{ route('wkuliner.edit', $produk->id) }}">
-                                        Edit
-                                    </a>
-
-                                    <!-- Hapus -->
-                                    <form action="{{ route('wkuliner.hapus', $produk->id) }}" method="POST"
-                                        style="display:inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Yakin mau hapus?')">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table> --}}
-
-
-
-            {{-- <div class="ml-6 mt-4 mr-6 mb-4">
-                    <table class="w-full table-auto border-collapse border border-gray-300">
-                        <thead class="bg-blue-900 text-white">
-                            <tr>
-                                <th class="py-2 px-3 border text-sm w-12">No</th>
-                                <th class="py-2 px-3 border text-sm">Wisata Kuliner</th>
-                                <th class="py-2 px-3 border text-sm">Update Terakhir</th>
-                                <th class="py-2 px-3 border text-sm w-20">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for ($i = 1; $i <= $wisataKuliner; $i++)
-                                <tr class="odd:bg-gray-100 even:bg-gray-200">
-                                    <td class="py-2 px-3 border text-sm text-center">{{ $i }}</td>
-                                    <td class="py-2 px-3 border text-sm text-center">{{ $i }}</td>
-
-                                    <td class="py-2 px-3 border text-sm text-center"><a
-                                            href="{{ asset('storage/' . $logs[$i]->file_bukti) }}" target="_blank"
-                                            class="inline-flex items-center px-3 py-1 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 transition">
-                                            Lihat
-                                        </a></td>
-                                    <td class="py-2 px-3 border text-sm text-center">{{ $i }}</td>
-
-                                    <td class="py-2 px-3 border text-sm text-center w-40">
-                                        @if ($i <= $currentWeekInSelectedMonth)
-                                            @if (isset($logs[$i]) && $logs[$i]->file_bukti)
-                                                <a href="{{ asset('storage/' . $logs[$i]->file_bukti) }}"
-                                                    target="_blank"
-                                                    class="inline-flex items-center px-3 py-1 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 transition">
-                                                    Lihat
-                                                </a>
-                                            @else
-                                                @if ($i < $currentWeekInSelectedMonth)
-                                                    <span
-                                                        class="inline-block text-red-600 px-2 py-1 rounded text-sm font-medium">
-                                                        Tidak Tersedia
-                                                    </span>
-                                                @else
-                                                    <span
-                                                        class="inline-block text-gray-400 px-2 py-1 rounded text-sm font-medium">
-                                                        Belum Tersedia
-                                                    </span>
-                                                @endif
-                                            @endif
-                                        @else
-                                            <span
-                                                class="inline-block text-gray-400 px-2 py-1 rounded text-sm font-medium">
-                                                Belum Tersedia
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td class="py-2 px-3 border text-sm text-center w-40">
-                                        @if ($i <= $currentWeekInSelectedMonth)
-                                            @if (isset($logs[$i]))
-                                                @if ($i < $currentWeekInSelectedMonth)
-                                                    <span
-                                                        class="inline-block text-red-600 px-2 py-1 rounded text-sm font-medium">
-                                                        Sudah Berlalu
-                                                    </span>
-                                                @elseif(
-                                                    $pendaftar->status_magang === 'Lulus' ||
-                                                        $pendaftar->status_magang === 'Tidak Lulus' ||
-                                                        $pendaftar->status_magang == 'Proses Pemeriksaan')
-                                                    <button disabled
-                                                        class="px-3 py-1 bg-gray-400 text-white rounded cursor-not-allowed text-sm">
-                                                        Edit
-                                                    </button>
-                                                @else
-                                                    <a href="{{ route('log.create', ['minggu' => $i, 'bulan' => $bulan, 'tahun' => $tahun]) }}"
-                                                        class="inline-flex items-center px-3 py-1 bg-orange-600 text-white text-sm font-medium rounded hover:bg-orange-700 transition">
-                                                        Edit
-                                                    </a>
-                                                @endif
-                                            @else
-                                                @if ($i < $currentWeekInSelectedMonth)
-                                                    <span
-                                                        class="inline-block text-red-600 px-2 py-1 rounded text-sm font-medium">
-                                                        Sudah Berlalu
-                                                    </span>
-                                                @elseif(
-                                                    $pendaftar->status_magang === 'Lulus' ||
-                                                        $pendaftar->status_magang === 'Tidak Lulus' ||
-                                                        $pendaftar->status_magang == 'Proses Pemeriksaan')
-                                                    <button disabled
-                                                        class="px-3 py-1 bg-gray-400 text-white rounded cursor-not-allowed text-sm">
-                                                        Tambah
-                                                    </button>
-                                                @else
-                                                    <a href="{{ route('log.create', ['minggu' => $i, 'bulan' => $bulan, 'tahun' => $tahun]) }}"
-                                                        class="inline-flex items-center transition bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
-                                                        Tambah
-                                                    </a>
-                                                @endif
-                                            @endif
-                                        @else
-                                            <span
-                                                class="inline-block text-gray-400 px-2 py-1 rounded text-sm font-medium">
-                                                Belum Tersedia
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td class="py-2 px-3 border text-sm text-center">
-                                        @if ($i <= $currentWeekInSelectedMonth)
-                                            @if (isset($logs[$i]) && $logs[$i]->updated_at)
-                                                {{ \Carbon\Carbon::parse($logs[$i]->updated_at)->locale('id')->isoFormat('D MMMM Y') }}
-                                            @else
-                                                @if ($i < $currentWeekInSelectedMonth)
-                                                    <span
-                                                        class="inline-block text-red-600 px-2 py-1 rounded text-sm font-medium">
-                                                        Tidak Tersedia
-                                                    </span>
-                                                @else
-                                                    <span
-                                                        class="inline-block text-gray-400 px-2 py-1 rounded text-sm font-medium">
-                                                        Belum Tersedia
-                                                    </span>
-                                                @endif
-                                            @endif
-                                        @else
-                                            <span
-                                                class="inline-block text-gray-400 px-2 py-1 rounded text-sm font-medium">
-                                                Belum Tersedia
-                                            </span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endfor
-                        </tbody>
-                    </table>
-                </div>
-            </div> --}}
-
-            {{-- <style>
-                    .fade-in {
-                        animation: fadeIn 1.5s ease-in-out forwards;
-                    }
-
-                    @keyframes fadeIn {
-                        0% {
-                            opacity: 0;
-                            transform: translateY(10px);
-                        }
-
-                        100% {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                </style> --}}
-            {{-- @endif --}}
-
-
-            {{-- <div class="flex flex-col items-center gap-2">
-                <div
-                    class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium">
-                    <input type="text" placeholder="Cari Kuliner Disini..."
-                        class="flex-1 px-5 py-3 focus:outline-none">
-                    <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-
-
-
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-dropdown-link :href="route('logout')"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </x-dropdown-link>
-                    </form>
-                </div>
-            </div> --}}
         </div>
 
 
@@ -657,17 +370,6 @@
                         }
 
                         map.invalidateSize();
-                        // var map = L.map('map').setView([lat, lng], 50);
-                        // // let mapOptions = {
-                        // //     center: [51.958, 9.141],
-                        // //     zoom: 10
-                        // // }
-
-                        // // let map = new L.map('map', mapOptions);
-
-                        // let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-                        // map.addLayer(layer);
-                        // var marker = L.marker([lat, lng]).addTo(map);
                     });
             }
 
@@ -763,24 +465,6 @@
                     }
                 });
             }
-
-            // function modalSetujui(id) {
-            //     Swal.fire({
-            //         title: 'Setujui wisata kuliner',
-            //         icon: 'info',
-            //         showCancelButton: true,
-            //         showDenyButton: true,
-            //         confirmButtonText: 'Setujui & Tampilkan',
-            //         denyButtonText: 'Setujui',
-            //         cancelButtonText: 'Batal',
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             kirimVerifikasi(id, 'Tampilkan');
-            //         } else if (result.isDenied) {
-            //             kirimVerifikasi(id, 'Disetujui');
-            //         }
-            //     });
-            // }
 
             function aksiSetujui(id) {
                 Swal.fire({

@@ -194,10 +194,10 @@
                                 <!-- PREVIEW -->
                                 <div id="previewWrapper" class="mt-3 hidden relative w-40">
                                     <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover">
-                                    <button type="button" onclick="removeFoto()"
+                                    {{-- <button type="button" onclick="removeFoto()"
                                         class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
                                         ✕
-                                    </button>
+                                    </button> --}}
                                 </div>
 
                                 <p class="text-xs text-gray-600 mt-2">

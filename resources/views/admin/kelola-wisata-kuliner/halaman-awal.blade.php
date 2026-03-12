@@ -197,7 +197,7 @@
 
                     <div id="detailModal"
                         class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
-                        <div class="relative top-20 mx-auto p-5 border w-[450px] shadow-lg rounded-xl bg-white">
+                        <div class="relative top-5 bottom-5 mx-auto p-5 border w-[450px] shadow-lg rounded-xl bg-white">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold flex-1 text-center" id="modalTitle"></h3>
                                 <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
@@ -617,17 +617,6 @@
                         }
 
                         map.invalidateSize();
-                        // var map = L.map('map').setView([lat, lng], 50);
-                        // // let mapOptions = {
-                        // //     center: [51.958, 9.141],
-                        // //     zoom: 10
-                        // // }
-
-                        // // let map = new L.map('map', mapOptions);
-
-                        // let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-                        // map.addLayer(layer);
-                        // var marker = L.marker([lat, lng]).addTo(map);
                     });
             }
 
@@ -651,118 +640,6 @@
                 });
             }
         </script>
-        {{-- <script>
-        function showDetail(id) {
-            fetch(`/dekan/jadwal-kuliah/detail/${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('modalTitle').textContent = data.nama_mk;
-                    document.getElementById('hari').textContent = data.hari;
-                    document.getElementById('waktu').textContent = data.waktu_mulai.substr(0, 5) + '-' + data
-                        .waktu_selesai.substr(0, 5);
-                    document.getElementById('kode').textContent = data.kode_mk;
-                    document.getElementById('mata_kuliah').textContent = data.nama_mk;
-                    document.getElementById('jenis_mata_kuliah').textContent = data.tipe_mata_kuliah;
-                    document.getElementById('sks').textContent = data.sks;
-                    document.getElementById('semester').textContent = data.semester;
-                    document.getElementById('tahun_ajaran').textContent = data.nama;
-                    document.getElementById('kelas').textContent = data.nama_kelas;
-                    document.getElementById('ruang').textContent = data.nama_ruang;
-                    document.getElementById('kuota').textContent = data.kuota;
-                    document.getElementById('dosen_pengampu').innerHTML = data.dosen_pengampu;
-
-                    document.getElementById('detailModal').classList.remove('hidden');
-                });
-        }
-
-        function closeModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-        }
-
-        function approveAllSchedules() {
-            const button = document.getElementById('approveAllButton');
-            const idsemaktif = "20241";
-
-            fetch(`/update-status/${idsemaktif}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        tahun_ajaran: idsemaktif,
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        button.textContent = 'Telah Disetujui';
-                        button.classList.remove("hover:bg-gray-400", "bg-gray-300");
-                        button.classList.add("bg-gray-400", "cursor-not-allowed");
-                        button.disabled = true;
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: "Jadwal Kuliah Berhasil Disetujui",
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        alert(result.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Terjadi kesalahan:', error);
-                    alert('Terjadi kesalahan saat menyetujui jadwal.');
-                });
-        }
-
-        function displayContent() {
-            const selectedValue = document.getElementById("programDropdown").value;
-
-            localStorage.setItem("selectedDepartment", selectedValue);
-
-            const contents = document.querySelectorAll(".content");
-            contents.forEach(content => content.classList.add("hidden"));
-
-            const selectedContent = document.getElementById(`${selectedValue}-content`);
-            if (selectedContent) {
-                selectedContent.classList.remove("hidden");
-            }
-        }
-
-        function setDropdownFromLocalStorage() {
-            const selectedValue = localStorage.getItem("selectedDepartment");
-
-            const dropdown = document.getElementById("programDropdown");
-
-            if (selectedValue) {
-                dropdown.value = selectedValue;
-
-                const contents = document.querySelectorAll(".content");
-                contents.forEach(content => content.classList.add("hidden"));
-
-                const selectedContent = document.getElementById(`${selectedValue}-content`);
-                if (selectedContent) {
-                    selectedContent.classList.remove("hidden");
-                }
-            } else {
-                dropdown.value = "pilihdepartemen";
-
-                const contents = document.querySelectorAll(".content");
-                contents.forEach(content => content.classList.add("hidden"));
-
-                const defaultContent = document.getElementById("pilihdepartemen-content");
-                if (defaultContent) {
-                    defaultContent.classList.remove("hidden");
-                }
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", setDropdownFromLocalStorage);
-    </script> --}}
-
 </body>
 
 </html>
