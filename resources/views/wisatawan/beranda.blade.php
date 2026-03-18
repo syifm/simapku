@@ -119,105 +119,76 @@
 
     {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
     <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
-        <div class="flex flex-col items-center gap-2 -ml-12">
+        <div class="flex flex-col gap-2">
             {{-- <h2 class="text-2xl text-black font-bold mb-4">
                 Selamat datang di SIMAPKU Semarang, temukan kuliner Semarang yang cocok untuk Anda disini!
             </h2> --}}
             <div>
-                <p class="text-m text-black font-medium mt-2">
+                <p class="text-m text-black font-medium mt-2 mb-2 text-center">
                     Ingin memasukkan kuliner yang Anda ketahui?
                     <a href="{{ route('tambahwisatakuliner') }}" class="text-[#FFA319]  hover:underline">
                         Tambah Kuliner
                     </a>
                 </p>
             </div>
-        </div>
-
-        <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
-            <div class="relative w-full flex justify-center">
-                {{-- <div class="flex flex-col items-center gap-2 -ml-12 mt-4"> --}}
 
 
-                <div class="absolute top-4 w-full max-w-3xl z-30 ml-[190px]">
-                    <div id="searchBar"
-                        class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium">
-                        <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
-                            class="flex-1 px-5 py-3 focus:outline-none">
-                        <button type="submit" class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                    </div>
-
-                    <div id="searchPanel"
-                        class="hidden left-0 w-full max-w-xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
-
-                        <!-- Kuliner Terdekat -->
-                        <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
-                            Kuliner Terdekat
+            <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
+                <div class="relative w-full flex justify-center mb-6">
+                    <div class="w-full max-w-xl z-20">
+                        <div id="searchBar"
+                            class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
+                            <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
+                                class="flex-1 px-5 py-3 focus:outline-none">
+                            <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </div>
 
-                        <!-- Advanced Search -->
-                        <div id="advancedBtn" class="flex gap-4 items-center p-3 rounded-xl cursor-pointer">
-                            <span>Advanced Search</span>
-                            <span class="leading-none">
-                                {{-- <i class="fi fi-br-angle-small-down text-xl"></i> --}}
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="3" stroke="currentColor" class="size-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                </svg>
+                        <div id="searchPanel"
+                            class="hidden absolute w-full max-w-xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
+                            <!-- Kuliner Terdekat -->
+                            <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
+                                Kuliner Terdekat
+                            </div>
 
-                            </span>
-                        </div>
+                            <!-- Advanced Search -->
+                            <div id="advancedBtn" class="flex gap-4 items-center p-3 rounded-xl cursor-pointer">
+                                <span>Advanced Search</span>
+                                <span class="leading-none">
+                                    {{-- <i class="fi fi-br-angle-small-down text-xl"></i> --}}
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="3" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
 
-                        <!-- Filter Advanced -->
-                        <div id="advancedFilter" class="hidden mt-3 space-y-3">
+                                </span>
+                            </div>
+                            <!-- Filter Advanced -->
+                            <div id="advancedFilter" class="hidden mt-3 space-y-3">
 
-                            {{-- <input type="number" name="jarak" placeholder="Jarak (km)" class="w-full border rounded-lg p-2"> --}}
+                                <select class="w-full border rounded-lg p-2" name="rating">
+                                    <option>Rating Minimal</option>
+                                    <option>⭐ 3+</option>
+                                    <option>⭐ 4+</option>
+                                    <option>⭐ 4.5+</option>
+                                </select>
 
-                            {{-- <input type="number" name="harga" placeholder="Harga Maksimal"
-                                class="w-full border rounded-lg p-2"> --}}
 
-                            {{-- <select class="w-full border rounded-lg p-2" name="jenis">
-                                <option>Jenis Makanan</option>
-                                <option>Bakso</option>
-                                <option>Soto</option>
-                                <option>Seafood</option>
-                            </select> --}}
-
-                            {{-- <select class="w-full border rounded-lg p-2" name="rating">
-                                <option>Rating Minimal</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>4.5</option>
-                            </select> --}}
-
-                            {{-- <select class="w-full border rounded-lg p-2" name="fasilitas[]" multiple>
-                                <option>Fasilitas</option>
-                                <option>Wifi</option>
-                                <option>Parkir</option>
-                                <option>AC</option>
-                            </select> --}}
-                            <input type="checkbox" name="penilaian[]" value="1"> 1
-                            <input type="checkbox" name="penilaian[]" value="2"> 2
-                            <input type="checkbox" name="penilaian[]" value="3"> 3
-                            <input type="checkbox" name="penilaian[]" value="3"> 4
-
-                            <input type="checkbox" name="fasilitas[]" value="1"> Wifi
-                            <input type="checkbox" name="fasilitas[]" value="2"> Parkir
-                            <input type="checkbox" name="fasilitas[]" value="3"> AC
-
-                            {{-- <button class="w-full bg-orange-500 text-white p-2 rounded-lg">
-                                    Cari
-                                </button> --}}
+                                <input type="checkbox" name="fasilitas[]" value="1"> Wifi
+                                <input type="checkbox" name="fasilitas[]" value="2"> Parkir
+                                <input type="checkbox" name="fasilitas[]" value="3"> AC
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
 
-        <div class="mb-8 mt-[85px]">
-            <p class="text-lg text-black font-bold mt-4 mb-4">
+        </div>
+
+        <div class="mb-8">
+            <p class="text-lg text-black font-bold mt-1 mb-4">
                 Event Semarang
             </p>
             <div class="grid grid-cols-4 gap-8">
@@ -585,6 +556,7 @@
         //     });
         // }
 
+
         document.addEventListener('DOMContentLoaded', () => {
             const hamburger = document.getElementById('hamburger');
             const sidebar = document.querySelector('.sidebar');
@@ -616,6 +588,13 @@
                 searchPanel.classList.add("hidden");
             }
 
+        });
+
+        const range = document.getElementById("rangeJarak");
+        const value = document.getElementById("valueJarak");
+
+        range.addEventListener("input", function() {
+            value.innerText = this.value;
         });
 
 

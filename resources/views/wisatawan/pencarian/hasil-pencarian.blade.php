@@ -43,7 +43,14 @@
             margin-bottom: 1rem;
             color: #9ca3af;
         }
+
+        #map {
+            height: 400px;
+            width: 400px;
+        }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -72,56 +79,14 @@
             });
         </script>
     @endif
-    {{-- <div class="h-screen flex flex-col">
-        @include('layouts.header-wisatawan')
-
-        <div class="flex flex-1 overflow-hidden">
-             @include('layouts.sidebar-wisatawan') 
-
-            <div class="flex-1 p-6 overflow-y-auto">
-                <h2 class="text-2xl text-black font-bold mb-4">
-                    Selamat datang, Wisatawan!
-                </h2>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-dropdown-link>
-                </form>
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- <div class="h-screen flex flex-col">
-    @include('layouts.header-wisatawan')
-
-    <div class="flex flex-1">
-        @include('layouts.sidebar-wisatawan')
-
-        <div class="flex-1 p-6 overflow-y-auto">
-            <h2 class="text-2xl text-black font-bold mb-4">
-                Selamat datang, Wisatawan!
-            </h2>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                    {{ __('Log Out') }}
-                </x-dropdown-link>
-            </form>
-        </div>
-    </div>
-    </div> --}}
 
     @include('layouts.header-wisatawan')
     @include('layouts.sidebar-wisatawan')
 
-    {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
     <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
-        <div class="flex flex-col items-center gap-2 -ml-12">
+        <div class="flex flex-col gap-2">
             <div>
-                <p class="text-m text-black font-medium mt-2">
+                <p class="text-m text-black font-medium mt-2 mb-2 text-center">
                     Ingin memasukkan kuliner yang Anda ketahui?
                     <a href="{{ route('tambahwisatakuliner') }}" class="text-[#FFA319]  hover:underline">
                         Tambah Kuliner
@@ -129,22 +94,21 @@
                 </p>
             </div>
 
+            <!-- search bar -->
             <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
-                <div class="relative w-full flex justify-center">
-
-                    <div class="absolute top-4 w-full max-w-3xl z-50 ml-[190px]">
+                <div class="relative w-full flex justify-center mb-6">
+                    <div class="w-full max-w-xl z-20">
                         <div id="searchBar"
-                            class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium">
+                            class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
                                 class="flex-1 px-5 py-3 focus:outline-none">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
-                                <i class="fa fa-search" aria-hidden="true"></i>
+                                <i class="fa fa-search"></i>
                             </button>
                         </div>
 
                         <div id="searchPanel"
-                            class="hidden left-0 w-full max-w-xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
-
+                            class="hidden absolute w-full max-w-xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
                             <!-- Kuliner Terdekat -->
                             <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
@@ -163,21 +127,8 @@
 
                                 </span>
                             </div>
-
                             <!-- Filter Advanced -->
                             <div id="advancedFilter" class="hidden mt-3 space-y-3">
-
-                                {{-- <input type="number" name="jarak" placeholder="Jarak (km)" class="w-full border rounded-lg p-2"> --}}
-
-                                {{-- <input type="number" name="harga" placeholder="Harga Maksimal"
-                                class="w-full border rounded-lg p-2"> --}}
-
-                                {{-- <select class="w-full border rounded-lg p-2" name="jenis">
-                                <option>Jenis Makanan</option>
-                                <option>Bakso</option>
-                                <option>Soto</option>
-                                <option>Seafood</option>
-                            </select> --}}
 
                                 <select class="w-full border rounded-lg p-2" name="rating">
                                     <option>Rating Minimal</option>
@@ -186,119 +137,54 @@
                                     <option>⭐ 4.5+</option>
                                 </select>
 
-                                {{-- <select class="w-full border rounded-lg p-2" name="fasilitas[]" multiple>
-                                <option>Fasilitas</option>
-                                <option>Wifi</option>
-                                <option>Parkir</option>
-                                <option>AC</option>
-                            </select> --}}
 
                                 <input type="checkbox" name="fasilitas[]" value="1"> Wifi
                                 <input type="checkbox" name="fasilitas[]" value="2"> Parkir
                                 <input type="checkbox" name="fasilitas[]" value="3"> AC
-
-                                <button class="w-full bg-orange-500 text-white p-2 rounded-lg">
-                                    Cari
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+
+
+
         </div>
 
-        <div>
+        {{-- <div>
             @foreach ($data as $kuliner)
                 <div class="p-4 border rounded-lg mb-3">
                     <h2 class="text-lg font-bold">{{ $kuliner->nama }}</h2>
-                    {{-- <p>Rating: ⭐ {{ $kuliner->penilaian }}</p> --}}
+                    <p>Rating: ⭐ {{ $kuliner->penilaian }}</p>
                 </div>
             @endforeach
-        </div>
+        </div> --}}
 
-        <div class="mb-8 mt-[85px]">
-            <p class="text-lg text-black font-bold mt-4 mb-4">
-                Event Semarang
-            </p>
-            <div class="grid grid-cols-4 gap-8">
-                {{-- <a href="{{ route('event') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('dugderan.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">
-                            Dugderan
-                        </span>
+        <!-- hasil-->
+        <div class="grid grid-cols-12 gap-6">
+
+            <div class="col-span-7">
+                @foreach ($data as $kuliner)
+                    <div class="p-4 border rounded-lg mb-3 bg-white shadow-sm">
+                        <h2 class="text-lg font-bold">{{ $kuliner->nama }}</h2>
                     </div>
-                </a> --}}
-                <a href="{{ route('event') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('pasarsentiling.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">
-                            Festival Kota Lama
-                        </span>
-                    </div>
-                </a>
-                {{-- <a href="{{ route('event') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('pasarimlek.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">
-                            Pasar Imlek Semawis
-                        </span>
-                    </div>
-                </a>
-                <a href="{{ route('event') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('chengho.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">
-                            Festival Arak-Arakan Cheng Ho
-                        </span>
-                    </div>
-                </a> --}}
-                <a href="{{ route('event') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('snc.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">
-                            Semarang Night Carnival
-                        </span>
-                    </div>
-                </a>
+                @endforeach
+            </div>
+
+            <div class="col-span-5">
+                <div class="sticky top-24">
+                    <iframe class="w-full h-[600px] rounded-xl border">
+                    </iframe>
+                    {{-- <div id="map" class="w-full h-[600px] rounded-xl border">
+                    </div> --}}
+                </div>
             </div>
 
         </div>
-
-        <p class="text-lg text-black font-bold mt-4 mb-4">
-            Kuliner Terbaru
-        </p>
-        <p class="text-lg text-black font-bold mt-4 mb-4">
-            Kuliner Populer
-        </p>
-
-
-        <a href="{{ route('map-WisataKuliner') }}" class="text-[#FFA319]  hover:underline">
-            Map Wisata Kuliner
-        </a>
-
-        <a href="{{ route('map-WisataKuliner2') }}" class="text-[#FFA319]  hover:underline">
-            Map Wisata Kuliner 2
-        </a>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -333,6 +219,36 @@
             }
 
         });
+
+        let mapOptions = {
+            center: [51.958, 9.141],
+            zoom: 10
+        }
+
+        let map = new L.map('map', mapOptions);
+
+        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        map.addLayer(layer);
+        let marker = null;
+        map.on('click', (event) => {
+            if (marker !== null) {
+                map.removeLayer(marker);
+            }
+
+            marker = L.marker([event.latlng.lat, event.latlng.lng], {
+                draggable: true
+            }).addTo(map);
+            console.log(event);
+
+            document.getElementById('latitude').value = event.latlng.lat;
+            document.getElementById('longitude').value = event.latlng.lng;
+
+            marker.on('drag', function(e) {
+                let latlng = e.target.getLatLng();
+                document.getElementById('latitude').value = latlng.lat;
+                document.getElementById('longitude').value = latlng.lng;
+            });
+        })
     </script>
 
 

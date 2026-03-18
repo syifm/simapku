@@ -25,7 +25,8 @@ class WisatawanController extends Controller
 
     public function berandaWisatawan()
     {
-        return view('wisatawan.beranda');
+        $fasilitas = Fasilitas::all();
+        return view('wisatawan.beranda', compact('fasilitas'));
     }
 
     public function mapWisataKuliner()

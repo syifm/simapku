@@ -82,11 +82,11 @@ class WisataKulinerController extends Controller
 
         // filter radius
         // $query->having('distance', '<', $radius);
-
+        $query = DB::table('wisata_kuliner');
         // keyword
         if ($request->keyword) {
             // $query = DB::table('wisata_kuliner')->where('nama', 'like', '%' . $request->keyword . '%');
-            $query = DB::table('wisata_kuliner')->where(function ($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->keyword . '%')
                     ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
                     ->orWhere('kelurahan', 'like', '%' . $request->keyword . '%')
@@ -98,15 +98,9 @@ class WisataKulinerController extends Controller
 
         // penilaian
         if ($request->penilaian) {
-            $query = DB::table('wisata_kuliner')->where(function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('kelurahan', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('alamat', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('no_telp', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('deskripsi', 'like', '%' . $request->keyword . '%');
-            });
+            $query->whereIn('penilaian', $request->penilaian);
         }
+
 
 
 
@@ -119,9 +113,29 @@ class WisataKulinerController extends Controller
         //     $query->having('penilaian', '>=', $request->rating);
         // }
 
+        // if ($request->fasilitas) {
+        //     $query->join('fasilitas_wisata_kuliner', 'wisata_kuliner.id_wisata_kuliner', '=', 'fasilitas_wisata_kuliner.id_wisata_kuliner')
+        //         ->whereIn('fasilitas_wisata_kuliner.id_fasilitas', $request->fasilitas);
+        // }
         if ($request->fasilitas) {
-            $query->join('fasilitas_wisata_kuliner', 'wisata_kuliner.id_wisata_kuliner', '=', 'fasilitas_wisata_kuliner.id_wisata_kuliner')
-                ->whereIn('fasilitas_wisata_kuliner.id_fasilitas', $request->fasilitas);
+
+            $query->leftJoin(
+                'fasilitas_wisata_kuliner as f',
+                'wisata_kuliner.id_wisata_kuliner',
+                '=',
+                'f.id_wisata_kuliner'
+            )
+
+                ->select(
+                    'wisata_kuliner.*',
+                    DB::raw('COUNT(CASE 
+                WHEN f.id_fasilitas IN (' . implode(',', $request->fasilitas) . ') 
+                THEN 1 END) as total_sesuai')
+                )
+
+                ->groupBy('wisata_kuliner.id_wisata_kuliner')
+                ->having('total_sesuai', '>', 0)
+                ->orderByDesc('total_sesuai');
         }
 
         // $data = $query->orderBy('distance')->get();

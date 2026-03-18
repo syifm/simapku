@@ -68,7 +68,7 @@ class AdminController extends Controller
     public function kelolaWisataKuliner()
     {
         $statuswisatakuliner = WisataKuliner::where('status', 'Disetujui')->exists();
-        $wisataKuliner = WisataKuliner::where('status', 'Disetujui')->paginate(5)->withQueryString();;
+        $wisataKuliner = WisataKuliner::where('status', 'Disetujui')->paginate(5)->withQueryString();
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
