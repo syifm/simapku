@@ -24,6 +24,8 @@ class WisataKulinerSeeder extends Seeder
                 'foto' => 'hihihihi',
                 'latitude' => '-6.996418149883837',
                 'longitude' => '110.41534564234345',
+                'harga_min' => 0,
+                'harga_max' => 0,
                 'penilaian' => 0,
                 'email_pengaju' => 'syifa@gmail.com',
                 'id_wisatawan' => null,
@@ -35,23 +37,6 @@ class WisataKulinerSeeder extends Seeder
         ];
 
         foreach ($wkulinerData as $data) {
-            // WisataKuliner::create([
-            //     'nama' => $data[0],
-            //     'kecamatan' => $data[1],
-            //     'kelurahan' => $data[2],
-            //     'alamat' => $data[3],
-            //     'no_hp' => $data[4],
-            //     'foto' => $data[5],
-            //     'deskripsi' => $data[6],
-            //     'latitude' => $data[7],
-            //     'longitude' => $data[8],
-            //     'email_pengaju' => $data[9],
-            //     'id_wisatawan' => $data[10],
-            //     'id_admin' => $data[11],
-            //     'status' => $data[12],
-            //     'waktu_dibuat' => $data[13],
-            //     'waktu_diubah' => $data[14],
-            // ]);
             WisataKuliner::create([
                 'nama' => $data['nama'],
                 'kecamatan' => $data['kecamatan'],
@@ -62,6 +47,8 @@ class WisataKulinerSeeder extends Seeder
                 'foto' => $data['foto'],
                 'latitude' => $data['latitude'],
                 'longitude' => $data['longitude'],
+                'harga_min' => $data['harga_min'],
+                'harga_max' => $data['harga_max'],
                 'penilaian' => $data['penilaian'],
                 'email_pengaju' => $data['email_pengaju'],
                 'id_wisatawan' => null,

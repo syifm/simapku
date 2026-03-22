@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('foto');
             $table->double('latitude')->unique();
             $table->double('longitude')->unique();
+            $table->integer('harga_min');
+            $table->integer('harga_max');
             $table->double('penilaian');
             $table->string('email_pengaju', 70);
             $table->unsignedInteger('id_wisatawan')->nullable();

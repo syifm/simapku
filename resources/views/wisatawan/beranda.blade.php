@@ -136,10 +136,10 @@
             <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-xl z-20">
-                        <div id="searchBar"
+                        <div
                             class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
-                                class="flex-1 px-5 py-3 focus:outline-none">
+                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
                                 <i class="fa fa-search"></i>
                             </button>

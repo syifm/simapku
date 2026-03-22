@@ -9,7 +9,7 @@ use App\Models\Admin;
 use App\Models\DiariKuliner;
 use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
-use App\Models\Category;
+// use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -250,6 +250,8 @@ class WisatawanController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'latitude'  => $request->latitude,
                 'longitude' => $request->longitude,
+                'harga_min' => 0,
+                'harga_max' => 0,
                 'penilaian' => 0,
                 'email_pengaju' => $email_pengaju,
                 'id_wisatawan' => $id_wisatawan ?? null,
@@ -446,14 +448,14 @@ class WisatawanController extends Controller
         return view('wisatawan.wisata-kuliner.tambahadaform', compact('fasilitas'));
     }
 
-    public function getCategory(Request $request)
-    {
-        $tags = [];
-        if ($search = $request->name) {
-            $tags = Category::where('title', 'LIKE', "%$search%")->get();
-        }
-        return response()->json($tags);
-    }
+    // public function getCategory(Request $request)
+    // {
+    //     $tags = [];
+    //     if ($search = $request->name) {
+    //         $tags = Category::where('title', 'LIKE', "%$search%")->get();
+    //     }
+    //     return response()->json($tags);
+    // }
 
     public function search(Request $request)
     {
@@ -463,9 +465,6 @@ class WisatawanController extends Controller
             ->limit(10)
             ->get(['id_fasilitas as id', 'nama as name']);
     }
-
-
-
 
     public function getngampu($id = null)
     {

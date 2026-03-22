@@ -44,9 +44,13 @@
             color: #9ca3af;
         }
 
+        /* #map {
+            height: 500px;
+            width: 570px;
+        } */
         #map {
-            height: 400px;
-            width: 400px;
+            height: 100%;
+            width: 100%;
         }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -127,6 +131,7 @@
 
                                 </span>
                             </div>
+
                             <!-- Filter Advanced -->
                             <div id="advancedFilter" class="hidden mt-3 space-y-3">
 
@@ -161,22 +166,109 @@
         </div> --}}
 
         <!-- hasil-->
-        <div class="grid grid-cols-12 gap-6">
+        {{-- <div class="grid grid-cols-12 gap-6"> --}}
+        <div class="grid grid-cols-12 gap-6 h-[calc(100vh-230px)] overflow-hidden">
 
-            <div class="col-span-7">
+            {{-- <div class="col-span-7">
                 @foreach ($data as $kuliner)
                     <div class="p-4 border rounded-lg mb-3 bg-white shadow-sm">
                         <h2 class="text-lg font-bold">{{ $kuliner->nama }}</h2>
                     </div>
                 @endforeach
+            </div> --}}
+            {{-- <div class="col-span-7 space-y-4"> --}}
+            <div class="col-span-7 space-y-4 overflow-y-auto pr-2">
+                @foreach ($data as $kuliner)
+                    {{-- <div
+                        class="flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition"> --}}
+                    {{-- <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
+                        data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"> --}}
+                    <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
+                        data-nama="{{ $kuliner->nama }}" data-alamat="{{ $kuliner->alamat }}"
+                        data-harga="Rp{{ number_format($kuliner->harga_min) }}+"
+                        data-foto="{{ asset('storage/' . $kuliner->foto) }}" data-lat="{{ $kuliner->latitude }}"
+                        data-lng="{{ $kuliner->longitude }}">
+
+                        <div class="flex gap-4 items-center">
+
+                            <img src="{{ asset('storage/' . $kuliner->foto) }}"
+                                class="w-32 h-24 object-cover rounded-xl">
+
+                            <div>
+                                <h2 class="text-lg font-semibold">
+                                    {{ $kuliner->nama }}
+                                </h2>
+
+                                <p class="text-gray-600 text-sm">
+                                    {{ $kuliner->alamat }}
+                                </p>
+
+                                {{-- <p class="text-gray-600 text-sm">
+                                    Buka {{ $kuliner->jam_buka }}
+                                </p> --}}
+
+                                {{-- <p class="text-gray-600 text-sm">
+                                    {{ $kuliner->kategori }} • {{ $kuliner->fasilitas }}
+                                </p> --}}
+
+                                {{-- <p class="text-gray-700 text-sm font-medium"> --}}
+                                <p class="text-gray-700 text-sm">
+                                    Rp{{ number_format($kuliner->harga_min) }}+
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="text-right">
+
+                            <div class="flex items-center gap-1 justify-end -mt-10">
+                                <span class="text-orange-400">★</span>
+                                <span class="font-semibold">
+                                    {{ $kuliner->penilaian ?? '4.5' }}
+                                </span>
+                            </div>
+
+                            {{-- <p class="text-gray-700 text-sm">
+                                Rp{{ number_format($kuliner->harga_min) }}+
+                            </p> --}}
+
+                            {{-- <p class="text-gray-500 text-sm mt-1">
+                                {{ $kuliner->jarak ?? '100 m' }}
+                            </p> --}}
+
+                        </div>
+
+                    </div>
+                @endforeach
             </div>
 
-            <div class="col-span-5">
-                <div class="sticky top-24">
-                    <iframe class="w-full h-[600px] rounded-xl border">
-                    </iframe>
-                    {{-- <div id="map" class="w-full h-[600px] rounded-xl border">
-                    </div> --}}
+            <div id="detailPanel"
+                class="fixed top-0 left-0 w-full h-full bg-black/40 hidden z-50 flex justify-center items-center">
+
+                <div class="bg-white w-[500px] max-h-[90vh] overflow-y-auto rounded-2xl p-6 relative">
+
+                    <button onclick="closeDetail()" class="absolute top-3 right-4 text-xl">✕</button>
+
+                    <img id="detailFoto" class="w-full h-48 object-cover rounded-xl mb-4">
+
+                    <h2 id="detailNama" class="text-xl font-bold"></h2>
+
+                    <p id="detailAlamat" class="text-gray-600"></p>
+
+                    <p id="detailHarga" class="mt-2 font-semibold"></p>
+
+                </div>
+
+            </div>
+
+            {{-- <div class="col-span-5">
+                <div class="sticky top-24"> --}}
+            <div class="col-span-5 h-full">
+                <div class="h-full sticky top-0">
+                    {{-- <iframe class="w-full h-[600px] rounded-xl border">
+                    </iframe> --}}
+                    <div id="map" class="w-full rounded-xl border shadow-md hover:shadow-lg">
+                    </div>
                 </div>
             </div>
 
@@ -220,8 +312,12 @@
 
         });
 
+        let dataKuliner = @json($data)
+
+        console.log(dataKuliner)
+
         let mapOptions = {
-            center: [51.958, 9.141],
+            center: [-6.99, 110.42],
             zoom: 10
         }
 
@@ -229,26 +325,165 @@
 
         let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(layer);
-        let marker = null;
-        map.on('click', (event) => {
-            if (marker !== null) {
-                map.removeLayer(marker);
+
+        dataKuliner.forEach(function(item) {
+
+            if (item.latitude && item.longitude) {
+
+                L.marker([item.latitude, item.longitude])
+                    .addTo(map)
+                    .bindPopup(item.nama)
+
             }
 
-            marker = L.marker([event.latlng.lat, event.latlng.lng], {
-                draggable: true
-            }).addTo(map);
-            console.log(event);
-
-            document.getElementById('latitude').value = event.latlng.lat;
-            document.getElementById('longitude').value = event.latlng.lng;
-
-            marker.on('drag', function(e) {
-                let latlng = e.target.getLatLng();
-                document.getElementById('latitude').value = latlng.lat;
-                document.getElementById('longitude').value = latlng.lng;
-            });
         })
+
+        let bounds = []
+
+        dataKuliner.forEach(function(item) {
+
+            if (item.latitude && item.longitude) {
+
+                let latlng = [item.latitude, item.longitude]
+
+                bounds.push(latlng)
+
+                L.marker(latlng)
+                    .addTo(map)
+                    .bindPopup(item.nama)
+
+            }
+
+        })
+
+        if (bounds.length) {
+            map.fitBounds(bounds)
+        }
+
+
+
+        let activeMarker = null
+
+        document.querySelectorAll('.card-kuliner').forEach(card => {
+
+            card.addEventListener('click', function() {
+
+                let nama = this.dataset.nama
+                let alamat = this.dataset.alamat
+                let harga = this.dataset.harga
+                let foto = this.dataset.foto
+                let lat = this.dataset.lat
+                let lng = this.dataset.lng
+
+                // 🔥 isi panel
+                document.getElementById('detailNama').innerText = nama
+                document.getElementById('detailAlamat').innerText = alamat
+                document.getElementById('detailHarga').innerText = harga
+                document.getElementById('detailFoto').src = foto
+
+                // 🔥 tampilkan panel
+                document.getElementById('detailPanel').classList.remove('hidden')
+
+                // 🔥 marker map hanya 1
+                if (activeMarker) {
+                    map.removeLayer(activeMarker)
+                }
+
+                activeMarker = L.marker([lat, lng]).addTo(map)
+
+                map.setView([lat, lng], 16)
+
+            })
+
+        })
+
+        function closeDetail() {
+            document.getElementById('detailPanel').classList.add('hidden')
+        }
+
+        // let marker = null;
+        // map.on('click', (event) => {
+        //     if (marker !== null) {
+        //         map.removeLayer(marker);
+        //     }
+
+        //     marker = L.marker([event.latlng.lat, event.latlng.lng], {
+        //         draggable: true
+        //     }).addTo(map);
+        //     console.log(event);
+
+        //     document.getElementById('latitude').value = event.latlng.lat;
+        //     document.getElementById('longitude').value = event.latlng.lng;
+
+        //     marker.on('drag', function(e) {
+        //         let latlng = e.target.getLatLng();
+        //         document.getElementById('latitude').value = latlng.lat;
+        //         document.getElementById('longitude').value = latlng.lng;
+        //     });
+        // })
+
+        // kulinerData.forEach(function(kuliner) {
+
+        //     if (kuliner.latitude && kuliner.longitude) {
+
+        //         let marker = L.marker([
+        //             kuliner.latitude,
+        //             kuliner.longitude
+        //         ]).addTo(map);
+
+        //         marker.bindPopup(`
+    //     <b>${kuliner.nama}</b><br>
+    //     ${kuliner.alamat}<br>
+    //     Rp ${Number(kuliner.harga_min).toLocaleString()}
+    // `);
+
+        //     }
+
+        // });
+
+        // let bounds = [];
+
+        // kulinerData.forEach(function(kuliner) {
+
+        //     if (kuliner.latitude && kuliner.longitude) {
+
+        //         let latlng = [kuliner.latitude, kuliner.longitude];
+
+        //         bounds.push(latlng);
+
+        //         let marker = L.marker(latlng).addTo(map);
+
+        //         marker.bindPopup(`<b>${kuliner.nama}</b>`);
+
+        //     }
+
+        // });
+
+        // if (bounds.length > 0) {
+        //     map.fitBounds(bounds);
+        // }
+
+        // let markers = [];
+
+        // kulinerData.forEach(function(kuliner) {
+
+        //     if (kuliner.latitude && kuliner.longitude) {
+
+        //         let marker = L.marker([
+        //             kuliner.latitude,
+        //             kuliner.longitude
+        //         ]).addTo(map);
+
+        //         marker.bindPopup(`
+    //     <b>${kuliner.nama}</b><br>
+    //     ${kuliner.alamat}
+    // `);
+
+        //         markers.push(marker);
+
+        //     }
+
+        // });
     </script>
 
 
