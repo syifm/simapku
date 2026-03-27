@@ -17,6 +17,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    {{-- <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'> --}}
 
     <style>
         body {
@@ -177,15 +183,15 @@
                 @endforeach
             </div> --}}
             {{-- <div class="col-span-7 space-y-4"> --}}
-            <div class="col-span-7 space-y-4 overflow-y-auto pr-2">
+            <div id="listKuliner" class="col-span-7 space-y-4 overflow-y-auto pr-2">
                 @foreach ($data as $kuliner)
                     {{-- <div
                         class="flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition"> --}}
                     {{-- <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
                         data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"> --}}
                     <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
-                        data-nama="{{ $kuliner->nama }}" data-alamat="{{ $kuliner->alamat }}"
-                        data-harga="Rp{{ number_format($kuliner->harga_min) }}+"
+                        data-id="{{ $kuliner->id_wisata_kuliner }}" data-nama="{{ $kuliner->nama }}"
+                        data-alamat="{{ $kuliner->alamat }}" data-harga="Rp{{ number_format($kuliner->harga_min) }}+"
                         data-foto="{{ asset('storage/' . $kuliner->foto) }}" data-lat="{{ $kuliner->latitude }}"
                         data-lng="{{ $kuliner->longitude }}">
 
@@ -222,7 +228,13 @@
                         <div class="text-right">
 
                             <div class="flex items-center gap-1 justify-end -mt-10">
-                                <span class="text-orange-400">★</span>
+                                <span class="text-orange-400"><svg xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                                        <path fill-rule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
                                 <span class="font-semibold">
                                     {{ $kuliner->penilaian ?? '4.5' }}
                                 </span>
@@ -242,7 +254,7 @@
                 @endforeach
             </div>
 
-            <div id="detailPanel"
+            {{-- <div id="detailPanel"
                 class="fixed top-0 left-0 w-full h-full bg-black/40 hidden z-50 flex justify-center items-center">
 
                 <div class="bg-white w-[500px] max-h-[90vh] overflow-y-auto rounded-2xl p-6 relative">
@@ -259,7 +271,7 @@
 
                 </div>
 
-            </div>
+            </div> --}}
 
             {{-- <div class="col-span-5">
                 <div class="sticky top-24"> --}}
@@ -271,7 +283,125 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        {{-- <div id="modalUlasan" class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center"> --}}
+        <div id="modalUlasan"
+            class="fixed left-0 right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto z-50 items-center justify-center">
+            <form action="{{ route('penilaianulasan.simpan') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                {{-- <div class="bg-white w-[500px] rounded-2xl p-6 relative"> --}}
+                <div
+                    class="relative left-[30px] top-[90px] mx-auto p-5 border w-[600px] shadow-lg rounded-xl bg-white">
+
+
+                    <button onclick="closeModal()" class="absolute right-4 top-3 text-xl">✕</button>
+
+                    <h2 class="text-xl font-bold mb-4 text-center">Tambah Ulasan</h2>
+
+                    {{-- <textarea id="inputUlasan" class="w-full border rounded-xl p-3 mb-3"></textarea> --}}
+
+                    <!-- Penilaian -->
+                    <label class="block text-sm font-medium text-gray-800 mb-2">
+                        Penilaian
+                        <span class="text-red-500 font-bold">*</span>
+                    </label>
+
+                    <div id="ratingStars" class="flex gap-1 cursor-pointer">
+
+                        <svg data-value="1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400 star">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        </svg>
+
+                        <svg data-value="2" class="w-8 h-8 text-gray-400 star" fill="none" stroke="currentColor"
+                            stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        </svg>
+
+                        <svg data-value="3" class="w-8 h-8 text-gray-400 star" fill="none" stroke="currentColor"
+                            stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        </svg>
+
+                        <svg data-value="4" class="w-8 h-8 text-gray-400 star" fill="none" stroke="currentColor"
+                            stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        </svg>
+
+                        <svg data-value="5" class="w-8 h-8 text-gray-400 star" fill="none" stroke="currentColor"
+                            stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        </svg>
+                    </div>
+
+                    <input type="hidden" id="penilaian" name="penilaian">
+
+                    <!-- Ulasan -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-800 mb-1" for="ulasan"><span>Ulasan</span>
+                            <span class="text-red-500 font-bold">*</span></label>
+                        <textarea id="ulasan" name="ulasan" rows="4"
+                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>{{ old('deskripulasansi') }}</textarea>
+                        @error('ulasan')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Total Harga -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-800 mb-1" for="harga_total"><span>Harga
+                                Total Harga</span>
+                            <span class="text-red-500 font-bold">*</span></label>
+                        <input type="number" id="harga_total" name="harga_total" rows="6"
+                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>{{ old('harga_total') }}</input>
+                        @error('harga_total')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Foto Ulasan -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-800 mt-1 mb-1" for="foto">
+                            <span>Foto</span>
+                            <span class="text-red-500 font-bold">*</span>
+                        </label>
+
+                        <input type="file" id="foto" name="foto" accept="image/*" required
+                            class="file-input-wrapper">
+
+                        <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
+
+                        <!-- PREVIEW -->
+                        <div id="previewWrapper" class="mt-3 hidden relative w-40">
+                            <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover">
+                        </div>
+
+                        <p class="text-xs text-gray-600 mt-2">
+                            Format: JPG, JPEG, PNG | Max: 10MB
+                        </p>
+                    </div>
+
+                    <!-- Submit -->
+                    {{-- <button onclick="kirimUlasan(kulinerAktif)"
+                        class="bg-[#FB991A] text-white px-12 py-2 mt-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold w-full">
+                        Kirim
+                    </button> --}}
+                    <div class="flex justify-end">
+                        <button type="submit"
+                            class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold">
+                            Simpan
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -288,6 +418,7 @@
             hamburger.addEventListener('click', () => {
                 sidebar.classList.toggle('expanded');
             });
+
         });
 
         const searchBar = document.getElementById("searchBar");
@@ -326,17 +457,37 @@
         let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(layer);
 
+        let markerGroup = L.layerGroup().addTo(map)
+
         dataKuliner.forEach(function(item) {
 
             if (item.latitude && item.longitude) {
 
                 L.marker([item.latitude, item.longitude])
-                    .addTo(map)
+                    .addTo(markerGroup)
                     .bindPopup(item.nama)
 
             }
 
         })
+
+        // let bounds = []
+
+        // dataKuliner.forEach(function(item) {
+
+        //     if (item.latitude && item.longitude) {
+
+        //         let latlng = [item.latitude, item.longitude]
+
+        //         bounds.push(latlng)
+
+        //         L.marker(latlng)
+        //             .addTo(map)
+        //             .bindPopup(item.nama)
+
+        //     }
+
+        // })
 
         let bounds = []
 
@@ -348,10 +499,6 @@
 
                 bounds.push(latlng)
 
-                L.marker(latlng)
-                    .addTo(map)
-                    .bindPopup(item.nama)
-
             }
 
         })
@@ -359,7 +506,6 @@
         if (bounds.length) {
             map.fitBounds(bounds)
         }
-
 
 
         let activeMarker = null
@@ -374,22 +520,52 @@
                 let foto = this.dataset.foto
                 let lat = this.dataset.lat
                 let lng = this.dataset.lng
+                let id = this.dataset.id
 
-                // 🔥 isi panel
-                document.getElementById('detailNama').innerText = nama
-                document.getElementById('detailAlamat').innerText = alamat
-                document.getElementById('detailHarga').innerText = harga
-                document.getElementById('detailFoto').src = foto
+                document.getElementById('listKuliner').innerHTML = `
+        
+                <div class="bg-white rounded-2xl shadow-md p-5">
 
-                // 🔥 tampilkan panel
-                document.getElementById('detailPanel').classList.remove('hidden')
+                    <button onclick="backToList()" class="mb-4 text-black"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                        </svg>
+                        </button>
 
-                // 🔥 marker map hanya 1
-                if (activeMarker) {
-                    map.removeLayer(activeMarker)
-                }
+                    <img src="${foto}" class="w-full h-56 object-cover rounded-xl mb-4">
 
-                activeMarker = L.marker([lat, lng]).addTo(map)
+                    <h2 class="text-2xl font-bold">${nama}</h2>
+
+                    <p class="text-gray-600">${alamat}</p>
+
+                    <p class="mt-2 font-semibold">${harga}</p>
+
+                    <hr class="my-4">
+
+                    <h3 class="font-bold mb-2">Penilaian dan Ulasan</h3>
+
+                    <button onclick="openModal(${id})"
+                        class="bg-gray-100 w-full text-gray-500 border px-4 py-2 rounded-xl mt-4 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                            class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                        </svg>
+                        <span class="ml-1">Beri Penilaian dan Ulasan</span>
+                    </button>
+
+                    <div id="ulasanArea"></div>
+
+                </div>
+    
+        `
+                markerGroup.clearLayers()
+
+                L.marker([lat, lng])
+                    .addTo(markerGroup)
+                    .bindPopup(nama)
+                    .openPopup()
+
 
                 map.setView([lat, lng], 16)
 
@@ -397,9 +573,264 @@
 
         })
 
-        function closeDetail() {
-            document.getElementById('detailPanel').classList.add('hidden')
+        function backToList() {
+            location.reload()
         }
+
+        // Foto 
+        const fotoInput = document.getElementById('foto');
+        const fotoError = document.getElementById('fotoError');
+        const previewWrapper = document.getElementById('previewWrapper');
+        const fotoPreview = document.getElementById('fotoPreview');
+
+        const MAX_SIZE = 10 * 1024 * 1024;
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+
+        fotoInput.addEventListener('change', function() {
+            const file = this.files[0];
+
+            fotoError.classList.add('hidden');
+            fotoError.textContent = '';
+            previewWrapper.classList.add('hidden');
+
+            if (!file) return;
+
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                showError('Format file tidak sesuai.');
+                resetInput();
+                return;
+            }
+
+            if (file.size > MAX_SIZE) {
+                showError('Ukuran foto terlalu besar.');
+                resetInput();
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fotoPreview.src = e.target.result;
+                previewWrapper.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function showError(message) {
+            fotoError.textContent = message;
+            fotoError.classList.remove('hidden');
+        }
+
+        function resetInput() {
+            fotoInput.value = '';
+            fotoPreview.src = '';
+        }
+
+        function kirimUlasan(idKuliner) {
+
+            let isi = document.getElementById('inputUlasan').value
+
+            fetch(`/ulasan/store`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        ulasan: isi,
+                        kuliner_id: idKuliner
+                    })
+                })
+                .then(res => res.json())
+                .then(res => {
+
+                    document.getElementById('inputUlasan').value = ''
+
+                    loadUlasan(idKuliner)
+
+                })
+
+        }
+
+        function loadUlasan(idKuliner) {
+
+            fetch(`/ulasan/${idKuliner}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    let html = ''
+
+                    data.forEach(item => {
+
+                        html += `
+            <div class="border rounded-xl p-3">
+                ⭐ ${item.rating ?? 5} <br>
+                ${item.ulasan}
+            </div>
+            `
+                    })
+
+                    document.getElementById('ulasanArea').innerHTML = html
+
+                })
+
+        }
+
+        let kulinerAktif = null
+
+        function openModal(id) {
+            kulinerAktif = id
+            document.getElementById('modalUlasan').classList.remove('hidden')
+        }
+
+        function closeModal() {
+            document.getElementById('modalUlasan').classList.add('hidden')
+        }
+
+        // Penilaian
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let ratingValue = 0
+
+            let stars = document.querySelectorAll('#ratingStars .star')
+
+            stars.forEach(star => {
+
+                star.addEventListener('click', function() {
+
+                    ratingValue = parseInt(this.dataset.value)
+
+                    document.getElementById('penilaian').value = ratingValue
+
+                    renderStars(ratingValue)
+
+                })
+
+            })
+
+            function renderStars(val) {
+
+                stars.forEach((star, index) => {
+
+                    if (index + 1 <= val) {
+
+                        star.setAttribute("fill", "currentColor")
+                        star.classList.remove("text-gray-400")
+                        star.classList.add("text-yellow-400")
+
+                    } else {
+
+                        star.setAttribute("fill", "none")
+                        star.classList.remove("text-yellow-400")
+                        star.classList.add("text-gray-400")
+
+                    }
+
+                })
+
+            }
+
+        })
+
+        // function renderStars(val) {
+
+        //     let stars = document.querySelectorAll('#ratingStars i')
+
+        //     stars.forEach((star, index) => {
+
+        //         if (index + 1 <= val) {
+
+        //             star.classList.remove('text-gray-300')
+        //             star.classList.add('text-yellow-400')
+
+        //         } else {
+
+        //             star.classList.remove('text-yellow-400')
+        //             star.classList.add('text-gray-300')
+
+        //         }
+
+        //     })
+
+        // }
+
+        document.getElementById('btnKirimUlasan').onclick = function() {
+
+            let teks = document.getElementById('inputUlasan').value
+            let file = document.getElementById('fotoUlasan').files[0]
+
+            let formData = new FormData()
+
+            formData.append('kuliner_id', kulinerAktif)
+            formData.append('ulasan', teks)
+            formData.append('rating', ratingDipilih)
+
+            if (file) {
+                formData.append('foto', file)
+            }
+
+            fetch('/ulasan/store', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(res => {
+
+                    closeModal()
+
+                    document.getElementById('inputUlasan').value = ''
+                    document.getElementById('fotoUlasan').value = ''
+
+                    loadUlasan(kulinerAktif)
+
+                })
+
+        }
+
+
+
+
+
+        // let activeMarker = null
+
+        // document.querySelectorAll('.card-kuliner').forEach(card => {
+
+        //     card.addEventListener('click', function() {
+
+        //         let nama = this.dataset.nama
+        //         let alamat = this.dataset.alamat
+        //         let harga = this.dataset.harga
+        //         let foto = this.dataset.foto
+        //         let lat = this.dataset.lat
+        //         let lng = this.dataset.lng
+
+        //         // 🔥 isi panel
+        //         document.getElementById('detailNama').innerText = nama
+        //         document.getElementById('detailAlamat').innerText = alamat
+        //         document.getElementById('detailHarga').innerText = harga
+        //         document.getElementById('detailFoto').src = foto
+
+        //         // 🔥 tampilkan panel
+        //         document.getElementById('detailPanel').classList.remove('hidden')
+
+        //         // 🔥 marker map hanya 1
+        //         if (activeMarker) {
+        //             map.removeLayer(activeMarker)
+        //         }
+
+        //         activeMarker = L.marker([lat, lng]).addTo(map)
+
+        //         map.setView([lat, lng], 16)
+
+        //     })
+
+        // })
+
+        // function closeDetail() {
+        //     document.getElementById('detailPanel').classList.add('hidden')
+        // }
 
         // let marker = null;
         // map.on('click', (event) => {

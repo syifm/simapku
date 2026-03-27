@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreign('id_wisata_kuliner')->references('id_wisata_kuliner')->on('wisata_kuliner')->onDelete('cascade');
             $table->unsignedInteger('penilaian');
             $table->string('ulasan');
-            $table->string('foto_ulasan');
+            $table->string('foto_ulasan')->nullable();
+            $table->integer('harga_total');
             $table->string('email_pengulas', 70);
             $table->unsignedInteger('id_wisatawan')->nullable();
             $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');

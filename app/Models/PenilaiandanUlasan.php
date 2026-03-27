@@ -17,6 +17,7 @@ class PenilaiandanUlasan extends Model
         'penilaian',
         'ulasan',
         'foto_ulasan',
+        'harga_total',
         'email_pengulas',
         'id_wisatawan',
         'id_admin',

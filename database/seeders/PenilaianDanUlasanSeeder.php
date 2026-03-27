@@ -20,6 +20,7 @@ class PenilaianDanUlasanSeeder extends Seeder
                 'penilaian' => 4,
                 'ulasan' => 'Restonya enak dan tempatnya nyaman, cocok untuk makan bersama keluarga. Pilihan makanannya juga banyak, aku suka sekali.',
                 'foto_ulasan' => 'foto_ssssss_1770807049.png',
+                'harga_total' => '50000',
                 'email_pengulas' => 'syifmunir@gmail.com',
                 'status' => 'Belum Diverifikasi',
                 'waktu_dibuat' => '08/10/2025 14:05',
