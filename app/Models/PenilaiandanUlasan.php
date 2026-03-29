@@ -12,7 +12,6 @@ class PenilaiandanUlasan extends Model
     const UPDATED_AT = 'waktu_diubah';
 
     protected $fillable = [
-        'id_penilaian_dan_ulasan',
         'id_wisata_kuliner',
         'penilaian',
         'ulasan',

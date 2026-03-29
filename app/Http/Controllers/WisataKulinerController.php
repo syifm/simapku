@@ -80,8 +80,24 @@ class WisataKulinerController extends Controller
         //     )) AS distance
         // ", [$lat, $lng, $lat]);
 
-        // filter radius
+        // // filter radius
         // $query->having('distance', '<', $radius);
+        //     $lat = $request->lat;
+        //     $lng = $request->lng;
+
+        //     $query = DB::table('wisata_kuliner')
+        //         ->selectRaw("
+        //     *,
+        //     (6371 * acos(
+        //         cos(radians(?))
+        //         * cos(radians(latitude))
+        //         * cos(radians(longitude) - radians(?))
+        //         + sin(radians(?))
+        //         * sin(radians(latitude))
+        //     )) AS distance
+        // ", [$lat, $lng, $lat]);
+
+        //     $query->orderBy('distance', 'asc');
         $query = DB::table('wisata_kuliner');
         // keyword
         if ($request->keyword) {
@@ -97,11 +113,19 @@ class WisataKulinerController extends Controller
         }
 
         // penilaian
-        if ($request->penilaian) {
-            $query->whereIn('penilaian', $request->penilaian);
-        }
-
-
+        // if ($request->penilaian) {
+        //     $query->whereIn('penilaian', $request->penilaian);
+        // }
+        // if ($request->penilaian) {
+        //     $query->where(function ($q) use ($request) {
+        //         foreach ($request->penilaian as $p) {
+        //             $q->orWhere(function ($sub) use ($p) {
+        //                 $sub->where('penilaian', '>=', $p)
+        //                     ->where('penilaian', '<', $p + 1);
+        //             });
+        //         }
+        //     });
+        // }
 
 
         // filter kategori
@@ -137,6 +161,26 @@ class WisataKulinerController extends Controller
                 ->having('total_sesuai', '>', 0)
                 ->orderByDesc('total_sesuai');
         }
+
+        // if ($request->lat && $request->lng) {
+
+        //     $lat = $request->lat;
+        //     $lng = $request->lng;
+
+        //     $query->selectRaw("
+        //     *,
+        //     (6371 * acos(
+        //         cos(radians(?))
+        //         * cos(radians(latitude))
+        //         * cos(radians(longitude) - radians(?))
+        //         + sin(radians(?))
+        //         * sin(radians(latitude))
+        //     )) AS distance
+        // ", [$lat, $lng, $lat]);
+
+        //     // urutkan dari terdekat
+        //     $query->orderBy('distance', 'asc');
+        // }
 
         // $data = $query->orderBy('distance')->get();
         $data = $query->distinct()->get();

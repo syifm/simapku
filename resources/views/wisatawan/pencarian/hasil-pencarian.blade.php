@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Beranda</title>
     {{-- <link rel="icon" type="image/png" href="{{ asset('simapku.png') }}"> --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -106,12 +107,13 @@
 
             <!-- search bar -->
             <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
+                @csrf
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-xl z-20">
-                        <div id="searchBar"
+                        <div
                             class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
-                                class="flex-1 px-5 py-3 focus:outline-none">
+                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -157,9 +159,6 @@
                     </div>
                 </div>
             </form>
-
-
-
         </div>
 
         {{-- <div>
@@ -301,7 +300,8 @@
                     <h2 class="text-xl font-bold mb-4 text-center">Tambah Ulasan</h2>
 
                     {{-- <textarea id="inputUlasan" class="w-full border rounded-xl p-3 mb-3"></textarea> --}}
-
+                    <input type="hidden" id="id_wisata_kuliner" name="id_wisata_kuliner">
+                    {{-- <input type="hidden" id="penilaian" value="0"> --}}
                     <!-- Penilaian -->
                     <label class="block text-sm font-medium text-gray-800 mb-2">
                         Penilaian
@@ -357,7 +357,7 @@
                     <!-- Total Harga -->
                     <div>
                         <label class="block text-sm font-medium text-gray-800 mb-1" for="harga_total"><span>Harga
-                                Total Harga</span>
+                                Total</span>
                             <span class="text-red-500 font-bold">*</span></label>
                         <input type="number" id="harga_total" name="harga_total" rows="6"
                             class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -371,11 +371,14 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-800 mt-1 mb-1" for="foto">
                             <span>Foto</span>
-                            <span class="text-red-500 font-bold">*</span>
                         </label>
 
-                        <input type="file" id="foto" name="foto" accept="image/*" required
+                        {{-- <input type="file" id="foto" name="foto" accept="image/*" required --}}
+                        {{-- <input type="file" name="foto_ulasan" id="foto_ulasan" accept="image/*" required
+                            class="file-input-wrapper"> --}}
+                        <input type="file" name="foto_ulasan" id="foto_ulasan" accept="image/*"
                             class="file-input-wrapper">
+
 
                         <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
 
@@ -400,6 +403,12 @@
                             Simpan
                         </button>
                     </div>
+                    {{-- <div class="flex justify-end">
+                        <button
+                            class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold"
+                            onclick="simpanUlasan()">Simpan</button>
+                    </div> --}}
+
                 </div>
             </form>
         </div>
@@ -418,7 +427,6 @@
             hamburger.addEventListener('click', () => {
                 sidebar.classList.toggle('expanded');
             });
-
         });
 
         const searchBar = document.getElementById("searchBar");
@@ -470,6 +478,62 @@
             }
 
         })
+
+        // navigator.geolocation.watchPosition(success, error);
+
+        // function success(pos) {
+        //     const lat = pos.coords.latitude;
+        //     const lng = pos.coords.longitude;
+        //     const accuracy = pos.coords.accuracy;
+
+        //     L.marker([lat, lng]).addTo(map);
+        //     L.circle([lat, lng], {
+        //         radius: accuracy
+        //     }).addTo(map);
+
+        //     map.fitBounds(circle, getBounds())
+        // }
+
+        let userMarker = null;
+        let userCircle = null;
+
+        let userIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png',
+            iconSize: [32, 32]
+        });
+
+        navigator.geolocation.watchPosition(success, error, {
+            enableHighAccuracy: true
+        });
+
+        function success(pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            // const accuracy = pos.coords.accuracy;
+
+            // hapus marker lama
+            if (userMarker) {
+                map.removeLayer(userMarker);
+                // map.removeLayer(userCircle);
+            }
+
+            // pakai icon di sini
+            userMarker = L.marker([lat, lng], {
+                icon: userIcon
+            }).addTo(map).bindPopup("Lokasi Saya");
+
+            // userCircle = L.circle([lat, lng], {
+            //     radius: accuracy,
+            //     color: 'blue'
+            // }).addTo(map);
+
+            map.setView([lat, lng], 15);
+        }
+
+        function error(err) {
+            console.log("ERROR:", err.message);
+            alert("Gagal ambil lokasi: " + err.message);
+        }
 
         // let bounds = []
 
@@ -559,6 +623,7 @@
                 </div>
     
         `
+                loadUlasan(id)
                 markerGroup.clearLayers()
 
                 L.marker([lat, lng])
@@ -578,7 +643,7 @@
         }
 
         // Foto 
-        const fotoInput = document.getElementById('foto');
+        const fotoInput = document.getElementById('foto_ulasan');
         const fotoError = document.getElementById('fotoError');
         const previewWrapper = document.getElementById('previewWrapper');
         const fotoPreview = document.getElementById('fotoPreview');
@@ -625,31 +690,31 @@
             fotoPreview.src = '';
         }
 
-        function kirimUlasan(idKuliner) {
+        // function kirimUlasan(idKuliner) {
 
-            let isi = document.getElementById('inputUlasan').value
+        //     let isi = document.getElementById('inputUlasan').value
 
-            fetch(`/ulasan/store`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        ulasan: isi,
-                        kuliner_id: idKuliner
-                    })
-                })
-                .then(res => res.json())
-                .then(res => {
+        //     fetch(`/ulasan/store`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //             },
+        //             body: JSON.stringify({
+        //                 ulasan: isi,
+        //                 kuliner_id: idKuliner
+        //             })
+        //         })
+        //         .then(res => res.json())
+        //         .then(res => {
 
-                    document.getElementById('inputUlasan').value = ''
+        //             document.getElementById('inputUlasan').value = ''
 
-                    loadUlasan(idKuliner)
+        //             loadUlasan(idKuliner)
 
-                })
+        //         })
 
-        }
+        // }
 
         function loadUlasan(idKuliner) {
 
@@ -658,17 +723,34 @@
                 .then(data => {
 
                     let html = ''
+                    if (data.length === 0) {
+                        html = `<p class="text-gray-500">Belum ada ulasan</p>`
+                    } else {
+                        // data.forEach(item => {
+                        //     html += `
+                    //     <div class="border rounded-xl p-3">
+                    //         ⭐ ${item.penilaian ?? 5} <br>
+                    //         ${item.ulasan}
+                    //     </div>
+                    //     `
+                        // })
+                        data.forEach(item => {
 
-                    data.forEach(item => {
+                            html += `
+                        <div class="border-b py-3">
+                            <div class="font-semibold">${item.nama ?? 'Anonymous'}</div>
 
-                        html += `
-            <div class="border rounded-xl p-3">
-                ⭐ ${item.rating ?? 5} <br>
-                ${item.ulasan}
-            </div>
-            `
-                    })
+                            <div class="text-yellow-500 text-sm">
+                                ⭐ ${item.penilaian}
+                            </div>
 
+                            <div class="text-gray-600 text-sm">
+                                ${item.ulasan}
+                            </div>
+                        </div>
+                    `
+                        })
+                    }
                     document.getElementById('ulasanArea').innerHTML = html
 
                 })
@@ -677,13 +759,24 @@
 
         let kulinerAktif = null
 
+        // function openModal(id) {
+        //     kulinerAktif = id
+        //     document.getElementById('modalUlasan').classList.remove('hidden')
+        // }
+
+        // function closeModal() {
+        //     document.getElementById('modalUlasan').classList.add('hidden')
+        // }
         function openModal(id) {
             kulinerAktif = id
+            document.getElementById('id_wisata_kuliner').value = id
             document.getElementById('modalUlasan').classList.remove('hidden')
+            document.body.style.overflow = 'hidden'
         }
 
         function closeModal() {
             document.getElementById('modalUlasan').classList.add('hidden')
+            document.body.style.overflow = ''
         }
 
         // Penilaian
@@ -731,6 +824,50 @@
 
         })
 
+        document.querySelector('#modalUlasan form').addEventListener('submit', function(e) {
+            const penilaian = document.getElementById('penilaian').value
+            if (!penilaian || penilaian == 0) {
+                e.preventDefault()
+                alert('Mohon pilih penilaian bintang terlebih dahulu.')
+            }
+        })
+
+        // async function simpanUlasan() {
+
+        //     let formData = new FormData()
+
+        //     formData.append('id_wisata_kuliner', document.getElementById('id_wisata_kuliner').value)
+        //     formData.append('penilaian', document.getElementById('penilaian').value)
+        //     formData.append('ulasan', document.getElementById('ulasan').value)
+        //     formData.append('harga_total', document.getElementById('harga_total').value)
+
+        //     let file = document.getElementById('foto_ulasan').files[0]
+        //     if (file) {
+        //         formData.append('foto_ulasan', file)
+        //     }
+
+        //     let response = await fetch("{{ route('penilaianulasan.simpan') }}", {
+        //         method: "POST",
+        //         headers: {
+        //             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+        //         },
+        //         body: formData
+        //     })
+
+        //     let result = await response.text()
+
+        //     console.log(result)
+
+        //     // alert('Ulasan berhasil disimpan 👍')
+        //     if (response.ok) {
+        //         alert('Ulasan berhasil disimpan 👍')
+        //     } else {
+        //         alert('Gagal simpan 😭')
+        //     }
+        //     location.reload()
+
+        // }
+
         // function renderStars(val) {
 
         //     let stars = document.querySelectorAll('#ratingStars i')
@@ -753,168 +890,41 @@
 
         // }
 
-        document.getElementById('btnKirimUlasan').onclick = function() {
+        // document.getElementById('btnKirimUlasan').onclick = function() {
 
-            let teks = document.getElementById('inputUlasan').value
-            let file = document.getElementById('fotoUlasan').files[0]
+        //     let teks = document.getElementById('inputUlasan').value
+        //     let file = document.getElementById('fotoUlasan').files[0]
 
-            let formData = new FormData()
+        //     let formData = new FormData()
 
-            formData.append('kuliner_id', kulinerAktif)
-            formData.append('ulasan', teks)
-            formData.append('rating', ratingDipilih)
+        //     formData.append('kuliner_id', kulinerAktif)
+        //     formData.append('ulasan', teks)
+        //     formData.append('rating', ratingDipilih)
 
-            if (file) {
-                formData.append('foto', file)
-            }
+        //     if (file) {
+        //         formData.append('foto', file)
+        //     }
 
-            fetch('/ulasan/store', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(res => {
+        //     fetch('/ulasan/store', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //             },
+        //             body: formData
+        //         })
+        //         .then(res => res.json())
+        //         .then(res => {
 
-                    closeModal()
+        //             closeModal()
 
-                    document.getElementById('inputUlasan').value = ''
-                    document.getElementById('fotoUlasan').value = ''
+        //             document.getElementById('inputUlasan').value = ''
+        //             document.getElementById('fotoUlasan').value = ''
 
-                    loadUlasan(kulinerAktif)
+        //             loadUlasan(kulinerAktif)
 
-                })
+        //         })
 
-        }
-
-
-
-
-
-        // let activeMarker = null
-
-        // document.querySelectorAll('.card-kuliner').forEach(card => {
-
-        //     card.addEventListener('click', function() {
-
-        //         let nama = this.dataset.nama
-        //         let alamat = this.dataset.alamat
-        //         let harga = this.dataset.harga
-        //         let foto = this.dataset.foto
-        //         let lat = this.dataset.lat
-        //         let lng = this.dataset.lng
-
-        //         // 🔥 isi panel
-        //         document.getElementById('detailNama').innerText = nama
-        //         document.getElementById('detailAlamat').innerText = alamat
-        //         document.getElementById('detailHarga').innerText = harga
-        //         document.getElementById('detailFoto').src = foto
-
-        //         // 🔥 tampilkan panel
-        //         document.getElementById('detailPanel').classList.remove('hidden')
-
-        //         // 🔥 marker map hanya 1
-        //         if (activeMarker) {
-        //             map.removeLayer(activeMarker)
-        //         }
-
-        //         activeMarker = L.marker([lat, lng]).addTo(map)
-
-        //         map.setView([lat, lng], 16)
-
-        //     })
-
-        // })
-
-        // function closeDetail() {
-        //     document.getElementById('detailPanel').classList.add('hidden')
         // }
-
-        // let marker = null;
-        // map.on('click', (event) => {
-        //     if (marker !== null) {
-        //         map.removeLayer(marker);
-        //     }
-
-        //     marker = L.marker([event.latlng.lat, event.latlng.lng], {
-        //         draggable: true
-        //     }).addTo(map);
-        //     console.log(event);
-
-        //     document.getElementById('latitude').value = event.latlng.lat;
-        //     document.getElementById('longitude').value = event.latlng.lng;
-
-        //     marker.on('drag', function(e) {
-        //         let latlng = e.target.getLatLng();
-        //         document.getElementById('latitude').value = latlng.lat;
-        //         document.getElementById('longitude').value = latlng.lng;
-        //     });
-        // })
-
-        // kulinerData.forEach(function(kuliner) {
-
-        //     if (kuliner.latitude && kuliner.longitude) {
-
-        //         let marker = L.marker([
-        //             kuliner.latitude,
-        //             kuliner.longitude
-        //         ]).addTo(map);
-
-        //         marker.bindPopup(`
-    //     <b>${kuliner.nama}</b><br>
-    //     ${kuliner.alamat}<br>
-    //     Rp ${Number(kuliner.harga_min).toLocaleString()}
-    // `);
-
-        //     }
-
-        // });
-
-        // let bounds = [];
-
-        // kulinerData.forEach(function(kuliner) {
-
-        //     if (kuliner.latitude && kuliner.longitude) {
-
-        //         let latlng = [kuliner.latitude, kuliner.longitude];
-
-        //         bounds.push(latlng);
-
-        //         let marker = L.marker(latlng).addTo(map);
-
-        //         marker.bindPopup(`<b>${kuliner.nama}</b>`);
-
-        //     }
-
-        // });
-
-        // if (bounds.length > 0) {
-        //     map.fitBounds(bounds);
-        // }
-
-        // let markers = [];
-
-        // kulinerData.forEach(function(kuliner) {
-
-        //     if (kuliner.latitude && kuliner.longitude) {
-
-        //         let marker = L.marker([
-        //             kuliner.latitude,
-        //             kuliner.longitude
-        //         ]).addTo(map);
-
-        //         marker.bindPopup(`
-    //     <b>${kuliner.nama}</b><br>
-    //     ${kuliner.alamat}
-    // `);
-
-        //         markers.push(marker);
-
-        //     }
-
-        // });
     </script>
 
 

@@ -86,6 +86,8 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
 
     Route::post('/wisatawan/penilaiandanulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('penilaianulasan.simpan');
 
+    Route::get('/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('penilaianulasan.detail');
+
 
     // Route::get('/search-fasilitas', [WisatawanController::class, 'search']);
 
