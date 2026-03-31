@@ -112,7 +112,7 @@ class WisataKulinerController extends Controller
             });
         }
 
-        // penilaian
+        //penilaian
         // if ($request->penilaian) {
         //     $query->whereIn('penilaian', $request->penilaian);
         // }
@@ -126,6 +126,22 @@ class WisataKulinerController extends Controller
         //         }
         //     });
         // }
+
+        if ($request->minrating && $request->maxrating) {
+            $query->whereBetween('penilaian', [
+                $request->minrating,
+                $request->maxrating
+            ]);
+        }
+
+        //harga
+        if ($request->minharga && $request->maxharga) {
+            $query->where(function ($q) use ($request) {
+                $q->where('harga_max', '>=', $request->minharga)
+                    ->where('harga_min', '<=', $request->maxharga);
+            });
+        }
+
 
 
         // filter kategori
@@ -187,5 +203,10 @@ class WisataKulinerController extends Controller
 
         // return response()->json($data);
         return view('wisatawan.pencarian.hasil-pencarian', compact('data'));
+    }
+
+    public function coba()
+    {
+        return view('wisatawan.hhhh');
     }
 }

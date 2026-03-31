@@ -88,6 +88,9 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
 
     Route::get('/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('penilaianulasan.detail');
 
+    Route::get('/cobaya', [WisataKulinerController::class, 'coba'])->name('cobacoba');
+
+
 
     // Route::get('/search-fasilitas', [WisatawanController::class, 'search']);
 

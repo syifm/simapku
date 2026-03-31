@@ -17,7 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-    <script src="https://refinedguides.com/assets/social.js?linkColor=%23fff&textColor=%23000" defer></script>
+    {{-- <script src="https://refinedguides.com/assets/social.js?linkColor=%23fff&textColor=%23000" defer></script> --}}
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -44,22 +44,26 @@
             color: #9ca3af;
         }
 
-        @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap");
+
+
+        /* @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap"); */
 
         * {
-            font-family: "Jost", sans-serif;
+            /* font-family: "Jost", sans-serif; */
             padding: 0;
             margin: 0;
             box-sizing: border-box;
         }
 
         :root {
-            --blue-color: #357ded;
+            /* --blue-color: #357ded; */
+            --yellow-color: #FFA319;
+            --green-color: #094B3C;
             --gray-color: #77889926;
         }
 
         body {
-            background: var(--blue-color);
+            background: var(--yellow-color);
             display: flex;
             align-items: center;
             flex-direction: column;
@@ -68,16 +72,16 @@
 
         .container {
             margin-block: auto;
-            background: #fff;
-            padding: 30px;
+            /* background: #fff; */
+            /* padding: 30px; */
             border-radius: 10px;
-            width: min(480px, 90%);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+            /* width: min(480px, 90%); */
+            /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25); */
         }
 
-        .container h3 {
+        /* .container h3 {
             font-size: 2rem;
-        }
+        } */
 
         /* range slider styles */
 
@@ -86,8 +90,9 @@
             flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
-            gap: 20px;
-            padding-block: 20px;
+            /* gap: 20px; */
+            gap: 5px;
+            padding-block: 5px;
         }
 
         .range-slider.dragging {
@@ -98,15 +103,18 @@
             border: none;
             outline: none;
             background: var(--gray-color);
-            font-size: 1.5rem;
+            /* font-size: 1.5rem; */
+            font-size: 15px;
             font-weight: 500;
             padding: 0.5rem 1rem;
             border-radius: 5px;
-            min-width: 64px;
+            width: 115px;
+            /* min-width: 64px; */
         }
 
         .range {
             width: 100%;
+            /* width: 60%; */
             display: grid;
             position: relative;
             z-index: 5;
@@ -123,16 +131,16 @@
         .range input::-webkit-slider-thumb {
             pointer-events: auto;
             appearance: none;
-            width: 30px;
-            height: 30px;
-            background: var(--blue-color);
+            width: 20px;
+            height: 20px;
+            background: var(--yellow-color);
             border-radius: 50%;
             cursor: pointer;
         }
 
         .slider {
             position: absolute;
-            height: 10px;
+            height: 5px;
             width: 100%;
             background: var(--gray-color);
             top: 50%;
@@ -145,10 +153,155 @@
         .progress {
             position: absolute;
             height: 100%;
-            background: var(--blue-color);
+            background: var(--yellow-color);
+            cursor: ew-resize;
+        }
+
+        .range-slider-rating {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            /* gap: 20px; */
+            gap: 5px;
+            padding-block: 5px;
+        }
+
+        .range-slider-rating.dragging {
+            cursor: ew-resize;
+        }
+
+        .range-slider-rating>input {
+            border: none;
+            outline: none;
+            background: var(--gray-color);
+            /* font-size: 1.5rem; */
+            font-size: 15px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            width: 115px;
+            /* min-width: 64px; */
+        }
+
+        .range-rating {
+            width: 100%;
+            /* width: 60%; */
+            display: grid;
+            position: relative;
+            z-index: 5;
+        }
+
+        .range-rating input {
+            grid-row: 2;
+            grid-column: 1;
+            pointer-events: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .range-rating input::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--yellow-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-rating {
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            background: var(--gray-color);
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .progress-rating {
+            position: absolute;
+            height: 100%;
+            background: var(--yellow-color);
+            cursor: ew-resize;
+        }
+
+        .range-slider-jarak {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            /* gap: 20px; */
+            gap: 5px;
+            padding-block: 5px;
+        }
+
+        .range-slider-jarak.dragging {
+            cursor: ew-resize;
+        }
+
+        .range-slider-jarak>input {
+            border: none;
+            outline: none;
+            background: var(--gray-color);
+            /* font-size: 1.5rem; */
+            font-size: 15px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            width: 115px;
+            /* min-width: 64px; */
+        }
+
+        .range-jarak {
+            width: 100%;
+            /* width: 60%; */
+            display: grid;
+            position: relative;
+            z-index: 5;
+        }
+
+        .range-jarak input {
+            grid-row: 2;
+            grid-column: 1;
+            pointer-events: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .range-jarak input::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--yellow-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-jarak {
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            background: var(--gray-color);
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .progress-jarak {
+            position: absolute;
+            height: 100%;
+            background: var(--yellow-color);
             cursor: ew-resize;
         }
     </style>
+
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -241,9 +394,9 @@
             <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
                 @csrf
                 <div class="relative w-full flex justify-center mb-6">
-                    <div class="w-full max-w-xl z-20">
+                    <div class="w-full max-w-2xl z-20">
                         <div
-                            class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
+                            class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
                                 class="flex-1 px-5 py-3 focus:outline-none" id="searchBar">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
@@ -252,7 +405,7 @@
                         </div>
 
                         <div id="searchPanel"
-                            class="hidden absolute w-full max-w-xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
+                            class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
                             <!-- Kuliner Terdekat -->
                             <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
@@ -272,19 +425,21 @@
                                 </span>
                             </div>
                             <!-- Filter Advanced -->
-                            <div id="advancedFilter" class="hidden mt-3 space-y-3">
+                            {{-- <div id="advancedFilter" class="hidden mt-3 space-y-3"> --}}
+                            <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3">
 
                                 {{-- <input type="hidden" name="lat" id="lat">
                                 <input type="hidden" name="lng" id="lng"> --}}
+                                {{-- <div>
+                                    <select class="w-full border rounded-lg p-2" name="rating">
+                                        <option>Rating Minimal</option>
+                                        <option>⭐ 3+</option>
+                                        <option>⭐ 4+</option>
+                                        <option>⭐ 4.5+</option>
+                                    </select>
+                                </div> --}}
 
-                                <select class="w-full border rounded-lg p-2" name="rating">
-                                    <option>Rating Minimal</option>
-                                    <option>⭐ 3+</option>
-                                    <option>⭐ 4+</option>
-                                    <option>⭐ 4.5+</option>
-                                </select>
-
-                                <label>Rating</label>
+                                {{-- <label>Rating</label> --}}
 
                                 {{-- <input type="range" id="minRating" min="1" max="5" value="1">
                                 <input type="range" id="maxRating" min="1" max="5" value="5">
@@ -297,21 +452,78 @@
                                 {{-- <input type="hidden" name="min_rating" id="min_rating">
                                 <input type="hidden" name="max_rating" id="max_rating"> --}}
                                 <div class="container">
-                                    <h3>Filter by Price</h3>
+                                    <label class="font-medium">Jarak</label>
 
                                     <!-- .range-slider -->
-                                    <div class="range-slider">
-                                        <input type="number" class="min-price" value="25" min="1"
-                                            max="100" />
-                                        <input type="number" class="max-price" value="75" min="1"
-                                            max="100" />
+                                    <div class="range-slider-jarak flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <input type="number" name="minjarak"
+                                                class="min-jarak w-[40px] p-2 outline-none border-0" value="3"
+                                                min="1" max="5" />
+                                        </div>
+
+                                        <div
+                                            class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
+                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <input type="number" name="maxjarak"
+                                                class="max-jarak w-[40px] p-2 outline-none border-0" value="5"
+                                                min="1" max="5" />
+                                        </div>
 
                                         <!-- .range -->
                                         <div class="range">
-                                            <input type="range" class="min-input" value="25" min="1"
-                                                max="100" />
-                                            <input type="range" class="max-input" value="75" min="1"
-                                                max="100" />
+                                            <input type="range" class="min-input-jarak" value="3" min="1"
+                                                max="5" />
+                                            <input type="range" class="max-input-jarak" value="5" min="1"
+                                                max="5" />
+
+                                            <div class="slider">
+                                                <div class="progress-jarak"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container">
+                                    {{-- <h3>Filter by Price</h3> --}}
+                                    <label class="font-medium">Harga</label>
+
+                                    <!-- .range-slider -->
+                                    <div class="range-slider flex justify-between items-center">
+                                        {{-- <input type="number" class="min-price" value="100000" min="500"
+                                            max="1000000" />
+                                        <input type="number" class="max-price" value="500000" min="500"
+                                            max="1000000" /> --}}
+
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
+                                            <input type="number" name="minharga"
+                                                class="min-price w-[95px] p-2 outline-none border-0" value="100000"
+                                                min="1" max="1000000" />
+                                        </div>
+
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
+                                            <input type="number" name="maxharga"
+                                                class="max-price w-[95px] p-2 outline-none border-0" value="500000"
+                                                min="1" max="1000000" />
+                                        </div>
+
+                                        <!-- .range -->
+                                        <div class="range">
+                                            <input type="range" class="min-input" value="100000" min="1"
+                                                max="1000000" />
+                                            <input type="range" class="max-input" value="500000" min="1"
+                                                max="1000000" />
 
                                             <div class="slider">
                                                 <div class="progress"></div>
@@ -320,10 +532,53 @@
                                     </div>
                                 </div>
 
+                                <div class="container">
+                                    <label class="font-medium">Penilaian</label>
 
-                                <input type="checkbox" name="fasilitas[]" value="1"> Wifi
-                                <input type="checkbox" name="fasilitas[]" value="2"> Parkir
-                                <input type="checkbox" name="fasilitas[]" value="3"> AC
+                                    <!-- .range-slider -->
+                                    <div class="range-slider-rating flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <input type="number" name="minrating"
+                                                class="min-rating w-[40px] p-2 outline-none border-0" value="3"
+                                                min="1" max="5" />
+                                        </div>
+
+                                        <div
+                                            class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
+                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <input type="number" name="maxrating"
+                                                class="max-rating w-[40px] p-2 outline-none border-0" value="5"
+                                                min="1" max="5" />
+                                        </div>
+
+                                        <!-- .range -->
+                                        <div class="range">
+                                            <input type="range" class="min-input-rating" value="3"
+                                                min="1" max="5" />
+                                            <input type="range" class="max-input-rating" value="5"
+                                                min="1" max="5" />
+
+                                            <div class="slider">
+                                                <div class="progress-rating"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <input type="checkbox" name="fasilitas[]" value="1"> Wifi
+                                    <input type="checkbox" name="fasilitas[]" value="2"> Parkir
+                                    <input type="checkbox" name="fasilitas[]" value="3"> AC
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -701,54 +956,117 @@
         //     });
         // }
 
+        // slider jarak
+        // slider Jarak
+        const sliderJarak = document.querySelector(".range-slider-jarak");
+        const progressJarak = sliderJarak.querySelector(".progress-jarak");
+        const minJarakInput = sliderJarak.querySelector(".min-jarak");
+        const maxJarakInput = sliderJarak.querySelector(".max-jarak");
+        const minInputJarak = sliderJarak.querySelector(".min-input-jarak");
+        const maxInputJarak = sliderJarak.querySelector(".max-input-jarak");
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const hamburger = document.getElementById('hamburger');
-            const sidebar = document.querySelector('.sidebar');
+        const updateProgressJarak = () => {
+            const minValueJarak = parseInt(minInputJarak.value);
+            const maxValueJarak = parseInt(maxInputJarak.value);
 
-            if (!hamburger || !sidebar) return;
+            const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
+            const valueRangeJarak = maxValueJarak - minValueJarak;
 
-            hamburger.addEventListener('click', () => {
-                sidebar.classList.toggle('expanded');
-            });
-        });
+            const widthJarak = (valueRangeJarak / totalRangeJarak) * 100;
+            const minOffsetJarak = ((minValueJarak - minInputJarak.min) / totalRangeJarak) * 100;
 
-        const searchBar = document.getElementById("searchBar");
-        const searchPanel = document.getElementById("searchPanel");
+            progressJarak.style.width = widthJarak + "%";
+            progressJarak.style.left = minOffsetJarak + "%";
 
-        searchBar.addEventListener("click", () => {
-            searchPanel.classList.toggle("hidden");
-        });
+            minJarakInput.value = minValueJarak;
+            maxJarakInput.value = maxValueJarak;
+        };
 
-        const advancedBtn = document.getElementById("advancedBtn");
-        const advancedFilter = document.getElementById("advancedFilter");
+        const updateRangeJarak = (event) => {
+            const inputJarak = event.target;
 
-        advancedBtn.addEventListener("click", () => {
-            advancedFilter.classList.toggle("hidden");
-        });
+            let minJarak = parseInt(minJarakInput.value);
+            let maxJarak = parseInt(maxJarakInput.value);
 
-        document.addEventListener("click", function(e) {
-
-            if (!searchBar.contains(e.target) && !searchPanel.contains(e.target)) {
-                searchPanel.classList.add("hidden");
+            if (inputJarak === minJarakInput && minJarak > maxJarak) {
+                maxJarak = minJarak;
+                maxJarakInput.value = maxJarak;
+            } else if (inputJarak === maxJarakInput && maxJarak < minJarak) {
+                minJarak = maxJarak;
+                minJarakInput.value = minJarak;
             }
 
+            minInputJarak.value = minJarak;
+            maxInputJarak.value = maxJarak;
+
+            updateProgressJarak();
+        };
+
+        minJarakInput.addEventListener("input", updateRangeJarak);
+        maxJarakInput.addEventListener("input", updateRangeJarak);
+
+        minInputJarak.addEventListener("input", () => {
+            if (parseInt(minInputJarak.value) >= parseInt(maxInputJarak.value)) {
+                maxInputJarak.value = minInputJarak.value;
+            }
+            updateProgressJarak();
         });
 
-        const range = document.getElementById("rangeJarak");
-        const value = document.getElementById("valueJarak");
-
-        range.addEventListener("input", function() {
-            value.innerText = this.value;
+        maxInputJarak.addEventListener("input", () => {
+            if (parseInt(maxInputJarak.value) <= parseInt(minInputJarak.value)) {
+                minInputJarak.value = maxInputJarak.value;
+            }
+            updateProgressJarak();
         });
 
+        let isDraggingJarak = false;
+        let startOffsetXJarak;
 
+        progressJarak.addEventListener("mousedown", (e) => {
+            e.preventDefault();
 
+            isDraggingJarak = true;
+            startOffsetXJarak = e.clientX - progressJarak.getBoundingClientRect().left;
 
+            sliderJarak.classList.toggle("dragging", isDraggingJarak);
+        });
 
+        document.addEventListener("mousemove", (e) => {
+            if (isDraggingJarak) {
+                const sliderRectJarak = sliderJarak.getBoundingClientRect();
+                const progressWidthJarak = parseFloat(progressJarak.style.width || 0);
 
+                let newLeftJarak =
+                    ((e.clientX - sliderRectJarak.left - startOffsetXJarak) / sliderRectJarak.width) * 100;
 
-        // slider
+                newLeftJarak = Math.min(Math.max(newLeftJarak, 0), 100 - progressWidthJarak);
+
+                progressJarak.style.left = newLeftJarak + "%";
+
+                const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
+                const newMinJarak = Math.round((newLeftJarak / 100) * totalRangeJarak) + parseInt(minInputJarak
+                    .min);
+                const newMaxJarak = newMinJarak + parseInt(maxInputJarak.value) - parseInt(minInputJarak.value);
+
+                minInputJarak.value = newMinJarak;
+                maxInputJarak.value = newMaxJarak;
+
+                updateProgressJarak();
+            }
+
+            sliderJarak.classList.toggle("dragging", isDraggingJarak);
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (isDraggingJarak) {
+                isDraggingJarak = false;
+            }
+            sliderJarak.classList.toggle("dragging", isDraggingJarak);
+        });
+
+        updateProgressJarak();
+
+        // slider Harga
         const slider = document.querySelector(".range-slider");
         const progress = slider.querySelector(".progress");
         const minPriceInput = slider.querySelector(".min-price");
@@ -868,6 +1186,164 @@
         });
 
         updateProgress();
+
+
+        // slider Penilaian
+        const sliderRating = document.querySelector(".range-slider-rating");
+        const progressRating = sliderRating.querySelector(".progress-rating");
+        const minRatingInput = sliderRating.querySelector(".min-rating");
+        const maxRatingInput = sliderRating.querySelector(".max-rating");
+        const minInputRating = sliderRating.querySelector(".min-input-rating");
+        const maxInputRating = sliderRating.querySelector(".max-input-rating");
+
+        const updateProgressRating = () => {
+            const minValueRating = parseInt(minInputRating.value);
+            const maxValueRating = parseInt(maxInputRating.value);
+
+            const totalRangeRating = maxInputRating.max - minInputRating.min;
+            const valueRangeRating = maxValueRating - minValueRating;
+
+            const widthRating = (valueRangeRating / totalRangeRating) * 100;
+            const minOffsetRating = ((minValueRating - minInputRating.min) / totalRangeRating) * 100;
+
+            progressRating.style.width = widthRating + "%";
+            progressRating.style.left = minOffsetRating + "%";
+
+            minRatingInput.value = minValueRating;
+            maxRatingInput.value = maxValueRating;
+        };
+
+        const updateRangeRating = (event) => {
+            const inputRating = event.target;
+
+            let minRating = parseInt(minRatingInput.value);
+            let maxRating = parseInt(maxRatingInput.value);
+
+            if (inputRating === minRatingInput && minRating > maxRating) {
+                maxRating = minRating;
+                maxRatingInput.value = maxRating;
+            } else if (inputRating === maxRatingInput && maxRating < minRating) {
+                minRating = maxRating;
+                minRatingInput.value = minRating;
+            }
+
+            minInputRating.value = minRating;
+            maxInputRating.value = maxRating;
+
+            updateProgressRating();
+        };
+
+        minRatingInput.addEventListener("input", updateRangeRating);
+        maxRatingInput.addEventListener("input", updateRangeRating);
+
+        minInputRating.addEventListener("input", () => {
+            if (parseInt(minInputRating.value) >= parseInt(maxInputRating.value)) {
+                maxInputRating.value = minInputRating.value;
+            }
+            updateProgressRating();
+        });
+
+        maxInputRating.addEventListener("input", () => {
+            if (parseInt(maxInputRating.value) <= parseInt(minInputRating.value)) {
+                minInputRating.value = maxInputRating.value;
+            }
+            updateProgressRating();
+        });
+
+        let isDraggingRating = false;
+        let startOffsetXRating;
+
+        progressRating.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+
+            isDraggingRating = true;
+            startOffsetXRating = e.clientX - progressRating.getBoundingClientRect().left;
+
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (isDraggingRating) {
+                const sliderRectRating = sliderRating.getBoundingClientRect();
+                const progressWidthRating = parseFloat(progressRating.style.width || 0);
+
+                let newLeftRating =
+                    ((e.clientX - sliderRectRating.left - startOffsetXRating) / sliderRectRating.width) * 100;
+
+                newLeftRating = Math.min(Math.max(newLeftRating, 0), 100 - progressWidthRating);
+
+                progressRating.style.left = newLeftRating + "%";
+
+                const totalRangeRating = maxInputRating.max - minInputRating.min;
+                const newMinRating = Math.round((newLeftRating / 100) * totalRangeRating) + parseInt(minInputRating
+                    .min);
+                const newMaxRating = newMinRating + parseInt(maxInputRating.value) - parseInt(minInputRating.value);
+
+                minInputRating.value = newMinRating;
+                maxInputRating.value = newMaxRating;
+
+                updateProgressRating();
+            }
+
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (isDraggingRating) {
+                isDraggingRating = false;
+            }
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        updateProgressRating();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (!hamburger || !sidebar) return;
+
+            hamburger.addEventListener('click', () => {
+                sidebar.classList.toggle('expanded');
+            });
+        });
+
+        const searchBar = document.getElementById("searchBar");
+        const searchPanel = document.getElementById("searchPanel");
+
+        searchBar.addEventListener("click", () => {
+            searchPanel.classList.toggle("hidden");
+        });
+
+        const advancedBtn = document.getElementById("advancedBtn");
+        const advancedFilter = document.getElementById("advancedFilter");
+
+        advancedBtn.addEventListener("click", () => {
+            advancedFilter.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", function(e) {
+
+            if (!searchBar.contains(e.target) && !searchPanel.contains(e.target)) {
+                searchPanel.classList.add("hidden");
+            }
+
+        });
+
+        const range = document.getElementById("rangeJarak");
+        const value = document.getElementById("valueJarak");
+
+        range.addEventListener("input", function() {
+            value.innerText = this.value;
+        });
+
+
+
+
+
+
+
+
 
         // document.addEventListener("DOMContentLoaded", function() {
         //     const lat = localStorage.getItem('user_lat');
