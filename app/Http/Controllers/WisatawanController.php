@@ -9,6 +9,7 @@ use App\Models\Admin;
 use App\Models\DiariKuliner;
 use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
+use App\Models\Kategori;
 // use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,8 @@ class WisatawanController extends Controller
     public function berandaWisatawan()
     {
         $fasilitas = Fasilitas::all();
-        return view('wisatawan.beranda', compact('fasilitas'));
+        $kategori = Kategori::all();
+        return view('wisatawan.beranda', compact('fasilitas', 'kategori'));
     }
 
     public function mapWisataKuliner()

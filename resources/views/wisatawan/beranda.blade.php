@@ -17,6 +17,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.css">
+
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-multiselect@0.9.13/dist/css/bootstrap-multiselect.css"> --}}
+
+
     {{-- <script src="https://refinedguides.com/assets/social.js?linkColor=%23fff&textColor=%23000" defer></script> --}}
     <style>
         body {
@@ -426,7 +434,7 @@
                             </div>
                             <!-- Filter Advanced -->
                             {{-- <div id="advancedFilter" class="hidden mt-3 space-y-3"> --}}
-                            <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3">
+                            <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3 mr-3">
 
                                 {{-- <input type="hidden" name="lat" id="lat">
                                 <input type="hidden" name="lng" id="lng"> --}}
@@ -457,11 +465,12 @@
                                     <!-- .range-slider -->
                                     <div class="range-slider-jarak flex justify-between items-center">
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
-                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                            {{-- <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
                                                 stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                                            </svg>
+                                            </svg> --}}
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="minjarak"
                                                 class="min-jarak w-[40px] p-2 outline-none border-0" value="3"
                                                 min="1" max="5" />
@@ -491,6 +500,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="font-medium">Kategori</label>
+                                    <select id="kategori" name="kategori[]" data-placeholder="Pilih Kategori..."
+                                        data-theme="light" multiple data-multi-select>
+                                        @foreach ($kategori as $item)
+                                            <option value="{{ $item->id_kategori }}">
+                                                {{ $item->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="container">
@@ -532,8 +553,20 @@
                                     </div>
                                 </div>
 
+                                <div class="space-y-2">
+                                    <label class="font-medium">Fasilitas</label>
+                                    <select id="fasilitas" name="fasilitas[]" data-placeholder="Pilih Fasilitas..."
+                                        data-theme="light" multiple data-multi-select>
+                                        @foreach ($fasilitas as $item)
+                                            <option value="{{ $item->id_fasilitas }}">
+                                                {{ $item->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                 <div class="container">
-                                    <label class="font-medium">Penilaian</label>
+                                    <label class="font-medium">Nilai Kuliner</label>
 
                                     <!-- .range-slider -->
                                     <div class="range-slider-rating flex justify-between items-center">
@@ -574,11 +607,32 @@
                                     </div>
                                 </div>
 
-                                <div>
+
+
+                                {{-- <select id="darkmode" name="darkmode[]" data-placeholder="Dark mode active..."
+                                    data-theme="light" multiple data-multi-select>
+                                    <option value="1">Dark Option 1</option>
+                                    <option value="2">Dark Option 2</option>
+                                    <option value="3">Dark Option 3</option>
+                                    <option value="4">Dark Option 4</option>
+                                    <option value="5">Dark Option 5</option>
+                                    <option value="6">Dark Option 6</option>
+                                </select> --}}
+
+                                {{-- <select id="minimal-multiselect" multiple="multiple">
+                                    <option value="cheese">Cheese</option>
+                                    <option value="tomatoes">Tomatoes</option>
+                                    <option value="mozarella">Mozzarella</option>
+                                    <option value="mushrooms">Mushrooms</option>
+                                    <option value="pepperoni">Pepperoni</option>
+                                    <option value="onions">Onions</option>
+                                </select> --}}
+
+                                {{-- <div>
                                     <input type="checkbox" name="fasilitas[]" value="1"> Wifi
                                     <input type="checkbox" name="fasilitas[]" value="2"> Parkir
                                     <input type="checkbox" name="fasilitas[]" value="3"> AC
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -941,6 +995,7 @@
             @yield('content')
         </div>
     </div> --}}
+    <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
 
     <script>
         // const menuBtn = document.getElementById('menuBtn');
@@ -1330,12 +1385,12 @@
 
         });
 
-        const range = document.getElementById("rangeJarak");
-        const value = document.getElementById("valueJarak");
+        // const range = document.getElementById("rangeJarak");
+        // const value = document.getElementById("valueJarak");
 
-        range.addEventListener("input", function() {
-            value.innerText = this.value;
-        });
+        // range.addEventListener("input", function() {
+        //     value.innerText = this.value;
+        // });
 
 
 
@@ -1487,7 +1542,14 @@
 
         // });
     </script>
-
+    {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-multiselect@0.9.13/dist/js/bootstrap-multiselect.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#minimal-multiselect').multiselect();
+        });
+    </script> --}}
 
 </body>
 

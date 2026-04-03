@@ -113,20 +113,6 @@ class WisataKulinerController extends Controller
         }
 
         //penilaian
-        // if ($request->penilaian) {
-        //     $query->whereIn('penilaian', $request->penilaian);
-        // }
-        // if ($request->penilaian) {
-        //     $query->where(function ($q) use ($request) {
-        //         foreach ($request->penilaian as $p) {
-        //             $q->orWhere(function ($sub) use ($p) {
-        //                 $sub->where('penilaian', '>=', $p)
-        //                     ->where('penilaian', '<', $p + 1);
-        //             });
-        //         }
-        //     });
-        // }
-
         if ($request->minrating && $request->maxrating) {
             $query->whereBetween('penilaian', [
                 $request->minrating,
@@ -141,8 +127,6 @@ class WisataKulinerController extends Controller
                     ->where('harga_min', '<=', $request->maxharga);
             });
         }
-
-
 
         // filter kategori
         // if ($request->kategori) {

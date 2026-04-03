@@ -634,6 +634,13 @@
 
                 map.setView([lat, lng], 16)
 
+                L.Routing.control({
+                    waypoints: [
+                        L.latlng(-6.996418149883837, 110.41534564234345),
+                        L.latlng(-6.961944043665627, 110.38600824501671),
+                    ]
+                }).addTo(map);
+
             })
 
         })

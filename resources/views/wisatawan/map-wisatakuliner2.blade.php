@@ -14,6 +14,7 @@
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
 </head>
 
 <body>
@@ -188,6 +189,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <script>
         // var map = L.map('map').setView([-7.0270284616964656, 110.32846300591821], 13);
         // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -269,35 +271,163 @@
         // })
 
 
+        // let mapOptions = {
+        //     center: [51.958, 9.141],
+        //     zoom: 10
+        // }
+
+        // let map = new L.map('map', mapOptions);
+
+        // let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        // map.addLayer(layer);
+        // let marker = null;
+        // map.on('click', (event) => {
+        //     if (marker !== null) {
+        //         map.removeLayer(marker);
+        //     }
+
+        //     marker = L.marker([event.latlng.lat, event.latlng.lng], {
+        //         draggable: true
+        //     }).addTo(map);
+        //     console.log(event);
+
+        //     document.getElementById('latitude').value = event.latlng.lat;
+        //     document.getElementById('longitude').value = event.latlng.lng;
+
+        //     marker.on('drag', function(e) {
+        //         let latlng = e.target.getLatLng();
+        //         document.getElementById('latitude').value = latlng.lat;
+        //         document.getElementById('longitude').value = latlng.lng;
+        //     });
+
+        //     L.Routing.control({
+        //         waypoints: [
+        //             L.latlng(-6.996418149883837, 110.41534564234345),
+        //             L.latlng(-6.961944043665627, 110.38600824501671),
+        //         ]
+        //     }).addTo(map);
+        // })
+
+
+
+
+
+        // let mapOptions = {
+        //     center: [-6.99, 110.41],
+        //     zoom: 13
+        // }
+
+        // let map = new L.map('map', mapOptions);
+
+        // let layer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        // map.addLayer(layer);
+
+        // let marker = null;
+        // let routingControl = null;
+        // let userLatLng = null;
+
+        // // ambil lokasi user
+        // navigator.geolocation.getCurrentPosition((position) => {
+        //     userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+
+        //     // marker lokasi user
+        //     L.marker(userLatLng).addTo(map).bindPopup("Lokasi Kamu").openPopup();
+
+        //     map.setView(userLatLng, 14);
+        // });
+
+        // // klik map buat pilih tujuan
+        // map.on('click', (event) => {
+
+        //     if (marker !== null) {
+        //         map.removeLayer(marker);
+        //     }
+
+        //     if (routingControl !== null) {
+        //         map.removeControl(routingControl);
+        //     }
+
+        //     marker = L.marker([event.latlng.lat, event.latlng.lng], {
+        //         draggable: true
+        //     }).addTo(map);
+
+        //     document.getElementById('latitude').value = event.latlng.lat;
+        //     document.getElementById('longitude').value = event.latlng.lng;
+
+        //     // buat routing
+        //     if (userLatLng) {
+        //         routingControl = L.Routing.control({
+        //             waypoints: [
+        //                 userLatLng,
+        //                 L.latLng(event.latlng.lat, event.latlng.lng)
+        //             ],
+        //             routeWhileDragging: true
+        //         }).addTo(map);
+        //     }
+
+        //     // update saat marker digeser
+        //     marker.on('drag', function(e) {
+        //         let latlng = e.target.getLatLng();
+
+        //         document.getElementById('latitude').value = latlng.lat;
+        //         document.getElementById('longitude').value = latlng.lng;
+
+        //         if (routingControl) {
+        //             routingControl.setWaypoints([
+        //                 userLatLng,
+        //                 latlng
+        //             ]);
+        //         }
+        //     });
+
+        // });
+
+
+
         let mapOptions = {
-            center: [51.958, 9.141],
-            zoom: 10
+            center: [-6.99, 110.41],
+            zoom: 13
         }
 
         let map = new L.map('map', mapOptions);
 
-        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        let layer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(layer);
-        let marker = null;
-        map.on('click', (event) => {
-            if (marker !== null) {
-                map.removeLayer(marker);
-            }
 
-            marker = L.marker([event.latlng.lat, event.latlng.lng], {
-                draggable: true
+        let routingControl = null;
+
+        // koordinat tujuan (fix)
+        let destination = L.latLng(-6.996418149883837, 110.41534564234345);
+
+        // ambil lokasi user
+        navigator.geolocation.getCurrentPosition((position) => {
+            let userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+
+            // marker lokasi user
+            L.marker(userLatLng).addTo(map).bindPopup("Lokasi Kamu").openPopup();
+
+            // marker tujuan
+            L.marker(destination).addTo(map).bindPopup("Tujuan");
+
+            map.setView(userLatLng, 14);
+
+            // routing dari user ke tujuan
+            routingControl = L.Routing.control({
+                waypoints: [
+                    userLatLng,
+                    destination
+                ],
+                routeWhileDragging: false,
+
+                lineOptions: {
+                    styles: [{
+                        color: 'red', // ganti warna di sini
+                        weight: 6 // ketebalan garis
+                    }]
+                }
+
             }).addTo(map);
-            console.log(event);
-
-            document.getElementById('latitude').value = event.latlng.lat;
-            document.getElementById('longitude').value = event.latlng.lng;
-
-            marker.on('drag', function(e) {
-                let latlng = e.target.getLatLng();
-                document.getElementById('latitude').value = latlng.lat;
-                document.getElementById('longitude').value = latlng.lng;
-            });
-        })
+        });
     </script>
 
     {{-- <script>
