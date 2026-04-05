@@ -19,6 +19,8 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -166,8 +168,8 @@
                             </table>
                         </div>
 
-                        <div class="mb-4">
-                            {{ $wisataKuliner->links('pagination::bootstrap-5') }}
+                        <div class="mt-4">
+                            {{ $wisataKuliner->links('pagination::tailwind') }}
                         </div>
                     @endif
 

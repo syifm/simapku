@@ -11,7 +11,7 @@ class WisataKulinerController extends Controller
     public function halamanVerifKuliner()
     {
         $statuswisatakuliner = WisataKuliner::exists();
-        $wisataKuliner = WisataKuliner::paginate(5)->withQueryString();;
+        $wisataKuliner = WisataKuliner::paginate(10)->withQueryString();;
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;

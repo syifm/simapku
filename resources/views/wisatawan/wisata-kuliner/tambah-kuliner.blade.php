@@ -294,13 +294,6 @@
                                 @enderror
                             </div>
 
-
-
-                            {{-- <div class='mb-2'> --}}
-                            {{-- <label> Matakuliah</label> --}}
-
-                            {{-- </div> --}}
-
                             <!-- Foto Wisata Kuliner -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-800 mb-1" for="foto">
@@ -313,13 +306,8 @@
 
                                 <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
 
-                                <!-- PREVIEW -->
                                 <div id="previewWrapper" class="mt-3 hidden relative w-40">
                                     <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover">
-                                    {{-- <button type="button" onclick="removeFoto()"
-                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
-                                        ✕
-                                    </button> --}}
                                 </div>
 
                                 <p class="text-xs text-gray-600 mt-2">
@@ -363,7 +351,6 @@
                                     class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold">
                                     Simpan
                                 </button>
-                                {{-- <input type="hidden" id="tanggal_daftar" name="tanggal_daftar"> --}}
                             </div>
                         </div>
                     </form>

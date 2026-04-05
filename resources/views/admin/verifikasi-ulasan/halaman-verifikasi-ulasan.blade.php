@@ -183,8 +183,8 @@
                             </table>
                         </div>
 
-                        <div class="mb-4">
-                            {{ $penilaianDanUlasan->links('pagination::bootstrap-5') }}
+                        <div class="mt-4">
+                            {{ $penilaianDanUlasan->links('pagination::tailwind') }}
                         </div>
                     @endif
 

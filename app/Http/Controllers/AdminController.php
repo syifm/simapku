@@ -68,7 +68,7 @@ class AdminController extends Controller
     public function kelolaWisataKuliner()
     {
         $statuswisatakuliner = WisataKuliner::where('status', 'Disetujui')->exists();
-        $wisataKuliner = WisataKuliner::where('status', 'Disetujui')->paginate(5)->withQueryString();
+        $wisataKuliner = WisataKuliner::where('status', 'Disetujui')->paginate(10)->withQueryString();
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
@@ -276,7 +276,7 @@ class AdminController extends Controller
     public function halamanVerifKuliner()
     {
         $statuswisatakuliner = WisataKuliner::where('status', 'Belum Diverifikasi')->exists();
-        $wisataKuliner = WisataKuliner::where('status', 'Belum Diverifikasi')->paginate(5)->withQueryString();;
+        $wisataKuliner = WisataKuliner::where('status', 'Belum Diverifikasi')->paginate(10)->withQueryString();;
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
@@ -331,7 +331,7 @@ class AdminController extends Controller
     public function halamanVerifUlasan()
     {
         $statusUlasan = PenilaiandanUlasan::exists();
-        $penilaianDanUlasan = PenilaiandanUlasan::paginate(5)->withQueryString();;
+        $penilaianDanUlasan = PenilaiandanUlasan::paginate(10)->withQueryString();;
 
         $penilaianDanUlasan->getCollection()->transform(function ($item, $key) use ($penilaianDanUlasan) {
             $item->nomor = ($penilaianDanUlasan->currentPage() - 1) * $penilaianDanUlasan->perPage() + $key + 1;

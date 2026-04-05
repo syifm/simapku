@@ -53,7 +53,7 @@
         <div class="flex justify-end">
             <a href="{{ route('kelolawisatakuliner.tambah') }}"
                 class="bg-[#FFA319] hover:bg-[#F19305]
-                btn btn-primary text-white rounded-full px-4 py-2 mt-14 text-sm flex items-center gap-1 transition">
+                btn btn-primary text-white rounded-full px-4 py-2 mt-14 text-sm flex items-center gap-1 transition mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
                     stroke="currentColor" class="size-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -68,10 +68,10 @@
                     @if (!$statuswisatakuliner)
                         <table class="table-fixed w-full border-collapse border border-black">
                             <colgroup>
-                                <col style="width: 30px">
-                                <col style="width: 200px">
-                                <col style="width: 80px">
-                                <col style="width: 160px">
+                                <col style="width: 60px">
+                                <col style="width: 600px">
+                                <col style="width: 300px">
+                                <col style="width: 171px">
                             </colgroup>
 
                             <thead>
@@ -190,8 +190,8 @@
                             </table>
                         </div>
 
-                        <div class="mb-4">
-                            {{ $wisataKuliner->links('pagination::bootstrap-5') }}
+                        <div class="mt-4">
+                            {{ $wisataKuliner->links('pagination::tailwind') }}
                         </div>
                     @endif
 
