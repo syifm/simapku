@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -7,16 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Map Wisata Kuliner</title>
     <style>
-        #map {
-            height: 100vh;
-            width: 100%;
+        gmp-map {
+            height: 100%;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
     </style>
-</head>
-
-<body>
-    <div id="map"></div>
-
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&internal_usage_attribution_ids=gmp_git_jsapisamples_v1_web-components"
+        defer></script>
     <script>
         function initMap() {
             const ny = {
@@ -36,9 +39,12 @@
             })
         }
     </script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_CM3lH19159L5LAd8GJoK9pwb5raOiFk=&callback=initMap"
-        type="text/javascript"></script>
+</head>
+
+<body>
+    <gmp-map center="41.027748173921374, -92.41852445367961" zoom="13" map-id="DEMO_MAP_ID">
+        <gmp-advanced-marker position="41.027748173921374, -92.41852445367961" title="Ottumwa, IA"></gmp-advanced-marker>
+    </gmp-map>
 </body>
 
 </html>

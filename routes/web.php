@@ -62,6 +62,7 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/beranda', [WisatawanController::class, 'berandaWisatawan'])->name('beranda-Wisatawan');
     Route::get('/wisatawan/mapwisatakuliner', [WisatawanController::class, 'mapWisataKuliner'])->name('map-WisataKuliner');
     Route::get('/wisatawan/mapwisatakuliner2', [WisatawanController::class, 'mapWisataKuliner2'])->name('map-WisataKuliner2');
+    // Route::get('/wisatawan/mapwisatakuliner3', [WisatawanController::class, 'mapWisataKuliner3'])->name('map-WisataKuliner2');
     Route::post('/store', [WisatawanController::class, 'store'])->name('store');
     Route::get('/wisatawan/eventsemarang', [WisatawanController::class, 'event'])->name('event');
     Route::get('/wisatawan/tambahwisatakuliner', [WisatawanController::class, 'halamantambah'])->name('tambahwisatakuliner');
@@ -82,6 +83,8 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/selectmk/{id}', [WisatawanController::class, 'selectmk'])->name('select.mk');
     Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
 
+    // Route::get('/api/kuliner-terdekat', [WisataKulinerController::class, 'search']);
+
     Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'search'])->name('wisatakulinerhalaman');
 
     Route::post('/wisatawan/penilaiandanulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('penilaianulasan.simpan');
@@ -89,7 +92,6 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('penilaianulasan.detail');
 
     Route::get('/cobaya', [WisataKulinerController::class, 'coba'])->name('cobacoba');
-
 
 
     // Route::get('/search-fasilitas', [WisatawanController::class, 'search']);

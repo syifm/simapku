@@ -237,6 +237,7 @@
             cursor: ew-resize;
         }
 
+        /* INI NGGAK DIPAKE ------------------------------------------------------------------- */
         .range-slider-jarak {
             display: flex;
             flex-wrap: wrap;
@@ -308,6 +309,64 @@
             background: var(--yellow-color);
             cursor: ew-resize;
         }
+
+        /* INI NGGAK DIPAKE ------------------------------------------------------------------- */
+
+
+
+
+
+        .range-slider-jarak-dua {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 5px;
+            padding-block: 5px;
+        }
+
+        .range-jarak-dua {
+            width: 100%;
+            display: grid;
+            position: relative;
+            z-index: 5;
+        }
+
+        .range-jarak-dua input {
+            grid-row: 1;
+            grid-column: 1;
+            pointer-events: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .range-jarak-dua input::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--yellow-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-jarak-dua {
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            background: var(--gray-color);
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .progress-jarak-dua {
+            position: absolute;
+            height: 100%;
+            background: var(--yellow-color);
+        }
     </style>
 
 </head>
@@ -349,12 +408,7 @@
                     Selamat datang, Wisatawan!
                 </h2>
 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-dropdown-link>
-                </form>
+                
             </div>
         </div>
     </div> --}}
@@ -399,7 +453,7 @@
             </div>
 
 
-            <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
+            <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
                 @csrf
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-2xl z-20">
@@ -415,7 +469,11 @@
                         <div id="searchPanel"
                             class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
                             <!-- Kuliner Terdekat -->
-                            <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
+                            {{-- <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
+                                Kuliner Terdekat
+                            </div> --}}
+                            <div onclick="cariKulinerTerdekat()"
+                                class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
                             </div>
 
@@ -459,30 +517,28 @@
 
                                 {{-- <input type="hidden" name="min_rating" id="min_rating">
                                 <input type="hidden" name="max_rating" id="max_rating"> --}}
-                                <div class="container">
+
+
+
+
+
+
+
+                                {{-- <div class="container">
                                     <label class="font-medium">Jarak</label>
 
                                     <!-- .range-slider -->
                                     <div class="range-slider-jarak flex justify-between items-center">
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
-                                            {{-- <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
-                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                                            </svg> --}}
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="minjarak"
-                                                class="min-jarak w-[40px] p-2 outline-none border-0" value="3"
+                                                class="min-jarak w-[40px] p-2 outline-none border-0" value="1"
                                                 min="1" max="5" />
                                         </div>
 
                                         <div
                                             class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
-                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
-                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                                            </svg>
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="maxjarak"
                                                 class="max-jarak w-[40px] p-2 outline-none border-0" value="5"
                                                 min="1" max="5" />
@@ -490,13 +546,40 @@
 
                                         <!-- .range -->
                                         <div class="range">
-                                            <input type="range" class="min-input-jarak" value="3" min="1"
+                                            <input type="range" class="min-input-jarak" value="1" min="1"
                                                 max="5" />
                                             <input type="range" class="max-input-jarak" value="5" min="1"
                                                 max="5" />
 
                                             <div class="slider">
                                                 <div class="progress-jarak"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> --}}
+
+
+                                <input type="hidden" name="lat" id="lat">
+                                <input type="hidden" name="lng" id="lng">
+
+                                <div class="container">
+                                    <label class="font-medium">Jarak</label>
+
+                                    <div class="range-slider-jarak-dua flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
+                                            <input type="number" name="jarak"
+                                                class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
+                                                value="1" min="1" max="10" />
+                                        </div>
+
+                                        <!-- .range -->
+                                        <div class="range-jarak-dua">
+                                            <input type="range" class="input-jarak-dua" value="1" min="1"
+                                                max="10" />
+
+                                            <div class="slider-jarak-dua">
+                                                <div class="progress-jarak-dua"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -528,22 +611,22 @@
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="minharga"
-                                                class="min-price w-[95px] p-2 outline-none border-0" value="100000"
+                                                class="min-price w-[95px] p-2 outline-none border-0" value="1"
                                                 min="1" max="1000000" />
                                         </div>
 
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="maxharga"
-                                                class="max-price w-[95px] p-2 outline-none border-0" value="500000"
+                                                class="max-price w-[95px] p-2 outline-none border-0" value="1000000"
                                                 min="1" max="1000000" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
-                                            <input type="range" class="min-input" value="100000" min="1"
+                                            <input type="range" class="min-input" value="1" min="1"
                                                 max="1000000" />
-                                            <input type="range" class="max-input" value="500000" min="1"
+                                            <input type="range" class="max-input" value="1000000" min="1"
                                                 max="1000000" />
 
                                             <div class="slider">
@@ -577,7 +660,7 @@
                                                     d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                                             </svg>
                                             <input type="number" name="minrating"
-                                                class="min-rating w-[40px] p-2 outline-none border-0" value="3"
+                                                class="min-rating w-[40px] p-2 outline-none border-0" value="1"
                                                 min="1" max="5" />
                                         </div>
 
@@ -595,7 +678,7 @@
 
                                         <!-- .range -->
                                         <div class="range">
-                                            <input type="range" class="min-input-rating" value="3"
+                                            <input type="range" class="min-input-rating" value="1"
                                                 min="1" max="5" />
                                             <input type="range" class="max-input-rating" value="5"
                                                 min="1" max="5" />
@@ -857,6 +940,10 @@
         <a href="{{ route('map-WisataKuliner2') }}" class="text-[#FFA319]  hover:underline">
             Map Wisata Kuliner 2
         </a>
+
+        {{-- <a href="{{ route('map-WisataKuliner3') }}" class="text-[#FFA319]  hover:underline">
+            Map Wisata Kuliner 3
+        </a> --}}
     </div>
 
 
@@ -1010,116 +1097,155 @@
         //         texts.forEach(t => t.classList.toggle('hidden'));
         //     });
         // }
-
-        // slider jarak
         // slider Jarak
-        const sliderJarak = document.querySelector(".range-slider-jarak");
-        const progressJarak = sliderJarak.querySelector(".progress-jarak");
-        const minJarakInput = sliderJarak.querySelector(".min-jarak");
-        const maxJarakInput = sliderJarak.querySelector(".max-jarak");
-        const minInputJarak = sliderJarak.querySelector(".min-input-jarak");
-        const maxInputJarak = sliderJarak.querySelector(".max-input-jarak");
+        const sliderJarakDua = document.querySelector(".range-slider-jarak-dua");
+        const progressJarakDua = sliderJarakDua.querySelector(".progress-jarak-dua");
+        const nilaiJarakDua = sliderJarakDua.querySelector(".nilai-jarak-dua");
+        const inputJarakDua = sliderJarakDua.querySelector(".input-jarak-dua");
 
-        const updateProgressJarak = () => {
-            const minValueJarak = parseInt(minInputJarak.value);
-            const maxValueJarak = parseInt(maxInputJarak.value);
+        const updateProgressJarakDua = () => {
+            const valueJarakDua = parseInt(inputJarakDua.value);
+            const minJarakDua = parseInt(inputJarakDua.min);
+            const maxJarakDua = parseInt(inputJarakDua.max);
 
-            const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
-            const valueRangeJarak = maxValueJarak - minValueJarak;
+            const totalRangeJarakDua = maxJarakDua - minJarakDua;
+            const widthJarakDua = ((valueJarakDua - minJarakDua) / totalRangeJarakDua) * 100;
 
-            const widthJarak = (valueRangeJarak / totalRangeJarak) * 100;
-            const minOffsetJarak = ((minValueJarak - minInputJarak.min) / totalRangeJarak) * 100;
+            progressJarakDua.style.width = widthJarakDua + "%";
+            progressJarakDua.style.left = "0%";
 
-            progressJarak.style.width = widthJarak + "%";
-            progressJarak.style.left = minOffsetJarak + "%";
-
-            minJarakInput.value = minValueJarak;
-            maxJarakInput.value = maxValueJarak;
+            nilaiJarakDua.value = valueJarakDua;
         };
 
-        const updateRangeJarak = (event) => {
-            const inputJarak = event.target;
-
-            let minJarak = parseInt(minJarakInput.value);
-            let maxJarak = parseInt(maxJarakInput.value);
-
-            if (inputJarak === minJarakInput && minJarak > maxJarak) {
-                maxJarak = minJarak;
-                maxJarakInput.value = maxJarak;
-            } else if (inputJarak === maxJarakInput && maxJarak < minJarak) {
-                minJarak = maxJarak;
-                minJarakInput.value = minJarak;
-            }
-
-            minInputJarak.value = minJarak;
-            maxInputJarak.value = maxJarak;
-
-            updateProgressJarak();
-        };
-
-        minJarakInput.addEventListener("input", updateRangeJarak);
-        maxJarakInput.addEventListener("input", updateRangeJarak);
-
-        minInputJarak.addEventListener("input", () => {
-            if (parseInt(minInputJarak.value) >= parseInt(maxInputJarak.value)) {
-                maxInputJarak.value = minInputJarak.value;
-            }
-            updateProgressJarak();
+        inputJarakDua.addEventListener("input", () => {
+            updateProgressJarakDua();
         });
 
-        maxInputJarak.addEventListener("input", () => {
-            if (parseInt(maxInputJarak.value) <= parseInt(minInputJarak.value)) {
-                minInputJarak.value = maxInputJarak.value;
-            }
-            updateProgressJarak();
+        nilaiJarakDua.addEventListener("input", () => {
+            let valJarakDua = parseInt(nilaiJarakDua.value);
+            const minJarakDua = parseInt(inputJarakDua.min);
+            const maxJarakDua = parseInt(inputJarakDua.max);
+
+            // Clamp value dalam batas min-max
+            if (valJarakDua < minJarakDua) valJarakDua = minJarakDua;
+            if (valJarakDua > maxJarakDua) valJarakDua = maxJarakDua;
+
+            inputJarakDua.value = valJarakDua;
+            updateProgressJarakDua();
         });
 
-        let isDraggingJarak = false;
-        let startOffsetXJarak;
+        updateProgressJarakDua();
 
-        progressJarak.addEventListener("mousedown", (e) => {
-            e.preventDefault();
 
-            isDraggingJarak = true;
-            startOffsetXJarak = e.clientX - progressJarak.getBoundingClientRect().left;
+        // const sliderJarak = document.querySelector(".range-slider-jarak");
+        // const progressJarak = sliderJarak.querySelector(".progress-jarak");
+        // const minJarakInput = sliderJarak.querySelector(".min-jarak");
+        // const maxJarakInput = sliderJarak.querySelector(".max-jarak");
+        // const minInputJarak = sliderJarak.querySelector(".min-input-jarak");
+        // const maxInputJarak = sliderJarak.querySelector(".max-input-jarak");
 
-            sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        });
+        // const updateProgressJarak = () => {
+        //     const minValueJarak = parseInt(minInputJarak.value);
+        //     const maxValueJarak = parseInt(maxInputJarak.value);
 
-        document.addEventListener("mousemove", (e) => {
-            if (isDraggingJarak) {
-                const sliderRectJarak = sliderJarak.getBoundingClientRect();
-                const progressWidthJarak = parseFloat(progressJarak.style.width || 0);
+        //     const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
+        //     const valueRangeJarak = maxValueJarak - minValueJarak;
 
-                let newLeftJarak =
-                    ((e.clientX - sliderRectJarak.left - startOffsetXJarak) / sliderRectJarak.width) * 100;
+        //     const widthJarak = (valueRangeJarak / totalRangeJarak) * 100;
+        //     const minOffsetJarak = ((minValueJarak - minInputJarak.min) / totalRangeJarak) * 100;
 
-                newLeftJarak = Math.min(Math.max(newLeftJarak, 0), 100 - progressWidthJarak);
+        //     progressJarak.style.width = widthJarak + "%";
+        //     progressJarak.style.left = minOffsetJarak + "%";
 
-                progressJarak.style.left = newLeftJarak + "%";
+        //     minJarakInput.value = minValueJarak;
+        //     maxJarakInput.value = maxValueJarak;
+        // };
 
-                const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
-                const newMinJarak = Math.round((newLeftJarak / 100) * totalRangeJarak) + parseInt(minInputJarak
-                    .min);
-                const newMaxJarak = newMinJarak + parseInt(maxInputJarak.value) - parseInt(minInputJarak.value);
+        // const updateRangeJarak = (event) => {
+        //     const inputJarak = event.target;
 
-                minInputJarak.value = newMinJarak;
-                maxInputJarak.value = newMaxJarak;
+        //     let minJarak = parseInt(minJarakInput.value);
+        //     let maxJarak = parseInt(maxJarakInput.value);
 
-                updateProgressJarak();
-            }
+        //     if (inputJarak === minJarakInput && minJarak > maxJarak) {
+        //         maxJarak = minJarak;
+        //         maxJarakInput.value = maxJarak;
+        //     } else if (inputJarak === maxJarakInput && maxJarak < minJarak) {
+        //         minJarak = maxJarak;
+        //         minJarakInput.value = minJarak;
+        //     }
 
-            sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        });
+        //     minInputJarak.value = minJarak;
+        //     maxInputJarak.value = maxJarak;
 
-        document.addEventListener("mouseup", () => {
-            if (isDraggingJarak) {
-                isDraggingJarak = false;
-            }
-            sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        });
+        //     updateProgressJarak();
+        // };
 
-        updateProgressJarak();
+        // minJarakInput.addEventListener("input", updateRangeJarak);
+        // maxJarakInput.addEventListener("input", updateRangeJarak);
+
+        // minInputJarak.addEventListener("input", () => {
+        //     if (parseInt(minInputJarak.value) >= parseInt(maxInputJarak.value)) {
+        //         maxInputJarak.value = minInputJarak.value;
+        //     }
+        //     updateProgressJarak();
+        // });
+
+        // maxInputJarak.addEventListener("input", () => {
+        //     if (parseInt(maxInputJarak.value) <= parseInt(minInputJarak.value)) {
+        //         minInputJarak.value = maxInputJarak.value;
+        //     }
+        //     updateProgressJarak();
+        // });
+
+        // let isDraggingJarak = false;
+        // let startOffsetXJarak;
+
+        // progressJarak.addEventListener("mousedown", (e) => {
+        //     e.preventDefault();
+
+        //     isDraggingJarak = true;
+        //     startOffsetXJarak = e.clientX - progressJarak.getBoundingClientRect().left;
+
+        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
+        // });
+
+        // document.addEventListener("mousemove", (e) => {
+        //     if (isDraggingJarak) {
+        //         const sliderRectJarak = sliderJarak.getBoundingClientRect();
+        //         const progressWidthJarak = parseFloat(progressJarak.style.width || 0);
+
+        //         let newLeftJarak =
+        //             ((e.clientX - sliderRectJarak.left - startOffsetXJarak) / sliderRectJarak.width) * 100;
+
+        //         newLeftJarak = Math.min(Math.max(newLeftJarak, 0), 100 - progressWidthJarak);
+
+        //         progressJarak.style.left = newLeftJarak + "%";
+
+        //         const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
+        //         const newMinJarak = Math.round((newLeftJarak / 100) * totalRangeJarak) + parseInt(minInputJarak
+        //             .min);
+        //         const newMaxJarak = newMinJarak + parseInt(maxInputJarak.value) - parseInt(minInputJarak.value);
+
+        //         minInputJarak.value = newMinJarak;
+        //         maxInputJarak.value = newMaxJarak;
+
+        //         updateProgressJarak();
+        //     }
+
+        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
+        // });
+
+        // document.addEventListener("mouseup", () => {
+        //     if (isDraggingJarak) {
+        //         isDraggingJarak = false;
+        //     }
+        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
+        // });
+
+        // updateProgressJarak();
+
+
 
         // slider Harga
         const slider = document.querySelector(".range-slider");
@@ -1241,7 +1367,6 @@
         });
 
         updateProgress();
-
 
         // slider Penilaian
         const sliderRating = document.querySelector(".range-slider-rating");
@@ -1385,11 +1510,35 @@
 
         });
 
+        document.getElementById("formCari").addEventListener("submit", function(e) {
+
+            e.preventDefault(); // tahan submit dulu
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+
+                    document.getElementById("lat").value = position.coords.latitude;
+                    document.getElementById("lng").value = position.coords.longitude;
+
+                    // submit ulang setelah dapet lokasi
+                    e.target.submit();
+
+                }, function(error) {
+                    alert("Gagal ambil lokasi, pakai pencarian biasa aja");
+                    e.target.submit(); // tetap submit tanpa lokasi
+                });
+            } else {
+                alert("Browser tidak support lokasi");
+                e.target.submit();
+            }
+
+        });
+
         // const range = document.getElementById("rangeJarak");
         // const value = document.getElementById("valueJarak");
 
         // range.addEventListener("input", function() {
-        //     value.innerText = this.value;
+        // value.innerText = this.value;
         // });
 
 
@@ -1401,22 +1550,22 @@
 
 
         // document.addEventListener("DOMContentLoaded", function() {
-        //     const lat = localStorage.getItem('user_lat');
-        //     const lng = localStorage.getItem('user_lng');
+        // const lat = localStorage.getItem('user_lat');
+        // const lng = localStorage.getItem('user_lng');
 
-        //     if (lat && lng) {
-        //         document.getElementById('lat').value = lat;
-        //         document.getElementById('lng').value = lng;
-        //     }
+        // if (lat && lng) {
+        // document.getElementById('lat').value = lat;
+        // document.getElementById('lng').value = lng;
+        // }
         // });
 
 
         // function geser(arah) {
-        //     const slider = document.getElementById("slider");
-        //     slider.scrollBy({
-        //         left: arah * 360,
-        //         behavior: "smooth"
-        //     });
+        // const slider = document.getElementById("slider");
+        // slider.scrollBy({
+        // left: arah * 360,
+        // behavior: "smooth"
+        // });
         // }
 
         // const slider = document.getElementById("slider");
@@ -1425,21 +1574,21 @@
 
         // // bikin dots
         // cards.forEach((_, i) => {
-        //     const dot = document.createElement("div");
-        //     dot.classList.add("dot");
-        //     if (i === 0) dot.classList.add("active");
-        //     dotsContainer.appendChild(dot);
+        // const dot = document.createElement("div");
+        // dot.classList.add("dot");
+        // if (i === 0) dot.classList.add("active");
+        // dotsContainer.appendChild(dot);
         // });
 
         // // update dot saat geser
         // slider.addEventListener("scroll", () => {
-        //     const index = Math.round(slider.scrollLeft / cards[0].offsetWidth);
-        //     document.querySelectorAll(".dot").forEach((dot, i) => {
-        //         dot.classList.toggle("active", i === index);
-        //     });
+        // const index = Math.round(slider.scrollLeft / cards[0].offsetWidth);
+        // document.querySelectorAll(".dot").forEach((dot, i) => {
+        // dot.classList.toggle("active", i === index);
+        // });
         // });
 
-        // ------ 
+        // ------
         // const slider = document.getElementById("slider");
         // const cards = document.querySelectorAll(".card");
         // const dotsContainer = document.getElementById("dots");
@@ -1449,37 +1598,28 @@
         // let page = 0;
 
         // // bikin dots
-        // for (let i = 0; i < totalPage; i++) {
-        //     const dot = document.createElement("div");
-        //     dot.className = "dot" + (i === 0 ? " active" : "");
-        //     dot.onclick = () => goToPage(i);
-        //     dotsContainer.appendChild(dot);
+        // for (let i = 0; i < totalPage; i++) { // const dot=document.createElement("div"); // dot.className = "dot" +
+        // (i === 0 ? " active" : ""); // dot.onclick=()=> goToPage(i);
+        // dotsContainer.appendChild(dot);
         // }
 
         // function updateSlider() {
-        //     slider.style.transform = `translateX(-${page * 100}%)`;
-        //     document.querySelectorAll(".dot").forEach((d, i) => {
-        //         d.classList.toggle("active", i === page);
-        //     });
+        // slider.style.transform = `translateX(-${page * 100}%)`;
+        // document.querySelectorAll(".dot").forEach((d, i) => {
+        // d.classList.toggle("active", i === page);
+        // });
         // }
 
         // function next() {
-        //     if (page < totalPage - 1) {
-        //         page++;
-        //         updateSlider();
-        //     }
+        // if (page < totalPage - 1) { // page++; // updateSlider(); // } // } // function prev() { // if (page> 0) {
+        // page--;
+        // updateSlider();
         // }
-
-        // function prev() {
-        //     if (page > 0) {
-        //         page--;
-        //         updateSlider();
-        //     }
         // }
 
         // function goToPage(i) {
-        //     page = i;
-        //     updateSlider();
+        // page = i;
+        // updateSlider();
         // }
         // ---------
 
@@ -1488,57 +1628,50 @@
         // let index = 0;
 
         // function next() {
-        //     const maxIndex = slider.children.length - 3;
-        //     if (index < maxIndex) {
-        //         index++;
-        //         geser();
-        //     }
+        // const maxIndex = slider.children.length - 3;
+        // if (index < maxIndex) { // index++; // geser(); // } // } // function prev() { // if (index> 0) {
+        // index--;
+        // geser();
         // }
-
-        // function prev() {
-        //     if (index > 0) {
-        //         index--;
-        //         geser();
-        //     }
         // }
 
         // function geser() {
-        //     const cardWidth = card.offsetWidth + 20; // 20 = gap
-        //     slider.style.transform = `translateX(-${index * cardWidth}px)`;
+        // const cardWidth = card.offsetWidth + 20; // 20 = gap
+        // slider.style.transform = `translateX(-${index * cardWidth}px)`;
         // }
 
 
         // -----------
         // $(document).ready(function() {
 
-        //     const itemsPerPage = 3;
+        // const itemsPerPage = 3;
 
-        //     const owl = $('.bidang-carousel').owlCarousel({
-        //         loop: true,
-        //         margin: 20,
-        //         nav: true,
-        //         dots: true,
-        //         items: 3,
-        //         slideBy: 1, // 👉 panah geser 1–1
-        //         autoplay: true,
-        //         autoplayTimeout: 3000,
-        //         autoplayHoverPause: true
-        //     });
+        // const owl = $('.bidang-carousel').owlCarousel({
+        // loop: true,
+        // margin: 20,
+        // nav: true,
+        // dots: true,
+        // items: 3,
+        // slideBy: 1, // 👉 panah geser 1–1
+        // autoplay: true,
+        // autoplayTimeout: 3000,
+        // autoplayHoverPause: true
+        // });
 
-        //     owl.on('changed.owl.carousel', function(event) {
-        //         const totalItems = event.item.count;
-        //         const currentIndex = event.item.index - event.relatedTarget._clones.length / 2;
+        // owl.on('changed.owl.carousel', function(event) {
+        // const totalItems = event.item.count;
+        // const currentIndex = event.item.index - event.relatedTarget._clones.length / 2;
 
-        //         const realIndex = (currentIndex + totalItems) % totalItems;
+        // const realIndex = (currentIndex + totalItems) % totalItems;
 
-        //         const pageIndex = Math.floor(realIndex / itemsPerPage);
+        // const pageIndex = Math.floor(realIndex / itemsPerPage);
 
-        //         // reset semua dots
-        //         $('.owl-dot').removeClass('active');
+        // // reset semua dots
+        // $('.owl-dot').removeClass('active');
 
-        //         // aktifkan dot sesuai halaman (1–3 / 4–6)
-        //         $('.owl-dot').eq(pageIndex).addClass('active');
-        //     });
+        // // aktifkan dot sesuai halaman (1–3 / 4–6)
+        // $('.owl-dot').eq(pageIndex).addClass('active');
+        // });
 
         // });
     </script>

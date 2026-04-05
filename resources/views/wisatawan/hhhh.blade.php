@@ -322,3 +322,20 @@
 </body>
 
 </html>
+function cariKulinerTerdekat() {
+
+navigator.geolocation.getCurrentPosition(function(position) {
+
+let lat = position.coords.latitude;
+let lng = position.coords.longitude;
+
+let form = document.querySelector('form');
+let params = new URLSearchParams(new FormData(form));
+
+params.append('lat', lat);
+params.append('lng', lng);
+params.append('radius', 5);
+
+window.location.href = form.action + '?' + params.toString();
+});
+}

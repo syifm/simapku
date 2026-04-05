@@ -99,6 +99,26 @@ class WisataKulinerController extends Controller
 
         //     $query->orderBy('distance', 'asc');
         $query = DB::table('wisata_kuliner');
+
+        // $lat = $request->lat;
+        // $lng = $request->lng;
+        // $radius = $request->radius ?? 5;
+
+        // $kuliner = DB::table('wisata_kuliner')
+        //     ->selectRaw("
+        //     *,
+        //     (6371 * acos(
+        //         cos(radians(?)) 
+        //         * cos(radians(latitude)) 
+        //         * cos(radians(longitude) - radians(?)) 
+        //         + sin(radians(?)) 
+        //         * sin(radians(latitude))
+        //     )) AS distance
+        // ", [$lat, $lng, $lat])
+        //     ->having('distance', '<=', $radius)
+        //     ->orderBy('distance', 'asc')
+        //     ->get();
+
         // keyword
         if ($request->keyword) {
             // $query = DB::table('wisata_kuliner')->where('nama', 'like', '%' . $request->keyword . '%');
@@ -141,6 +161,45 @@ class WisataKulinerController extends Controller
         //     $query->join('fasilitas_wisata_kuliner', 'wisata_kuliner.id_wisata_kuliner', '=', 'fasilitas_wisata_kuliner.id_wisata_kuliner')
         //         ->whereIn('fasilitas_wisata_kuliner.id_fasilitas', $request->fasilitas);
         // }
+
+        if ($request->lat && $request->lng && $request->jarak) {
+            $lat = $request->lat;
+            $lng = $request->lng;
+            $jarak = $request->jarak;
+
+            $query->selectRaw("
+            *,
+    (
+        6371 * 2 * ATAN2(
+            SQRT(
+                POWER(SIN(RADIANS(latitude - ?) / 2), 2) +
+                COS(RADIANS(?)) * COS(RADIANS(latitude)) *
+                POWER(SIN(RADIANS(longitude - ?) / 2), 2)
+            ),
+            SQRT(
+                1 - (
+                    POWER(SIN(RADIANS(latitude - ?) / 2), 2) +
+                    COS(RADIANS(?)) * COS(RADIANS(latitude)) *
+                    POWER(SIN(RADIANS(longitude - ?) / 2), 2)
+                )
+            )
+        )
+    ) AS distance
+", [
+                $lat,
+                $lat,
+                $lng,   // bagian atas
+                $lat,
+                $lat,
+                $lng    // bagian bawah (HARUS DIULANG)
+            ]);
+
+            $query->having("distance", "<=", $jarak);
+
+            $query->orderBy("distance", "asc");
+        }
+        // dd($request->lat, $request->lng, $request->jarak);
+
         if ($request->fasilitas) {
 
             $query->leftJoin(
@@ -188,6 +247,30 @@ class WisataKulinerController extends Controller
         // return response()->json($data);
         return view('wisatawan.pencarian.hasil-pencarian', compact('data'));
     }
+
+    // public function kulinerTerdekat(Request $request)
+    // {
+    //     $lat = $request->lat;
+    //     $lng = $request->lng;
+    //     $radius = $request->radius ?? 5; // default 5 km
+
+    //     $kuliner = DB::table('wisata_kuliner')
+    //         ->selectRaw("
+    //         *,
+    //         (6371 * acos(
+    //             cos(radians(?)) 
+    //             * cos(radians(latitude)) 
+    //             * cos(radians(longitude) - radians(?)) 
+    //             + sin(radians(?)) 
+    //             * sin(radians(latitude))
+    //         )) AS distance
+    //     ", [$lat, $lng, $lat])
+    //         ->having('distance', '<=', $radius)
+    //         ->orderBy('distance', 'asc')
+    //         ->get();
+
+    //     return response()->json($kuliner);
+    // }
 
     public function coba()
     {

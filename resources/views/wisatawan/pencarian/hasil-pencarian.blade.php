@@ -20,6 +20,8 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+
     {{-- <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet'
@@ -416,7 +418,18 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    {{-- <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_CM3lH19159L5LAd8GJoK9pwb5raOiFk&callback=getUserLocation"
+        async defer></script> --}}
+    {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_CM3lH19159L5LAd8GJoK9pwb5raOiFk&callback=initApp" async
+        defer></script> --}}
+    {{-- <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&internal_usage_attribution_ids=gmp_git_jsapisamples_v1_web-components"
+        defer></script> --}}
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initApp&libraries=maps,marker&v=weekly"
+        async defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const hamburger = document.getElementById('hamburger');
@@ -451,34 +464,54 @@
 
         });
 
-        let dataKuliner = @json($data)
+        // let dataKuliner = @json($data)
 
-        console.log(dataKuliner)
+        // console.log(dataKuliner)
 
-        let mapOptions = {
-            center: [-6.99, 110.42],
-            zoom: 10
-        }
+        // YANG BENER --------------------------------------------------------------------------
 
-        let map = new L.map('map', mapOptions);
+        // let mapOptions = {
+        //     center: [-6.99, 110.42],
+        //     zoom: 10
+        // }
 
-        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        map.addLayer(layer);
+        // let map = new L.map('map', mapOptions);
 
-        let markerGroup = L.layerGroup().addTo(map)
+        // let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        // map.addLayer(layer);
 
-        dataKuliner.forEach(function(item) {
+        // let markerGroup = L.layerGroup().addTo(map)
 
-            if (item.latitude && item.longitude) {
+        // dataKuliner.forEach(function(item) {
 
-                L.marker([item.latitude, item.longitude])
-                    .addTo(markerGroup)
-                    .bindPopup(item.nama)
+        //     if (item.latitude && item.longitude) {
 
-            }
+        //         L.marker([item.latitude, item.longitude])
+        //             .addTo(markerGroup)
+        //             .bindPopup(item.nama)
 
-        })
+        //     }
 
+        // })
+
+        // SAMPE SINI --------------------------------------------------------------------------
+
+        // let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        // map.addLayer(layer);
+
+        // let markerGroup = L.layerGroup().addTo(map)
+
+        // dataKuliner.forEach(function(item) {
+
+        //     if (item.latitude && item.longitude) {
+
+        //         L.marker([item.latitude, item.longitude])
+        //             .addTo(markerGroup)
+        //             .bindPopup(item.nama)
+
+        //     }
+
+        // })
         // navigator.geolocation.watchPosition(success, error);
 
         // function success(pos) {
@@ -494,46 +527,70 @@
         //     map.fitBounds(circle, getBounds())
         // }
 
-        let userMarker = null;
-        let userCircle = null;
 
-        let userIcon = L.icon({
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png',
-            iconSize: [32, 32]
-        });
 
-        navigator.geolocation.watchPosition(success, error, {
-            enableHighAccuracy: true
-        });
+        // YANG BENER --------------------------------------------------------------------------
+        // let userMarker = null;
+        // let userCircle = null;
 
-        function success(pos) {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            // const accuracy = pos.coords.accuracy;
+        // let userIcon = L.icon({
+        //     iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png',
+        //     iconSize: [32, 32]
+        // });
 
-            // hapus marker lama
-            if (userMarker) {
-                map.removeLayer(userMarker);
-                // map.removeLayer(userCircle);
-            }
+        // navigator.geolocation.watchPosition(success, error, {
+        //     enableHighAccuracy: true
+        // });
 
-            // pakai icon di sini
-            userMarker = L.marker([lat, lng], {
-                icon: userIcon
-            }).addTo(map).bindPopup("Lokasi Saya");
+        // function success(pos) {
+        //     const lat = pos.coords.latitude;
+        //     const lng = pos.coords.longitude;
 
-            // userCircle = L.circle([lat, lng], {
-            //     radius: accuracy,
-            //     color: 'blue'
-            // }).addTo(map);
+        // SAMPE SINI --------------------------------------------------------------------------
+        // const accuracy = pos.coords.accuracy;
 
-            map.setView([lat, lng], 15);
-        }
+        // YANG BENER --------------------------------------------------------------------------
+        // userLatLng = L.latLng(lat, lng);
+        // SAMPE SINI --------------------------------------------------------------------------
 
-        function error(err) {
-            console.log("ERROR:", err.message);
-            alert("Gagal ambil lokasi: " + err.message);
-        }
+        // console.log("USER:", userLatLng)
+
+        // YANG BENER --------------------------------------------------------------------------
+        // hapus marker lama
+        // if (userMarker) {
+        // map.removeLayer(userMarker);
+        // map.removeLayer(userCircle); ---- TIDAK 
+        // }
+
+        // pakai icon di sini
+        // userMarker = L.marker([lat, lng], {
+        //     icon: userIcon
+        // }).addTo(map).bindPopup("Lokasi Saya");
+        // SAMPE SINI --------------------------------------------------------------------------
+
+        // userCircle = L.circle([lat, lng], {
+        //     radius: accuracy,
+        //     color: 'blue'
+        // }).addTo(map);
+
+        // YANG BENER --------------------------------------------------------------------------
+        // map.setView([lat, lng], 15);
+        // }
+        // SAMPE SINI --------------------------------------------------------------------------
+
+
+        // console.log("USER:", userLatLng)
+
+
+        // YANG BENER --------------------------------------------------------------------------
+        // function error(err) {
+        //     console.log("ERROR:", err.message);
+        //     alert("Gagal ambil lokasi: " + err.message);
+        // }
+        // SAMPE SINI --------------------------------------------------------------------------
+
+
+
 
         // let bounds = []
 
@@ -553,61 +610,279 @@
 
         // })
 
-        let bounds = []
 
-        dataKuliner.forEach(function(item) {
 
-            if (item.latitude && item.longitude) {
+        // YANG BENER --------------------------------------------------------------------------
+        // let bounds = []
 
-                let latlng = [item.latitude, item.longitude]
+        // dataKuliner.forEach(function(item) {
 
-                bounds.push(latlng)
+        //     if (item.latitude && item.longitude) {
 
-            }
+        //         let latlng = [item.latitude, item.longitude]
 
-        })
+        //         bounds.push(latlng)
 
-        if (bounds.length) {
-            map.fitBounds(bounds)
+        //     }
+
+        // })
+
+        // if (bounds.length) {
+        //     map.fitBounds(bounds)
+        // }
+
+
+        // let activeMarker = null
+
+        // document.querySelectorAll('.card-kuliner').forEach(card => {
+
+        //     card.addEventListener('click', function() {
+
+        //         let nama = this.dataset.nama
+        //         let alamat = this.dataset.alamat
+        //         let harga = this.dataset.harga
+        //         let foto = this.dataset.foto
+        //         let lat = this.dataset.lat
+        //         let lng = this.dataset.lng
+        //         let id = this.dataset.id
+        //         console.log("USER PAS KLIK:", userLatLng);
+        //         document.getElementById('listKuliner').innerHTML = `
+
+    //         <div class="bg-white rounded-2xl shadow-md p-5">
+
+    //             <button onclick="backToList()" class="mb-4 text-black"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+    //                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    //                 </svg>
+    //                 </button>
+
+    //             <img src="${foto}" class="w-full h-56 object-cover rounded-xl mb-4">
+
+    //             <h2 class="text-2xl font-bold">${nama}</h2>
+
+    //             <p class="text-gray-600">${alamat}</p>
+
+    //             <p class="mt-2 font-semibold">${harga}</p>
+
+    //             <hr class="my-4">
+
+    //             <h3 class="font-bold mb-2">Penilaian dan Ulasan</h3>
+
+    //             <button onclick="openModal(${id})"
+    //                 class="bg-gray-100 w-full text-gray-500 border px-4 py-2 rounded-xl mt-4 flex items-center gap-1">
+    //                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+    //                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+    //                     class="size-4">
+    //                     <path stroke-linecap="round" stroke-linejoin="round"
+    //                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+    //                 </svg>
+    //                 <span class="ml-1">Beri Penilaian dan Ulasan</span>
+    //             </button>
+
+    //             <div id="ulasanArea"></div>
+
+    //         </div>
+
+    // `
+        //         loadUlasan(id)
+        //         markerGroup.clearLayers()
+
+        //         L.marker([lat, lng])
+        //             .addTo(markerGroup)
+        //             .bindPopup(nama)
+        //             .openPopup()
+
+
+        //         map.setView([lat, lng], 16)
+
+
+        //     })
+
+        // })
+        // SAMPE SINI --------------------------------------------------------------------------
+
+
+        // MAPS --------------------------------------------------------------------------------
+        let map;
+        let userMarker = null;
+        let markers = [];
+        let userLat = null;
+        let userLng = null;
+
+        let directionsService;
+        let directionsRenderer;
+
+        let dataKuliner = @json($data);
+
+        function initApp() {
+            let defaultLocation = {
+                lat: -6.99,
+                lng: 110.42
+            };
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultLocation,
+                zoom: 10,
+                styles: [{
+                    featureType: "poi.business",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }]
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+
+            tampilkanSemuaKuliner();
+
+            navigator.geolocation.watchPosition(success, error, {
+                enableHighAccuracy: true
+            });
         }
 
+        function success(pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
 
-        let activeMarker = null
+            userLat = lat;
+            userLng = lng;
+
+            updateUserLocation(lat, lng);
+
+            // cariKulinerTerdekat();
+        }
+
+        function error(err) {
+            console.log("ERROR:", err.message);
+            alert("Gagal ambil lokasi: " + err.message);
+        }
+
+        function updateUserLocation(lat, lng) {
+            let posisi = {
+                lat: lat,
+                lng: lng
+            };
+
+            if (userMarker) {
+                userMarker.setPosition(posisi);
+            } else {
+                userMarker = new google.maps.Marker({
+                    position: posisi,
+                    map: map,
+                    title: "Lokasi Saya",
+                    // icon: "https://cdn-icons-png.flaticon.com/512/64/64113.png"
+                });
+            }
+
+            map.setCenter(posisi);
+        }
+
+        function clearMarkers() {
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+        }
+
+        function tampilkanSemuaKuliner() {
+            clearMarkers();
+
+            let bounds = new google.maps.LatLngBounds();
+
+            dataKuliner.forEach(item => {
+                if (item.latitude && item.longitude) {
+
+                    let posisi = {
+                        lat: item.latitude,
+                        lng: item.longitude
+                    };
+
+                    let marker = new google.maps.Marker({
+                        position: posisi,
+                        map: map,
+                        title: item.nama
+                    });
+
+                    markers.push(marker);
+                    bounds.extend(posisi);
+
+                    let infoWindow = new google.maps.InfoWindow({
+                        content: `<b>${item.nama}</b>`
+                    });
+
+                    marker.addListener("click", () => {
+                        infoWindow.open(map, marker);
+                    });
+                }
+            });
+
+            if (markers.length > 0) {
+                map.fitBounds(bounds);
+            }
+        }
+
+        function lihatRute(destLat, destLng) {
+            if (!userLat || !userLng) {
+                alert("Lokasi user belum tersedia");
+                return;
+            }
+
+            let request = {
+                origin: {
+                    lat: userLat,
+                    lng: userLng
+                },
+                destination: {
+                    lat: destLat,
+                    lng: destLng
+                },
+                travelMode: 'DRIVING'
+            };
+
+            directionsService.route(request, function(result, status) {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(result);
+                } else {
+                    alert("Gagal menampilkan rute");
+                }
+            });
+        }
 
         document.querySelectorAll('.card-kuliner').forEach(card => {
 
             card.addEventListener('click', function() {
 
-                let nama = this.dataset.nama
-                let alamat = this.dataset.alamat
-                let harga = this.dataset.harga
-                let foto = this.dataset.foto
-                let lat = this.dataset.lat
-                let lng = this.dataset.lng
-                let id = this.dataset.id
+                let nama = this.dataset.nama;
+                let alamat = this.dataset.alamat;
+                let harga = this.dataset.harga;
+                let foto = this.dataset.foto;
+                let lat = parseFloat(this.dataset.lat);
+                let lng = parseFloat(this.dataset.lng);
+                let id = this.dataset.id;
 
                 document.getElementById('listKuliner').innerHTML = `
-        
-                <div class="bg-white rounded-2xl shadow-md p-5">
+            <div class="bg-white rounded-2xl shadow-md p-5">
 
-                    <button onclick="backToList()" class="mb-4 text-black"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                <button onclick="backToList()" class="mb-4 text-black"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                         </svg>
                         </button>
 
-                    <img src="${foto}" class="w-full h-56 object-cover rounded-xl mb-4">
+                <img src="${foto}" class="w-full h-56 object-cover rounded-xl mb-4">
 
-                    <h2 class="text-2xl font-bold">${nama}</h2>
+                <h2 class="text-2xl font-bold">${nama}</h2>
 
-                    <p class="text-gray-600">${alamat}</p>
+                <p class="text-gray-600">${alamat}</p>
 
-                    <p class="mt-2 font-semibold">${harga}</p>
+                <p class="mt-2 font-semibold">${harga}</p>
 
-                    <hr class="my-4">
+                <hr class="my-4">
 
-                    <h3 class="font-bold mb-2">Penilaian dan Ulasan</h3>
+                <button onclick="lihatRute(${lat}, ${lng})"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-xl mt-4">
+                    Lihat Rute
+                </button>
 
-                    <button onclick="openModal(${id})"
+                <button onclick="openModal(${id})"
                         class="bg-gray-100 w-full text-gray-500 border px-4 py-2 rounded-xl mt-4 flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -618,32 +893,35 @@
                         <span class="ml-1">Beri Penilaian dan Ulasan</span>
                     </button>
 
-                    <div id="ulasanArea"></div>
+                <div id="ulasanArea"></div>
 
-                </div>
-    
-        `
-                loadUlasan(id)
-                markerGroup.clearLayers()
+            </div>
+        `;
 
-                L.marker([lat, lng])
-                    .addTo(markerGroup)
-                    .bindPopup(nama)
-                    .openPopup()
+                loadUlasan(id);
 
+                clearMarkers();
 
-                map.setView([lat, lng], 16)
+                let posisi = {
+                    lat: lat,
+                    lng: lng
+                };
 
-                L.Routing.control({
-                    waypoints: [
-                        L.latlng(-6.996418149883837, 110.41534564234345),
-                        L.latlng(-6.961944043665627, 110.38600824501671),
-                    ]
-                }).addTo(map);
+                let marker = new google.maps.Marker({
+                    position: posisi,
+                    map: map,
+                    title: nama
+                });
 
-            })
+                markers.push(marker);
 
-        })
+                map.setCenter(posisi);
+                map.setZoom(16);
+
+                tampilkanRute(lat, lng);
+            });
+
+        });
 
         function backToList() {
             location.reload()
@@ -838,6 +1116,82 @@
                 alert('Mohon pilih penilaian bintang terlebih dahulu.')
             }
         })
+
+        // async function cariKulinerTerdekat() {
+
+        //     let params = new URLSearchParams({
+        //         lat: userLat,
+        //         lng: userLng,
+        //         radius: 5 // km (bisa dari input)
+        //     });
+
+        //     let response = await fetch(`/api/kuliner-terdekat?${params}`);
+        //     let data = await response.json();
+
+        //     tampilkanSemuaKuliner(data);
+        // }
+
+
+        // async function cariKulinerTerdekat() {
+
+        //     if (!userLat || !userLng) {
+        //         alert("Lokasi belum tersedia");
+        //         return;
+        //     }
+
+        //     let params = new URLSearchParams({
+        //         lat: userLat,
+        //         lng: userLng,
+        //         radius: 5 // bisa kamu ubah nanti
+        //     });
+
+        //     try {
+        //         let response = await fetch(`/api/kuliner-terdekat?${params}`);
+        //         let data = await response.json();
+
+        //         console.log("HASIL TERDEKAT:", data);
+
+        //         tampilkanHasilTerdekat(data);
+
+        //     } catch (error) {
+        //         console.error("Error:", error);
+        //     }
+        // }
+
+
+        // function tampilkanHasilTerdekat(data) {
+
+        //     clearMarkers();
+
+        //     let bounds = new google.maps.LatLngBounds();
+
+        //     data.forEach(item => {
+
+        //         let posisi = {
+        //             lat: parseFloat(item.latitude),
+        //             lng: parseFloat(item.longitude)
+        //         };
+
+        //         let marker = new google.maps.Marker({
+        //             position: posisi,
+        //             map: map,
+        //             title: item.nama,
+        //             icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        //         });
+
+        //         markers.push(marker);
+        //         bounds.extend(posisi);
+
+        //     });
+
+        //     if (data.length > 0) {
+        //         map.fitBounds(bounds);
+        //     } else {
+        //         alert("Tidak ada kuliner dalam radius ini");
+        //     }
+        // }
+
+
 
         // async function simpanUlasan() {
 

@@ -421,8 +421,8 @@
 
                 lineOptions: {
                     styles: [{
-                        color: 'red', // ganti warna di sini
-                        weight: 6 // ketebalan garis
+                        color: 'red',
+                        weight: 6
                     }]
                 }
 

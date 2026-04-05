@@ -195,7 +195,7 @@
         <nav class="nav-menu">
             <a href="{{ route('beranda-Wisatawan') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Wisatawan') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda-Wisatawan') || request()->routeIs('wisatakulinerhalaman') ? 'active' : 'text-white' }}">
                 <i class="fas fa-map-marker-alt"></i>
                 {{-- <span>Beranda</span> --}}
             </a>
