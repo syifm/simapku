@@ -175,7 +175,7 @@
 
                     <div id="detailModal"
                         class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
-                        <div class="relative top-5 mx-auto p-5 border w-[450px] shadow-lg rounded-xl bg-white">
+                        <div class="relative top-5 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold flex-1 text-center" id="modalTitle"></h3>
                                 <button onclick="tutupModalVerifikasi()" class="text-gray-400 hover:text-gray-500">
@@ -188,6 +188,14 @@
 
                             <div class="mt-4">
                                 <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="flex justify-between w-32">
+                                        <strong>Deskripsi</strong>
+                                    </div>
+                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                        <div>:</div>
+                                        <div class="text-justify"><span id="deskripsi"></span></div>
+                                    </div>
+
                                     <div class="flex justify-between w-32">
                                         <strong>Alamat</strong>
                                     </div>
@@ -229,30 +237,6 @@
                                     </div>
 
                                     <div class="flex justify-between w-32">
-                                        <strong>Deskripsi</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="deskripsi"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Latitude</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="latitude"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Longitude</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="longitude"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
                                         <strong>Email Pengaju</strong>
                                     </div>
                                     <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
@@ -269,6 +253,22 @@
                                             <img id="foto" src="" alt="Foto Wisata Kuliner"
                                                 class="w-full max-w-xs h-40 object-cover rounded-md border hidden">
                                         </div>
+                                    </div>
+
+                                    <div class="flex justify-between w-32">
+                                        <strong>Latitude</strong>
+                                    </div>
+                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                        <div>:</div>
+                                        <div class="text-justify"><span id="latitude"></span></div>
+                                    </div>
+
+                                    <div class="flex justify-between w-32">
+                                        <strong>Longitude</strong>
+                                    </div>
+                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                        <div>:</div>
+                                        <div class="text-justify"><span id="longitude"></span></div>
                                     </div>
 
                                     <div class="flex justify-between w-32">
@@ -305,8 +305,9 @@
             </style>
         @endpush
 
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initApp&libraries=maps,marker&v=weekly"
+            async defer></script>
         <script>
             let map = null;
             let marker = null;
@@ -319,12 +320,14 @@
                         document.getElementById('alamat').textContent = data.alamat;
                         document.getElementById('kecamatan').textContent = data.kecamatan;
                         document.getElementById('kelurahan').textContent = data.kelurahan;
-                        document.getElementById('nomor_telepon').textContent = data.no_telp;
+                        document.getElementById('nomor_telepon').textContent = data.no_telp ?? '-';
                         document.getElementById('email').textContent = data.email ?? '-';
                         document.getElementById('deskripsi').textContent = data.deskripsi;
                         document.getElementById('latitude').textContent = data.latitude;
                         document.getElementById('longitude').textContent = data.longitude;
                         document.getElementById('email_pengaju').textContent = data.email_pengaju;
+
+                        // Foto
                         const foto = document.getElementById('foto');
 
                         if (data.foto) {
@@ -334,6 +337,7 @@
                             foto.classList.add('hidden');
                         }
 
+                        // Map
                         const lat = parseFloat(data.latitude);
                         const lng = parseFloat(data.longitude);
 
@@ -358,20 +362,31 @@
 
                         document.getElementById('detailModal').classList.remove('hidden');
 
+                        const position = {
+                            lat: lat,
+                            lng: lng
+                        };
+
                         if (!map) {
-                            map = L.map('map').setView([lat, lng], 16);
+                            map = new google.maps.Map(document.getElementById("map"), {
+                                center: position,
+                                zoom: 16,
+                                styles: [{
+                                    featureType: "poi.business",
+                                    stylers: [{
+                                        visibility: "off"
+                                    }]
+                                }]
+                            });
 
-                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                attribution: '&copy; OpenStreetMap'
-                            }).addTo(map);
-
-                            marker = L.marker([lat, lng]).addTo(map);
+                            marker = new google.maps.Marker({
+                                position: position,
+                                map: map,
+                            });
                         } else {
-                            map.setView([lat, lng], 16);
-                            marker.setLatLng([lat, lng]);
+                            map.setCenter(position);
+                            marker.setPosition(position);
                         }
-
-                        map.invalidateSize();
                     });
             }
 

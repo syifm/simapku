@@ -8,6 +8,8 @@ use App\Models\Wisatawan;
 use App\Models\Admin;
 use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
+use App\Models\Kategori;
+use App\Models\KategoriWisataKuliner;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -74,7 +76,7 @@ class AdminController extends Controller
     public function kelolaWisataKuliner()
     {
         $statuswisatakuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Tampilkan'])->exists();
-        $wisataKuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Tampilkan'])->paginate(10)->withQueryString();
+        $wisataKuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Tampilkan'])->orderBy('waktu_diubah', 'desc')->paginate(10)->withQueryString();
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
@@ -274,7 +276,7 @@ class AdminController extends Controller
                 $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
             }
 
-            $waktu_diubah = Carbon::now('Asia/Jakarta')->format('d/m/Y H:i');
+            $waktu_diubah = Carbon::now('Asia/Jakarta');
 
             $status = 'Belum Diverifikasi';
             if (Auth::check() && Auth::user()->peran === 'Admin') {
@@ -327,8 +329,18 @@ class AdminController extends Controller
 
     public function halamanVerifKuliner()
     {
-        $statuswisatakuliner = WisataKuliner::where('status', 'Belum Diverifikasi')->exists();
-        $wisataKuliner = WisataKuliner::where('status', 'Belum Diverifikasi')->paginate(10)->withQueryString();;
+        $statuswisatakuliner = WisataKuliner::whereIn('status', ['Belum Diverifikasi', 'Ditolak'])->exists();
+        // $wisataKuliner = WisataKuliner::whereIn('status', ['Belum Diverifikasi', 'Ditolak'])->paginate(10)->withQueryString();
+        $wisataKuliner = WisataKuliner::whereIn('status', ['Belum Diverifikasi', 'Ditolak'])
+            ->orderByRaw("
+                CASE 
+                    WHEN status = 'Belum Diverifikasi' THEN 1
+                    WHEN status = 'Ditolak' THEN 2
+                END
+            ")
+            ->orderBy('waktu_diubah', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
@@ -370,8 +382,6 @@ class AdminController extends Controller
             ]);
         }
 
-        // $wisataKuliner->save();
-
         return response()->json([
             'success' => true,
             'wisataKuliner' => $wisataKuliner,
@@ -383,7 +393,17 @@ class AdminController extends Controller
     public function halamanVerifUlasan()
     {
         $statusUlasan = PenilaiandanUlasan::exists();
-        $penilaianDanUlasan = PenilaiandanUlasan::paginate(10)->withQueryString();;
+        // $penilaianDanUlasan = PenilaiandanUlasan::paginate(10)->withQueryString();
+        $penilaianDanUlasan = PenilaiandanUlasan::orderByRaw("
+                CASE 
+                    WHEN status = 'Belum Diverifikasi' THEN 1
+                    WHEN status = 'Disetujui' THEN 2
+                    WHEN status = 'Ditolak' THEN 3
+                END
+            ")
+            ->orderBy('waktu_diubah', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
         $penilaianDanUlasan->getCollection()->transform(function ($item, $key) use ($penilaianDanUlasan) {
             $item->nomor = ($penilaianDanUlasan->currentPage() - 1) * $penilaianDanUlasan->perPage() + $key + 1;
@@ -471,6 +491,37 @@ class AdminController extends Controller
             ->paginate(10);
 
         return response()->json($data);
+    }
+
+    public function selectkategori($id)
+    {
+        $data = Kategori::where('nama', 'LIKE', '%' . request('q') . '%')
+            ->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function getKategori($id = null)
+    {
+        if (!$id || $id == "null") {
+            return '';
+        }
+
+        $kategori = KategoriWisataKuliner::with('kategori')
+            ->where('id_wisata_kuliner', $id)
+            ->get();
+
+        $data = '';
+
+        foreach ($kategori as $row) {
+            if ($row->kategori) {
+                $data .= "<option value='{$row->id_kategori}' selected>
+                        {$row->kategori->nama}
+                      </option>";
+            }
+        }
+
+        return $data;
     }
 
     // public function verifikasiWisataKuliner(Request $request, $id)

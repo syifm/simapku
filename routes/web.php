@@ -58,6 +58,8 @@ Route::middleware(['auth', 'Admin'])->group(function () {
     Route::get('/selectmhsadmin', [AdminController::class, 'selectmhs'])->name('select.mhs.admin');
     Route::get('/selectmkadmin/{id}', [AdminController::class, 'selectmk'])->name('select.mk.admin');
     Route::get('/ngampumkadmin/{id}', [AdminController::class, 'getngampu'])->name('getngampumk.admin');
+    Route::get('/selectkategoriadmin/{id}', [AdminController::class, 'selectkategori'])->name('select.kategori.admin');
+    Route::get('/ngampukategoriadmin/{id}', [AdminController::class, 'getKategori'])->name('getngampukategori.admin');
 });
 
 Route::middleware(['auth', 'Wisatawan'])->group(function () {

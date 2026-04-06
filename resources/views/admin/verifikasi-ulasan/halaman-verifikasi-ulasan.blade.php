@@ -190,7 +190,7 @@
 
                     <div id="detailModal"
                         class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
-                        <div class="relative top-20 mx-auto p-5 border w-[450px] shadow-lg rounded-xl bg-white">
+                        <div class="relative top-20 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold flex-1 text-center" id="modalTitle">Penilaian dan
                                     Ulasan</br></h3>
@@ -229,11 +229,21 @@
                                     </div>
 
                                     <div class="flex justify-between w-32">
+                                        <strong>Harga</strong>
+                                    </div>
+                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                        <div>:</div>
+                                        <div class="text-justify"><span id="harga"></span></div>
+                                    </div>
+
+                                    <div class="flex justify-between w-32">
                                         <strong>Foto</strong>
                                     </div>
                                     <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
                                         <div>:</div>
-                                        <div class="text-justify"><img id="foto_ulasan"></div>
+                                        <div class="text-justify">
+                                            <div id="foto_container"><img id="foto_ulasan" /></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="aksiVerifikasi" class="flex justify-end gap-4 mt-6 text-sm"></div>
@@ -252,13 +262,6 @@
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-dropdown-link :href="route('logout')"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </x-dropdown-link>
-                    </form>
                 </div>
             </div> --}}
         </div>
@@ -288,13 +291,41 @@
                         document.getElementById('nilai').textContent = data.penilaian;
                         document.getElementById('ulasan').textContent = data.ulasan;
                         document.getElementById('email_pengulas').textContent = data.email_pengulas;
-                        const foto_ulasan = document.getElementById('foto_ulasan');
+
+                        // Harga
+                        let min = data.harga_min;
+                        let max = data.harga_max;
+
+                        let text = '';
+
+                        if (min && max) {
+                            text = `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
+                        } else if (min && !max) {
+                            text = `Rp ${min.toLocaleString('id-ID')}+`;
+                        } else if (!min && max) {
+                            text = `≤ Rp ${max.toLocaleString('id-ID')}`;
+                        } else {
+                            text = '-';
+                        }
+
+                        document.getElementById('harga').textContent = text;
+
+                        // Foto
+                        // const foto_ulasan = document.getElementById('foto_ulasan');
+
+                        // if (data.foto_ulasan) {
+                        //     foto_ulasan.src = `/storage/${data.foto_ulasan}`;
+                        //     foto_ulasan.classList.remove('hidden');
+                        // } else {
+                        //     foto_ulasan.classList.add('hidden');
+                        // }
+                        const container = document.getElementById('foto_container');
 
                         if (data.foto_ulasan) {
-                            foto_ulasan.src = `/storage/${data.foto_ulasan}`;
-                            foto_ulasan.classList.remove('hidden');
+                            container.innerHTML =
+                                `<img src="/storage/${data.foto_ulasan}" class="object-cover rounded">`;
                         } else {
-                            foto_ulasan.classList.add('hidden');
+                            container.innerHTML = `<span>-</span>`;
                         }
 
                         const aksiDiv = document.getElementById('aksiVerifikasi');

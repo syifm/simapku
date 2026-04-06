@@ -66,7 +66,7 @@
 
         #map {
             height: 400px;
-            width: 1330px;
+            width: 1070px;
             border-radius: 7px;
         }
 
@@ -286,16 +286,6 @@
                                 <label class="block text-sm font-medium text-gray-800 mb-1"
                                     for="fasilitas"><span>Fasilitas</span>
                                     <span class="text-red-500 font-bold">*</span></label>
-                                {{-- <select id="fasilitas" name="fasilitas[]" multiple>
-                                    @foreach ($fasilitas as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                    @endforeach
-                                </select> --}}
-                                {{-- <select id="fasilitas" name="fasilitas[]" multiple>
-                                    @foreach ($fasilitas as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                    @endforeach
-                                </select> --}}
                                 <select id="selectmkadmin" name="id_fasilitas[]"
                                     class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     aria-label="Default select example">
@@ -303,6 +293,22 @@
                                 </select>
 
                                 @error('id_fasilitas')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Kategori Wisata Kuliner -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1" for="kategori">
+                                    <span>Kategori</span>
+                                    <span class="text-red-500 font-bold">*</span>
+                                </label>
+
+                                <select id="selectkategoriadmin" name="id_kategori[]"
+                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </select>
+
+                                @error('id_kategori')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -390,9 +396,11 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
+    {{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> --}}
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly"
+        async defer></script>
     <script>
         // Kecamatan dan Kelurahan
         document.addEventListener('DOMContentLoaded', function() {
@@ -450,49 +458,7 @@
                 kelurahanNama.value = selectedOption.text;
             });
 
-
-            // new TomSelect("#fasilitas", {
-            //     plugins: ['remove_button'],
-            //     create: true,
-            //     persist: false
-            // });
-            // new TomSelect("#fasilitas", {
-            //     plugins: {
-            //         remove_button: {
-            //             title: "Hapus"
-            //         }
-            //     },
-            //     create: true,
-            //     persist: false,
-            //     maxItems: null,
-            //     hideSelected: true,
-            //     closeAfterSelect: false,
-            //     placeholder: "Pilih atau ketik fasilitas...",
-            // sortField: {
-            //     field: "text",
-            //     direction: "asc"
-            // }
-
-            // load: function(query, callback) {
-            //     if (!query.length) return callback();
-
-            //     fetch(`/search-fasilitas?q=${query}`)
-            //         .then(response => response.json())
-            //         .then(json => {
-            //             callback(json);
-            //         }).catch(() => {
-            //             callback();
-            //         });
-            // }
-            // });
-
-            // $(document).ready(function() {
-            //     $('.js-example-basic-multiple').select2();
-            // });
-
-            // console.log("TomSelect jalan");
         });
-        // console.log("TomSelect jalan");
 
         // Foto 
         const fotoInput = document.getElementById('foto');
@@ -549,58 +515,65 @@
         }
 
         // Peta Latitude Longitude
-        let mapOptions = {
-            center: [-6.984168497010843, 110.40926002563694],
-            zoom: 10
-        }
+        let map;
+        let marker;
 
-        let map = new L.map('map', mapOptions);
+        const defaultPosition = {
+            lat: -6.984168497010843,
+            lng: 110.40926002563694
+        };
 
-        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        map.addLayer(layer);
-        // let marker = null;
-        // map.on('click', (event) => {
-        //     if (marker !== null) {
-        //         map.removeLayer(marker);
-        //     }
+        // INIT MAP
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: defaultPosition,
+            zoom: 10,
+        });
 
-        //     marker = L.marker([event.latlng.lat, event.latlng.lng], {
-        //         draggable: true
-        //     }).addTo(map);
-        //     console.log(event);
-
-        //     document.getElementById('latitude').value = event.latlng.lat;
-        //     document.getElementById('longitude').value = event.latlng.lng;
-
-        //     marker.on('drag', function(e) {
-        //         let latlng = e.target.getLatLng();
-        //         document.getElementById('latitude').value = latlng.lat;
-        //         document.getElementById('longitude').value = latlng.lng;
-        //     });
-        // })
-
-        let marker = L.marker(mapOptions.center, {
+        // MARKER
+        marker = new google.maps.Marker({
+            position: defaultPosition,
+            map: map,
             draggable: true,
-        }).addTo(map);
-        marker.bindPopup(
-            `<div style="text-align: center;"> <b>Klik</b> atau <b>Geser</b><br> untuk menentukan lokasi wisata kuliner! </div>`
-        ).openPopup();
-
-        document.getElementById('latitude').value = mapOptions.center[0];
-        document.getElementById('longitude').value = mapOptions.center[1];
-
-        marker.on('drag', function(e) {
-            let latlng = e.target.getLatLng();
-            document.getElementById('latitude').value = latlng.lat;
-            document.getElementById('longitude').value = latlng.lng;
         });
 
-        map.on('click', function(event) {
-            marker.setLatLng(event.latlng);
-            document.getElementById('latitude').value = event.latlng.lat;
-            document.getElementById('longitude').value = event.latlng.lng;
+        // INFO WINDOW (popup)
+        const infoWindow = new google.maps.InfoWindow({
+            content: `<div style="text-align: center;">
+                <b>Klik</b> atau <b>Geser</b><br>
+                untuk menentukan lokasi wisata kuliner!
+              </div>`
         });
 
+        infoWindow.open(map, marker);
+
+        // SET INPUT AWAL
+        document.getElementById('latitude').value = defaultPosition.lat;
+        document.getElementById('longitude').value = defaultPosition.lng;
+
+        // DRAG MARKER
+        marker.addListener('drag', function(e) {
+            const lat = e.latLng.lat();
+            const lng = e.latLng.lng();
+
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+        });
+
+        // CLICK MAP
+        map.addListener('click', function(event) {
+            const lat = event.latLng.lat();
+            const lng = event.latLng.lng();
+
+            marker.setPosition({
+                lat,
+                lng
+            });
+
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+        });
+
+        // INPUT MANUAL → UPDATE MARKER
         const latInput = document.getElementById('latitude');
         const lngInput = document.getElementById('longitude');
 
@@ -610,16 +583,20 @@
 
             if (isNaN(lat) || isNaN(lng)) return;
 
-            let newLatLng = [lat, lng];
+            const newPosition = {
+                lat,
+                lng
+            };
 
-            marker.setLatLng(newLatLng);
-            map.setView(newLatLng, map.getZoom());
+            marker.setPosition(newPosition);
+            map.setCenter(newPosition);
         }
 
-        // pas user ngetik
         latInput.addEventListener('input', updateMarkerFromInput);
         lngInput.addEventListener('input', updateMarkerFromInput);
 
+
+        const geocoder = new google.maps.Geocoder();
 
         document.getElementById('kelurahan').addEventListener('change', function() {
             const kelurahanText = this.options[this.selectedIndex].text;
@@ -634,30 +611,37 @@
         });
 
         function cariKoordinatDariAlamat(alamat) {
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(alamat)}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.length === 0) return;
+            geocoder.geocode({
+                address: alamat
+            }, function(results, status) {
+                if (status === "OK" && results[0]) {
+                    const location = results[0].geometry.location;
 
-                    const lat = parseFloat(data[0].lat);
-                    const lng = parseFloat(data[0].lon);
+                    const lat = location.lat();
+                    const lng = location.lng();
 
                     // update input
                     latitude.value = lat;
                     longitude.value = lng;
 
-                    // pindahin map & marker
-                    marker.setLatLng([lat, lng]);
-                    map.setView([lat, lng], 15);
-                });
+                    // update marker & map
+                    marker.setPosition({
+                        lat,
+                        lng
+                    });
+                    map.setCenter({
+                        lat,
+                        lng
+                    });
+                    map.setZoom(15);
+                }
+            });
         }
 
         $(document).ready(function() {
             $("#selectmhsadmin").select2({
-                // placeholder: 'Tambah/Pilih Wisata Kuliner',
                 tags: true,
                 allowClear: true,
-                // theme: "bootstrap-5",
 
                 createTag: function(params) {
                     var term = $.trim(params.term);
@@ -701,14 +685,9 @@
                     }
                 }
             });
-            // var idmhs = $("#selectmhsadmin").val();
 
             $("#selectmkadmin").attr("multiple", "multiple");
-            // $.get("{{ url('ngampumkadmin') }}/" + idmhs, function(data) {
-            //     $('#selectmkadmin').html(data);
-            // });
             $("#selectmkadmin").select2({
-                // placeholder: 'Pilih Fasilitas',
                 allowClear: true,
                 tags: true,
 
@@ -757,14 +736,68 @@
                     }
                 }
             });
+
+            $("#selectkategoriadmin").attr("multiple", "multiple");
+            $("#selectkategoriadmin").select2({
+                allowClear: true,
+                tags: true,
+
+                createTag: function(params) {
+                    var term = $.trim(params.term);
+
+                    if (term === '') return null;
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                },
+
+                templateResult: function(data) {
+                    if (data.newTag) {
+                        return $('<span style="color:black;">Tambah "<b>' +
+                            data.text +
+                            '</b>"</span>');
+                    }
+                    return data.text;
+                },
+
+                ajax: {
+                    url: function() {
+                        return "{{ url('selectkategoriadmin') }}/" + $("#selectmhsadmin").val();
+                    },
+                    data: function(params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data.data ?? data, function(item) {
+                                return {
+                                    id: item.id_kategori,
+                                    text: item.nama
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+
             $("#selectmhsadmin").change(function() {
                 var idmhs = $("#selectmhsadmin").val();
 
                 $('#selectmkadmin').val(null).trigger("change");
+                $('#selectkategoriadmin').val(null).trigger("change");
 
                 if (idmhs) {
                     $.get("{{ url('ngampumkadmin') }}/" + idmhs, function(data) {
                         $('#selectmkadmin').html(data).trigger('change');
+                    });
+
+                    $.get("{{ url('ngampukategoriadmin') }}/" + idmhs, function(data) {
+                        $('#selectkategoriadmin').html(data).trigger('change');
                     });
                 }
             });
@@ -786,6 +819,7 @@
                     success: function(response) {
                         $("#saveBtn").html('SIMPAN').removeAttr('disabled');
                         if (response.status) {
+                            $('#selectkategoriadmin').val(null).trigger("change")
                             $('#selectmkadmin').val(null).trigger("change")
                             $('#selectmhsadmin').val(null).trigger("change")
                             alert(response.message);
