@@ -8,6 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous">
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+        rel="stylesheet" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -38,6 +53,65 @@
             height: 400px;
             width: 1075px;
             border-radius: 7px;
+        }
+
+        .ts-control {
+            min-height: 45px;
+        }
+
+        .ts-wrapper.multi .ts-control>div {
+            background: #0d6efd;
+            color: white;
+            border-radius: 15px;
+            padding: 4px 10px;
+        }
+
+        /* .select2-container .select2-selection--single {
+            height: 42px;
+            border-radius: 0.375rem;
+            border: 1px solid #e0e0e1;
+            padding: 6px 10px;
+        } */
+
+        .select2-container--default .select2-selection--single:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+
+        .select2-container--default .select2-selection--single {
+            height: 42px;
+            border-radius: 0.375rem;
+            border: 1px solid #e0e0e1;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection__arrow {
+            height: 100%;
+            right: 10px;
+            top: 0;
+        }
+
+        .select2-container--default .select2-selection__arrow b {
+            display: none;
+        }
+
+        .select2-container--default .select2-selection__arrow::after {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-right: 2px solid #374151;
+            border-bottom: 2px solid #374151;
+            transform: rotate(45deg);
+            position: absolute;
+            top: 70%;
+            right: 5px;
+            margin-top: -4px;
+        }
+
+        .select2-container--default .select2-selection__clear {
+            display: none !important;
         }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -93,10 +167,15 @@
                                 <label class="block text-sm font-medium text-gray-800 mb-1"
                                     for="nama"><span>Nama</span>
                                     <span class="text-red-500 font-bold">*</span></label>
-                                <input type="text" id="nama" name="nama"
-                                    value="{{ old('nama', $wisataKuliner->nama) }}" required
-                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('nama')
+                                <select id="selectmhsadmin" name="id_wisata_kuliner"
+                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    aria-label="Default select example">
+
+                                </select>
+
+                                <input type="hidden" name="nama" id="nama">
+
+                                @error('id_wisata_kuliner')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -131,8 +210,12 @@
                                     @enderror
                                 </div>
 
-                                <input type="hidden" name="kecamatan" id="kecamatan_nama">
-                                <input type="hidden" name="kelurahan" id="kelurahan_nama">
+                                {{-- <input type="hidden" name="kecamatan" id="kecamatan_nama">
+                                <input type="hidden" name="kelurahan" id="kelurahan_nama"> --}}
+                                <input type="hidden" name="kecamatan" id="kecamatan_nama"
+                                    value="{{ old('kecamatan', $wisataKuliner->kecamatan) }}">
+                                <input type="hidden" name="kelurahan" id="kelurahan_nama"
+                                    value="{{ old('kelurahan', $wisataKuliner->kelurahan) }}">
                             </div>
 
                             <!-- Alamat -->
@@ -183,6 +266,22 @@
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1"
+                                    for="fasilitas"><span>Fasilitas</span>
+                                    <span class="text-red-500 font-bold">*</span></label>
+                                <select id="selectmkadmin" name="id_fasilitas[]"
+                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    aria-label="Default select example">
+
+                                </select>
+
+                                @error('id_fasilitas')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
 
                             <!-- Foto Wisata Kuliner -->
                             <div>
@@ -255,7 +354,6 @@
                                     class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold">
                                     Simpan
                                 </button>
-                                {{-- <input type="hidden" id="tanggal_daftar" name="tanggal_daftar"> --}}
                             </div>
                     </form>
                 </div>
@@ -287,8 +385,148 @@
 
     <script>
         // Kecamatan dan Kelurahan
-        const oldKecamatan = "{{ old('kecamatan_kode', $wisataKuliner->kecamatan_kode) }}";
-        const oldKelurahan = "{{ old('kelurahan_kode', $wisataKuliner->kelurahan_kode) }}";
+        // const oldKecamatan = "{{ old('kecamatan_kode', $wisataKuliner->kecamatan_kode) }}";
+        // const oldKelurahan = "{{ old('kelurahan_kode', $wisataKuliner->kelurahan_kode) }}";
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const kecamatanSelect = document.getElementById('kecamatan');
+        //     const kelurahanSelect = document.getElementById('kelurahan');
+        //     const kecamatanNama = document.getElementById('kecamatan_nama');
+        //     const kelurahanNama = document.getElementById('kelurahan_nama');
+
+        //     // LOAD KECAMATAN (pas halaman dibuka)
+        //     fetch('/wisata/api/kecamatan')
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             data.forEach(item => {
+        //                 const selected = item.code == oldKecamatan ? 'selected' : '';
+        //                 kecamatanSelect.innerHTML += `
+    //             <option value="${item.code}">
+    //                 ${item.name}
+    //             </option>
+    //         `;
+        //             });
+        //             if (oldKecamatan) {
+        //                 loadKelurahan(oldKecamatan);
+        //             }
+        //         })
+        //         .catch(() => {
+        //             alert('Gagal memuat data kecamatan');
+        //         });
+
+        //     // LOAD KELURAHAN (pas kecamatan berubah)
+        //     kecamatanSelect.addEventListener('change', function() {
+        //         const selectedOption = this.options[this.selectedIndex];
+        //         kecamatanNama.value = selectedOption.text;
+
+        //         const districtCode = this.value;
+        //         kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+
+        //         if (!districtCode) return;
+
+        //         fetch(`/wisata/api/kelurahan/${districtCode}`)
+        //             .then(res => res.json())
+        //             .then(data => {
+        //                 data.forEach(item => {
+        //                     const selected = item.code == oldKelurahan ? 'selected' : '';
+        //                     kelurahanSelect.innerHTML += `
+    //                 <option value="${item.code}">
+    //                     ${item.name}
+    //                 </option>
+    //             `;
+        //                 });
+        //             })
+        //             .catch(() => {
+        //                 alert('Gagal memuat data kelurahan');
+        //             });
+        //     });
+
+        //     kelurahanSelect.addEventListener('change', function() {
+        //         const selectedOption = this.options[this.selectedIndex];
+        //         kelurahanNama.value = selectedOption.text;
+        //     });
+        // });
+
+        //awalnya ini yaaa -------------------------------------------------------------------------------
+        // const oldKecamatan = "{{ old('kecamatan', $wisataKuliner->kecamatan) }}";
+        // const oldKelurahan = "{{ old('kelurahan', $wisataKuliner->kelurahan) }}";
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const kecamatanSelect = document.getElementById('kecamatan');
+        //     const kelurahanSelect = document.getElementById('kelurahan');
+        //     const kecamatanNama = document.getElementById('kecamatan_nama');
+        //     const kelurahanNama = document.getElementById('kelurahan_nama');
+
+        //     fetch('/wisata/api/kecamatan')
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             let savedKecamatanCode = null;
+
+        //             data.forEach(item => {
+        //                 const option = document.createElement('option');
+        //                 option.value = item.name; // ✅ simpan nama
+        //                 option.dataset.code = item.code; // ✅ simpan code di data attribute
+        //                 option.textContent = item.name;
+
+        //                 if (item.name == oldKecamatan) {
+        //                     option.selected = true;
+        //                     kecamatanNama.value = item.name;
+        //                     savedKecamatanCode = item.code; // ✅ ambil code untuk load kelurahan
+        //                 }
+
+        //                 kecamatanSelect.appendChild(option);
+        //             });
+
+        //             if (savedKecamatanCode) {
+        //                 loadKelurahan(savedKecamatanCode);
+        //             }
+        //         })
+        //         .catch(() => alert('Gagal memuat data kecamatan'));
+
+        //     function loadKelurahan(districtCode) {
+        //         kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+
+        //         fetch(`/wisata/api/kelurahan/${districtCode}`)
+        //             .then(res => res.json())
+        //             .then(data => {
+        //                 data.forEach(item => {
+        //                     const option = document.createElement('option');
+        //                     option.value = item.name; // ✅ simpan nama
+        //                     option.dataset.code = item.code;
+        //                     option.textContent = item.name;
+
+        //                     if (item.name == oldKelurahan) {
+        //                         option.selected = true;
+        //                         kelurahanNama.value = item.name;
+        //                     }
+
+        //                     kelurahanSelect.appendChild(option);
+        //                 });
+        //             })
+        //             .catch(() => alert('Gagal memuat data kelurahan'));
+        //     }
+
+        //     kecamatanSelect.addEventListener('change', function() {
+        //         const selectedOption = this.options[this.selectedIndex];
+        //         kecamatanNama.value = selectedOption.text;
+        //         kelurahanNama.value = '';
+
+        //         const code = selectedOption.dataset.code; // ✅ ambil code dari data attribute
+        //         if (code) {
+        //             loadKelurahan(code);
+        //         } else {
+        //             kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+        //         }
+        //     });
+
+        //     kelurahanSelect.addEventListener('change', function() {
+        //         kelurahanNama.value = this.options[this.selectedIndex].text;
+        //     });
+        // });
+
+
+        const oldKecamatan = "{{ old('kecamatan', $wisataKuliner->kecamatan) }}";
+        const oldKelurahan = "{{ old('kelurahan', $wisataKuliner->kelurahan) }}";
 
         document.addEventListener('DOMContentLoaded', function() {
             const kecamatanSelect = document.getElementById('kecamatan');
@@ -296,56 +534,73 @@
             const kecamatanNama = document.getElementById('kecamatan_nama');
             const kelurahanNama = document.getElementById('kelurahan_nama');
 
-            // LOAD KECAMATAN (pas halaman dibuka)
+            // LOAD KECAMATAN
             fetch('/wisata/api/kecamatan')
                 .then(res => res.json())
                 .then(data => {
+                    let savedCode = null;
+
                     data.forEach(item => {
-                        const selected = item.code == oldKecamatan ? 'selected' : '';
-                        kecamatanSelect.innerHTML += `
-                    <option value="${item.code}">
-                        ${item.name}
-                    </option>
-                `;
+                        const option = document.createElement('option');
+                        option.value = item.code;
+                        option.textContent = item.name;
+
+                        // ✅ cocokkan nama dari DB dengan nama dari API
+                        if (item.name == oldKecamatan) {
+                            option.selected = true;
+                            savedCode = item.code; // simpan code untuk load kelurahan
+                        }
+
+                        kecamatanSelect.appendChild(option);
                     });
-                    if (oldKecamatan) {
-                        loadKelurahan(oldKecamatan);
+
+                    // ✅ auto load kelurahan sesuai kecamatan yang tersimpan
+                    if (savedCode) {
+                        loadKelurahan(savedCode);
                     }
                 })
-                .catch(() => {
-                    alert('Gagal memuat data kecamatan');
-                });
+                .catch(() => alert('Gagal memuat data kecamatan'));
 
-            // LOAD KELURAHAN (pas kecamatan berubah)
-            kecamatanSelect.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                kecamatanNama.value = selectedOption.text;
-
-                const districtCode = this.value;
+            // Jadikan fungsi agar bisa dipanggil saat pre-load maupun saat user ganti
+            function loadKelurahan(districtCode) {
                 kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-
-                if (!districtCode) return;
 
                 fetch(`/wisata/api/kelurahan/${districtCode}`)
                     .then(res => res.json())
                     .then(data => {
                         data.forEach(item => {
-                            const selected = item.code == oldKelurahan ? 'selected' : '';
-                            kelurahanSelect.innerHTML += `
-                        <option value="${item.code}">
-                            ${item.name}
-                        </option>
-                    `;
+                            const option = document.createElement('option');
+                            option.value = item.code;
+                            option.textContent = item.name;
+
+                            // ✅ cocokkan nama kelurahan dari DB
+                            if (item.name == oldKelurahan) {
+                                option.selected = true;
+                            }
+
+                            kelurahanSelect.appendChild(option);
                         });
                     })
-                    .catch(() => {
-                        alert('Gagal memuat data kelurahan');
-                    });
+                    .catch(() => alert('Gagal memuat data kelurahan'));
+            }
+
+            // Saat user ganti kecamatan manual
+            kecamatanSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                kecamatanNama.value = selectedOption.text; // update hidden input nama
+                kelurahanNama.value = '';
+
+                if (this.value) {
+                    loadKelurahan(this.value);
+                } else {
+                    kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+                }
             });
 
+            // Saat user ganti kelurahan manual
             kelurahanSelect.addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
-                kelurahanNama.value = selectedOption.text;
+                kelurahanNama.value = selectedOption.text; // update hidden input nama
             });
         });
 
@@ -396,12 +651,6 @@
             fotoInput.value = '';
             fotoPreview.src = '';
         }
-
-        // function removeFoto() {
-        //     resetInput();
-        //     fotoError.classList.add('hidden');
-        //     previewWrapper.classList.add('hidden');
-        // }
 
         // Peta Latitude Longitude
         const latInput = document.getElementById('latitude');
@@ -491,6 +740,176 @@
                     map.setView([lat, lng], 15);
                 });
         }
+
+        $(document).ready(function() {
+            let selectedWisata = {
+                id: "{{ $wisataKuliner->id_wisata_kuliner ?? $wisataKuliner->id }}",
+                text: "{{ $wisataKuliner->nama }}"
+            };
+
+            let option = new Option(selectedWisata.text, selectedWisata.id, true, true);
+            $('#selectmhsadmin').append(option).trigger('change');
+
+            $('#nama').val(selectedWisata.text);
+
+            $("#selectmhsadmin").select2({
+                // placeholder: 'Tambah/Pilih Wisata Kuliner',
+                tags: true,
+                allowClear: true,
+                // theme: "bootstrap-5",
+
+                createTag: function(params) {
+                    var term = $.trim(params.term);
+
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                },
+
+                templateResult: function(data) {
+                    if (data.newTag) {
+                        return $('<span style="color:black;">Tambah "<b>' +
+                            data.text +
+                            '</b>"</span>');
+                    }
+                    return data.text;
+                },
+
+                ajax: {
+                    url: "{{ route('select.mhs.admin') }}",
+                    data: function(params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data.data ?? data, function(item) {
+                                return {
+                                    id: item.id_wisata_kuliner,
+                                    text: item.nama
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+            // var idmhs = $("#selectmhsadmin").val();
+            let selectedFasilitas = {!! $fasilitas->map(function ($f) {
+                    return ['id' => $f->fasilitas->id_fasilitas, 'text' => $f->fasilitas->nama];
+                })->toJson() !!};
+
+            selectedFasilitas.forEach(function(f) {
+                let option = new Option(f.text, f.id, true, true);
+                $('#selectmkadmin').append(option).trigger('change');
+            });
+            $("#selectmkadmin").attr("multiple", "multiple");
+            // $.get("{{ url('ngampumkadmin') }}/" + idmhs, function(data) {
+            //     $('#selectmkadmin').html(data);
+            // });
+            $("#selectmkadmin").select2({
+                // placeholder: 'Pilih Fasilitas',
+                allowClear: true,
+                tags: true,
+
+                createTag: function(params) {
+                    var term = $.trim(params.term);
+
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                },
+
+                templateResult: function(data) {
+                    if (data.newTag) {
+                        return $('<span style="color:black;">Tambah "<b>' +
+                            data.text +
+                            '</b>"</span>');
+                    }
+
+                    return data.text;
+                },
+
+                ajax: {
+                    url: function() {
+                        return "{{ url('selectmkadmin') }}/" + $("#selectmhsadmin").val();
+                    },
+                    data: function(params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data.data ?? data, function(item) {
+                                return {
+                                    id: item.id_fasilitas,
+                                    text: item.nama
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+            $("#selectmhsadmin").change(function() {
+                var idmhs = $("#selectmhsadmin").val();
+
+                $('#selectmkadmin').val(null).trigger("change");
+
+                if (idmhs) {
+                    $.get("{{ url('ngampumkadmin') }}/" + idmhs, function(data) {
+                        $('#selectmkadmin').html(data).trigger('change');
+                    });
+                }
+
+                let selectedText = $('#selectmhsadmin').find(':selected').text();
+                $('#nama').val(selectedText);
+            });
+
+            //save form
+            $("#addForm").on('submit', function(e) {
+                e.preventDefault();
+                $("#saveBtn").html('Processing...').attr('disabled', 'disabled');
+                var link = $("#addForm").attr('action');
+                $.ajax({
+                    url: link,
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                    },
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $("#saveBtn").html('SIMPAN').removeAttr('disabled');
+                        if (response.status) {
+                            $('#selectmkadmin').val(null).trigger("change")
+                            $('#selectmhsadmin').val(null).trigger("change")
+                            alert(response.message);
+                        }
+                    },
+                    error: function(response) {
+                        $("#saveBtn").html('SIMPAN').removeAttr('disabled');
+                        alert(response.message);
+                    }
+                });
+            });
+        });
+
+        console.log("nama:", $('#id_wisata_kuliner').val());
+        console.log("kecamatan:", $('#deskripsi').val());
     </script>
 </body>
 

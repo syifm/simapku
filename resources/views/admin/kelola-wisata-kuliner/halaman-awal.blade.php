@@ -10,6 +10,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -53,7 +55,7 @@
         <div class="flex justify-end">
             <a href="{{ route('kelolawisatakuliner.tambah') }}"
                 class="bg-[#FFA319] hover:bg-[#F19305]
-                btn btn-primary text-white rounded-full px-4 py-2 mt-14 text-sm flex items-center gap-1 transition mb-4">
+                btn btn-primary text-white rounded-full px-4 py-2 mt-14 text-sm flex items-center gap-1 transition mb-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
                     stroke="currentColor" class="size-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -197,15 +199,21 @@
 
                     <div id="detailModal"
                         class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
-                        <div class="relative top-5 bottom-5 mx-auto p-5 border w-[450px] shadow-lg rounded-xl bg-white">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-lg font-semibold flex-1 text-center" id="modalTitle"></h3>
-                                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
+                        <div
+                            class="relative top-5 bottom-5 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
+                            <div class="relative">
+                                <button onclick="closeModal()"
+                                    class="absolute right-0 top-0 text-gray-400 hover:text-gray-500">
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
+
+                                <div class="text-center">
+                                    <h3 class="text-lg font-semibold" id="modalTitle"></h3>
+                                    <div id="ratingStars" class="text-sm text-yellow-400 mt-1"></div>
+                                </div>
                             </div>
 
                             <div class="mt-4">
@@ -287,6 +295,14 @@
                                     </div>
 
                                     <div class="flex justify-between w-32">
+                                        <strong>Harga</strong>
+                                    </div>
+                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                        <div>:</div>
+                                        <div class="text-justify"><span id="harga"></span></div>
+                                    </div>
+
+                                    <div class="flex justify-between w-32">
                                         <strong>Foto</strong>
                                     </div>
                                     <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
@@ -310,8 +326,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                 </div>
             </div>
@@ -588,7 +602,36 @@
                         document.getElementById('deskripsi').textContent = data.deskripsi;
                         document.getElementById('latitude').textContent = data.latitude;
                         document.getElementById('longitude').textContent = data.longitude;
+                        let min = data.harga_min;
+                        let max = data.harga_max;
+
+                        let text = '';
+
+                        if (min && max) {
+                            text = `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
+                        } else if (min && !max) {
+                            text = `Rp ${min.toLocaleString('id-ID')}+`;
+                        } else if (!min && max) {
+                            text = `≤ Rp ${max.toLocaleString('id-ID')}`;
+                        } else {
+                            text = '-';
+                        }
+
+                        document.getElementById('harga').textContent = text;
+
+                        document.getElementById('harga').textContent = text;
                         document.getElementById('email_pengaju').textContent = data.email_pengaju;
+
+                        let rating = parseFloat(data.penilaian) || 0;
+
+                        if (rating > 0) {
+                            document.getElementById('ratingStars').innerHTML = `
+                            <span class="text-sm text-black mr-1">${rating}</span>
+                            ${generateStars(rating)}
+                        `;
+                        } else {
+                            document.getElementById('ratingStars').innerHTML = '';
+                        }
                         const foto = document.getElementById('foto');
 
                         if (data.foto) {
@@ -622,6 +665,26 @@
 
             function closeModal() {
                 document.getElementById('detailModal').classList.add('hidden');
+            }
+
+            function generateStars(rating) {
+                let roundedRating = Math.round(rating * 2) / 2;
+                let stars = '';
+                let fullStars = Math.floor(roundedRating);
+                let halfStar = roundedRating % 1 === 0.5;
+                let emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= fullStars) {
+                        stars += `<i class="fas fa-star text-yellow-400"></i>`;
+                    } else if (i === fullStars + 1 && halfStar) {
+                        stars += `<i class="fas fa-star-half-alt text-yellow-400"></i>`;
+                    } else {
+                        stars += `<i class="far fa-star text-gray-300"></i>`;
+                    }
+                }
+
+                return stars;
             }
 
             function konfirmasiHapus(id) {

@@ -4,10 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMAPKU | Tambah Wisata Kuliner</title>
+    <title>SIMAPKU | Wisata Kuliner</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script> --}}
+    {{-- <link href="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/js/tom-select.complete.min.js"></script> --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous">
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+        rel="stylesheet" />
+
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous"> --}}
+
+    <!-- Multi Select -->
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+        integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+        integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -20,7 +51,6 @@
         .file-input-wrapper {
             display: flex;
             align-items: center;
-            overflow: hidden;
             max-width: 300px;
         }
 
@@ -36,9 +66,74 @@
 
         #map {
             height: 400px;
-            width: 1075px;
+            width: 1330px;
             border-radius: 7px;
         }
+
+        .ts-control {
+            min-height: 45px;
+        }
+
+        .ts-wrapper.multi .ts-control>div {
+            background: #0d6efd;
+            color: white;
+            border-radius: 15px;
+            padding: 4px 10px;
+        }
+
+        /* .select2-container .select2-selection--single {
+            height: 42px;
+            border-radius: 0.375rem;
+            border: 1px solid #e0e0e1;
+            padding: 6px 10px;
+        } */
+
+        .select2-container--default .select2-selection--single:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+
+        .select2-container--default .select2-selection--single {
+            height: 42px;
+            border-radius: 0.375rem;
+            border: 1px solid #e0e0e1;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection__arrow {
+            height: 100%;
+            right: 10px;
+            top: 0;
+        }
+
+        .select2-container--default .select2-selection__arrow b {
+            display: none;
+        }
+
+        .select2-container--default .select2-selection__arrow::after {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-right: 2px solid #374151;
+            border-bottom: 2px solid #374151;
+            transform: rotate(45deg);
+            position: absolute;
+            top: 70%;
+            right: 5px;
+            margin-top: -4px;
+        }
+
+        .select2-container--default .select2-selection__clear {
+            display: none !important;
+        }
+
+        /*.select2-container {
+            width: 100% !important;
+        }
+
+        */
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -84,16 +179,23 @@
                     <form action="{{ route('kelolawisatakuliner.simpan') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-                        {{-- <p class="text-red-500 text-sm font-bold text-right">* Seluruh Isian Wajib Diisi</p1> --}}
                         <div class="w-full mx-auto space-y-6">
                             <!-- Nama Wisata Kuliner -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-800 mb-1"
                                     for="nama"><span>Nama</span>
                                     <span class="text-red-500 font-bold">*</span></label>
-                                <input type="text" id="nama" name="nama" value="{{ old('nama') }}" required
-                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('nama')
+                                {{-- <input type="text" id="nama" name="nama" value="{{ old('nama') }}" required
+                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"> --}}
+                                {{-- <div class='mb-2'> --}}
+                                {{-- <label> Mahasiswa</label> --}}
+                                <select id="selectmhsadmin" name='id_wisata_kuliner'
+                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    aria-label="Default select example">
+
+                                </select>
+                                {{-- </div> --}}
+                                @error('id_wisata_kuliner')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -179,6 +281,32 @@
                                 @enderror
                             </div>
 
+                            <!-- Fasilitas Wisata Kuliner -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1"
+                                    for="fasilitas"><span>Fasilitas</span>
+                                    <span class="text-red-500 font-bold">*</span></label>
+                                {{-- <select id="fasilitas" name="fasilitas[]" multiple>
+                                    @foreach ($fasilitas as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
+                                </select> --}}
+                                {{-- <select id="fasilitas" name="fasilitas[]" multiple>
+                                    @foreach ($fasilitas as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
+                                </select> --}}
+                                <select id="selectmkadmin" name="id_fasilitas[]"
+                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    aria-label="Default select example">
+
+                                </select>
+
+                                @error('id_fasilitas')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
                             <!-- Foto Wisata Kuliner -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-800 mb-1" for="foto">
@@ -191,13 +319,8 @@
 
                                 <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
 
-                                <!-- PREVIEW -->
                                 <div id="previewWrapper" class="mt-3 hidden relative w-40">
                                     <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover">
-                                    {{-- <button type="button" onclick="removeFoto()"
-                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
-                                        ✕
-                                    </button> --}}
                                 </div>
 
                                 <p class="text-xs text-gray-600 mt-2">
@@ -237,11 +360,10 @@
 
                             <!-- Submit -->
                             <div class="flex justify-end">
-                                <button type="submit"
+                                <button type="submit" id="saveBtn"
                                     class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold">
                                     Simpan
                                 </button>
-                                {{-- <input type="hidden" id="tanggal_daftar" name="tanggal_daftar"> --}}
                             </div>
                         </div>
                     </form>
@@ -295,12 +417,14 @@
                     alert('Gagal memuat data kecamatan');
                 });
 
+
             // LOAD KELURAHAN (pas kecamatan berubah)
             kecamatanSelect.addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
                 kecamatanNama.value = selectedOption.text;
 
                 const districtCode = this.value;
+
                 kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
 
                 if (!districtCode) return;
@@ -325,7 +449,50 @@
                 const selectedOption = this.options[this.selectedIndex];
                 kelurahanNama.value = selectedOption.text;
             });
+
+
+            // new TomSelect("#fasilitas", {
+            //     plugins: ['remove_button'],
+            //     create: true,
+            //     persist: false
+            // });
+            // new TomSelect("#fasilitas", {
+            //     plugins: {
+            //         remove_button: {
+            //             title: "Hapus"
+            //         }
+            //     },
+            //     create: true,
+            //     persist: false,
+            //     maxItems: null,
+            //     hideSelected: true,
+            //     closeAfterSelect: false,
+            //     placeholder: "Pilih atau ketik fasilitas...",
+            // sortField: {
+            //     field: "text",
+            //     direction: "asc"
+            // }
+
+            // load: function(query, callback) {
+            //     if (!query.length) return callback();
+
+            //     fetch(`/search-fasilitas?q=${query}`)
+            //         .then(response => response.json())
+            //         .then(json => {
+            //             callback(json);
+            //         }).catch(() => {
+            //             callback();
+            //         });
+            // }
+            // });
+
+            // $(document).ready(function() {
+            //     $('.js-example-basic-multiple').select2();
+            // });
+
+            // console.log("TomSelect jalan");
         });
+        // console.log("TomSelect jalan");
 
         // Foto 
         const fotoInput = document.getElementById('foto');
@@ -485,482 +652,152 @@
                 });
         }
 
-        // const fotoInput = document.getElementById('foto');
-        // const previewWrapper = document.getElementById('previewWrapper');
-        // const fotoPreview = document.getElementById('fotoPreview');
-
-        // fotoInput.addEventListener('change', function() {
-        // const file = this.files[0];
-
-        // if (!file) return;
-
-        // if (file.size > 10 * 1024 * 1024) {
-        // alert('Ukuran foto maksimal 10MB');
-        // removeFoto();
-        // return;
-        // }
-        // const reader = new FileReader();
-        // reader.onload = function(e) {
-        // fotoPreview.src = e.target.result;
-        // previewWrapper.classList.remove('hidden');
-        // };
-        // reader.readAsDataURL(file);
-        // });
-
-        // function removeFoto() {
-        // fotoInput.value = '';
-        // fotoPreview.src = '';
-        // previewWrapper.classList.add('hidden');
-        // }
-
-
-
-
-
-
-
-        // document.getElementById("durasi").addEventListener("input", hitungPeriodeSelesai);
-        // document.getElementById("periode_mulai").addEventListener("change", hitungPeriodeSelesai);
-
-        // function hitungPeriodeSelesai() {
-        //     const periodeMulai = document.getElementById("periode_mulai").value;
-        //     const durasi = parseInt(document.getElementById("durasi").value);
-        //     const periodeSelesai = document.getElementById("periode_selesai");
-
-        //     if (durasi > 0 && periodeMulai) {
-        //         const namaBulan = [
-        //             "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-        //             "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-        //         ];
-
-        //         const [bulanMulai, tahunMulai] = periodeMulai.trim().split("-");
-        //         const bulanMulaiAngka = namaBulan.indexOf(bulanMulai) + 1;
-        //         const tahunMulaiAngka = parseInt(tahunMulai);
-
-        //         if (bulanMulaiAngka >= 0 && !isNaN(tahunMulaiAngka)) {
-        //             const totalBulan = (tahunMulaiAngka * 12 + bulanMulaiAngka) + (durasi + 1);
-        //             const tahunSelesai = Math.floor(totalBulan / 12);
-        //             const bulanSelesaiAngka = (totalBulan % 12);
-
-        //             periodeSelesai.value = `${namaBulan[bulanSelesaiAngka - 1]} ${tahunSelesai}`;
-        //         } else {
-        //             periodeSelesai.value = "Format Periode Tidak Valid";
-        //         }
-        //     } else {
-        //         periodeSelesai.value = "";
-        //     }
-        // }
-
-        // document.querySelector('button[type="submit"]').addEventListener('click', function() {
-        //     const tanggal = new Date().toLocaleDateString('id-ID');
-
-        //     document.getElementById('tanggal_daftar').value = tanggal;
-        // });
-
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     // -------------------------------
-        //     // Helper error display functions
-        //     // -------------------------------
-        //     function showError(input, message) {
-        //         removeError(input);
-        //         const error = document.createElement("p");
-        //         error.className = "text-red-500 text-sm mt-1 error-message";
-        //         error.innerText = message;
-        //         input.classList.add("border-red-500");
-        //         input.parentNode.appendChild(error);
-        //     }
-
-        //     function removeError(input) {
-        //         const errorMsg = input.parentNode.querySelector(".error-message");
-        //         if (errorMsg) errorMsg.remove();
-        //         input.classList.remove("border-red-500");
-        //     }
-
-        //     // -------------------------------
-        //     // File validation
-        //     // -------------------------------
-        //     function validateFile(input, maxSizeMB, allowedTypes) {
-        //         const errorDiv = document.getElementById(input.id + 'Error');
-
-        //         if (errorDiv) {
-        //             errorDiv.classList.add('hidden');
-        //             errorDiv.textContent = '';
-        //         }
-
-        //         const files = input.files;
-        //         let valid = true;
-
-        //         for (let i = 0; i < files.length; i++) {
-        //             const file = files[i];
-        //             const fileType = file.type;
-        //             const fileSizeMB = file.size /
-        //                 1024 / 1024;
-        //             if (!allowedTypes.includes(fileType)) {
-        //                 if (errorDiv) {
-        //                     errorDiv.textContent = 'Format file tidak sesuai';
-        //                     errorDiv.classList.remove('hidden');
-        //                 }
-        //                 valid = false;
-        //                 break;
-        //             } else if (fileSizeMB > maxSizeMB) {
-        //                 if (errorDiv) {
-        //                     errorDiv.textContent = 'Ukuran file terlalu besar';
-        //                     errorDiv.classList.remove('hidden');
-        //                 }
-        //                 valid = false;
-        //                 break;
-        //             }
-        //         }
-
-        //         if (!valid) {
-        //             input.value = '';
-        //         }
-        //     }
-
-        //     // -------------------------------
-        //     // Required text/date/number/select fields
-        //     // -------------------------------
-        //     function validateRequired(input, label) {
-        //         removeError(input);
-        //         if (!input.value.trim()) {
-        //             showError(input, `${label} wajib diisi`);
-        //         }
-        //     }
-
-        //     // -------------------------------
-        //     // Radio validation
-        //     // -------------------------------
-        //     function validateRadio(name, label) {
-        //         const inputs = document.querySelectorAll(`input[name="${name}"]`);
-        //         const parent = inputs[0].parentNode.parentNode;
-        //         const checked = [...inputs].some(input => input.checked);
-        //         parent.querySelectorAll(".error-message").forEach(e => e.remove());
-
-        //         if (!checked) {
-        //             const error = document.createElement("p");
-        //             error.className = "text-red-500 text-sm mt-1 error-message";
-        //             error.innerText = `${label} wajib dipilih`;
-        //             parent.appendChild(error);
-        //         }
-        //     }
-
-        //     // -------------------------------
-        //     // Event listeners
-        //     // -------------------------------
-        //     document.querySelectorAll(
-        //         "input[type='text'], input[type='number'], textarea, select, input[type='date']").forEach(
-        //         input => {
-        //             input.addEventListener("input", () => {
-        //                 validateRequired(input, input.labels[0]?.innerText || input.name);
-        //             });
-        //         });
-
-        //     document.querySelectorAll("input[type='file']").forEach(input => {
-        //         input.addEventListener("change", () => {
-        //             const id = input.id;
-        //             const docTypes = ["application/pdf", "application/msword",
-        //                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        //             ];
-        //             const imageTypes = ["image/jpeg", "image/png", "image/jpg"];
-
-        //             if (id === "surat_permohonan") {
-        //                 validateFile(input, 2, docTypes);
-        //             } else if (id === "foto") {
-        //                 validateFile(input, 5, imageTypes);
-        //             } else {
-        //                 validateFile(input, 10, docTypes);
-        //             }
-        //         });
-        //     });
-
-        //     document.querySelectorAll("input[type='radio']").forEach(input => {
-        //         input.addEventListener("change", () => {
-        //             validateRadio(input.name, input.name.charAt(0).toUpperCase() + input.name.slice(
-        //                 1));
-        //         });
-        //     });
-
-        //     // -------------------------------
-        //     // Final form submit check
-        //     // -------------------------------
-        //     document.querySelector('form').addEventListener("submit", function(e) {
-        //         let isValid = true;
-
-        //         document.querySelectorAll(".error-message").forEach(e => e.remove());
-
-        //         this.querySelectorAll(
-        //                 "input[type='text'], input[type='number'], textarea, select, input[type='date']")
-        //             .forEach(input => {
-        //                 if (!input.value.trim()) {
-        //                     validateRequired(input, input.labels[0]?.innerText || input.name);
-        //                     isValid = false;
-        //                 }
-        //             });
-
-        //         this.querySelectorAll("input[type='file']").forEach(input => {
-        //             if (input.required && !input.files.length) {
-        //                 showError(input,
-        //                     `File ${input.labels[0]?.innerText || input.name} wajib diunggah`);
-        //                 isValid = false;
-        //             }
-        //         });
-
-        //         validateRadio("jenis_kelamin", "Jenis Kelamin");
-
-        //         if (!isValid) e.preventDefault();
-        //     });
-
-        //     // -------------------------------
-        //     // Hitung periode selesai otomatis
-        //     // -------------------------------
-        //     document.getElementById("durasi")?.addEventListener("input", hitungPeriodeSelesai);
-        //     document.getElementById("periode_mulai")?.addEventListener("change", hitungPeriodeSelesai);
-
-        //     function hitungPeriodeSelesai() {
-        //         const periodeMulai = document.getElementById("periode_mulai").value.trim();
-        //         console.log("periodeMulai:", periodeMulai); // <-- log DI DALAM fungsi const
-        //         durasi = parseInt(document.getElementById("durasi").value);
-        //         const
-        //             periodeSelesai = document.getElementById("periode_selesai");
-        //         const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus",
-        //             "September", "Oktober", "November", "Desember"
-        //         ];
-        //         if (durasi > 0 && periodeMulai) {
-        //             const match = periodeMulai.match(/^([A-Za-z]+)\s+(\d{4})$/);
-
-        //             if (!match) {
-        //                 console.log("Periode format tidak valid:", periodeMulai);
-        //                 periodeSelesai.value = "Format Periode Tidak Valid";
-        //                 return;
-        //             }
-
-        //             const bulanMulai = match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase();
-        //             const tahunMulaiAngka = parseInt(match[2]);
-        //             const bulanMulaiAngka = namaBulan.indexOf(bulanMulai);
-
-        //             console.log("Bulan:", bulanMulai, "Tahun:", tahunMulaiAngka);
-
-        //             if (bulanMulaiAngka >= 0 && !isNaN(tahunMulaiAngka)) {
-        //                 const tanggalMulai = new Date(tahunMulaiAngka, bulanMulaiAngka, 1);
-        //                 tanggalMulai.setMonth(tanggalMulai.getMonth() + durasi - 1);
-
-        //                 const bulanSelesai = namaBulan[tanggalMulai.getMonth()];
-        //                 const tahunSelesai = tanggalMulai.getFullYear();
-
-        //                 periodeSelesai.value = `${bulanSelesai} ${tahunSelesai}`;
-        //             } else {
-        //                 periodeSelesai.value = "Format Periode Tidak Valid";
-        //             }
-        //         } else {
-        //             periodeSelesai.value = "";
-        //         }
-        //     }
-
-        //     // -------------------------------
-        //     // Isi otomatis tanggal daftar
-        //     // -------------------------------
-        //     document.querySelector('button[type="submit"]')?.addEventListener('click', function() {
-        //         const tanggal = new Date().toLocaleDateString('id-ID');
-        //         const tanggalField = document.getElementById('tanggal_daftar');
-        //         if (tanggalField) tanggalField.value = tanggal;
-        //     });
-        // });
-
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const periodeMulai = document.getElementById('periode_mulai');
-        //     const durasi = document.getElementById('durasi');
-        //     const periodeSelesai = document.getElementById('periode_selesai');
-        //     const bidangSelect = document.getElementById('bidang');
-        //     const warningBidang = document.getElementById('warning_bidang');
-
-        //     function updatePeriodeSelesai() {
-        //         const value = periodeMulai.value;
-        //         const dur = parseInt(durasi.value);
-
-        //         if (value && dur) {
-        //             const [bulanRaw, tahun] = value.split(' ');
-        //             const bulan = bulanRaw.charAt(0).toUpperCase() + bulanRaw.slice(1).toLowerCase();
-        //             const namaBulan = [
-        //                 "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-        //                 "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-        //             ];
-        //             const bulanIndex = namaBulan.indexOf(bulan);
-        //             const start = new Date(tahun, bulanIndex, 1);
-        //             const selesai = new Date(start);
-        //             selesai.setMonth(start.getMonth() + dur - 1);
-
-        //             const options = {
-        //                 year: 'numeric',
-        //                 month: 'long'
-        //             };
-        //             periodeSelesai.value = selesai.toLocaleDateString('id-ID', options);
-        //         } else {
-        //             periodeSelesai.value = '';
-        //         }
-        //     }
-
-        //     function loadBidang() {
-        //         const mulai = periodeMulai.value;
-        //         const dur = durasi.value;
-
-        //         bidangSelect.innerHTML = '<option value="">Loading...</option>';
-        //         warningBidang.innerHTML = '';
-
-        //         if (mulai && dur) {
-        //             const url = `/get-bidang-tersedia?periode_mulai=${encodeURIComponent(mulai)}&durasi=${dur}`;
-        //             fetch(url)
-        //                 .then(response => response.json())
-        //                 .then(data => {
-        //                     bidangSelect.innerHTML =
-        //                         '<option value="" disabled selected>--- Pilih Bidang ---</option>';
-        //                     data.forEach(bid => {
-        //                         const option = document.createElement('option');
-        //                         option.value = bid.id;
-        //                         option.text = bid.nama + (bid.tersedia ? '' : ' (Tidak tersedia)');
-
-        //                         if (!bid.tersedia) {
-        //                             option.disabled = true;
-        //                             option.title = bid.warning ||
-        //                                 'Bidang tidak tersedia untuk periode ini. Silakan pilih periode atau bidang lain.';
-        //                         }
-
-        //                         bidangSelect.appendChild(option);
-        //                     });
-        //                     console.log("Respon dari server:", data);
-        //                 });
-        //         }
-        //     }
-
-        //     periodeMulai.addEventListener('change', () => {
-        //         updatePeriodeSelesai();
-        //         if (durasi.value) loadBidang();
-        //     });
-
-        //     durasi.addEventListener('input', () => {
-        //         updatePeriodeSelesai();
-        //         if (periodeMulai.value) loadBidang();
-        //     });
-
-        //     bidangSelect.addEventListener('change', function() {
-        //         const selectedOption = bidangSelect.options[bidangSelect.selectedIndex];
-        //         const tersedia = selectedOption.dataset.tersedia === 'true';
-        //         const warning = selectedOption.dataset.warning;
-
-        //         warningBidang.innerHTML = '';
-
-        //         if (!tersedia && warning) {
-        //             const warn = document.createElement('div');
-        //             warn.textContent = `❗ ${warning}`;
-        //             warningBidang.appendChild(warn);
-        //         }
-        //     });
-        // });
-
-        // document.getElementById('nim_nisn').addEventListener('input', function() {
-        //     const input = this;
-        //     const value = input.value.trim();
-        //     const nilaiAwal = input.dataset.nilaiAwal;
-        //     const errorDiv = document.getElementById('nim_nisnError');
-
-        //     errorDiv.textContent = '';
-        //     errorDiv.classList.add('hidden');
-        //     input.classList.remove('border-red-500');
-
-        //     if (value === nilaiAwal) {
-        //         return;
-        //     }
-
-        //     if (value.length > 0) {
-        //         fetch(`/check-nim-nisn?nim_nisn=${encodeURIComponent(value)}`)
-        //             .then(response => response.json())
-        //             .then(data => {
-        //                 if (data.exists) {
-        //                     errorDiv.textContent = 'NIM/NISN sudah terdaftar';
-        //                     errorDiv.classList.remove('hidden');
-        //                     input.classList.add('border-red-500');
-        //                 }
-        //             })
-        //             .catch(error => console.error('Error:', error));
-        //     }
-        // });
-
-        // document.getElementById('nik').addEventListener('input', function() {
-        //     const input = this;
-        //     const value = input.value.trim();
-        //     const errorDiv = document.getElementById('nikError');
-
-        //     if (errorDiv) {
-        //         errorDiv.textContent = '';
-        //         errorDiv.classList.add('hidden');
-        //     }
-        //     input.classList.remove('border-red-500');
-
-        //     if (value.length == 16) {
-        //         fetch(`/check-nik?nik=${value}`)
-        //             .then(response => response.json())
-        //             .then(data => {
-        //                 if (data.exists) {
-        //                     if (errorDiv) {
-        //                         errorDiv.textContent = 'NIK sudah terdaftar';
-        //                         errorDiv.classList.remove('hidden');
-        //                     }
-        //                     input.classList.add('border-red-500');
-        //                 }
-        //             })
-        //             .catch(error => console.error('Error:', error));
-        //     }
-        // });
-
-        // // const btnDaftarUlang = document.getElementById('btnDaftarUlang');
-        // // const formPendaftaran = document.getElementById('formPendaftaran');
-
-        // // if (btnDaftarUlang) {
-        // // btnDaftarUlang.addEventListener('click', () => {
-        // // formPendaftaran.classList.remove('hidden');
-        // // window.scrollTo({
-        // // top: formPendaftaran.offsetTop - 50,
-        // // behavior: 'smooth'
-        // // });
-        // // });
-        // // }
-
-        // // document.addEventListener('DOMContentLoaded', () => {
-        // // if (window.location.hash === '#formPendaftaran') {
-        // // const form = document.getElementById('formPendaftaran');
-        // // if (form) {
-        // // form.classList.remove('hidden');
-        // // form.scrollIntoView({ behavior: 'smooth' });
-        // // }
-        // // }
-        // // });
-
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     if (window.location.search.includes('ulang=ya')) {
-        //         const form = document.getElementById('formPendaftaran');
-        //         const blokDiterima = document.getElementById('blokDiterima');
-        //         if (form) form.classList.remove('hidden');
-        //         if (blokDiterima) blokDiterima.classList.add('hidden');
-        //         form?.scrollIntoView({
-        //             behavior: 'smooth'
-        //         });
-        //     }
-        // });
-
-        // // if (window.location.search.includes('ulang=ya')) {
-        // // const form = document.getElementById('formPendaftaran');
-        // // const blokDiterima = document.getElementById('blokDiterima');
-        // // if (form) form.classList.remove('hidden');
-        // // if (blokDiterima) blokDiterima.classList.add('hidden');
-        // // }
-
-        // document.getElementById('formPendaftaran').addEventListener('submit', function(e) {
-        //     const errorField = document.querySelector('.error-message:not(.hidden)');
-        //     if (errorField) {
-        //         e.preventDefault();
-        //         const input = errorField.closest('div').querySelector('input, select, textarea');
-        //         if (input) input.focus();
-        //     }
-        // });
+        $(document).ready(function() {
+            $("#selectmhsadmin").select2({
+                // placeholder: 'Tambah/Pilih Wisata Kuliner',
+                tags: true,
+                allowClear: true,
+                // theme: "bootstrap-5",
+
+                createTag: function(params) {
+                    var term = $.trim(params.term);
+
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                },
+
+                templateResult: function(data) {
+                    if (data.newTag) {
+                        return $('<span style="color:black;">Tambah "<b>' +
+                            data.text +
+                            '</b>"</span>');
+                    }
+                    return data.text;
+                },
+
+                ajax: {
+                    url: "{{ route('select.mhs.admin') }}",
+                    data: function(params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data.data ?? data, function(item) {
+                                return {
+                                    id: item.id_wisata_kuliner,
+                                    text: item.nama
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+            // var idmhs = $("#selectmhsadmin").val();
+
+            $("#selectmkadmin").attr("multiple", "multiple");
+            // $.get("{{ url('ngampumkadmin') }}/" + idmhs, function(data) {
+            //     $('#selectmkadmin').html(data);
+            // });
+            $("#selectmkadmin").select2({
+                // placeholder: 'Pilih Fasilitas',
+                allowClear: true,
+                tags: true,
+
+                createTag: function(params) {
+                    var term = $.trim(params.term);
+
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                },
+
+                templateResult: function(data) {
+                    if (data.newTag) {
+                        return $('<span style="color:black;">Tambah "<b>' +
+                            data.text +
+                            '</b>"</span>');
+                    }
+
+                    return data.text;
+                },
+
+                ajax: {
+                    url: function() {
+                        return "{{ url('selectmkadmin') }}/" + $("#selectmhsadmin").val();
+                    },
+                    data: function(params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data.data ?? data, function(item) {
+                                return {
+                                    id: item.id_fasilitas,
+                                    text: item.nama
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+            $("#selectmhsadmin").change(function() {
+                var idmhs = $("#selectmhsadmin").val();
+
+                $('#selectmkadmin').val(null).trigger("change");
+
+                if (idmhs) {
+                    $.get("{{ url('ngampumkadmin') }}/" + idmhs, function(data) {
+                        $('#selectmkadmin').html(data).trigger('change');
+                    });
+                }
+            });
+
+            //save form
+            $("#addForm").on('submit', function(e) {
+                e.preventDefault();
+                $("#saveBtn").html('Processing...').attr('disabled', 'disabled');
+                var link = $("#addForm").attr('action');
+                $.ajax({
+                    url: link,
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                    },
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $("#saveBtn").html('SIMPAN').removeAttr('disabled');
+                        if (response.status) {
+                            $('#selectmkadmin').val(null).trigger("change")
+                            $('#selectmhsadmin').val(null).trigger("change")
+                            alert(response.message);
+                        }
+                    },
+                    error: function(response) {
+                        $("#saveBtn").html('SIMPAN').removeAttr('disabled');
+                        alert(response.message);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 
