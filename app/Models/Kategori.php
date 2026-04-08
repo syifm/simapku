@@ -15,13 +15,22 @@ class Kategori extends Model
         'nama',
     ];
 
-    public function kategori()
+    // public function kategori()
+    // {
+    //     return $this->belongsToMany(
+    //         Kategori::class,
+    //         'kategori_wisata_kuliner',
+    //         'id_wisata_kuliner',
+    //         'id_kategori'
+    //     );
+    // }
+    public function wisataKuliner()
     {
         return $this->belongsToMany(
-            Kategori::class,
+            WisataKuliner::class,
             'kategori_wisata_kuliner',
-            'id_wisata_kuliner',
-            'id_kategori'
+            'id_kategori',
+            'id_wisata_kuliner'
         );
     }
 }

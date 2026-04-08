@@ -70,4 +70,14 @@ class WisataKuliner extends Model
     {
         return $this->belongsTo(Admin::class, 'id_admin');
     }
+
+    public function kategori()
+    {
+        return $this->belongsToMany(
+            Kategori::class,
+            'kategori_wisata_kuliner',
+            'id_wisata_kuliner',
+            'id_kategori'
+        );
+    }
 }

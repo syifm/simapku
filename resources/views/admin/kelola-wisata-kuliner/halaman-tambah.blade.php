@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMAPKU | Wisata Kuliner</title>
+    <title>SIMAPKU | Tambah Wisata Kuliner</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -66,7 +66,7 @@
 
         #map {
             height: 400px;
-            width: 1070px;
+            width: 1075px;
             border-radius: 7px;
         }
 
@@ -128,12 +128,6 @@
         .select2-container--default .select2-selection__clear {
             display: none !important;
         }
-
-        /*.select2-container {
-            width: 100% !important;
-        }
-
-        */
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -171,17 +165,12 @@
                     </div>
                 </div>
 
-                {{-- <div id="map">
-                </div> --}}
-
-
                 <div class="bg-white rounded-lg shadow-md p-6 mt-14">
                     <form action="{{ route('kelolawisatakuliner.simpan') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
 
                         <div class="w-full mx-auto space-y-6">
-
                             <p class="text-xs text-gray-600 mt-2 text-right">
                                 Cari Wilayah dengan mengaktifkan GPS atau melalui
                                 kolom Kecamatan dan Kelurahan
@@ -221,16 +210,11 @@
                                 <label class="block text-sm font-medium text-gray-800 mb-1"><span>Nama Wisata
                                         Kuliner</span>
                                     <span class="text-red-500 font-bold">*</span></label>
-                                {{-- <input type="text" id="nama" name="nama" value="{{ old('nama') }}" required
-                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"> --}}
-                                {{-- <div class='mb-2'> --}}
-                                {{-- <label> Mahasiswa</label> --}}
                                 <select id="selectmhsadmin" name='nama_wisata_kuliner'
                                     class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     aria-label="Default select example" required>
 
                                 </select>
-                                {{-- </div> --}}
                                 @error('nama_wisata_kuliner')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -321,8 +305,8 @@
 
                             <!-- Fasilitas Wisata Kuliner -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-800 mb-1"><span>Fasilitas</span>
-                                    <span class="text-red-500 font-bold">*</span></label>
+                                <label
+                                    class="block text-sm font-medium text-gray-800 mb-1"><span>Fasilitas</span></label>
                                 <select id="selectmkadmin" name="id_fasilitas[]"
                                     class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     aria-label="Default select example">
@@ -371,10 +355,6 @@
                                     Format: JPG, JPEG, PNG | Max: 10MB
                                 </p>
                             </div>
-
-
-
-
 
                             <!-- Submit -->
                             <div class="flex justify-end">

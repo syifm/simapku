@@ -150,6 +150,7 @@ class AdminController extends Controller
         }
 
         $dataMK = $request->id_fasilitas ?? [];
+        $dataKategori = $request->id_kategori ?? [];
         $idWisata = $request->nama_wisata_kuliner;
 
         if (!is_numeric($idWisata)) {
@@ -179,6 +180,7 @@ class AdminController extends Controller
             $idWisata = $wisata->id_wisata_kuliner;
         }
 
+        // Fasilitas
         $fasilitasIds = [];
 
         foreach ($dataMK as $item) {
@@ -200,6 +202,29 @@ class AdminController extends Controller
         $wisata = WisataKuliner::find($idWisata);
 
         $wisata->fasilitas()->sync($fasilitasIds);
+
+        // Kategori
+        $kategoriIds = [];
+
+        foreach ($dataKategori as $item) {
+
+            if (is_numeric($item)) {
+                $kategoriId = $item;
+            } else {
+
+                $kategori = Kategori::firstOrCreate([
+                    'nama' => trim($item)
+                ]);
+
+                $kategoriId = $kategori->id_kategori;
+            }
+
+            $kategoriIds[] = $kategoriId;
+        }
+
+        $wisata = WisataKuliner::find($idWisata);
+
+        $wisata->kategori()->sync($kategoriIds);
 
         return redirect()->route('kelolawisatakuliner')->with('success', 'Wisata Kuliner Berhasil Disimpan');
     }
@@ -236,9 +261,13 @@ class AdminController extends Controller
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
             ->get();
+        $kategori = KategoriWisataKuliner::with('kategori')
+            ->where('id_wisata_kuliner', $id)
+            ->get();
         return view('admin.kelola-wisata-kuliner.halaman-edit', compact(
             'wisataKuliner',
-            'fasilitas'
+            'fasilitas',
+            'kategori'
         ));
     }
 

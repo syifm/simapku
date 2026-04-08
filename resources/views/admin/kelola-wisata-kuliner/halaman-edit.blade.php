@@ -23,6 +23,8 @@
     </script>
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
         rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -150,169 +152,18 @@
                     </div>
                 </div>
 
-                {{-- <div id="map">
-                </div> --}}
-
-
                 <div class="bg-white rounded-lg shadow-md p-6 mt-14">
                     <form action="{{ route('kelolawisatakuliner.update', $wisataKuliner->id_wisata_kuliner) }}"
                         method="POST" enctype="multipart/form-data">
 
                         @csrf
                         @method('PUT')
-                        {{-- <p class="text-red-500 text-sm font-bold text-right">* Seluruh Isian Wajib Diisi</p1> --}}
                         <div class="w-full mx-auto space-y-6">
-                            <!-- Nama Wisata Kuliner -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-800 mb-1"
-                                    for="nama"><span>Nama</span>
-                                    <span class="text-red-500 font-bold">*</span></label>
-                                <select id="selectmhsadmin" name="id_wisata_kuliner"
-                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    aria-label="Default select example">
-
-                                </select>
-
-                                <input type="hidden" name="nama" id="nama">
-
-                                @error('id_wisata_kuliner')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-
-                            <div class="grid grid-cols-2 gap-4">
-                                <!-- Kecamatan -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">
-                                        Kecamatan <span class="text-red-500">*</span>
-                                    </label>
-                                    <select id="kecamatan" name="kecamatan_kode" required
-                                        class="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500">
-                                        <option value="">Pilih Kecamatan</option>
-                                    </select>
-                                    @error('kecamatan')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Kelurahan -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">
-                                        Kelurahan <span class="text-red-500">*</span>
-                                    </label>
-                                    <select id="kelurahan" name="kelurahan_kode" required
-                                        class="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500">
-                                        <option value="">Pilih Kelurahan</option>
-                                    </select>
-                                    @error('kelurahan')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                {{-- <input type="hidden" name="kecamatan" id="kecamatan_nama">
-                                <input type="hidden" name="kelurahan" id="kelurahan_nama"> --}}
-                                <input type="hidden" name="kecamatan" id="kecamatan_nama"
-                                    value="{{ old('kecamatan', $wisataKuliner->kecamatan) }}">
-                                <input type="hidden" name="kelurahan" id="kelurahan_nama"
-                                    value="{{ old('kelurahan', $wisataKuliner->kelurahan) }}">
-                            </div>
-
-                            <!-- Alamat -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-800 mb-1"
-                                    for="alamat"><span>Alamat</span>
-                                    <span class="text-red-500 font-bold">*</span></label>
-                                <textarea id="alamat" name="alamat" rows="4"
-                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>{{ old('alamat', $wisataKuliner->alamat) }}</textarea>
-                                @error('alamat')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Nomor Telepon -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-800 mb-1" for="no_telp"><span>Nomor
-                                        Telepon</span>
-                                    <span class="text-red-500 font-bold">*</span></label>
-                                <input type="text" id="no_telp" name="no_telp"
-                                    value="{{ old('no_telp', $wisataKuliner->no_telp) }}" required pattern="\d{10,15}"
-                                    minlength="10" maxlength="15"
-                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('no_telp')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Email -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-800 mb-1" for="email">Email</label>
-                                <input type="email" id="email" name="email"
-                                    value="{{ old('email', $wisataKuliner->email ?? '') }}"
-                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('email')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Deskripsi -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-800 mb-1"
-                                    for="deskripsi"><span>Deskripsi</span>
-                                    <span class="text-red-500 font-bold">*</span></label>
-                                <textarea id="deskripsi" name="deskripsi" rows="4"
-                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>{{ old('deskripsi', $wisataKuliner->deskripsi) }}</textarea>
-                                @error('deskripsi')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-800 mb-1"
-                                    for="fasilitas"><span>Fasilitas</span>
-                                    <span class="text-red-500 font-bold">*</span></label>
-                                <select id="selectmkadmin" name="id_fasilitas[]"
-                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    aria-label="Default select example">
-
-                                </select>
-
-                                @error('id_fasilitas')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-
-                            <!-- Foto Wisata Kuliner -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-800 mb-1" for="foto">
-                                    <span>Foto</span>
-                                    <span class="text-red-500 font-bold">*</span>
-                                </label>
-
-                                <input type="file" id="foto" name="foto" accept="image/*"
-                                    class="file-input-wrapper" {{ empty($wisataKuliner->foto) ? 'required' : '' }}>
-
-                                {{-- @if (!empty($wisataKuliner->foto))
-                                    <div class="mt-2 w-40 relative">
-                                        <img src="{{ asset('storage/' . $wisataKuliner->foto) }}"
-                                            class="rounded-md border w-full h-40 object-cover">
-                                    </div>
-                                @endif --}}
-
-                                <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
-
-                                <!-- PREVIEW -->
-                                <div id="previewWrapper"
-                                    class="mt-3 relative w-40 {{ isset($wisataKuliner->foto) ? '' : 'hidden' }}">
-                                    <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover"
-                                        src="{{ $wisataKuliner->foto ? asset('storage/' . $wisataKuliner->foto) : '' }}">
-                                </div>
-
-                                <p class="text-xs
-                                        text-gray-600 mt-2">
-                                    Format: JPG, JPEG, PNG | Max: 10MB
-                                </p>
+                            <p class="text-xs text-gray-600 mt-2 text-right">
+                                Cari Wilayah dengan mengaktifkan GPS atau melalui
+                                kolom Kecamatan dan Kelurahan
+                            </p>
+                            <div id="map">
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
@@ -344,9 +195,165 @@
                                 </div>
                             </div>
 
-                            <div id="map">
+                            <!-- Nama Wisata Kuliner -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1"><span>Nama Wisata
+                                        Kuliner</span>
+                                    <span class="text-red-500 font-bold">*</span></label>
+                                <select id="selectmhsadmin" name="nama_wisata_kuliner"
+                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    aria-label="Default select example" required>
+
+                                </select>
+
+                                <input type="hidden" name="nama" id="nama">
+
+                                @error('nama_wisata_kuliner')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
 
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Kecamatan -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                                        Kecamatan <span class="text-red-500">*</span>
+                                    </label>
+                                    <select id="kecamatan" name="kecamatan_kode" required
+                                        class="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Pilih Kecamatan</option>
+                                    </select>
+                                    @error('kecamatan')
+                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Kelurahan -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                                        Kelurahan <span class="text-red-500">*</span>
+                                    </label>
+                                    <select id="kelurahan" name="kelurahan_kode" required
+                                        class="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Pilih Kelurahan</option>
+                                    </select>
+                                    @error('kelurahan')
+                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <input type="hidden" name="kecamatan" id="kecamatan_nama"
+                                    value="{{ old('kecamatan', $wisataKuliner->kecamatan) }}">
+                                <input type="hidden" name="kelurahan" id="kelurahan_nama"
+                                    value="{{ old('kelurahan', $wisataKuliner->kelurahan) }}">
+                            </div>
+
+                            <!-- Alamat -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1"
+                                    for="alamat"><span>Alamat</span>
+                                    <span class="text-red-500 font-bold">*</span></label>
+                                <textarea id="alamat" name="alamat" rows="4"
+                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>{{ old('alamat', $wisataKuliner->alamat) }}</textarea>
+                                @error('alamat')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Nomor Telepon -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1" for="no_telp"><span>Nomor
+                                        Telepon</span>
+                                    <span class="text-red-500 font-bold">*</span></label>
+                                <input type="text" id="no_telp" name="no_telp"
+                                    value="{{ old('no_telp', $wisataKuliner->no_telp) }}" required
+                                    pattern="\d{10,15}" minlength="10" maxlength="15"
+                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                @error('no_telp')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1"
+                                    for="email">Email</label>
+                                <input type="email" id="email" name="email"
+                                    value="{{ old('email', $wisataKuliner->email ?? '') }}"
+                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                @error('email')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Deskripsi -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1"
+                                    for="deskripsi"><span>Deskripsi</span>
+                                    <span class="text-red-500 font-bold">*</span></label>
+                                <textarea id="deskripsi" name="deskripsi" rows="4"
+                                    class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>{{ old('deskripsi', $wisataKuliner->deskripsi) }}</textarea>
+                                @error('deskripsi')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Fasilitas Wisata Kuliner -->
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-800 mb-1"><span>Fasilitas</span></label>
+                                <select id="selectmkadmin" name="id_fasilitas[]"
+                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    aria-label="Default select example">
+
+                                </select>
+
+                                @error('id_fasilitas')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Kategori Wisata Kuliner -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1">
+                                    <span>Kategori</span>
+                                    <span class="text-red-500 font-bold">*</span>
+                                </label>
+
+                                <select id="selectkategoriadmin" name="id_kategori[]"
+                                    class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required>
+                                </select>
+
+                                @error('id_kategori')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Foto Wisata Kuliner -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1" for="foto">
+                                    <span>Foto</span>
+                                    <span class="text-red-500 font-bold">*</span>
+                                </label>
+
+                                <input type="file" id="foto" name="foto" accept="image/*"
+                                    class="file-input-wrapper" {{ empty($wisataKuliner->foto) ? 'required' : '' }}>
+
+                                <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
+
+                                <!-- PREVIEW -->
+                                <div id="previewWrapper"
+                                    class="mt-3 relative w-40 {{ isset($wisataKuliner->foto) ? '' : 'hidden' }}">
+                                    <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover"
+                                        src="{{ $wisataKuliner->foto ? asset('storage/' . $wisataKuliner->foto) : '' }}">
+                                </div>
+
+                                <p class="text-xs
+                                        text-gray-600 mt-2">
+                                    Format: JPG, JPEG, PNG | Max: 10MB
+                                </p>
+                            </div>
 
                             <!-- Submit -->
                             <div class="flex justify-end">
@@ -355,6 +362,7 @@
                                     Simpan
                                 </button>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -751,10 +759,8 @@
             $('#nama').val(selectedWisata.text);
 
             $("#selectmhsadmin").select2({
-                // placeholder: 'Tambah/Pilih Wisata Kuliner',
                 tags: true,
                 allowClear: true,
-                // theme: "bootstrap-5",
 
                 createTag: function(params) {
                     var term = $.trim(params.term);
@@ -861,14 +867,78 @@
                     }
                 }
             });
+
+            let selectedKategori = {!! $kategori->map(function ($k) {
+                    return ['id' => $k->kategori->id_kategori, 'text' => $k->kategori->nama];
+                })->toJson() !!};
+
+            selectedKategori.forEach(function(k) {
+                let option = new Option(k.text, k.id, true, true);
+                $('#selectkategoriadmin').append(option).trigger('change');
+            });
+
+            $("#selectkategoriadmin").attr("multiple", "multiple");
+            $("#selectkategoriadmin").select2({
+                allowClear: true,
+                tags: true,
+
+                createTag: function(params) {
+                    var term = $.trim(params.term);
+
+                    if (term === '') return null;
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                },
+
+                templateResult: function(data) {
+                    if (data.newTag) {
+                        return $('<span style="color:black;">Tambah "<b>' +
+                            data.text +
+                            '</b>"</span>');
+                    }
+                    return data.text;
+                },
+
+                ajax: {
+                    url: function() {
+                        return "{{ url('selectkategoriadmin') }}/" + $("#selectmhsadmin")
+                            .val();
+                    },
+                    data: function(params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data.data ?? data, function(item) {
+                                return {
+                                    id: item.id_kategori,
+                                    text: item.nama
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+
             $("#selectmhsadmin").change(function() {
                 var idmhs = $("#selectmhsadmin").val();
 
                 $('#selectmkadmin').val(null).trigger("change");
+                $('#selectkategoriadmin').val(null).trigger("change");
 
                 if (idmhs) {
                     $.get("{{ url('ngampumkadmin') }}/" + idmhs, function(data) {
                         $('#selectmkadmin').html(data).trigger('change');
+                    });
+
+                    $.get("{{ url('ngampukategoriadmin') }}/" + idmhs, function(data) {
+                        $('#selectkategoriadmin').html(data).trigger('change');
                     });
                 }
 
@@ -893,6 +963,7 @@
                     success: function(response) {
                         $("#saveBtn").html('SIMPAN').removeAttr('disabled');
                         if (response.status) {
+                            $('#selectkategoriadmin').val(null).trigger("change")
                             $('#selectmkadmin').val(null).trigger("change")
                             $('#selectmhsadmin').val(null).trigger("change")
                             alert(response.message);
@@ -905,10 +976,10 @@
                 });
             });
         });
-
-        console.log("nama:", $('#id_wisata_kuliner').val());
-        console.log("kecamatan:", $('#deskripsi').val());
     </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=marker&callback=initMap"
+        async defer></script>
 </body>
 
 </html>
