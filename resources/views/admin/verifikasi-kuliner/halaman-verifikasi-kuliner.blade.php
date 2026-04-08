@@ -506,15 +506,9 @@
             function aksiTolak(id) {
                 Swal.fire({
                     title: 'Tolak Wisata Kuliner',
-                    input: 'textarea',
-                    inputLabel: 'Alasan Penolakan',
-                    inputPlaceholder: 'Tulis alasan...',
                     showCancelButton: true,
                     confirmButtonText: 'Tolak',
                     cancelButtonText: 'Batal',
-                    inputValidator: (value) => {
-                        if (!value) return 'Komentar wajib diisi';
-                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
                         kirimAksi(id, 'Ditolak', result.value);
@@ -541,118 +535,6 @@
                     });
             }
         </script>
-        {{-- <script>
-        function showDetail(id) {
-            fetch(`/dekan/jadwal-kuliah/detail/${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('modalTitle').textContent = data.nama_mk;
-                    document.getElementById('hari').textContent = data.hari;
-                    document.getElementById('waktu').textContent = data.waktu_mulai.substr(0, 5) + '-' + data
-                        .waktu_selesai.substr(0, 5);
-                    document.getElementById('kode').textContent = data.kode_mk;
-                    document.getElementById('mata_kuliah').textContent = data.nama_mk;
-                    document.getElementById('jenis_mata_kuliah').textContent = data.tipe_mata_kuliah;
-                    document.getElementById('sks').textContent = data.sks;
-                    document.getElementById('semester').textContent = data.semester;
-                    document.getElementById('tahun_ajaran').textContent = data.nama;
-                    document.getElementById('kelas').textContent = data.nama_kelas;
-                    document.getElementById('ruang').textContent = data.nama_ruang;
-                    document.getElementById('kuota').textContent = data.kuota;
-                    document.getElementById('dosen_pengampu').innerHTML = data.dosen_pengampu;
-
-                    document.getElementById('detailModal').classList.remove('hidden');
-                });
-        }
-
-        function closeModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-        }
-
-        function approveAllSchedules() {
-            const button = document.getElementById('approveAllButton');
-            const idsemaktif = "20241";
-
-            fetch(`/update-status/${idsemaktif}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        tahun_ajaran: idsemaktif,
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        button.textContent = 'Telah Disetujui';
-                        button.classList.remove("hover:bg-gray-400", "bg-gray-300");
-                        button.classList.add("bg-gray-400", "cursor-not-allowed");
-                        button.disabled = true;
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: "Jadwal Kuliah Berhasil Disetujui",
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        alert(result.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Terjadi kesalahan:', error);
-                    alert('Terjadi kesalahan saat menyetujui jadwal.');
-                });
-        }
-
-        function displayContent() {
-            const selectedValue = document.getElementById("programDropdown").value;
-
-            localStorage.setItem("selectedDepartment", selectedValue);
-
-            const contents = document.querySelectorAll(".content");
-            contents.forEach(content => content.classList.add("hidden"));
-
-            const selectedContent = document.getElementById(`${selectedValue}-content`);
-            if (selectedContent) {
-                selectedContent.classList.remove("hidden");
-            }
-        }
-
-        function setDropdownFromLocalStorage() {
-            const selectedValue = localStorage.getItem("selectedDepartment");
-
-            const dropdown = document.getElementById("programDropdown");
-
-            if (selectedValue) {
-                dropdown.value = selectedValue;
-
-                const contents = document.querySelectorAll(".content");
-                contents.forEach(content => content.classList.add("hidden"));
-
-                const selectedContent = document.getElementById(`${selectedValue}-content`);
-                if (selectedContent) {
-                    selectedContent.classList.remove("hidden");
-                }
-            } else {
-                dropdown.value = "pilihdepartemen";
-
-                const contents = document.querySelectorAll(".content");
-                contents.forEach(content => content.classList.add("hidden"));
-
-                const defaultContent = document.getElementById("pilihdepartemen-content");
-                if (defaultContent) {
-                    defaultContent.classList.remove("hidden");
-                }
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", setDropdownFromLocalStorage);
-    </script> --}}
-
 </body>
 
 </html>

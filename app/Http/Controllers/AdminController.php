@@ -92,7 +92,10 @@ class AdminController extends Controller
     // Halaman Tambah Wisata Kuliner (Kelola Wisata Kuliner)
     public function halamantambah()
     {
-        return view('admin.kelola-wisata-kuliner.halaman-tambah');
+        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])->get();
+        return view('admin.kelola-wisata-kuliner.halaman-tambah', compact(
+            'wkuliner'
+        ));
     }
 
     // Simpan Wisata Kuliner (Kelola Wisata Kuliner)

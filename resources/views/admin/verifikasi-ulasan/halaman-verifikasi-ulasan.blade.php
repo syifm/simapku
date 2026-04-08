@@ -355,21 +355,6 @@
                 document.getElementById('detailModal').classList.add('hidden');
             }
 
-            // function aksiSetujui(id) {
-            //     Swal.fire({
-            //         title: 'Verifikasi Penilaian dan Ulasan',
-            //         icon: 'question',
-            //         showCancelButton: true,
-            //         confirmButtonText: 'Setujui',
-            //         confirmButtonColor: '#dc2626',
-            //         cancelButtonText: 'Batal'
-            //         cancelButtonColor: '#6b7280',
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             kirimAksi(id, 'Disetujui');
-            //         }
-            //     });
-            // }
             function aksiSetujui(id) {
                 Swal.fire({
                     title: 'Setujui Penilaian dan Ulasan?',
@@ -388,16 +373,10 @@
             function aksiTolak(id) {
                 Swal.fire({
                     title: 'Tolak Penilaian dan Ulasan',
-                    input: 'textarea',
-                    inputLabel: 'Alasan Penolakan',
-                    inputPlaceholder: 'Tulis alasan...',
                     showCancelButton: true,
                     confirmButtonColor: '#dc2626',
                     confirmButtonText: 'Tolak',
                     cancelButtonText: 'Batal',
-                    inputValidator: (value) => {
-                        if (!value) return 'Komentar wajib diisi';
-                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
                         kirimAksi(id, 'Ditolak', result.value);
