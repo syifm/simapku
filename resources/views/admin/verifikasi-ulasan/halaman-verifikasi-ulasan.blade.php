@@ -398,8 +398,14 @@
                     })
                     .then(res => res.json())
                     .then(res => {
-                        Swal.fire('Berhasil', res.message, 'success')
-                            .then(() => location.reload());
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: res.message,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => location.reload());
                     });
             }
         </script>

@@ -545,16 +545,14 @@
                         option.value = item.code;
                         option.textContent = item.name;
 
-                        // ✅ cocokkan nama dari DB dengan nama dari API
                         if (item.name == oldKecamatan) {
                             option.selected = true;
-                            savedCode = item.code; // simpan code untuk load kelurahan
+                            savedCode = item.code;
                         }
 
                         kecamatanSelect.appendChild(option);
                     });
 
-                    // ✅ auto load kelurahan sesuai kecamatan yang tersimpan
                     if (savedCode) {
                         loadKelurahan(savedCode);
                     }

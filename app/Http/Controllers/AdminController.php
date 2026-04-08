@@ -102,7 +102,7 @@ class AdminController extends Controller
     public function simpan(Request $request)
     {
         $request->validate([
-            'id_wisata_kuliner' => 'required|string|max:255',
+            'nama_wisata_kuliner' => 'required|string|max:255',
             'kecamatan' => 'required|string|max:50',
             'kelurahan' => 'required|string|max:50',
             'alamat' => 'required|string',
@@ -112,7 +112,17 @@ class AdminController extends Controller
             'foto' => 'required|image|mimes:jpeg,png,jpg|max:10240',
             'latitude'  => 'required|numeric|between:-90,90|unique:wisata_kuliner,latitude',
             'longitude' => 'required|numeric|between:-180,180|unique:wisata_kuliner,longitude',
-        ]);
+        ], [
+            'nama_wisata_kuliner.required' => 'Nama wisata kuliner harus diisi.',
+            'kecamatan' => 'Kecamatan harus diisi.',
+            'kelurahan' => 'Kelurahan harus diisi.',
+            'alamat' => 'Alamat harus diisi.',
+            'no_telp' => 'Nomor telepon harus diisi.',
+            'deskripsi' => 'Deskripsi harus diisi.',
+            'foto' => 'Foto harus diisi.',
+            'latitude'  => 'Latitude harus diisi.',
+            'longitude' => 'Longitude harus diisi.',
+        ],);
 
         $wisataKuliner = $request->nama;
         $fotoPath = $request->file('foto')->storeAs(
@@ -140,7 +150,7 @@ class AdminController extends Controller
         }
 
         $dataMK = $request->id_fasilitas ?? [];
-        $idWisata = $request->id_wisata_kuliner;
+        $idWisata = $request->nama_wisata_kuliner;
 
         if (!is_numeric($idWisata)) {
 

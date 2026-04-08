@@ -167,7 +167,7 @@
                         icon: 'success',
                         title: 'Berhasil!',
                         text: 'Data profil telah diperbarui.',
-                        timer: 3000,
+                        timer: 2000,
                         showConfirmButton: false,
                         timerProgressBar: true
                     });
