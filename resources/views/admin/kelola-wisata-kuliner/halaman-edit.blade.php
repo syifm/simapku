@@ -115,6 +115,20 @@
         .select2-container--default .select2-selection__clear {
             display: none !important;
         }
+
+        .select2-container--default .select2-selection--multiple:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            height: 42px;
+            border-radius: 0.375rem;
+            border: 1px solid #e0e0e1;
+            /* padding: 6px 6px; */
+            display: flex;
+            align-items: center;
+        }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -269,6 +283,9 @@
                                     value="{{ old('no_telp', $wisataKuliner->no_telp) }}" required
                                     pattern="\d{10,15}" minlength="10" maxlength="15"
                                     class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <p class="text-xs text-gray-600 mt-2">
+                                    Nomor Telepon hanya boleh berisi angka, tanpa spasi dan simbol.
+                                </p>
                                 @error('no_telp')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -393,222 +410,105 @@
 
     <script>
         // Kecamatan dan Kelurahan
-        // const oldKecamatan = "{{ old('kecamatan_kode', $wisataKuliner->kecamatan_kode) }}";
-        // const oldKelurahan = "{{ old('kelurahan_kode', $wisataKuliner->kelurahan_kode) }}";
-
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const kecamatanSelect = document.getElementById('kecamatan');
-        //     const kelurahanSelect = document.getElementById('kelurahan');
-        //     const kecamatanNama = document.getElementById('kecamatan_nama');
-        //     const kelurahanNama = document.getElementById('kelurahan_nama');
-
-        //     // LOAD KECAMATAN (pas halaman dibuka)
-        //     fetch('/wisata/api/kecamatan')
-        //         .then(res => res.json())
-        //         .then(data => {
-        //             data.forEach(item => {
-        //                 const selected = item.code == oldKecamatan ? 'selected' : '';
-        //                 kecamatanSelect.innerHTML += `
-    //             <option value="${item.code}">
-    //                 ${item.name}
-    //             </option>
-    //         `;
-        //             });
-        //             if (oldKecamatan) {
-        //                 loadKelurahan(oldKecamatan);
-        //             }
-        //         })
-        //         .catch(() => {
-        //             alert('Gagal memuat data kecamatan');
-        //         });
-
-        //     // LOAD KELURAHAN (pas kecamatan berubah)
-        //     kecamatanSelect.addEventListener('change', function() {
-        //         const selectedOption = this.options[this.selectedIndex];
-        //         kecamatanNama.value = selectedOption.text;
-
-        //         const districtCode = this.value;
-        //         kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-
-        //         if (!districtCode) return;
-
-        //         fetch(`/wisata/api/kelurahan/${districtCode}`)
-        //             .then(res => res.json())
-        //             .then(data => {
-        //                 data.forEach(item => {
-        //                     const selected = item.code == oldKelurahan ? 'selected' : '';
-        //                     kelurahanSelect.innerHTML += `
-    //                 <option value="${item.code}">
-    //                     ${item.name}
-    //                 </option>
-    //             `;
-        //                 });
-        //             })
-        //             .catch(() => {
-        //                 alert('Gagal memuat data kelurahan');
-        //             });
-        //     });
-
-        //     kelurahanSelect.addEventListener('change', function() {
-        //         const selectedOption = this.options[this.selectedIndex];
-        //         kelurahanNama.value = selectedOption.text;
-        //     });
-        // });
-
-        //awalnya ini yaaa -------------------------------------------------------------------------------
-        // const oldKecamatan = "{{ old('kecamatan', $wisataKuliner->kecamatan) }}";
-        // const oldKelurahan = "{{ old('kelurahan', $wisataKuliner->kelurahan) }}";
-
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const kecamatanSelect = document.getElementById('kecamatan');
-        //     const kelurahanSelect = document.getElementById('kelurahan');
-        //     const kecamatanNama = document.getElementById('kecamatan_nama');
-        //     const kelurahanNama = document.getElementById('kelurahan_nama');
-
-        //     fetch('/wisata/api/kecamatan')
-        //         .then(res => res.json())
-        //         .then(data => {
-        //             let savedKecamatanCode = null;
-
-        //             data.forEach(item => {
-        //                 const option = document.createElement('option');
-        //                 option.value = item.name; // ✅ simpan nama
-        //                 option.dataset.code = item.code; // ✅ simpan code di data attribute
-        //                 option.textContent = item.name;
-
-        //                 if (item.name == oldKecamatan) {
-        //                     option.selected = true;
-        //                     kecamatanNama.value = item.name;
-        //                     savedKecamatanCode = item.code; // ✅ ambil code untuk load kelurahan
-        //                 }
-
-        //                 kecamatanSelect.appendChild(option);
-        //             });
-
-        //             if (savedKecamatanCode) {
-        //                 loadKelurahan(savedKecamatanCode);
-        //             }
-        //         })
-        //         .catch(() => alert('Gagal memuat data kecamatan'));
-
-        //     function loadKelurahan(districtCode) {
-        //         kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-
-        //         fetch(`/wisata/api/kelurahan/${districtCode}`)
-        //             .then(res => res.json())
-        //             .then(data => {
-        //                 data.forEach(item => {
-        //                     const option = document.createElement('option');
-        //                     option.value = item.name; // ✅ simpan nama
-        //                     option.dataset.code = item.code;
-        //                     option.textContent = item.name;
-
-        //                     if (item.name == oldKelurahan) {
-        //                         option.selected = true;
-        //                         kelurahanNama.value = item.name;
-        //                     }
-
-        //                     kelurahanSelect.appendChild(option);
-        //                 });
-        //             })
-        //             .catch(() => alert('Gagal memuat data kelurahan'));
-        //     }
-
-        //     kecamatanSelect.addEventListener('change', function() {
-        //         const selectedOption = this.options[this.selectedIndex];
-        //         kecamatanNama.value = selectedOption.text;
-        //         kelurahanNama.value = '';
-
-        //         const code = selectedOption.dataset.code; // ✅ ambil code dari data attribute
-        //         if (code) {
-        //             loadKelurahan(code);
-        //         } else {
-        //             kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-        //         }
-        //     });
-
-        //     kelurahanSelect.addEventListener('change', function() {
-        //         kelurahanNama.value = this.options[this.selectedIndex].text;
-        //     });
-        // });
-
-
         const oldKecamatan = "{{ old('kecamatan', $wisataKuliner->kecamatan) }}";
         const oldKelurahan = "{{ old('kelurahan', $wisataKuliner->kelurahan) }}";
+        const kecamatanSelect = document.getElementById('kecamatan');
+        const kelurahanSelect = document.getElementById('kelurahan');
+        const kecamatanNama = document.getElementById('kecamatan_nama');
+        const kelurahanNama = document.getElementById('kelurahan_nama');
+        let isGPSActive = false;
+        let pendingKelurahan = null;
+        let isKecamatanLoaded = false;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const kecamatanSelect = document.getElementById('kecamatan');
-            const kelurahanSelect = document.getElementById('kelurahan');
-            const kecamatanNama = document.getElementById('kecamatan_nama');
-            const kelurahanNama = document.getElementById('kelurahan_nama');
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const res = await fetch('/wisata/api/kecamatan');
+                const data = await res.json();
+                let savedCode = null;
 
-            // LOAD KECAMATAN
-            fetch('/wisata/api/kecamatan')
-                .then(res => res.json())
-                .then(data => {
-                    let savedCode = null;
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.code;
+                    option.textContent = item.name;
 
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.code;
-                        option.textContent = item.name;
-
-                        if (item.name == oldKecamatan) {
-                            option.selected = true;
-                            savedCode = item.code;
-                        }
-
-                        kecamatanSelect.appendChild(option);
-                    });
-
-                    if (savedCode) {
-                        loadKelurahan(savedCode);
+                    if (item.name == oldKecamatan) {
+                        option.selected = true;
+                        savedCode = item.code;
                     }
-                })
-                .catch(() => alert('Gagal memuat data kecamatan'));
 
-            // Jadikan fungsi agar bisa dipanggil saat pre-load maupun saat user ganti
-            function loadKelurahan(districtCode) {
-                kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+                    kecamatanSelect.appendChild(option);
+                });
 
-                fetch(`/wisata/api/kelurahan/${districtCode}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        data.forEach(item => {
-                            const option = document.createElement('option');
-                            option.value = item.code;
-                            option.textContent = item.name;
+                isKecamatanLoaded = true;
+                if (savedCode) {
+                    loadKelurahan(savedCode);
+                }
+                if (!isGPSActive) {
+                    updateAlamatDariKoordinat(
+                        lastValidPosition.lat,
+                        lastValidPosition.lng
+                    );
+                }
+                // initGPS();
 
-                            // ✅ cocokkan nama kelurahan dari DB
-                            if (item.name == oldKelurahan) {
-                                option.selected = true;
-                            }
 
-                            kelurahanSelect.appendChild(option);
-                        });
-                    })
-                    .catch(() => alert('Gagal memuat data kelurahan'));
+            } catch {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal memuat data kecamatan',
+                    confirmButtonText: 'OK'
+                });
             }
 
-            // Saat user ganti kecamatan manual
-            kecamatanSelect.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                kecamatanNama.value = selectedOption.text; // update hidden input nama
-                kelurahanNama.value = '';
+            kecamatanSelect.addEventListener('change', async function() {
 
-                if (this.value) {
-                    loadKelurahan(this.value);
-                } else {
-                    kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-                }
+                const selectedOption = this.options[this.selectedIndex];
+                kecamatanNama.value = selectedOption.text;
+
+                const districtCode = this.value;
+
+                await loadKelurahan(districtCode);
             });
 
-            // Saat user ganti kelurahan manual
             kelurahanSelect.addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
-                kelurahanNama.value = selectedOption.text; // update hidden input nama
+                kelurahanNama.value = selectedOption.text;
             });
         });
+
+        // Kelurahan
+        async function loadKelurahan(districtCode) {
+            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+
+            if (!districtCode) return [];
+
+            try {
+                const res = await fetch(`/wisata/api/kelurahan/${districtCode}`);
+                const data = await res.json();
+
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.code;
+                    option.textContent = item.name;
+
+                    if (item.name == oldKelurahan) {
+                        option.selected = true;
+                    }
+
+                    kelurahanSelect.appendChild(option);
+                });
+
+                return data;
+
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal memuat data kelurahan',
+                    confirmButtonText: 'OK'
+                });
+                return [];
+            }
+        }
 
         // Foto 
         const fotoInput = document.getElementById('foto');
@@ -659,92 +559,773 @@
         }
 
         // Peta Latitude Longitude
+        // function initMap() {
+        //     const defaultPosition = {
+        //         lat: -6.984168497010843,
+        //         lng: 110.40926002563694
+        //     };
+
+        //     map = new google.maps.Map(document.getElementById("map"), {
+        //         center: defaultPosition,
+        //         zoom: 16,
+        //         styles: [{
+        //             featureType: "poi.business",
+        //             stylers: [{
+        //                 visibility: "off"
+        //             }]
+        //         }],
+        //         // mapId: "simapku"
+        //     });
+
+        //     marker = new google.maps.Marker({
+        //         position: defaultPosition,
+        //         map: map,
+        //         gmpDraggable: true
+        //     });
+
+        //     const geocoder = new google.maps.Geocoder();
+
+        //     document.getElementById('kelurahan').addEventListener('change', function() {
+        //         const kelurahanText = this.options[this.selectedIndex].text;
+        //         const kecamatanText = document.getElementById('kecamatan')
+        //             .options[document.getElementById('kecamatan').selectedIndex].text;
+
+        //         if (!kelurahanText || !kecamatanText) return;
+
+        //         const alamat = `${kelurahanText}, ${kecamatanText}, Kota Semarang, Jawa Tengah, Indonesia`;
+
+        //         geocoder.geocode({
+        //             address: alamat
+        //         }, function(results, status) {
+        //             if (status === 'OK' && results[0]) {
+        //                 const lat = results[0].geometry.location.lat();
+        //                 const lng = results[0].geometry.location.lng();
+
+        //                 marker.position = {
+        //                     lat,
+        //                     lng
+        //                 };
+        //                 map.setCenter({
+        //                     lat,
+        //                     lng
+        //                 });
+
+        //                 document.getElementById('latitude').value = lat;
+        //                 document.getElementById('longitude').value = lng;
+        //             }
+        //         });
+        //     });
+        // }
+
+
+
+
+        // let map;
+        // let marker;
+        // let geocoder;
+
+        // function initMap() {
+        //     if (navigator.geolocation) {
+        //         navigator.geolocation.getCurrentPosition(
+        //             function(position) {
+        //                 const lat = position.coords.latitude;
+        //                 const lng = position.coords.longitude;
+
+        //                 // update marker & map
+        //                 marker.position = {
+        //                     lat,
+        //                     lng
+        //                 };
+        //                 map.setCenter({
+        //                     lat,
+        //                     lng
+        //                 });
+        //                 map.setZoom(17);
+
+        //                 // isi input
+        //                 document.getElementById('latitude').value = lat;
+        //                 document.getElementById('longitude').value = lng;
+
+        //                 geocoder.geocode({
+        //                     location: {
+        //                         lat,
+        //                         lng
+        //                     }
+        //                 }, function(results, status) {
+
+        //                     if (status === "OK" && results[0]) {
+
+        //                         const alamatLengkap = results[0].formatted_address;
+
+        //                         // isi ke input alamat
+        //                         document.getElementById('alamat').value = alamatLengkap;
+        //                     }
+        //                 });
+        //             },
+        //             function(error) {
+        //                 console.log("GPS ditolak / error:", error);
+        //             }
+        //         );
+        //     }
+        //     console.log(window.google);
+        //     const defaultPosition = {
+        //         lat: -6.984168497010843,
+        //         lng: 110.40926002563694
+        //     };
+
+        //     map = new google.maps.Map(document.getElementById("map"), {
+        //         center: defaultPosition,
+        //         zoom: 16,
+        //         mapId: "5ee8a1d5bfc6676ac1b5f32c",
+        //     });
+
+        //     marker = new google.maps.marker.AdvancedMarkerElement({
+        //         position: defaultPosition,
+        //         map: map,
+        //         gmpDraggable: true
+
+        //     });
+
+        //     // update input saat marker drag
+        //     marker.addListener('drag', (e) => {
+        //         document.getElementById('latitude').value = e.latLng.lat();
+        //         document.getElementById('longitude').value = e.latLng.lng();
+        //     });
+
+        //     // klik map → pindah marker
+        //     map.addListener('click', (e) => {
+        //         marker.position = {
+        //             lat: e.latLng.lat(),
+        //             lng: e.latLng.lng()
+        //         };
+        //         document.getElementById('latitude').value = e.latLng.lat();
+        //         document.getElementById('longitude').value = e.latLng.lng();
+        //     });
+
+        //     // update marker dari input
+        //     const latInput = document.getElementById('latitude');
+        //     const lngInput = document.getElementById('longitude');
+
+        //     function updateMarkerFromInput() {
+        //         const lat = parseFloat(latInput.value);
+        //         const lng = parseFloat(lngInput.value);
+        //         if (isNaN(lat) || isNaN(lng)) return;
+        //         marker.position = {
+        //             lat,
+        //             lng
+        //         };
+        //         map.setCenter({
+        //             lat,
+        //             lng
+        //         });
+        //     }
+
+        //     latInput.addEventListener('input', updateMarkerFromInput);
+        //     lngInput.addEventListener('input', updateMarkerFromInput);
+
+        //     geocoder = new google.maps.Geocoder();
+
+        //     const kelurahanSelect = document.getElementById('kelurahan');
+
+        //     kelurahanSelect.removeEventListener('change', handleKelurahanChange); // reset
+        //     kelurahanSelect.addEventListener('change', handleKelurahanChange);
+
+        //     function handleKelurahanChange() {
+        //         const kelurahanText = this.options[this.selectedIndex].text;
+        //         const kecamatanText = document.getElementById('kecamatan')
+        //             .options[document.getElementById('kecamatan').selectedIndex].text;
+
+        //         if (!kelurahanText || !kecamatanText) return;
+
+        //         const alamat = `${kelurahanText}, ${kecamatanText}, Kota Semarang, Jawa Tengah, Indonesia`;
+
+        //         geocoder.geocode({
+        //             address: alamat
+        //         }, function(results, status) {
+        //             if (status === 'OK' && results[0]) {
+        //                 const lat = results[0].geometry.location.lat();
+        //                 const lng = results[0].geometry.location.lng();
+
+        //                 marker.position = {
+        //                     lat,
+        //                     lng
+        //                 };
+        //                 map.setCenter({
+        //                     lat,
+        //                     lng
+        //                 });
+
+        //                 document.getElementById('latitude').value = lat;
+        //                 document.getElementById('longitude').value = lng;
+        //             }
+        //         });
+        //     }
+        // }
+
+        // function cariKoordinatDariAlamat(alamat) {
+        //     geocoder.geocode({
+        //         address: alamat
+        //     }, function(results, status) {
+        //         if (status === "OK" && results[0]) {
+        //             const location = results[0].geometry.location;
+
+        //             const lat = location.lat();
+        //             const lng = location.lng();
+
+        //             latitude.value = lat;
+        //             longitude.value = lng;
+
+        //             marker.position = {
+        //                 lat,
+        //                 lng
+        //             };
+        //             map.setCenter({
+        //                 lat,
+        //                 lng
+        //             });
+        //             map.setZoom(15);
+        //         }
+        //     });
+        // }
+        let map;
+        let marker;
+        let geocoder;
+        let isAutoUpdate = false;
+        let lastAlamat = "";
         const latInput = document.getElementById('latitude');
         const lngInput = document.getElementById('longitude');
-
         let lat = parseFloat(latInput.value);
         let lng = parseFloat(lngInput.value);
+        let lastValidPosition = {
+            lat: lat,
+            lng: lng
+        };
+        const alamatInput = document.getElementById('alamat');
+        let activeInfoWindow = null;
+        let dataKuliner = @json($wkuliner);
+        let markers = [];
+        let currentId = "{{ $wisataKuliner->id_wisata_kuliner }}";
 
-        let mapOptions = {
-            center: [lat, lng],
-            zoom: 10
+        function clearMarkers() {
+            markers.forEach(m => m.setMap(null));
+            markers = [];
         }
 
-        let map = new L.map('map', mapOptions);
+        // Awal
+        async function initMap() {
+            const markerLib = await google.maps.importLibrary("marker");
+            AdvancedMarkerElement = markerLib.AdvancedMarkerElement;
+            PinElement = markerLib.PinElement;
 
-        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        map.addLayer(layer);
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<div style="
+                            text-align: center;
+                            font-size: 13px;
+                            line-height: 1.4;
+                        ">
+                <b>Klik</b> atau <b>Geser</b><br>
+                untuk menentukan lokasi wisata kuliner!
+              </div>`,
+            });
 
-        let marker = L.marker(mapOptions.center, {
-            draggable: true,
-        }).addTo(map);
-        marker.bindPopup(
-            `<div style="text-align: center;"> <b>Klik</b> atau <b>Geser</b><br> untuk menentukan lokasi wisata kuliner! </div>`
-        ).openPopup();
+            const defaultPosition = {
+                lat: lat,
+                lng: lng
+            };
 
-        document.getElementById('latitude').value = mapOptions.center[0];
-        document.getElementById('longitude').value = mapOptions.center[1];
+            // Map
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultPosition,
+                zoom: 16,
+                mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                clickableIcons: false,
+            });
 
-        marker.on('drag', function(e) {
-            let latlng = e.target.getLatLng();
-            document.getElementById('latitude').value = latlng.lat;
-            document.getElementById('longitude').value = latlng.lng;
-        });
+            // Marker
+            marker = new google.maps.marker.AdvancedMarkerElement({
+                position: defaultPosition,
+                map: map,
+                gmpDraggable: true
+            });
 
-        map.on('click', function(event) {
-            marker.setLatLng(event.latlng);
-            document.getElementById('latitude').value = event.latlng.lat;
-            document.getElementById('longitude').value = event.latlng.lng;
-        });
+            // Geocoder
+            geocoder = new google.maps.Geocoder();
 
-        // const latInput = document.getElementById('latitude');
-        // const lngInput = document.getElementById('longitude');
 
-        function updateMarkerFromInput() {
-            let lat = parseFloat(latInput.value);
-            let lng = parseFloat(lngInput.value);
+            // Input Lat dan Lng
+            latInput.value = defaultPosition.lat;
+            lngInput.value = defaultPosition.lng;
 
-            if (isNaN(lat) || isNaN(lng)) return;
+            infoWindow.open({
+                anchor: marker,
+                map,
+            });
 
-            let newLatLng = [lat, lng];
+            // Isi Kecamatan, Kelurahan, dan Alamat
+            // updateAlamatDariKoordinat(defaultPosition.lat, defaultPosition.lng);
 
-            marker.setLatLng(newLatLng);
-            map.setView(newLatLng, map.getZoom());
+            // Ubah Lat Lng Saat Drag
+            marker.addListener('dragend', (e) => {
+                infoWindow.close();
+                const lat = e.latLng.lat();
+                const lng = e.latLng.lng();
+
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+
+                updateAlamatDariKoordinat(lat, lng);
+            });
+
+            // Ubah Lat Lng Saat Klik
+            map.addListener('click', (e) => {
+                infoWindow.close();
+                const lat = e.latLng.lat();
+                const lng = e.latLng.lng();
+
+                marker.position = {
+                    lat,
+                    lng
+                };
+
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+
+                updateAlamatDariKoordinat(lat, lng);
+            });
+
+            // Ubah Marker Saat Input Lat Lng
+            function updateMarkerFromInput() {
+                const lat = parseFloat(latInput.value);
+                const lng = parseFloat(lngInput.value);
+
+                if (isNaN(lat) || isNaN(lng)) return;
+
+                geocoder.geocode({
+                    location: {
+                        lat,
+                        lng
+                    },
+                    language: "id"
+                }, function(results, status) {
+                    if (status === "OK" && results[0]) {
+                        const components = results[0].address_components;
+
+                        if (!isDalamSemarang(components)) {
+                            // alert("Koordinat harus di Kota Semarang!");
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lokasi Tidak Valid',
+                                text: 'Lokasi harus berada di Kota Semarang!',
+                                confirmButtonText: 'OK'
+                            });
+
+                            marker.position = marker.position;
+                            map.setCenter(marker.position);
+
+                            latInput.value = marker.position.lat;
+                            lngInput.value = marker.position.lng;
+                            return;
+                        }
+                        marker.position = {
+                            lat,
+                            lng
+                        };
+                        map.setCenter({
+                            lat,
+                            lng
+                        });
+
+                        lastValidPosition = {
+                            lat,
+                            lng
+                        };
+
+                        updateAlamatDariKoordinat(lat, lng);
+                    }
+                });
+            }
+
+            latInput.addEventListener('change', updateMarkerFromInput);
+            lngInput.addEventListener('change', updateMarkerFromInput);
+
+            // Cari Marker, Lat Lng, dan Alamat saat Ubah Kecamatan dan Kelurahan
+            const kelurahanSelect = document.getElementById('kelurahan');
+
+            kelurahanSelect.addEventListener('change', function() {
+
+                const kelurahanText = this.options[this.selectedIndex].text;
+
+                const kecamatanSelect = document.getElementById('kecamatan');
+                const kecamatanText = kecamatanSelect.options[kecamatanSelect.selectedIndex].text;
+
+                if (!kelurahanText || !kecamatanText) return;
+
+                const alamat = `${kelurahanText}, ${kecamatanText}, Kota Semarang, Jawa Tengah`;
+
+                cariKoordinatDariAlamat(alamat);
+            });
+
+            // Cari Marker dari Alamat
+            alamatInput.addEventListener('change', function() {
+
+                if (isAutoUpdate) {
+                    isAutoUpdate = false;
+                    return;
+                }
+
+                const alamat = this.value.trim();
+
+                if (!alamat) return;
+
+                // if (lastAlamat !== "" && alamat !== lastAlamat) {
+                //     return;
+                // }
+
+                const alamatLengkap = `${alamat}, Kota Semarang, Jawa Tengah`;
+
+                cariKoordinatDariAlamat(alamatLengkap);
+
+                lastAlamat = alamat;
+            });
+
+            tampilkanSemuaKuliner();
+
+            // const alamatInput = document.getElementById('alamat');
+            // alamatInput.addEventListener('change', function() {
+            //     if (isAutoUpdate) {
+            //         isAutoUpdate = false;
+            //         return;
+            //     }
+            //     const alamat = this.value;
+            //     if (!alamat || alamat.trim() === "") return;
+            //     const alamatLengkap = `${alamat}, Kota Semarang, Jawa Tengah`;;
+            //     cariKoordinatDariAlamat(alamatLengkap);
+            // });
         }
 
-        latInput.addEventListener('input', updateMarkerFromInput);
-        lngInput.addEventListener('input', updateMarkerFromInput);
+        // GPS
+        function initGPS() {
+            if (!navigator.geolocation) return;
 
+            navigator.geolocation.getCurrentPosition(function(position) {
 
-        document.getElementById('kelurahan').addEventListener('change', function() {
-            const kelurahanText = this.options[this.selectedIndex].text;
-            const kecamatanText = document.getElementById('kecamatan')
-                .options[document.getElementById('kecamatan').selectedIndex].text;
+                isGPSActive = true;
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
 
-            if (!kelurahanText || !kecamatanText) return;
+                geocoder.geocode({
+                    location: {
+                        lat,
+                        lng
+                    },
+                    language: "id"
+                }, function(results, status) {
+                    if (status === "OK" && results[0]) {
 
-            const alamat = `${kelurahanText}, ${kecamatanText}, Kota Semarang, Jawa Tengah, Indonesia`;
+                        if (!isDalamSemarang(results[0].address_components)) {
+                            // alert("Lokasi GPS di luar Kota Semarang!");
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lokasi Tidak Valid',
+                                text: 'Lokasi harus berada di Kota Semarang!',
+                                confirmButtonText: 'OK'
+                            });
 
-            cariKoordinatDariAlamat(alamat);
-        });
+                            marker.position = lastValidPosition;
+                            map.setCenter(lastValidPosition);
+
+                            latInput.value = lastValidPosition.lat;
+                            lngInput.value = lastValidPosition.lng;
+                            return;
+                        }
+                        marker.position = {
+                            lat,
+                            lng
+                        };
+                        map.setCenter({
+                            lat,
+                            lng
+                        });
+                        map.setZoom(17);
+
+                        lastValidPosition = {
+                            lat,
+                            lng
+                        };
+
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+
+                        updateAlamatDariKoordinat(lat, lng);
+                    }
+                });
+            });
+        }
+
+        // Update Alamat Dari Koordinat
+        async function updateAlamatDariKoordinat(lat, lng) {
+            if (!isKecamatanLoaded) return;
+
+            geocoder.geocode({
+                location: {
+                    lat,
+                    lng
+                },
+                language: "id",
+            }, async function(results, status) {
+
+                if (status === "OK" && results[0]) {
+                    const components = results[0].address_components;
+
+                    if (!isDalamSemarang(components)) {
+                        // alert("Lokasi harus berada di Kota Semarang!");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lokasi Tidak Valid',
+                            text: 'Lokasi harus berada di Kota Semarang!',
+                            confirmButtonText: 'OK'
+                        });
+
+                        marker.position = lastValidPosition;
+                        map.setCenter(lastValidPosition);
+
+                        latInput.value = lastValidPosition.lat;
+                        lngInput.value = lastValidPosition.lng;
+
+                        return;
+                    }
+
+                    lastValidPosition = {
+                        lat,
+                        lng
+                    };
+
+                    // let jalan = "";
+                    let kelurahan = "";
+                    let kecamatan = "";
+                    let kota = "";
+                    let provinsi = "";
+                    let kodepos = "";
+
+                    components.forEach(comp => {
+                        // if (comp.types.includes("route")) {
+                        //     jalan = comp.long_name;
+                        // }
+                        if (comp.types.includes("administrative_area_level_4")) {
+                            kelurahan = comp.long_name;
+                        }
+                        if (comp.types.includes("administrative_area_level_3")) {
+                            kecamatan = comp.long_name;
+                        }
+                        if (comp.types.includes("administrative_area_level_2")) {
+                            kota = comp.long_name;
+                        }
+                        if (comp.types.includes("administrative_area_level_1")) {
+                            provinsi = comp.long_name;
+                        }
+                        if (comp.types.includes("postal_code")) {
+                            kodepos = comp.long_name;
+                        }
+                    });
+
+                    // const parts = [jalan, kelurahan, kecamatan, kota, provinsi]
+                    //     .filter(part => part && part.trim() !== "");
+                    const parts = [kelurahan, kecamatan, kota, provinsi]
+                        .filter(part => part && part.trim() !== "");
+
+                    let alamatCustom = parts.join(', ');
+
+                    if (kodepos) {
+                        alamatCustom += ` ${kodepos}`;
+                    }
+
+                    isAutoUpdate = true;
+
+                    document.getElementById('alamat').value = alamatCustom;
+                    lastAlamat = alamatCustom;
+
+                    const kecamatanSelect = document.getElementById('kecamatan');
+                    const kelurahanSelect = document.getElementById('kelurahan');
+
+                    for (let i = 0; i < kecamatanSelect.options.length; i++) {
+
+                        const namaOption = normalizeWilayah(kecamatanSelect.options[i].text);
+                        const namaGeo = normalizeWilayah(kecamatan);
+
+                        if (namaOption === namaGeo) {
+
+                            kecamatanSelect.selectedIndex = i;
+
+                            document.getElementById('kecamatan_nama').value =
+                                kecamatanSelect.options[i].text;
+
+                            const districtCode = kecamatanSelect.value;
+
+                            await loadKelurahan(districtCode);
+
+                            for (let j = 0; j < kelurahanSelect.options.length; j++) {
+
+                                const namaKelOption = normalizeWilayah(kelurahanSelect.options[j].text);
+                                const namaKelGeo = normalizeWilayah(kelurahan);
+
+                                if (namaKelOption === namaKelGeo) {
+
+                                    kelurahanSelect.selectedIndex = j;
+
+                                    document.getElementById('kelurahan_nama').value =
+                                        kelurahanSelect.options[j].text;
+
+                                    break;
+                                }
+                            }
+
+                            break;
+                            // isAutoUpdate = true;
+                            // kecamatanSelect.dispatchEvent(new Event('change'));
+
+                            // pendingKelurahan = kelurahan;
+
+                            // break;
+                        }
+                    }
+                }
+            });
+        }
 
         function cariKoordinatDariAlamat(alamat) {
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(alamat)}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.length === 0) return;
+            geocoder.geocode({
+                address: alamat,
+                language: "id",
+            }, function(results, status) {
 
-                    const lat = parseFloat(data[0].lat);
-                    const lng = parseFloat(data[0].lon);
+                if (status === "OK" && results[0]) {
 
-                    // update input
-                    latitude.value = lat;
-                    longitude.value = lng;
+                    const components = results[0].address_components;
+                    if (!isDalamSemarang(components)) {
+                        // alert("Alamat harus di Kota Semarang!");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lokasi Tidak Valid',
+                            text: 'Lokasi harus berada di Kota Semarang!',
+                            confirmButtonText: 'OK'
+                        });
 
-                    // pindahin map & marker
-                    marker.setLatLng([lat, lng]);
-                    map.setView([lat, lng], 15);
-                });
+                        marker.position = lastValidPosition;
+                        map.setCenter(lastValidPosition);
+
+                        latInput.value = lastValidPosition.lat;
+                        lngInput.value = lastValidPosition.lng;
+                        return;
+                    }
+
+                    const location = results[0].geometry.location;
+                    const lat = location.lat();
+                    const lng = location.lng();
+
+                    marker.position = {
+                        lat,
+                        lng
+                    };
+                    map.setCenter({
+                        lat,
+                        lng
+                    });
+                    map.setZoom(17);
+                    lastValidPosition = {
+                        lat,
+                        lng
+                    };
+
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+
+                    updateAlamatDariKoordinat(lat, lng);
+                }
+            });
+        }
+
+        function normalizeWilayah(nama) {
+            return nama
+                .toLowerCase()
+                .replace("kecamatan", "")
+                .replace("kec.", "")
+                .replace("kelurahan", "")
+                .replace("kel.", "")
+                .replace("desa", "")
+                .replace(/\s+/g, "")
+                .trim();
+        }
+
+        function isDalamSemarang(components) {
+            let kota = "";
+
+            components.forEach(comp => {
+                if (comp.types.includes("administrative_area_level_2")) {
+                    kota = comp.long_name;
+                }
+            });
+
+            return kota.toLowerCase().includes("semarang");
+        }
+
+
+        function tampilkanSemuaKuliner() {
+            clearMarkers();
+
+            // let bounds = new google.maps.LatLngBounds();
+
+            dataKuliner.forEach(item => {
+                if (item.latitude && item.longitude) {
+                    if (item.id_wisata_kuliner == currentId) return;
+
+                    let posisi = {
+                        lat: parseFloat(item.latitude),
+                        lng: parseFloat(item.longitude)
+                    };
+
+                    const pin = new PinElement({
+                        background: "#FB991A",
+                        borderColor: "#ffffff",
+                        glyphColor: "#ffffff"
+                    });
+
+                    let marker = new google.maps.marker.AdvancedMarkerElement({
+                        position: posisi,
+                        map: map,
+                        title: item.nama,
+                        content: pin,
+                    });
+
+                    markers.push(marker);
+                    // bounds.extend(posisi);
+
+                    let infoWindow = new google.maps.InfoWindow({
+                        content: `
+                            <div style="width:250px; font-family:sans-serif;">
+                                <h3 style="margin:0 0 5px; font-size:16px;">
+                                ${item.nama}
+                                </h3>
+                                <p style="margin:0 0 10px; color:#555;">
+                                    ${item.alamat ?? '-'}
+                                </p>
+                            </div>  
+                        `
+                    });
+
+                    marker.addEventListener("click", () => {
+                        if (activeInfoWindow) {
+                            activeInfoWindow.close();
+                        }
+
+                        infoWindow.open(map, marker);
+                        activeInfoWindow = infoWindow;
+                    });
+                }
+            });
+
+            // if (markers.length > 0) {
+            //     map.fitBounds(bounds);
+            // }
         }
 
         $(document).ready(function() {
@@ -805,14 +1386,7 @@
                 }
             });
             // var idmhs = $("#selectmhsadmin").val();
-            let selectedFasilitas = {!! $fasilitas->map(function ($f) {
-                    return ['id' => $f->fasilitas->id_fasilitas, 'text' => $f->fasilitas->nama];
-                })->toJson() !!};
 
-            selectedFasilitas.forEach(function(f) {
-                let option = new Option(f.text, f.id, true, true);
-                $('#selectmkadmin').append(option).trigger('change');
-            });
             $("#selectmkadmin").attr("multiple", "multiple");
             // $.get("{{ url('ngampumkadmin') }}/" + idmhs, function(data) {
             //     $('#selectmkadmin').html(data);
@@ -867,15 +1441,15 @@
                     }
                 }
             });
-
-            let selectedKategori = {!! $kategori->map(function ($k) {
-                    return ['id' => $k->kategori->id_kategori, 'text' => $k->kategori->nama];
+            let selectedFasilitas = {!! $fasilitas->map(function ($f) {
+                    return ['id' => $f->fasilitas->id_fasilitas, 'text' => $f->fasilitas->nama];
                 })->toJson() !!};
 
-            selectedKategori.forEach(function(k) {
-                let option = new Option(k.text, k.id, true, true);
-                $('#selectkategoriadmin').append(option).trigger('change');
+            selectedFasilitas.forEach(function(f) {
+                let option = new Option(f.text, f.id, true, true);
+                $('#selectmkadmin').append(option).trigger('change');
             });
+
 
             $("#selectkategoriadmin").attr("multiple", "multiple");
             $("#selectkategoriadmin").select2({
@@ -925,6 +1499,15 @@
                     }
                 }
             });
+            let selectedKategori = {!! $kategori->map(function ($k) {
+                    return ['id' => $k->kategori->id_kategori, 'text' => $k->kategori->nama];
+                })->toJson() !!};
+
+            selectedKategori.forEach(function(k) {
+                let option = new Option(k.text, k.id, true, true);
+                $('#selectkategoriadmin').append(option).trigger('change');
+            });
+
 
             $("#selectmhsadmin").change(function() {
                 var idmhs = $("#selectmhsadmin").val();

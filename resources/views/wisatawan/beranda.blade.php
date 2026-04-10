@@ -57,7 +57,6 @@
         /* @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap"); */
 
         * {
-            /* font-family: "Jost", sans-serif; */
             padding: 0;
             margin: 0;
             box-sizing: border-box;

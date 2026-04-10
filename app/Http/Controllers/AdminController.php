@@ -250,7 +250,7 @@ class AdminController extends Controller
 
     public function detail($id)
     {
-        $wisataKuliner = WisataKuliner::findOrFail($id);
+        $wisataKuliner = WisataKuliner::with(['fasilitas', 'kategori'])->findOrFail($id);
 
         return response()->json($wisataKuliner);
     }
@@ -258,6 +258,7 @@ class AdminController extends Controller
     public function halamanedit($id)
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
+        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])->get();
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
             ->get();
@@ -267,7 +268,8 @@ class AdminController extends Controller
         return view('admin.kelola-wisata-kuliner.halaman-edit', compact(
             'wisataKuliner',
             'fasilitas',
-            'kategori'
+            'kategori',
+            'wkuliner'
         ));
     }
 
@@ -325,6 +327,10 @@ class AdminController extends Controller
                 $status = 'Disetujui';
             }
 
+            $dataMK = $request->id_fasilitas ?? [];
+            $dataKategori = $request->id_kategori ?? [];
+            $idWisata = $request->nama;
+
             $wisataKuliner->update([
                 'nama' => $request->nama,
                 'kecamatan' => $request->kecamatan,
@@ -343,6 +349,54 @@ class AdminController extends Controller
                 'status' => $status,
                 'waktu_diubah' => $waktu_diubah,
             ]);
+
+            $idWisata = $wisataKuliner->id_wisata_kuliner;
+
+            // Fasilitas
+            $fasilitasIds = [];
+
+            foreach ($dataMK as $item) {
+
+                if (is_numeric($item)) {
+                    $fasilitasId = $item;
+                } else {
+
+                    $fasilitas = Fasilitas::firstOrCreate([
+                        'nama' => trim($item)
+                    ]);
+
+                    $fasilitasId = $fasilitas->id_fasilitas;
+                }
+
+                $fasilitasIds[] = $fasilitasId;
+            }
+
+            $wisata = WisataKuliner::find($idWisata);
+
+            $wisata->fasilitas()->sync($fasilitasIds);
+
+            // Kategori
+            $kategoriIds = [];
+
+            foreach ($dataKategori as $item) {
+
+                if (is_numeric($item)) {
+                    $kategoriId = $item;
+                } else {
+
+                    $kategori = Kategori::firstOrCreate([
+                        'nama' => trim($item)
+                    ]);
+
+                    $kategoriId = $kategori->id_kategori;
+                }
+
+                $kategoriIds[] = $kategoriId;
+            }
+
+            $wisata = WisataKuliner::find($idWisata);
+
+            $wisata->kategori()->sync($kategoriIds);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
@@ -397,30 +451,37 @@ class AdminController extends Controller
 
     public function detailVerifKuliner($id)
     {
-        $wisataKuliner = WisataKuliner::findOrFail($id);
+        $wisataKuliner = WisataKuliner::with(['fasilitas', 'kategori'])->findOrFail($id);
 
-        return response()->json($wisataKuliner);
+        return response()->json(
+            $wisataKuliner
+        );
     }
 
     public function verifikasiWisataKuliner(Request $request, $id)
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
 
+        $waktu_diubah = Carbon::now('Asia/Jakarta');
+
         if ($request->status === 'Disetujui') {
             $wisataKuliner->update([
-                'status' => 'Disetujui'
+                'status' => 'Disetujui',
+                'waktu_diubah' => $waktu_diubah,
             ]);
         }
 
         if ($request->status === 'Ditolak') {
             $wisataKuliner->update([
-                'status' => 'Ditolak'
+                'status' => 'Ditolak',
+                'waktu_diubah' => $waktu_diubah,
             ]);
         }
 
         if ($request->status === 'Tampilkan') {
             $wisataKuliner->update([
-                'status' => 'Tampilkan'
+                'status' => 'Tampilkan',
+                'waktu_diubah' => $waktu_diubah,
             ]);
         }
 
@@ -468,16 +529,19 @@ class AdminController extends Controller
     public function verifikasiUlasan(Request $request, $id)
     {
         $penilaianDanUlasan = PenilaiandanUlasan::findOrFail($id);
+        $waktu_diubah = Carbon::now('Asia/Jakarta');
 
         if ($request->status === 'Disetujui') {
             $penilaianDanUlasan->update([
-                'status' => 'Disetujui'
+                'status' => 'Disetujui',
+                'waktu_diubah' => $waktu_diubah,
             ]);
         }
 
         if ($request->status === 'Ditolak') {
             $penilaianDanUlasan->update([
-                'status' => 'Ditolak'
+                'status' => 'Ditolak',
+                'waktu_diubah' => $waktu_diubah,
             ]);
         }
 

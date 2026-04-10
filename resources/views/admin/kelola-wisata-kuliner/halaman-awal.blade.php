@@ -275,6 +275,22 @@
                                     </div>
 
                                     <div class="flex justify-between w-32">
+                                        <strong>Fasilitas</strong>
+                                    </div>
+                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                        <div>:</div>
+                                        <div class="text-justify"><span id="fasilitas"></span></div>
+                                    </div>
+
+                                    <div class="flex justify-between w-32">
+                                        <strong>Kategori</strong>
+                                    </div>
+                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                        <div>:</div>
+                                        <div class="text-justify"><span id="kategori"></span></div>
+                                    </div>
+
+                                    <div class="flex justify-between w-32">
                                         <strong>Email Pengaju</strong>
                                     </div>
                                     <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
@@ -631,6 +647,52 @@
                             document.getElementById('ratingStars').innerHTML = '';
                         }
 
+                        // Fasilitas
+                        let fasilitas = data.fasilitas || [];
+                        let container = document.getElementById('fasilitas');
+
+                        container.innerHTML = '';
+                        if (fasilitas.length > 0) {
+                            fasilitas.forEach(f => {
+                                let span = document.createElement('span');
+                                span.textContent = f.nama;
+
+                                span.style.display = 'inline-block';
+                                span.style.padding = '4px 4px';
+                                span.style.margin = '2px';
+                                span.style.backgroundColor = '#dddddd';
+                                span.style.borderRadius = '4px';
+                                span.style.fontSize = '12px';
+
+                                container.appendChild(span);
+                            });
+                        } else {
+                            container.textContent = '-';
+                        }
+
+                        // Kategori
+                        let kategori = data.kategori || [];
+                        let containerKategori = document.getElementById('kategori');
+
+                        containerKategori.innerHTML = '';
+                        if (kategori.length > 0) {
+                            kategori.forEach(k => {
+                                let span = document.createElement('span');
+                                span.textContent = k.nama;
+
+                                span.style.display = 'inline-block';
+                                span.style.padding = '4px 4px';
+                                span.style.margin = '2px';
+                                span.style.backgroundColor = '#dddddd';
+                                span.style.borderRadius = '4px';
+                                span.style.fontSize = '12px';
+
+                                containerKategori.appendChild(span);
+                            });
+                        } else {
+                            containerKategori.textContent = '-';
+                        }
+
                         // Foto
                         const foto = document.getElementById('foto');
 
@@ -656,21 +718,17 @@
                             map = new google.maps.Map(document.getElementById("map"), {
                                 center: position,
                                 zoom: 16,
-                                styles: [{
-                                    featureType: "poi.business",
-                                    stylers: [{
-                                        visibility: "off"
-                                    }]
-                                }]
+                                mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                                clickableIcons: false,
                             });
 
-                            marker = new google.maps.Marker({
+                            marker = new google.maps.marker.AdvancedMarkerElement({
                                 position: position,
                                 map: map,
                             });
                         } else {
                             map.setCenter(position);
-                            marker.setPosition(position);
+                            marker.position = position;
                         }
                     });
             }

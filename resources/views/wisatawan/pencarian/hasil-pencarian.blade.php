@@ -20,7 +20,10 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" /> --}}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.css">
+
 
     {{-- <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
@@ -61,9 +64,297 @@
             height: 100%;
             width: 100%;
         }
+
+        * {
+            /* font-family: "Jost", sans-serif; */
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* --blue-color: #357ded; */
+            --yellow-color: #FFA319;
+            --green-color: #094B3C;
+            --gray-color: #77889926;
+        }
+
+        /* body {
+            background: var(--yellow-color);
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100dvh;
+        } */
+
+        .container {
+            margin-block: auto;
+            border-radius: 10px;
+        }
+
+        .range-slider {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            /* gap: 20px; */
+            gap: 5px;
+            padding-block: 5px;
+        }
+
+        .range-slider.dragging {
+            cursor: ew-resize;
+        }
+
+        .range-slider>input {
+            border: none;
+            outline: none;
+            background: var(--gray-color);
+            /* font-size: 1.5rem; */
+            font-size: 15px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            width: 115px;
+            /* min-width: 64px; */
+        }
+
+        .range {
+            width: 100%;
+            /* width: 60%; */
+            display: grid;
+            position: relative;
+            z-index: 5;
+        }
+
+        .range input {
+            grid-row: 2;
+            grid-column: 1;
+            pointer-events: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .range input::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--yellow-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider {
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            background: var(--gray-color);
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .progress {
+            position: absolute;
+            height: 100%;
+            background: var(--yellow-color);
+            cursor: ew-resize;
+        }
+
+        .range-slider-rating {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            /* gap: 20px; */
+            gap: 5px;
+            padding-block: 5px;
+        }
+
+        .range-slider-rating.dragging {
+            cursor: ew-resize;
+        }
+
+        .range-slider-rating>input {
+            border: none;
+            outline: none;
+            background: var(--gray-color);
+            font-size: 15px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            width: 115px;
+        }
+
+        .range-rating {
+            width: 100%;
+            display: grid;
+            position: relative;
+            z-index: 5;
+        }
+
+        .range-rating input {
+            grid-row: 2;
+            grid-column: 1;
+            pointer-events: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .range-rating input::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--yellow-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-rating {
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            background: var(--gray-color);
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .progress-rating {
+            position: absolute;
+            height: 100%;
+            background: var(--yellow-color);
+            cursor: ew-resize;
+        }
+
+        .range-slider-jarak {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 5px;
+            padding-block: 5px;
+        }
+
+        .range-slider-jarak.dragging {
+            cursor: ew-resize;
+        }
+
+        .range-slider-jarak>input {
+            border: none;
+            outline: none;
+            background: var(--gray-color);
+            font-size: 15px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            width: 115px;
+        }
+
+        .range-jarak {
+            width: 100%;
+            display: grid;
+            position: relative;
+            z-index: 5;
+        }
+
+        .range-jarak input {
+            grid-row: 2;
+            grid-column: 1;
+            pointer-events: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .range-jarak input::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--yellow-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-jarak {
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            background: var(--gray-color);
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .progress-jarak {
+            position: absolute;
+            height: 100%;
+            background: var(--yellow-color);
+            cursor: ew-resize;
+        }
+
+        .range-slider-jarak-dua {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 5px;
+            padding-block: 5px;
+        }
+
+        .range-jarak-dua {
+            width: 100%;
+            display: grid;
+            position: relative;
+            z-index: 5;
+        }
+
+        .range-jarak-dua input {
+            grid-row: 1;
+            grid-column: 1;
+            pointer-events: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .range-jarak-dua input::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--yellow-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-jarak-dua {
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            background: var(--gray-color);
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .progress-jarak-dua {
+            position: absolute;
+            height: 100%;
+            background: var(--yellow-color);
+        }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" /> --}}
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -113,7 +404,7 @@
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-xl z-20">
                         <div
-                            class="flex items-center w-full max-w-xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
+                            class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
                                 class="flex-1 px-5 py-3 focus:outline-none" id="searchBar">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
@@ -122,9 +413,10 @@
                         </div>
 
                         <div id="searchPanel"
-                            class="hidden absolute w-full max-w-xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
+                            class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
                             <!-- Kuliner Terdekat -->
-                            <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
+                            <div onclick="cariKulinerTerdekat()"
+                                class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
                             </div>
 
@@ -132,7 +424,6 @@
                             <div id="advancedBtn" class="flex gap-4 items-center p-3 rounded-xl cursor-pointer">
                                 <span>Advanced Search</span>
                                 <span class="leading-none">
-                                    {{-- <i class="fi fi-br-angle-small-down text-xl"></i> --}}
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="3" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -141,21 +432,132 @@
 
                                 </span>
                             </div>
-
                             <!-- Filter Advanced -->
-                            <div id="advancedFilter" class="hidden mt-3 space-y-3">
+                            <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3 mr-3">
+                                <input type="hidden" name="lat" id="lat">
+                                <input type="hidden" name="lng" id="lng">
 
-                                <select class="w-full border rounded-lg p-2" name="rating">
-                                    <option>Rating Minimal</option>
-                                    <option>⭐ 3+</option>
-                                    <option>⭐ 4+</option>
-                                    <option>⭐ 4.5+</option>
-                                </select>
+                                <div class="container">
+                                    <label class="font-medium">Jarak</label>
 
+                                    <div class="range-slider-jarak-dua flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
+                                            <input type="number" name="jarak"
+                                                class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
+                                                value="1" min="1" max="10" />
+                                        </div>
 
-                                <input type="checkbox" name="fasilitas[]" value="1"> Wifi
-                                <input type="checkbox" name="fasilitas[]" value="2"> Parkir
-                                <input type="checkbox" name="fasilitas[]" value="3"> AC
+                                        <!-- .range -->
+                                        <div class="range-jarak-dua">
+                                            <input type="range" class="input-jarak-dua" value="1" min="1"
+                                                max="10" />
+
+                                            <div class="slider-jarak-dua">
+                                                <div class="progress-jarak-dua"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="font-medium">Kategori</label>
+                                    <select id="kategori" name="kategori[]" data-placeholder="Pilih Kategori..."
+                                        data-theme="light" multiple data-multi-select>
+                                        @foreach ($kategori as $item)
+                                            <option value="{{ $item->id_kategori }}">
+                                                {{ $item->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="container">
+                                    <label class="font-medium">Harga</label>
+
+                                    <!-- .range-slider -->
+                                    <div class="range-slider flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
+                                            <input type="number" name="minharga"
+                                                class="min-price w-[95px] p-2 outline-none border-0" value="1"
+                                                min="1" max="1000000" />
+                                        </div>
+
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
+                                            <input type="number" name="maxharga"
+                                                class="max-price w-[95px] p-2 outline-none border-0" value="1000000"
+                                                min="1" max="1000000" />
+                                        </div>
+
+                                        <!-- .range -->
+                                        <div class="range">
+                                            <input type="range" class="min-input" value="1" min="1"
+                                                max="1000000" />
+                                            <input type="range" class="max-input" value="1000000" min="1"
+                                                max="1000000" />
+
+                                            <div class="slider">
+                                                <div class="progress"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="font-medium">Fasilitas</label>
+                                    <select id="fasilitas" name="fasilitas[]" data-placeholder="Pilih Fasilitas..."
+                                        data-theme="light" multiple data-multi-select>
+                                        @foreach ($fasilitas as $item)
+                                            <option value="{{ $item->id_fasilitas }}">
+                                                {{ $item->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="container">
+                                    <label class="font-medium">Nilai Kuliner</label>
+
+                                    <!-- .range-slider -->
+                                    <div class="range-slider-rating flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <input type="number" name="minrating"
+                                                class="min-rating w-[40px] p-2 outline-none border-0" value="1"
+                                                min="1" max="5" />
+                                        </div>
+
+                                        <div
+                                            class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
+                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <input type="number" name="maxrating"
+                                                class="max-rating w-[40px] p-2 outline-none border-0" value="5"
+                                                min="1" max="5" />
+                                        </div>
+
+                                        <!-- .range -->
+                                        <div class="range">
+                                            <input type="range" class="min-input-rating" value="1"
+                                                min="1" max="5" />
+                                            <input type="range" class="max-input-rating" value="5"
+                                                min="1" max="5" />
+
+                                            <div class="slider">
+                                                <div class="progress-rating"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -192,7 +594,8 @@
                         data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"> --}}
                     <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
                         data-id="{{ $kuliner->id_wisata_kuliner }}" data-nama="{{ $kuliner->nama }}"
-                        data-alamat="{{ $kuliner->alamat }}" data-harga="Rp{{ number_format($kuliner->harga_min) }}+"
+                        data-alamat="{{ $kuliner->alamat }}"
+                        data-harga="Rp{{ number_format($kuliner->harga_min) }}+"
                         data-foto="{{ asset('storage/' . $kuliner->foto) }}" data-lat="{{ $kuliner->latitude }}"
                         data-lng="{{ $kuliner->longitude }}">
 
@@ -416,9 +819,11 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    {{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
+
     {{-- <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_CM3lH19159L5LAd8GJoK9pwb5raOiFk&callback=getUserLocation"
         async defer></script> --}}
@@ -431,6 +836,275 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initApp&libraries=maps,marker&v=weekly"
         async defer></script>
     <script>
+        // slider Jarak
+        const sliderJarakDua = document.querySelector(".range-slider-jarak-dua");
+        const progressJarakDua = sliderJarakDua.querySelector(".progress-jarak-dua");
+        const nilaiJarakDua = sliderJarakDua.querySelector(".nilai-jarak-dua");
+        const inputJarakDua = sliderJarakDua.querySelector(".input-jarak-dua");
+
+        const updateProgressJarakDua = () => {
+            const valueJarakDua = parseInt(inputJarakDua.value);
+            const minJarakDua = parseInt(inputJarakDua.min);
+            const maxJarakDua = parseInt(inputJarakDua.max);
+
+            const totalRangeJarakDua = maxJarakDua - minJarakDua;
+            const widthJarakDua = ((valueJarakDua - minJarakDua) / totalRangeJarakDua) * 100;
+
+            progressJarakDua.style.width = widthJarakDua + "%";
+            progressJarakDua.style.left = "0%";
+
+            nilaiJarakDua.value = valueJarakDua;
+        };
+
+        inputJarakDua.addEventListener("input", () => {
+            updateProgressJarakDua();
+        });
+
+        nilaiJarakDua.addEventListener("input", () => {
+            let valJarakDua = parseInt(nilaiJarakDua.value);
+            const minJarakDua = parseInt(inputJarakDua.min);
+            const maxJarakDua = parseInt(inputJarakDua.max);
+
+            // Clamp value dalam batas min-max
+            if (valJarakDua < minJarakDua) valJarakDua = minJarakDua;
+            if (valJarakDua > maxJarakDua) valJarakDua = maxJarakDua;
+
+            inputJarakDua.value = valJarakDua;
+            updateProgressJarakDua();
+        });
+
+        updateProgressJarakDua();
+
+        // slider Harga
+        const slider = document.querySelector(".range-slider");
+        const progress = slider.querySelector(".progress");
+        const minPriceInput = slider.querySelector(".min-price");
+        const maxPriceInput = slider.querySelector(".max-price");
+        const minInput = slider.querySelector(".min-input");
+        const maxInput = slider.querySelector(".max-input");
+
+        const updateProgress = () => {
+            const minValue = parseInt(minInput.value);
+            const maxValue = parseInt(maxInput.value);
+
+            // get the total range of the slider
+            const range = maxInput.max - minInput.min;
+            // get the selected value range of the progress
+            const valueRange = maxValue - minValue;
+            // calculate the width percentage
+            const width = (valueRange / range) * 100;
+            // calculate the min thumb offset
+            const minOffset = ((minValue - minInput.min) / range) * 100;
+
+            // update the progress width
+            progress.style.width = width + "%";
+            // update the progress left position
+            progress.style.left = minOffset + "%";
+
+            // update the number inputs
+            minPriceInput.value = minValue;
+            maxPriceInput.value = maxValue;
+        };
+
+        const updateRange = (event) => {
+            const input = event.target;
+
+            let min = parseInt(minPriceInput.value);
+            let max = parseInt(maxPriceInput.value);
+
+            if (input === minPriceInput && min > max) {
+                max = min;
+                maxPriceInput.value = max;
+            } else if (input === maxPriceInput && max < min) {
+                min = max;
+                minPriceInput.value = min;
+            }
+
+            minInput.value = min;
+            maxInput.value = max;
+
+            updateProgress();
+        };
+
+        minPriceInput.addEventListener("input", updateRange);
+        maxPriceInput.addEventListener("input", updateRange);
+
+        minInput.addEventListener("input", () => {
+            if (parseInt(minInput.value) >= parseInt(maxInput.value)) {
+                maxInput.value = minInput.value;
+            }
+            updateProgress();
+        });
+
+        maxInput.addEventListener("input", () => {
+            if (parseInt(maxInput.value) <= parseInt(minInput.value)) {
+                minInput.value = maxInput.value;
+            }
+            updateProgress();
+        });
+
+        let isDragging = false;
+        let startOffsetX;
+
+        progress.addEventListener("mousedown", (e) => {
+            e.preventDefault(); // prevent text selection
+
+            isDragging = true;
+
+            startOffsetX = e.clientX - progress.getBoundingClientRect().left;
+
+            slider.classList.toggle("dragging", isDragging);
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                // get the size and position of the slider
+                const sliderRect = slider.getBoundingClientRect();
+                const progressWidth = parseFloat(progress.style.width || 0);
+
+                // calculate the new left position for the progress element
+                let newLeft =
+                    ((e.clientX - sliderRect.left - startOffsetX) / sliderRect.width) * 100;
+
+                // ensure the progress is not exceeding the slider boundaries
+                newLeft = Math.min(Math.max(newLeft, 0), 100 - progressWidth);
+
+                // update the progress position
+                progress.style.left = newLeft + "%";
+
+                // calculate the new min thumb position
+                const range = maxInput.max - minInput.min;
+                const newMin = Math.round((newLeft / 100) * range) + parseInt(minInput.min);
+                const newMax = newMin + parseInt(maxInput.value) - parseInt(minInput.value);
+
+                // update the min input
+                minInput.value = newMin;
+                maxInput.value = newMax;
+
+                // update the progress
+                updateProgress();
+            }
+            slider.classList.toggle("dragging", isDragging);
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (isDragging) {
+                isDragging = false;
+            }
+            slider.classList.toggle("dragging", isDragging);
+        });
+
+        updateProgress();
+
+        // slider Penilaian
+        const sliderRating = document.querySelector(".range-slider-rating");
+        const progressRating = sliderRating.querySelector(".progress-rating");
+        const minRatingInput = sliderRating.querySelector(".min-rating");
+        const maxRatingInput = sliderRating.querySelector(".max-rating");
+        const minInputRating = sliderRating.querySelector(".min-input-rating");
+        const maxInputRating = sliderRating.querySelector(".max-input-rating");
+
+        const updateProgressRating = () => {
+            const minValueRating = parseInt(minInputRating.value);
+            const maxValueRating = parseInt(maxInputRating.value);
+
+            const totalRangeRating = maxInputRating.max - minInputRating.min;
+            const valueRangeRating = maxValueRating - minValueRating;
+
+            const widthRating = (valueRangeRating / totalRangeRating) * 100;
+            const minOffsetRating = ((minValueRating - minInputRating.min) / totalRangeRating) * 100;
+
+            progressRating.style.width = widthRating + "%";
+            progressRating.style.left = minOffsetRating + "%";
+
+            minRatingInput.value = minValueRating;
+            maxRatingInput.value = maxValueRating;
+        };
+
+        const updateRangeRating = (event) => {
+            const inputRating = event.target;
+
+            let minRating = parseInt(minRatingInput.value);
+            let maxRating = parseInt(maxRatingInput.value);
+
+            if (inputRating === minRatingInput && minRating > maxRating) {
+                maxRating = minRating;
+                maxRatingInput.value = maxRating;
+            } else if (inputRating === maxRatingInput && maxRating < minRating) {
+                minRating = maxRating;
+                minRatingInput.value = minRating;
+            }
+
+            minInputRating.value = minRating;
+            maxInputRating.value = maxRating;
+
+            updateProgressRating();
+        };
+
+        minRatingInput.addEventListener("input", updateRangeRating);
+        maxRatingInput.addEventListener("input", updateRangeRating);
+
+        minInputRating.addEventListener("input", () => {
+            if (parseInt(minInputRating.value) >= parseInt(maxInputRating.value)) {
+                maxInputRating.value = minInputRating.value;
+            }
+            updateProgressRating();
+        });
+
+        maxInputRating.addEventListener("input", () => {
+            if (parseInt(maxInputRating.value) <= parseInt(minInputRating.value)) {
+                minInputRating.value = maxInputRating.value;
+            }
+            updateProgressRating();
+        });
+
+        let isDraggingRating = false;
+        let startOffsetXRating;
+
+        progressRating.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+
+            isDraggingRating = true;
+            startOffsetXRating = e.clientX - progressRating.getBoundingClientRect().left;
+
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (isDraggingRating) {
+                const sliderRectRating = sliderRating.getBoundingClientRect();
+                const progressWidthRating = parseFloat(progressRating.style.width || 0);
+
+                let newLeftRating =
+                    ((e.clientX - sliderRectRating.left - startOffsetXRating) / sliderRectRating.width) * 100;
+
+                newLeftRating = Math.min(Math.max(newLeftRating, 0), 100 - progressWidthRating);
+
+                progressRating.style.left = newLeftRating + "%";
+
+                const totalRangeRating = maxInputRating.max - minInputRating.min;
+                const newMinRating = Math.round((newLeftRating / 100) * totalRangeRating) + parseInt(minInputRating
+                    .min);
+                const newMaxRating = newMinRating + parseInt(maxInputRating.value) - parseInt(minInputRating.value);
+
+                minInputRating.value = newMinRating;
+                maxInputRating.value = newMaxRating;
+
+                updateProgressRating();
+            }
+
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (isDraggingRating) {
+                isDraggingRating = false;
+            }
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        updateProgressRating();
+
         document.addEventListener('DOMContentLoaded', () => {
             const hamburger = document.getElementById('hamburger');
             const sidebar = document.querySelector('.sidebar');
@@ -440,7 +1114,19 @@
             hamburger.addEventListener('click', () => {
                 sidebar.classList.toggle('expanded');
             });
+
+            const params = new URLSearchParams(window.location.search);
+            const detailId = params.get('detail');
+
+            if (detailId) {
+                openDetailFromId(detailId);
+            }
         });
+
+        function openDetailFromId(id) {
+            let card = document.querySelector(`.card-kuliner[data-id="${id}"]`);
+            if (card) card.click();
+        }
 
         const searchBar = document.getElementById("searchBar");
         const searchPanel = document.getElementById("searchPanel");
@@ -463,243 +1149,6 @@
             }
 
         });
-
-        // let dataKuliner = @json($data)
-
-        // console.log(dataKuliner)
-
-        // YANG BENER --------------------------------------------------------------------------
-
-        // let mapOptions = {
-        //     center: [-6.99, 110.42],
-        //     zoom: 10
-        // }
-
-        // let map = new L.map('map', mapOptions);
-
-        // let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        // map.addLayer(layer);
-
-        // let markerGroup = L.layerGroup().addTo(map)
-
-        // dataKuliner.forEach(function(item) {
-
-        //     if (item.latitude && item.longitude) {
-
-        //         L.marker([item.latitude, item.longitude])
-        //             .addTo(markerGroup)
-        //             .bindPopup(item.nama)
-
-        //     }
-
-        // })
-
-        // SAMPE SINI --------------------------------------------------------------------------
-
-        // let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        // map.addLayer(layer);
-
-        // let markerGroup = L.layerGroup().addTo(map)
-
-        // dataKuliner.forEach(function(item) {
-
-        //     if (item.latitude && item.longitude) {
-
-        //         L.marker([item.latitude, item.longitude])
-        //             .addTo(markerGroup)
-        //             .bindPopup(item.nama)
-
-        //     }
-
-        // })
-        // navigator.geolocation.watchPosition(success, error);
-
-        // function success(pos) {
-        //     const lat = pos.coords.latitude;
-        //     const lng = pos.coords.longitude;
-        //     const accuracy = pos.coords.accuracy;
-
-        //     L.marker([lat, lng]).addTo(map);
-        //     L.circle([lat, lng], {
-        //         radius: accuracy
-        //     }).addTo(map);
-
-        //     map.fitBounds(circle, getBounds())
-        // }
-
-
-
-        // YANG BENER --------------------------------------------------------------------------
-        // let userMarker = null;
-        // let userCircle = null;
-
-        // let userIcon = L.icon({
-        //     iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png',
-        //     iconSize: [32, 32]
-        // });
-
-        // navigator.geolocation.watchPosition(success, error, {
-        //     enableHighAccuracy: true
-        // });
-
-        // function success(pos) {
-        //     const lat = pos.coords.latitude;
-        //     const lng = pos.coords.longitude;
-
-        // SAMPE SINI --------------------------------------------------------------------------
-        // const accuracy = pos.coords.accuracy;
-
-        // YANG BENER --------------------------------------------------------------------------
-        // userLatLng = L.latLng(lat, lng);
-        // SAMPE SINI --------------------------------------------------------------------------
-
-        // console.log("USER:", userLatLng)
-
-        // YANG BENER --------------------------------------------------------------------------
-        // hapus marker lama
-        // if (userMarker) {
-        // map.removeLayer(userMarker);
-        // map.removeLayer(userCircle); ---- TIDAK 
-        // }
-
-        // pakai icon di sini
-        // userMarker = L.marker([lat, lng], {
-        //     icon: userIcon
-        // }).addTo(map).bindPopup("Lokasi Saya");
-        // SAMPE SINI --------------------------------------------------------------------------
-
-        // userCircle = L.circle([lat, lng], {
-        //     radius: accuracy,
-        //     color: 'blue'
-        // }).addTo(map);
-
-        // YANG BENER --------------------------------------------------------------------------
-        // map.setView([lat, lng], 15);
-        // }
-        // SAMPE SINI --------------------------------------------------------------------------
-
-
-        // console.log("USER:", userLatLng)
-
-
-        // YANG BENER --------------------------------------------------------------------------
-        // function error(err) {
-        //     console.log("ERROR:", err.message);
-        //     alert("Gagal ambil lokasi: " + err.message);
-        // }
-        // SAMPE SINI --------------------------------------------------------------------------
-
-
-
-
-        // let bounds = []
-
-        // dataKuliner.forEach(function(item) {
-
-        //     if (item.latitude && item.longitude) {
-
-        //         let latlng = [item.latitude, item.longitude]
-
-        //         bounds.push(latlng)
-
-        //         L.marker(latlng)
-        //             .addTo(map)
-        //             .bindPopup(item.nama)
-
-        //     }
-
-        // })
-
-
-
-        // YANG BENER --------------------------------------------------------------------------
-        // let bounds = []
-
-        // dataKuliner.forEach(function(item) {
-
-        //     if (item.latitude && item.longitude) {
-
-        //         let latlng = [item.latitude, item.longitude]
-
-        //         bounds.push(latlng)
-
-        //     }
-
-        // })
-
-        // if (bounds.length) {
-        //     map.fitBounds(bounds)
-        // }
-
-
-        // let activeMarker = null
-
-        // document.querySelectorAll('.card-kuliner').forEach(card => {
-
-        //     card.addEventListener('click', function() {
-
-        //         let nama = this.dataset.nama
-        //         let alamat = this.dataset.alamat
-        //         let harga = this.dataset.harga
-        //         let foto = this.dataset.foto
-        //         let lat = this.dataset.lat
-        //         let lng = this.dataset.lng
-        //         let id = this.dataset.id
-        //         console.log("USER PAS KLIK:", userLatLng);
-        //         document.getElementById('listKuliner').innerHTML = `
-
-    //         <div class="bg-white rounded-2xl shadow-md p-5">
-
-    //             <button onclick="backToList()" class="mb-4 text-black"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-    //                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-    //                 </svg>
-    //                 </button>
-
-    //             <img src="${foto}" class="w-full h-56 object-cover rounded-xl mb-4">
-
-    //             <h2 class="text-2xl font-bold">${nama}</h2>
-
-    //             <p class="text-gray-600">${alamat}</p>
-
-    //             <p class="mt-2 font-semibold">${harga}</p>
-
-    //             <hr class="my-4">
-
-    //             <h3 class="font-bold mb-2">Penilaian dan Ulasan</h3>
-
-    //             <button onclick="openModal(${id})"
-    //                 class="bg-gray-100 w-full text-gray-500 border px-4 py-2 rounded-xl mt-4 flex items-center gap-1">
-    //                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-    //                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-    //                     class="size-4">
-    //                     <path stroke-linecap="round" stroke-linejoin="round"
-    //                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-    //                 </svg>
-    //                 <span class="ml-1">Beri Penilaian dan Ulasan</span>
-    //             </button>
-
-    //             <div id="ulasanArea"></div>
-
-    //         </div>
-
-    // `
-        //         loadUlasan(id)
-        //         markerGroup.clearLayers()
-
-        //         L.marker([lat, lng])
-        //             .addTo(markerGroup)
-        //             .bindPopup(nama)
-        //             .openPopup()
-
-
-        //         map.setView([lat, lng], 16)
-
-
-        //     })
-
-        // })
-        // SAMPE SINI --------------------------------------------------------------------------
-
 
         // MAPS --------------------------------------------------------------------------------
         let map;
@@ -847,6 +1296,13 @@
             });
         }
 
+        function editWisataKuliner(id) {
+
+            // window.location.href = `/wisatawan/editwisatakuliner/${id}`;
+            window.location.href =
+                `/wisatawan/editwisatakuliner/${id}?from=` + encodeURIComponent(window.location.href);
+        }
+
         document.querySelectorAll('.card-kuliner').forEach(card => {
 
             card.addEventListener('click', function() {
@@ -858,6 +1314,10 @@
                 let lat = parseFloat(this.dataset.lat);
                 let lng = parseFloat(this.dataset.lng);
                 let id = this.dataset.id;
+
+                const url = new URL(window.location.href);
+                url.searchParams.set('detail', id);
+                history.pushState(null, '', url);
 
                 document.getElementById('listKuliner').innerHTML = `
             <div class="bg-white rounded-2xl shadow-md p-5">
@@ -893,6 +1353,11 @@
                         <span class="ml-1">Beri Penilaian dan Ulasan</span>
                     </button>
 
+                <button onclick="editWisataKuliner(${id})"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-xl mt-4">
+                    Edit Wisata Kuliner
+                </button>
+
                 <div id="ulasanArea"></div>
 
             </div>
@@ -924,6 +1389,9 @@
         });
 
         function backToList() {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('detail');
+            history.pushState(null, '', url);
             location.reload()
         }
 

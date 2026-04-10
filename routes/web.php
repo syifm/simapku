@@ -73,6 +73,8 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/wisata/api/kecamatan', [WisatawanController::class, 'getKecamatan']);
     Route::get('/wisatawan/wisata/api/kelurahan/{districtCode}', [WisatawanController::class, 'getKelurahan']);
     Route::post('/wisatawan/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpan'])->name('simpanwisatakuliner');
+    Route::get('/wisatawan/editwisatakuliner/{id}', [WisatawanController::class, 'halamanedit'])->name('editwisatakuliner');
+    Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
 
     Route::get('/wisatawan/diarikuliner', [WisatawanController::class, 'halamanDiari'])->name('diarikuliner');
     Route::get('/wisatawan/diarikuliner/detail/{id}', [WisatawanController::class, 'detailDiari'])->name('diarikuliner.detail');
@@ -88,6 +90,8 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/selectmhs', [WisatawanController::class, 'selectmhs'])->name('select.mhs');
     Route::get('/selectmk/{id}', [WisatawanController::class, 'selectmk'])->name('select.mk');
     Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
+    Route::get('/selectkategori/{id}', [WisatawanController::class, 'selectkategori'])->name('select.kategori');
+    Route::get('/ngampukategori/{id}', [WisatawanController::class, 'getKategori'])->name('getngampukategori');
 
     // Route::get('/api/kuliner-terdekat', [WisataKulinerController::class, 'search']);
 

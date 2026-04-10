@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\WisataKuliner;
+use App\Models\Kategori;
+use App\Models\Fasilitas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -64,6 +66,8 @@ class WisataKulinerController extends Controller
 
     public function search(Request $request)
     {
+        $kategori = Kategori::all();
+        $fasilitas = Fasilitas::all();
         // $lat = $request->lat;
         // $lng = $request->lng;
         // $radius = $request->radius ?? 5;
@@ -245,7 +249,7 @@ class WisataKulinerController extends Controller
         $data = $query->distinct()->get();
 
         // return response()->json($data);
-        return view('wisatawan.pencarian.hasil-pencarian', compact('data'));
+        return view('wisatawan.pencarian.hasil-pencarian', compact('data', 'kategori', 'fasilitas'));
     }
 
     // public function kulinerTerdekat(Request $request)

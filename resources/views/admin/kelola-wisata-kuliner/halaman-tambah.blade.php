@@ -128,9 +128,23 @@
         .select2-container--default .select2-selection__clear {
             display: none !important;
         }
+
+        .select2-container--default .select2-selection--multiple:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            height: 42px;
+            border-radius: 0.375rem;
+            border: 1px solid #e0e0e1;
+            /* padding: 6px 6px; */
+            display: flex;
+            align-items: center;
+        }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" /> --}}
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -275,6 +289,9 @@
                                 <input type="text" id="no_telp" name="no_telp" value="{{ old('no_telp') }}"
                                     required pattern="\d{10,15}" minlength="10" maxlength="15"
                                     class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <p class="text-xs text-gray-600 mt-2">
+                                    Nomor Telepon hanya boleh berisi angka, tanpa spasi dan simbol.
+                                </p>
                                 @error('no_telp')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -869,7 +886,6 @@
         let activeInfoWindow = null;
         let dataKuliner = @json($wkuliner);
         let markers = [];
-
 
         function clearMarkers() {
             markers.forEach(m => m.setMap(null));

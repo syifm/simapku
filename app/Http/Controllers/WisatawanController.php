@@ -10,6 +10,7 @@ use App\Models\DiariKuliner;
 use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
 use App\Models\Kategori;
+use App\Models\KategoriWisataKuliner;
 // use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Validation\Rule;
 
 class WisatawanController extends Controller
 {
@@ -61,7 +62,8 @@ class WisatawanController extends Controller
     public function halamantambah()
     {
         $fasilitas = Fasilitas::all();
-        return view('wisatawan.wisata-kuliner.tambah-kuliner', compact('fasilitas'));
+        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])->get();
+        return view('wisatawan.wisata-kuliner.tambah-kuliner', compact('fasilitas', 'wkuliner'));
     }
 
     // public function simpan(Request $request)
@@ -180,7 +182,7 @@ class WisatawanController extends Controller
     public function simpan(Request $request)
     {
         $request->validate([
-            'id_wisata_kuliner' => 'required|string|max:255',
+            'nama_wisata_kuliner' => 'required|string|max:255',
             'kecamatan' => 'required|string|max:50',
             'kelurahan' => 'required|string|max:50',
             'alamat' => 'required|string',
@@ -237,7 +239,8 @@ class WisatawanController extends Controller
         // ]);
 
         $dataMK = $request->id_fasilitas ?? [];
-        $idWisata = $request->id_wisata_kuliner;
+        $dataKategori = $request->id_kategori ?? [];
+        $idWisata = $request->nama_wisata_kuliner;
 
         if (!is_numeric($idWisata)) {
 
@@ -288,12 +291,181 @@ class WisatawanController extends Controller
 
         $wisata->fasilitas()->sync($fasilitasIds);
 
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => "Berhasil Simpan"
-        // ]);
+        $kategoriIds = [];
+
+        foreach ($dataKategori as $item) {
+
+            if (is_numeric($item)) {
+                $kategoriId = $item;
+            } else {
+
+                $kategori = Kategori::firstOrCreate([
+                    'nama' => trim($item)
+                ]);
+
+                $kategoriId = $kategori->id_kategori;
+            }
+
+            $kategoriIds[] = $kategoriId;
+        }
+
+        $wisata = WisataKuliner::find($idWisata);
+
+        $wisata->kategori()->sync($kategoriIds);
 
         return redirect()->route('beranda-Wisatawan')->with('success', 'Wisata Kuliner Berhasil Disimpan');
+    }
+
+    public function halamanedit($id)
+    {
+        $wisataKuliner = WisataKuliner::findOrFail($id);
+        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])->get();
+        $fasilitas = FasilitasWisataKuliner::with('fasilitas')
+            ->where('id_wisata_kuliner', $id)
+            ->get();
+        $kategori = KategoriWisataKuliner::with('kategori')
+            ->where('id_wisata_kuliner', $id)
+            ->get();
+        $from = request('from');
+        return view('wisatawan.wisata-kuliner.edit-kuliner', compact(
+            'wisataKuliner',
+            'fasilitas',
+            'kategori',
+            'wkuliner',
+            'from'
+        ));
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $from = request('from');
+            $wisataKuliner = WisataKuliner::findOrFail($id);
+
+            $request->validate([
+                'nama' => 'required|string|max:255',
+                'kecamatan' => 'required|string|max:50',
+                'kelurahan' => 'required|string|max:50',
+                'alamat' => 'required|string',
+                'no_telp' => 'required|string|min:10|max:15',
+                'email' => 'nullable|email|max:70',
+                'deskripsi' => 'required|string|max:255',
+                'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
+                'latitude'  => 'required|numeric|between:-90,90',
+                Rule::unique('wisata_kuliner')->ignore($wisataKuliner->id),
+                'longitude' => 'required|numeric|between:-180,180',
+                Rule::unique('wisata_kuliner')->ignore($wisataKuliner->id),
+            ]);
+
+            $fotoPath = $wisataKuliner->foto;
+
+            if ($request->hasFile('foto')) {
+                if ($wisataKuliner->foto && Storage::exists('public/' . $wisataKuliner->foto)) {
+                    Storage::delete('public/' . $wisataKuliner->foto);
+                }
+
+                $fotoPath = $request->file('foto')->storeAs(
+                    'uploads',
+                    'foto_' . Str::slug($request->nama) . '_' . time() . '.' . $request->file('foto')->extension(),
+                    'public'
+                );
+            }
+
+            $email_pengaju = Auth::user()->email;
+
+            $id_wisatawan = null;
+            $id_admin = null;
+            if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
+                $id_admin = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
+            } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
+                $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
+            }
+
+            $waktu_diubah = Carbon::now('Asia/Jakarta');
+
+            $status = 'Belum Diverifikasi';
+            if (Auth::check() && Auth::user()->peran === 'Admin') {
+                $status = 'Disetujui';
+            }
+
+            $dataMK = $request->id_fasilitas ?? [];
+            $dataKategori = $request->id_kategori ?? [];
+            $idWisata = $request->nama;
+
+            $wisataKuliner->update([
+                'nama' => $request->nama,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'alamat' => $request->alamat,
+                'no_telp' => $request->no_telp,
+                'email' => $request->email ?? null,
+                'foto' => $fotoPath,
+                'deskripsi' => $request->deskripsi,
+                'latitude'  => $request->latitude,
+                'longitude' => $request->longitude,
+                'email_pengaju' => $email_pengaju,
+                'id_wisatawan' => $id_wisatawan ?? null,
+                'id_admin' => $id_admin ?? null,
+                'status' => $status,
+                'waktu_diubah' => $waktu_diubah,
+            ]);
+
+            $idWisata = $wisataKuliner->id_wisata_kuliner;
+
+            // Fasilitas
+            $fasilitasIds = [];
+
+            foreach ($dataMK as $item) {
+
+                if (is_numeric($item)) {
+                    $fasilitasId = $item;
+                } else {
+
+                    $fasilitas = Fasilitas::firstOrCreate([
+                        'nama' => trim($item)
+                    ]);
+
+                    $fasilitasId = $fasilitas->id_fasilitas;
+                }
+
+                $fasilitasIds[] = $fasilitasId;
+            }
+
+            $wisata = WisataKuliner::find($idWisata);
+
+            $wisata->fasilitas()->sync($fasilitasIds);
+
+            // Kategori
+            $kategoriIds = [];
+
+            foreach ($dataKategori as $item) {
+
+                if (is_numeric($item)) {
+                    $kategoriId = $item;
+                } else {
+
+                    $kategori = Kategori::firstOrCreate([
+                        'nama' => trim($item)
+                    ]);
+
+                    $kategoriId = $kategori->id_kategori;
+                }
+
+                $kategoriIds[] = $kategoriId;
+            }
+
+            $wisata = WisataKuliner::find($idWisata);
+
+            $wisata->kategori()->sync($kategoriIds);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
+        // redirect()->route('wisatakulinerhalaman')->with('success', 'Saran Pembaruan Informasi Wisata Kuliner Berhasil Dikirim!');
+        // return redirect($request->from)
+        //     ->with('success', 'Berhasil update!');
+        return redirect($request->from . '&detail=' . $id)
+            ->with('success', 'Berhasil update!');
     }
 
     private string $regencyCode = '33.74';
@@ -388,7 +560,7 @@ class WisatawanController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required',
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:10240',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
         ]);
 
         $diariKuliner = DiariKuliner::findOrFail($id);
@@ -397,15 +569,9 @@ class WisatawanController extends Controller
 
         $waktu_diubah = Carbon::now('Asia/Jakarta');
 
-        $data = [
-            'id_wisatawan' => $id_wisatawan,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'waktu_diubah' => $waktu_diubah,
-        ];
+        $fotoPath = $diariKuliner->foto;
 
         if ($request->hasFile('foto')) {
-
             if ($diariKuliner->foto && Storage::exists('public/' . $diariKuliner->foto)) {
                 Storage::delete('public/' . $diariKuliner->foto);
             }
@@ -415,9 +581,15 @@ class WisatawanController extends Controller
                 'foto_' . 'diari_' . time() . '.' . $request->file('foto')->extension(),
                 'public'
             );
-
-            $data['foto'] = $fotoPath;
         }
+
+        $data = [
+            'id_wisatawan' => $id_wisatawan,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'foto' => $fotoPath,
+            'waktu_diubah' => $waktu_diubah,
+        ];
 
         $diariKuliner->update($data);
 
@@ -504,5 +676,36 @@ class WisatawanController extends Controller
             ->paginate(10);
 
         return response()->json($data);
+    }
+
+    public function selectkategori($id)
+    {
+        $data = Kategori::where('nama', 'LIKE', '%' . request('q') . '%')
+            ->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function getKategori($id = null)
+    {
+        if (!$id || $id == "null") {
+            return '';
+        }
+
+        $kategori = KategoriWisataKuliner::with('kategori')
+            ->where('id_wisata_kuliner', $id)
+            ->get();
+
+        $data = '';
+
+        foreach ($kategori as $row) {
+            if ($row->kategori) {
+                $data .= "<option value='{$row->id_kategori}' selected>
+                        {$row->kategori->nama}
+                      </option>";
+            }
+        }
+
+        return $data;
     }
 }
