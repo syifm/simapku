@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class KategoriWisataKuliner extends Model
 {
     protected $table = 'kategori_wisata_kuliner';
-    protected $primaryKey = 'id_kategori_wisata_kuliner';
+    protected $primaryKey = 'id_kategori';
     public $timestamps = false;
 
     protected $fillable = [
         'id_wisata_kuliner',
-        'id_kategori_wisata_kuliner',
+        'id_kategori',
     ];
 
     public function wisatakuliner()

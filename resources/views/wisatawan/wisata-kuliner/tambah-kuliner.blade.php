@@ -12,13 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script> --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/js/tom-select.complete.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
-        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
@@ -157,12 +157,28 @@
         <!-- Konten -->
         <div class="flex-1 flex flex-col">
             <div class="flex-1">
-                <div class="mt-4 flex text-2xl justify-center gap-6">
-                    <div class="-mt-1.5">
-                        <h1 class="font-bold">Tambah Wisata Kuliner</h1>
-                    </div>
-                </div>
+                <div class="mt-4 relative text-2xl">
+                    <a onclick="history.back()"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 
+          flex items-center justify-center group cursor-pointer">
 
+                        <span
+                            class="absolute inset-0 rounded-full bg-gray-200 
+                 scale-0 group-hover:scale-100 
+                 duration-50"></span>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                            stroke="currentColor" class="size-5 relative z-10">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                    </a>
+
+                    <h1 class="font-bold text-center">
+                        Tambah Wisata Kuliner
+                    </h1>
+
+                </div>
                 <div class="bg-white rounded-lg shadow-md p-6 mt-6">
                     <form action="{{ route('simpanwisatakuliner') }}" method="POST" enctype="multipart/form-data">
                         @csrf

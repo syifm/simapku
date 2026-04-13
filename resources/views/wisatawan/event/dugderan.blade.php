@@ -43,6 +43,12 @@
             margin-bottom: 1rem;
             color: #9ca3af;
         }
+
+        #map {
+            height: 400px;
+            width: 1330px;
+            border-radius: 7px;
+        }
     </style>
 </head>
 
@@ -79,14 +85,26 @@
     {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
     <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
         <div class="mb-8 mt-[10px]">
+            <div class="mt-4 relative text-2xl">
+                <a onclick="history.back()"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 
+          flex items-center justify-center group cursor-pointer">
 
-            {{-- <p class="text-2xl text-black font-bold mt-4 mb-4">
-                Event Semarang
-            </p> --}}
-            <div class="flex justify-center text-2xl">
-                <h1 class="font-bold">
+                    <span
+                        class="absolute inset-0 rounded-full bg-gray-200 
+                 scale-0 group-hover:scale-100 
+                 duration-50"></span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                        stroke="currentColor" class="size-5 relative z-10">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                </a>
+
+                <h1 class="font-bold text-center">
                     Dugderan
                 </h1>
+
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6 mt-6">
@@ -113,12 +131,82 @@
                 Warak Ngendong. Kirab budaya ini dimulai dari Balaikota Semarang hingga berakhir di Masjid Agung Kota
                 Semarang. Kemudian akan dilakukan pengumuman awal bulan Ramadhan ditandai dengan pemukulan bedug dan
                 diakhiri dengan doa bersama.</p>
+
+            <div id="map" class="mt-10">
+            </div>
         </div>
+
+
     </div>
 
+    <script>
+        async function initMap() {
+            const {
+                AdvancedMarkerElement
+            } = await google.maps.importLibrary("marker");
 
+            const infoWindow = new google.maps.InfoWindow();
 
+            const center = {
+                lat: -6.984168497010843,
+                lng: 110.40926002563694
+            };
 
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: center,
+                zoom: 16,
+                mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                clickableIcons: false
+            });
+
+            const locations = [{
+                    lat: -6.9815387761353795,
+                    lng: 110.41358809853638,
+                    nama: "Titik Awal Pawai Dugderan"
+                },
+                {
+                    lat: -6.972479965092438,
+                    lng: 110.42266556371769,
+                    nama: "Titik Akhir Pawai Dugderan"
+                },
+                {
+                    lat: -6.971319123580661,
+                    lng: 110.42365593082019,
+                    nama: "Lokasi Pasar Dugderan"
+                }
+            ];
+
+            const bounds = new google.maps.LatLngBounds();
+
+            // Marker
+            locations.forEach(loc => {
+                const marker = new AdvancedMarkerElement({
+                    map: map,
+                    position: loc
+                });
+
+                bounds.extend(loc);
+
+                marker.addListener("click", () => {
+                    infoWindow.setContent(`
+                        <div style="font-size:14px;">
+                            <b>${loc.nama}</b><br>
+                        </div>
+                    `);
+
+                    infoWindow.open({
+                        anchor: marker,
+                        map,
+                    });
+                });
+            });
+
+            map.fitBounds(bounds);
+        }
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=marker&callback=initMap"
+        async defer></script>
 </body>
 
 </html>

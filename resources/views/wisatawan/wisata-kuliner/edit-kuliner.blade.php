@@ -12,13 +12,11 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script> --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/js/tom-select.complete.min.js"></script> --}}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
         integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
@@ -158,9 +156,24 @@
         <div class="flex-1 flex flex-col">
             <div class="flex-1">
                 <div class="mt-4 relative text-2xl">
-                    <a href="{{ $from }}" class="absolute left-0 top-1/2 -translate-y-1/2">
+                    {{-- <a href="{{ $from }}" class="absolute left-0 top-1/2 -translate-y-1/2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
                             stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                    </a> --}}
+                    <a onclick="history.back()"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 
+          flex items-center justify-center group cursor-pointer">
+
+                        <span
+                            class="absolute inset-0 rounded-full bg-gray-200 
+                 scale-0 group-hover:scale-100 
+                 duration-50"></span>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                            stroke="currentColor" class="size-5 relative z-10">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                         </svg>
@@ -565,234 +578,6 @@
         }
 
         // Peta Latitude Longitude
-        // function initMap() {
-        //     const defaultPosition = {
-        //         lat: -6.984168497010843,
-        //         lng: 110.40926002563694
-        //     };
-
-        //     map = new google.maps.Map(document.getElementById("map"), {
-        //         center: defaultPosition,
-        //         zoom: 16,
-        //         styles: [{
-        //             featureType: "poi.business",
-        //             stylers: [{
-        //                 visibility: "off"
-        //             }]
-        //         }],
-        //         // mapId: "simapku"
-        //     });
-
-        //     marker = new google.maps.Marker({
-        //         position: defaultPosition,
-        //         map: map,
-        //         gmpDraggable: true
-        //     });
-
-        //     const geocoder = new google.maps.Geocoder();
-
-        //     document.getElementById('kelurahan').addEventListener('change', function() {
-        //         const kelurahanText = this.options[this.selectedIndex].text;
-        //         const kecamatanText = document.getElementById('kecamatan')
-        //             .options[document.getElementById('kecamatan').selectedIndex].text;
-
-        //         if (!kelurahanText || !kecamatanText) return;
-
-        //         const alamat = `${kelurahanText}, ${kecamatanText}, Kota Semarang, Jawa Tengah, Indonesia`;
-
-        //         geocoder.geocode({
-        //             address: alamat
-        //         }, function(results, status) {
-        //             if (status === 'OK' && results[0]) {
-        //                 const lat = results[0].geometry.location.lat();
-        //                 const lng = results[0].geometry.location.lng();
-
-        //                 marker.position = {
-        //                     lat,
-        //                     lng
-        //                 };
-        //                 map.setCenter({
-        //                     lat,
-        //                     lng
-        //                 });
-
-        //                 document.getElementById('latitude').value = lat;
-        //                 document.getElementById('longitude').value = lng;
-        //             }
-        //         });
-        //     });
-        // }
-
-
-
-
-        // let map;
-        // let marker;
-        // let geocoder;
-
-        // function initMap() {
-        //     if (navigator.geolocation) {
-        //         navigator.geolocation.getCurrentPosition(
-        //             function(position) {
-        //                 const lat = position.coords.latitude;
-        //                 const lng = position.coords.longitude;
-
-        //                 // update marker & map
-        //                 marker.position = {
-        //                     lat,
-        //                     lng
-        //                 };
-        //                 map.setCenter({
-        //                     lat,
-        //                     lng
-        //                 });
-        //                 map.setZoom(17);
-
-        //                 // isi input
-        //                 document.getElementById('latitude').value = lat;
-        //                 document.getElementById('longitude').value = lng;
-
-        //                 geocoder.geocode({
-        //                     location: {
-        //                         lat,
-        //                         lng
-        //                     }
-        //                 }, function(results, status) {
-
-        //                     if (status === "OK" && results[0]) {
-
-        //                         const alamatLengkap = results[0].formatted_address;
-
-        //                         // isi ke input alamat
-        //                         document.getElementById('alamat').value = alamatLengkap;
-        //                     }
-        //                 });
-        //             },
-        //             function(error) {
-        //                 console.log("GPS ditolak / error:", error);
-        //             }
-        //         );
-        //     }
-        //     console.log(window.google);
-        //     const defaultPosition = {
-        //         lat: -6.984168497010843,
-        //         lng: 110.40926002563694
-        //     };
-
-        //     map = new google.maps.Map(document.getElementById("map"), {
-        //         center: defaultPosition,
-        //         zoom: 16,
-        //         mapId: "5ee8a1d5bfc6676ac1b5f32c",
-        //     });
-
-        //     marker = new google.maps.marker.AdvancedMarkerElement({
-        //         position: defaultPosition,
-        //         map: map,
-        //         gmpDraggable: true
-
-        //     });
-
-        //     // update input saat marker drag
-        //     marker.addListener('drag', (e) => {
-        //         document.getElementById('latitude').value = e.latLng.lat();
-        //         document.getElementById('longitude').value = e.latLng.lng();
-        //     });
-
-        //     // klik map → pindah marker
-        //     map.addListener('click', (e) => {
-        //         marker.position = {
-        //             lat: e.latLng.lat(),
-        //             lng: e.latLng.lng()
-        //         };
-        //         document.getElementById('latitude').value = e.latLng.lat();
-        //         document.getElementById('longitude').value = e.latLng.lng();
-        //     });
-
-        //     // update marker dari input
-        //     const latInput = document.getElementById('latitude');
-        //     const lngInput = document.getElementById('longitude');
-
-        //     function updateMarkerFromInput() {
-        //         const lat = parseFloat(latInput.value);
-        //         const lng = parseFloat(lngInput.value);
-        //         if (isNaN(lat) || isNaN(lng)) return;
-        //         marker.position = {
-        //             lat,
-        //             lng
-        //         };
-        //         map.setCenter({
-        //             lat,
-        //             lng
-        //         });
-        //     }
-
-        //     latInput.addEventListener('input', updateMarkerFromInput);
-        //     lngInput.addEventListener('input', updateMarkerFromInput);
-
-        //     geocoder = new google.maps.Geocoder();
-
-        //     const kelurahanSelect = document.getElementById('kelurahan');
-
-        //     kelurahanSelect.removeEventListener('change', handleKelurahanChange); // reset
-        //     kelurahanSelect.addEventListener('change', handleKelurahanChange);
-
-        //     function handleKelurahanChange() {
-        //         const kelurahanText = this.options[this.selectedIndex].text;
-        //         const kecamatanText = document.getElementById('kecamatan')
-        //             .options[document.getElementById('kecamatan').selectedIndex].text;
-
-        //         if (!kelurahanText || !kecamatanText) return;
-
-        //         const alamat = `${kelurahanText}, ${kecamatanText}, Kota Semarang, Jawa Tengah, Indonesia`;
-
-        //         geocoder.geocode({
-        //             address: alamat
-        //         }, function(results, status) {
-        //             if (status === 'OK' && results[0]) {
-        //                 const lat = results[0].geometry.location.lat();
-        //                 const lng = results[0].geometry.location.lng();
-
-        //                 marker.position = {
-        //                     lat,
-        //                     lng
-        //                 };
-        //                 map.setCenter({
-        //                     lat,
-        //                     lng
-        //                 });
-
-        //                 document.getElementById('latitude').value = lat;
-        //                 document.getElementById('longitude').value = lng;
-        //             }
-        //         });
-        //     }
-        // }
-
-        // function cariKoordinatDariAlamat(alamat) {
-        //     geocoder.geocode({
-        //         address: alamat
-        //     }, function(results, status) {
-        //         if (status === "OK" && results[0]) {
-        //             const location = results[0].geometry.location;
-
-        //             const lat = location.lat();
-        //             const lng = location.lng();
-
-        //             latitude.value = lat;
-        //             longitude.value = lng;
-
-        //             marker.position = {
-        //                 lat,
-        //                 lng
-        //             };
-        //             map.setCenter({
-        //                 lat,
-        //                 lng
-        //             });
-        //             map.setZoom(15);
-        //         }
-        //     });
-        // }
         let map;
         let marker;
         let geocoder;
@@ -994,18 +779,6 @@
             });
 
             tampilkanSemuaKuliner();
-
-            // const alamatInput = document.getElementById('alamat');
-            // alamatInput.addEventListener('change', function() {
-            //     if (isAutoUpdate) {
-            //         isAutoUpdate = false;
-            //         return;
-            //     }
-            //     const alamat = this.value;
-            //     if (!alamat || alamat.trim() === "") return;
-            //     const alamatLengkap = `${alamat}, Kota Semarang, Jawa Tengah`;;
-            //     cariKoordinatDariAlamat(alamatLengkap);
-            // });
         }
 
         // GPS
@@ -1028,7 +801,6 @@
                     if (status === "OK" && results[0]) {
 
                         if (!isDalamSemarang(results[0].address_components)) {
-                            // alert("Lokasi GPS di luar Kota Semarang!");
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Lokasi Tidak Valid',
@@ -1083,7 +855,6 @@
                     const components = results[0].address_components;
 
                     if (!isDalamSemarang(components)) {
-                        // alert("Lokasi harus berada di Kota Semarang!");
                         Swal.fire({
                             icon: 'error',
                             title: 'Lokasi Tidak Valid',
@@ -1105,7 +876,6 @@
                         lng
                     };
 
-                    // let jalan = "";
                     let kelurahan = "";
                     let kecamatan = "";
                     let kota = "";
@@ -1113,9 +883,6 @@
                     let kodepos = "";
 
                     components.forEach(comp => {
-                        // if (comp.types.includes("route")) {
-                        //     jalan = comp.long_name;
-                        // }
                         if (comp.types.includes("administrative_area_level_4")) {
                             kelurahan = comp.long_name;
                         }
@@ -1133,8 +900,6 @@
                         }
                     });
 
-                    // const parts = [jalan, kelurahan, kecamatan, kota, provinsi]
-                    //     .filter(part => part && part.trim() !== "");
                     const parts = [kelurahan, kecamatan, kota, provinsi]
                         .filter(part => part && part.trim() !== "");
 
@@ -1185,12 +950,6 @@
                             }
 
                             break;
-                            // isAutoUpdate = true;
-                            // kecamatanSelect.dispatchEvent(new Event('change'));
-
-                            // pendingKelurahan = kelurahan;
-
-                            // break;
                         }
                     }
                 }
@@ -1276,8 +1035,6 @@
         function tampilkanSemuaKuliner() {
             clearMarkers();
 
-            // let bounds = new google.maps.LatLngBounds();
-
             dataKuliner.forEach(item => {
                 if (item.latitude && item.longitude) {
                     if (item.id_wisata_kuliner == currentId) return;
@@ -1301,7 +1058,6 @@
                     });
 
                     markers.push(marker);
-                    // bounds.extend(posisi);
 
                     let infoWindow = new google.maps.InfoWindow({
                         content: `
@@ -1326,10 +1082,6 @@
                     });
                 }
             });
-
-            // if (markers.length > 0) {
-            //     map.fitBounds(bounds);
-            // }
         }
 
         $(document).ready(function() {
@@ -1527,7 +1279,6 @@
                 $('#nama').val(selectedText);
             });
 
-            //save form
             $("#addForm").on('submit', function(e) {
                 e.preventDefault();
                 $("#saveBtn").html('Processing...').attr('disabled', 'disabled');

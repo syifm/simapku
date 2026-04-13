@@ -134,6 +134,16 @@
                     <label class="w-60 text-sm font-medium text-gray-700">Email</label>
                     <div class="mt-1 ml-4 block w-full">{{ $user->email }}</div>
                 </div>
+
+                <!-- Preferensi -->
+                <div class="flex items-center">
+                    <label class="w-60 text-sm font-medium text-gray-700">Preferensi</label>
+                    @foreach ($preferensi as $p)
+                        <span class="inline-block px-2 py-1 bg-gray-200 text-black rounded-md mr-20 -ml-[60px]">
+                            {{ $p->kategori->nama }}
+                        </span>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

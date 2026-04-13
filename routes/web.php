@@ -6,6 +6,7 @@ use App\Http\Controllers\WisatawanController;
 use App\Http\Controllers\PenilaianDanUlasanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WisataKulinerController;
+use App\Http\Controllers\KulinerFavoritController;
 use App\Models\PenilaiandanUlasan;
 use Illuminate\Support\Facades\Route;
 
@@ -67,8 +68,6 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/mapwisatakuliner', [WisatawanController::class, 'mapWisataKuliner'])->name('map-WisataKuliner');
     Route::get('/wisatawan/mapwisatakuliner2', [WisatawanController::class, 'mapWisataKuliner2'])->name('map-WisataKuliner2');
 
-    Route::get('/wisatawan/eventsemarang', [WisatawanController::class, 'event'])->name('event');
-
     Route::get('/wisatawan/tambahwisatakuliner', [WisatawanController::class, 'halamantambah'])->name('tambahwisatakuliner');
     Route::get('/wisatawan/wisata/api/kecamatan', [WisatawanController::class, 'getKecamatan']);
     Route::get('/wisatawan/wisata/api/kelurahan/{districtCode}', [WisatawanController::class, 'getKelurahan']);
@@ -98,12 +97,22 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'search'])->name('wisatakulinerhalaman');
 
     Route::post('/wisatawan/penilaiandanulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('penilaianulasan.simpan');
-
     Route::get('/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('penilaianulasan.detail');
+    Route::get('/ulasan/modalulasan/{id}', [PenilaianDanUlasanController::class, 'getUlasan']);
 
     Route::get('/cobaya', [WisataKulinerController::class, 'coba'])->name('cobacoba');
 
     Route::post('/store', [WisatawanController::class, 'store'])->name('store');
+
+    Route::get('/wisatawan/favorit', [WisatawanController::class, 'halamanFavorit'])->name('favorit');
+    Route::post('/wisatawan/favorit/simpan', [KulinerFavoritController::class, 'simpan'])->name('favorit.simpan');
+    Route::delete('/favorit/hapus', [WisatawanController::class, 'hapusFavoritDariList'])->name('favorit.hapusdarilist');
+    Route::delete('/favorit/{id}', [KulinerFavoritController::class, 'hapus'])->name('favorit.hapus');
+
+    Route::get('/detailkuliner/{id}', [KulinerFavoritController::class, 'detail'])->name('detailkuliner');
+
+
+    // Route::delete('/favorit/{id}', [FavoritController::class, 'destroy']);
 
     // Route::get('/search-fasilitas', [WisatawanController::class, 'search']);
 
@@ -116,5 +125,9 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     // Route::get('ngampumk/{id}', 'getngampu')->name('getngampumk');
     // Route::get('nilai', 'index')->name('list.nilai');
 });
+
+Route::get('/wisatawan/eventsemarang/dugderan', [WisatawanController::class, 'dugderan'])->name('dugderan');
+Route::get('/wisatawan/eventsemarang/kulinerkauman', [WisatawanController::class, 'kulinerkauman'])->name('kulinerkauman');
+Route::get('/wisatawan/eventsemarang/semawis', [WisatawanController::class, 'semawis'])->name('semawis');
 
 require __DIR__ . '/auth.php';

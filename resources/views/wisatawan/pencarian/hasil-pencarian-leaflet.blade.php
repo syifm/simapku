@@ -358,13 +358,13 @@
 
                     <!-- Total Harga -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-800 mb-1" for="harga_total"><span>Harga
+                        <label class="block text-sm font-medium text-gray-800 mb-1" for="harga_per_orang"><span>Harga
                                 Total</span>
                             <span class="text-red-500 font-bold">*</span></label>
-                        <input type="number" id="harga_total" name="harga_total" rows="6"
+                        <input type="number" id="harga_per_orang" name="harga_per_orang" rows="6"
                             class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>{{ old('harga_total') }}</input>
-                        @error('harga_total')
+                            required>{{ old('harga_per_orang') }}</input>
+                        @error('harga_per_orang')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -871,7 +871,7 @@
         //     formData.append('id_wisata_kuliner', document.getElementById('id_wisata_kuliner').value)
         //     formData.append('penilaian', document.getElementById('penilaian').value)
         //     formData.append('ulasan', document.getElementById('ulasan').value)
-        //     formData.append('harga_total', document.getElementById('harga_total').value)
+        //     formData.append('harga_per_orang', document.getElementById('harga_per_orang').value)
 
         //     let file = document.getElementById('foto_ulasan').files[0]
         //     if (file) {

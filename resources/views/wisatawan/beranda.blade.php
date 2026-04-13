@@ -459,7 +459,8 @@
                         <div
                             class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
-                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar">
+                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar"
+                                value="{{ request('keyword', $keyword ?? '') }}">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -569,12 +570,12 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="jarak"
                                                 class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
-                                                value="1" min="1" max="10" />
+                                                value="0" min="0" max="10" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range-jarak-dua">
-                                            <input type="range" class="input-jarak-dua" value="1" min="1"
+                                            <input type="range" class="input-jarak-dua" value="0" min="0"
                                                 max="10" />
 
                                             <div class="slider-jarak-dua">
@@ -610,22 +611,22 @@
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="minharga"
-                                                class="min-price w-[95px] p-2 outline-none border-0" value="1"
-                                                min="1" max="1000000" />
+                                                class="min-price w-[95px] p-2 outline-none border-0" value="0"
+                                                min="0" max="1000000" />
                                         </div>
 
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="maxharga"
                                                 class="max-price w-[95px] p-2 outline-none border-0" value="1000000"
-                                                min="1" max="1000000" />
+                                                min="0" max="1000000" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
-                                            <input type="range" class="min-input" value="1" min="1"
+                                            <input type="range" class="min-input" value="0" min="0"
                                                 max="1000000" />
-                                            <input type="range" class="max-input" value="1000000" min="1"
+                                            <input type="range" class="max-input" value="1000000" min="0"
                                                 max="1000000" />
 
                                             <div class="slider">
@@ -659,8 +660,8 @@
                                                     d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                                             </svg>
                                             <input type="number" name="minrating"
-                                                class="min-rating w-[40px] p-2 outline-none border-0" value="1"
-                                                min="1" max="5" />
+                                                class="min-rating w-[40px] p-2 outline-none border-0" value="0"
+                                                min="0" max="5" />
                                         </div>
 
                                         <div
@@ -672,15 +673,15 @@
                                             </svg>
                                             <input type="number" name="maxrating"
                                                 class="max-rating w-[40px] p-2 outline-none border-0" value="5"
-                                                min="1" max="5" />
+                                                min="0" max="5" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
-                                            <input type="range" class="min-input-rating" value="1"
-                                                min="1" max="5" />
+                                            <input type="range" class="min-input-rating" value="0"
+                                                min="0" max="5" />
                                             <input type="range" class="max-input-rating" value="5"
-                                                min="1" max="5" />
+                                                min="0" max="5" />
 
                                             <div class="slider">
                                                 <div class="progress-rating"></div>
@@ -688,33 +689,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
-                                {{-- <select id="darkmode" name="darkmode[]" data-placeholder="Dark mode active..."
-                                    data-theme="light" multiple data-multi-select>
-                                    <option value="1">Dark Option 1</option>
-                                    <option value="2">Dark Option 2</option>
-                                    <option value="3">Dark Option 3</option>
-                                    <option value="4">Dark Option 4</option>
-                                    <option value="5">Dark Option 5</option>
-                                    <option value="6">Dark Option 6</option>
-                                </select> --}}
-
-                                {{-- <select id="minimal-multiselect" multiple="multiple">
-                                    <option value="cheese">Cheese</option>
-                                    <option value="tomatoes">Tomatoes</option>
-                                    <option value="mozarella">Mozzarella</option>
-                                    <option value="mushrooms">Mushrooms</option>
-                                    <option value="pepperoni">Pepperoni</option>
-                                    <option value="onions">Onions</option>
-                                </select> --}}
-
-                                {{-- <div>
-                                    <input type="checkbox" name="fasilitas[]" value="1"> Wifi
-                                    <input type="checkbox" name="fasilitas[]" value="2"> Parkir
-                                    <input type="checkbox" name="fasilitas[]" value="3"> AC
-                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -727,8 +701,8 @@
             <p class="text-lg text-black font-bold mt-1 mb-4">
                 Event Semarang
             </p>
-            <div class="grid grid-cols-4 gap-8">
-                <a href="{{ route('event') }}"
+            <div class="flex justify-center gap-8 flex-wrap">
+                <a href="{{ route('dugderan') }}"
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
                     <img src="{{ asset('dugderan.jpg') }}" alt="dugderan"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
@@ -739,7 +713,7 @@
                         </span>
                     </div>
                 </a>
-                <a href="{{ route('event') }}"
+                {{-- <a href="{{ route('event') }}"
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
                     <img src="{{ asset('pasarsentiling.jpg') }}" alt="dugderan"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
@@ -749,19 +723,31 @@
                             Festival Kota Lama
                         </span>
                     </div>
-                </a>
-                <a href="{{ route('event') }}"
+                </a> --}}
+                <a href="{{ route('kulinerkauman') }}"
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('pasarimlek.jpg') }}" alt="dugderan"
+                    <img src="{{ asset('kulinerkauman.png') }}" alt="kulinerkauman"
+                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-white font-semibold text-lg">
+                            Kuliner Kauman Johar
+                        </span>
+                    </div>
+                </a>
+                <a href="{{ route('semawis') }}"
+                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
+                    <img src="{{ asset('pasarimlek.jpg') }}" alt="semawis"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
                     <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">
-                            Pasar Imlek Semawis
+                            Waroeng Semawis
                         </span>
                     </div>
                 </a>
-                <a href="{{ route('event') }}"
+                {{-- <a href="{{ route('dugderan') }}"
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
                     <img src="{{ asset('chengho.jpg') }}" alt="dugderan"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
@@ -772,29 +758,60 @@
                             Festival Arak-Arakan Cheng Ho
                         </span>
                     </div>
-                </a>
-                <a href="{{ route('event') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('snc.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">
-                            Semarang Night Carnival
-                        </span>
-                    </div>
-                </a>
+                </a> --}}
+
             </div>
 
         </div>
 
-        <p class="text-lg text-black font-bold mt-4 mb-4">
-            Kuliner Terbaru
-        </p>
-        <p class="text-lg text-black font-bold mt-4 mb-4">
-            Kuliner Populer
-        </p>
+        <div class="mb-8">
+            <p class="text-lg text-black font-bold mt-4 mb-4">
+                Kuliner Baru Ditambahkan
+            </p>
+            <div class="grid grid-cols-4 gap-8">
+                @foreach ($kulinerBaru as $item)
+                    <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
+                        class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+
+                        <img src="{{ asset('storage/' . $item->foto) }}"
+                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-semibold text-lg text-center px-2">
+                                {{ $item->nama }}
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <p class="text-lg text-black font-bold mt-4 mb-4">
+                Kuliner Banyak Disukai
+            </p>
+            <div class="grid grid-cols-4 gap-8">
+                @foreach ($kulinerFavorit as $item)
+                    <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
+                        class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+
+                        <img src="{{ asset('storage/' . $item->foto) }}"
+                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-semibold text-lg text-center px-2">
+                                {{ $item->nama }}
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+        </div>
 
         {{-- <div class="wrapper">
             <button class="nav left" onclick="geser(-1)">❮</button>
@@ -932,155 +949,19 @@
 
 
 
-        <a href="{{ route('map-WisataKuliner') }}" class="text-[#FFA319]  hover:underline">
+        {{-- <a href="{{ route('map-WisataKuliner') }}" class="text-[#FFA319]  hover:underline">
             Map Wisata Kuliner
         </a>
 
         <a href="{{ route('map-WisataKuliner2') }}" class="text-[#FFA319]  hover:underline">
             Map Wisata Kuliner 2
-        </a>
+        </a> --}}
 
         {{-- <a href="{{ route('map-WisataKuliner3') }}" class="text-[#FFA319]  hover:underline">
             Map Wisata Kuliner 3
         </a> --}}
     </div>
 
-
-
-    {{-- <section class="services">
-        <div class="container-services">
-
-            <div class="section-heading text-center mb-4">
-                <h2>Bidang yang Dimagangkan</h2>
-            </div>
-
-            <div class="owl-carousel owl-theme bidang-carousel">
-
-                <div class="service-item">
-                    <div class="icon"><i class="fas fa-university"></i></div>
-                    <h4>Sistem Pemerintahan Berbasis Elektronik</h4>
-                    <p>
-                        - Keamanan Informasi dan Persandian<br>
-                        - Pengembangan Aplikasi<br>
-                        - Tata Kelola TI
-                    </p>
-                </div>
-
-                <div class="service-item">
-                    <div class="icon"><i class="fas fa-lock"></i></div>
-                    <h4>Pengelolaan Informasi</h4>
-                    <p>
-                        - Media & Aspirasi<br>
-                        - PPID<br>
-                        - Keterbukaan Informasi
-                    </p>
-                </div>
-
-                <div class="service-item">
-                    <div class="icon"><i class="fas fa-rss"></i></div>
-                    <h4>Infrastruktur</h4>
-                    <p>
-                        - Internet & Intranet<br>
-                        - Jaringan<br>
-                        - TIK
-                    </p>
-                </div>
-
-                <div class="service-item">
-                    <div class="icon"><i class="fas fa-chart-area"></i></div>
-                    <h4>Statistik</h4>
-                    <p>
-                        - Statistik Sektoral<br>
-                        - Geospasial
-                    </p>
-                </div>
-
-                <div class="service-item">
-                    <div class="icon"><i class="fas fa-bullhorn"></i></div>
-                    <h4>Komunikasi Publik</h4>
-                    <p>
-                        - Strategi Komunikasi<br>
-                        - Monitoring Media
-                    </p>
-                </div>
-
-                <div class="service-item">
-                    <div class="icon"><i class="fas fa-users"></i></div>
-                    <h4>Sekretariat</h4>
-                    <p>
-                        - Kepegawaian<br>
-                        - Keuangan
-                    </p>
-                </div>
-
-            </div>
-        </div>
-    </section> --}}
-
-    {{-- <section class="services">
-        <div class="container-fluid-services">
-
-            <div class="section-heading text-center mb-4">
-                <h2>Bidang yang Dimagangkan</h2>
-            </div>
-
-            <div class="carousel-wrapper">
-                <div class="owl-carousel owl-theme bidang-carousel">
-
-                    <!-- ITEM -->
-                    <div class="service-item">
-                        <div class="icon"><i class="fas fa-university"></i></div>
-                        <h4>SPBE</h4>
-                        <p>- Keamanan Informasi<br>- Pengembangan Aplikasi</p>
-                    </div>
-
-                    <div class="service-item">
-                        <div class="icon"><i class="fas fa-lock"></i></div>
-                        <h4>Pengelolaan Informasi</h4>
-                        <p>- Media<br>- PPID</p>
-                    </div>
-
-                    <div class="service-item">
-                        <div class="icon"><i class="fas fa-rss"></i></div>
-                        <h4>Infrastruktur</h4>
-                        <p>- Internet<br>- TIK</p>
-                    </div>
-
-                    <div class="service-item">
-                        <div class="icon"><i class="fas fa-chart-area"></i></div>
-                        <h4>Statistik</h4>
-                        <p>- Statistik Sektoral</p>
-                    </div>
-
-                    <div class="service-item">
-                        <div class="icon"><i class="fas fa-bullhorn"></i></div>
-                        <h4>Komunikasi Publik</h4>
-                        <p>- Strategi Komunikasi</p>
-                    </div>
-
-                    <div class="service-item">
-                        <div class="icon"><i class="fas fa-users"></i></div>
-                        <h4>Sekretariat</h4>
-                        <p>- Kepegawaian</p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section> --}}
-
-
-
-
-    {{-- @include('layouts.header-wisatawan')
-
-    <div class="wrapper">
-        @include('layouts.sidebar-wisatawan')
-
-        <div class="main-content">
-            @yield('content')
-        </div>
-    </div> --}}
     <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
 
     <script>

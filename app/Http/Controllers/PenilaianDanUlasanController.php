@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Wisatawan;
 use App\Models\Admin;
+use App\Models\WisataKuliner;
 use Carbon\Carbon;
 
 
@@ -66,7 +67,7 @@ class PenilaianDanUlasanController extends Controller
     //         'penilaian' => $request->penilaian,
     //         'ulasan' => $request->ulasan,
     //         'foto_ulasan' => $fotoPath,
-    //         'harga_total' => $request->harga_total,
+    //         'harga_per_orang' => $request->harga_per_orang,
     //         'email_pengulas' => $email_pengulas,
     //         'id_wisatawan' => $id_wisatawan ?? null,
     //         'id_admin' => $id_admin ?? null,
@@ -77,6 +78,25 @@ class PenilaianDanUlasanController extends Controller
 
     //     return redirect()->route('beranda-Wisatawan')->with('success', 'Penilaian dan Ulasan Berhasil Disimpan');
     // }
+    public function getUlasan($id)
+    {
+        if (!Auth::check()) {
+            return response()->json(null);
+        }
+
+        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
+
+        if (!$wisatawan) {
+            return response()->json(null);
+        }
+
+        $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+            ->where('id_wisatawan', $wisatawan->id_wisatawan)
+            ->first();
+
+        return response()->json($ulasan);
+    }
+
     public function simpan(Request $request)
     {
         $request->validate([
@@ -103,34 +123,93 @@ class PenilaianDanUlasanController extends Controller
         $id_wisatawan = null;
         $id_admin = null;
 
+        $waktu_dibuat = Carbon::now('Asia/Jakarta');
+        $waktu_diubah = Carbon::now('Asia/Jakarta');
+
         if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
             $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
         } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
             $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
         }
 
-        PenilaiandanUlasan::create([
-            'id_wisata_kuliner' => $request->id_wisata_kuliner,
-            'penilaian' => $request->penilaian,
-            'ulasan' => $request->ulasan,
-            'foto_ulasan' => $fotoPath,
-            'harga_total' => $request->harga_total,
-            'email_pengulas' => $email_pengulas,
-            'id_wisatawan' => $id_wisatawan,
-            'id_admin' => $id_admin,
-            'status' => 'Belum Diverifikasi',
-            'waktu_dibuat' => now(),
-            'waktu_diubah' => now(),
+        $range = explode('-', $request->harga_per_orang);
+
+        $min = $range[0] ?? null;
+        $max = $range[1] ?? null;
+
+        $ulasan = null;
+
+        if ($id_wisatawan) {
+            $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)
+                ->where('id_wisatawan', $id_wisatawan)
+                ->first();
+        }
+
+        if ($ulasan) {
+            $ulasan->update([
+                'penilaian' => $request->penilaian,
+                'ulasan' => $request->ulasan,
+                'foto_ulasan' => $fotoPath ?? $ulasan->foto_ulasan,
+                'harga_min' => $min,
+                'harga_max' => $max,
+                'waktu_diubah' => $waktu_diubah,
+            ]);
+
+            return response()->json([
+                'status' => 'Diperbarui',
+                'message' => 'Ulasan berhasil diperbarui'
+            ]);
+        } else {
+            PenilaiandanUlasan::create([
+                'id_wisata_kuliner' => $request->id_wisata_kuliner,
+                'penilaian' => $request->penilaian,
+                'ulasan' => $request->ulasan,
+                'foto_ulasan' => $fotoPath,
+                'harga_min' => $min,
+                'harga_max' => $max,
+                'email_pengulas' => $email_pengulas,
+                'id_wisatawan' => $id_wisatawan,
+                'id_admin' => $id_admin,
+                'status' => 'Belum Diverifikasi',
+                'waktu_dibuat' => $waktu_dibuat,
+                'waktu_diubah' => $waktu_diubah,
+            ]);
+        }
+
+        $wisataKuliner = WisataKuliner::findOrFail($request->id_wisata_kuliner);
+        $min_total = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->min('harga_min');
+        $max_total = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->max('harga_max');
+        $penilaian_ratarata = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->avg('penilaian');
+        $wisataKuliner->update([
+            'harga_min' => $min_total,
+            'harga_max' => $max_total,
+            'penilaian' => $penilaian_ratarata,
+            'waktu_diubah' => $waktu_diubah,
         ]);
 
-        return redirect()->back()->with('success', 'Ulasan berhasil disimpan');
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 
     public function detail($id)
     {
+        $userId = Auth::id();
+        $id_wisatawan = Wisatawan::where('user_id', $userId)->value('id_wisatawan');
+
         $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
             ->orderBy('waktu_diubah', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($item) use ($id_wisatawan) {
+                return [
+                    'penilaian' => $item->penilaian,
+                    'ulasan' => $item->ulasan,
+                    'foto_ulasan' => $item->foto_ulasan,
+                    'waktu_diubah' => $item->waktu_diubah,
+                    'nama' => $item->wisatawan->nama ?? null,
+                    'punya_sendiri' => $item->id_wisatawan == $id_wisatawan
+                ];
+            });
 
         return response()->json($ulasan);
     }

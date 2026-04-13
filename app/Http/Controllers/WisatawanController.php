@@ -11,7 +11,8 @@ use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
 use App\Models\Kategori;
 use App\Models\KategoriWisataKuliner;
-// use App\Models\Category;
+use App\Models\KulinerFavorit;
+use App\Models\Preferensi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -27,9 +28,27 @@ class WisatawanController extends Controller
 
     public function berandaWisatawan()
     {
+        $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
+        $kulinerBaru = WisataKuliner::latest()->take(4)->get();
+        $kulinerFavorit = WisataKuliner::orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
-        return view('wisatawan.beranda', compact('fasilitas', 'kategori'));
+        return view('wisatawan.beranda', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
+    }
+
+    public function dugderan()
+    {
+        return view('wisatawan.event.dugderan');
+    }
+
+    public function kulinerkauman()
+    {
+        return view('wisatawan.event.kulinerkauman');
+    }
+
+    public function semawis()
+    {
+        return view('wisatawan.event.semawis');
     }
 
     public function mapWisataKuliner()
@@ -51,10 +70,7 @@ class WisatawanController extends Controller
         return view('wisatawan.beranda');
     }
 
-    public function event()
-    {
-        return view('wisatawan.event');
-    }
+
 
     // Wisata Kuliner
     // Tambah Wisata Kuliner
@@ -465,7 +481,7 @@ class WisatawanController extends Controller
         // return redirect($request->from)
         //     ->with('success', 'Berhasil update!');
         return redirect($request->from . '&detail=' . $id)
-            ->with('success', 'Berhasil update!');
+            ->with('success', 'Wisata Kuliner Berhasil Diperbarui!');
     }
 
     private string $regencyCode = '33.74';
@@ -708,4 +724,64 @@ class WisatawanController extends Controller
 
         return $data;
     }
+
+    // Favorit
+    public function halamanFavorit()
+    {
+        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
+
+        $kulinerFavorit = KulinerFavorit::with('kuliner')
+            ->where('id_wisatawan', $wisatawan->id_wisatawan)
+            ->latest('waktu_dibuat')
+            ->get();
+        return view('wisatawan.favorit.halaman-favorit', compact('kulinerFavorit'));
+    }
+
+    // public function hapusFavoritDariList(Request $request)
+    // {
+    //     $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
+
+    //     KulinerFavorit::where('id_wisatawan', $wisatawan->id_wisatawan)
+    //         ->where('id_wisata_kuliner', $request->id_wisata_kuliner)
+    //         ->delete();
+
+    //     return back()->with('success', 'Berhasil dihapus dari favorit');
+    // }
+    public function hapusFavoritDariList(Request $request)
+    {
+        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
+
+        $kuliner = WisataKuliner::with('kategori')
+            ->find($request->id_wisata_kuliner);
+
+        if ($kuliner) {
+            foreach ($kuliner->kategori as $k) {
+
+                $preferensi = Preferensi::where('id_wisatawan', $wisatawan->id_wisatawan)
+                    ->where('id_kategori', $k->id_kategori)
+                    ->first();
+
+                if ($preferensi) {
+                    if ($preferensi->jumlah > 1) {
+                        $preferensi->decrement('jumlah');
+                    } else {
+                        $preferensi->delete();
+                    }
+                }
+            }
+        }
+
+        KulinerFavorit::where('id_wisatawan', $wisatawan->id_wisatawan)
+            ->where('id_wisata_kuliner', $request->id_wisata_kuliner)
+            ->delete();
+
+        return back()->with('success', 'Berhasil dihapus dari favorit');
+    }
+
+
+
+
+
+
+    // Tidak Login
 }

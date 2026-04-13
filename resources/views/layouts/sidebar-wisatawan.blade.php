@@ -200,7 +200,7 @@
                 {{-- <span>Beranda</span> --}}
             </a>
 
-            <a href="{{ route('diarikuliner') }}"
+            <a href="{{ route('favorit') }}"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('diarikuliner') || request()->routeIs('diarikuliner.detail') || request()->routeIs('diarikuliner.tambah') || request()->routeIs('diarikuliner.simpan') || request()->routeIs('diarikuliner.edit') || request()->routeIs('diarikuliner.update') || request()->routeIs('diarikuliner.hapus') ? 'active' : 'text-white' }}">
                 <i class="fas fa-book"></i>
