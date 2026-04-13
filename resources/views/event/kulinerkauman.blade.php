@@ -79,8 +79,13 @@
         </script>
     @endif
 
-    @include('layouts.header-wisatawan')
-    @include('layouts.sidebar-wisatawan')
+    @if (Auth::check())
+        @include('layouts.header-wisatawan')
+        @include('layouts.sidebar-wisatawan')
+    @else
+        @include('layouts.header-wisatawan')
+        @include('layouts.sidebar-wisatawantidaklogin')
+    @endif
 
     {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
     <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
@@ -102,37 +107,27 @@
                 </a>
 
                 <h1 class="font-bold text-center">
-                    Dugderan
+                    Kuliner Kauman Johar
                 </h1>
 
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-            <img src="{{ asset('dugderan.jpg') }}" alt="dugderan"
-                class="w-60 h-60 object-cover transition duration-300 group-hover:scale-100 mx-auto rounded-md">
-            <h1 class="text-lg font-bold mt-4">Sejarah</h1>
-            <p class="text-justify">Dugderan adalah tradisi perayaan untuk menyambut bulan Ramadhan oleh masyarakat
-                Semarang. Dugderan
-                berasal dari 'dug' dari suara bedug sebagai penanda masuknya bulan Ramadhan dan 'der' dari suara meriam
-                yang menandakan datangnya Idul Fitri, yang kemudian disebutlah Dugderan. Di tradisi ini terdapat
-                maskotnya yaitu Warak Ngendog. Warak ngendong adalah binatang rekaan bertubuh kambing, berkepala naga,
-                bersisik yang terbuat dari kertas warna-warni, dan dilengkapi dengan 'endog' yaitu telur rebus. Warak
-                Ngendong ini mengandung arti warak yang sedang bertelur, dimana dahulu sedang terjadi krisis pangan di
-                masyarakat dan telur menjadi makanan yang mewah.</p>
-            <h1 class="text-lg font-bold mt-4">Pelaksanaan</h1>
-            <h2 class="font-bold mt-1">Pasar Dugderan</h2>
-            <p class="text-justify">Pertama, akan dilaksanakan Pasar
-                Dugderan. Di Pasar Dugderan ini terdapat wahana permainan, bazar UMKM yang menyediakan kuliner, pakaian,
-                hingga mainan. Serta, terdapat pertunjukan budaya khas Dugderan. Pasar Dugderan dilaksanakan selama
-                kurang lebih 10 hari menjelang bulan Ramadhan di Alun-Alun Masjid Agung Kota Semarang yang terletak di
-                dekat Pasar Johar dan Masjid Kauman.</p>
-            <h2 class="font-bold mt-1">Kirab Budaya dan Pengumuman Awal Puasa</h2>
-            <p class="text-justify">Kemudian akan dilakukan kirab budaya dimana ditampilkan tari-tarian termasuk tarian
-                Warak Ngendong. Kirab budaya ini dimulai dari Balaikota Semarang hingga berakhir di Masjid Agung Kota
-                Semarang. Kemudian akan dilakukan pengumuman awal bulan Ramadhan ditandai dengan pemukulan bedug dan
-                diakhiri dengan doa bersama.</p>
+            <img src="{{ asset('kulinerkauman.png') }}" alt="dugderan"
+                class="w-80 h-60 object-cover transition duration-300 group-hover:scale-100 mx-auto rounded-md">
+            <h1 class="text-lg font-bold mt-4">Tentang Kuliner Kauman Johar</h1>
+            <p class="text-justify">Kuliner Kauman Johar merupakan wisata kuliner yang berlokasi di Alun-Alun Kota
+                Semarang. Kuliner Kauman Johar ini dilakukan rebranding dan diresmikan pada tanggal 9 September 2023
+                yang sebelumnya sudah berjalan tetapi terancam ditutup. Kuliner ini menyediakan berbagai macam makanan
+                yang dijual oleh UMKM. Selain itu, terdapat berbagai kegiatan di momen-mone tertentu seperti penampilan
+                band, lomba, pesta kembang api, dan berbagai kegiatan menarik lainnya. Kuliner Kauman Johar ini dibuka
+                setiap weekend yaitu di hari Jumat, Sabtu, dan Minggu pukul 17.00 hingga 22.00</p>
 
-            <div id="map" class="mt-10">
+            <p class="text-justify font-semibold mt-6">Informasi lebih lanjut: <a
+                    href="https://www.instagram.com/kuliner_kauman/" target="_blank" class="text-blue-400">Instagram
+                    Kuliner Kauman Johar</a>
+            </p>
+            <div id="map" class="mt-4">
             </div>
         </div>
 
@@ -140,68 +135,49 @@
     </div>
 
     <script>
+        let map;
+        let marker;
+
         async function initMap() {
+            const defaultPosition = {
+                lat: -6.97162408601006,
+                lng: 110.4230951956365,
+                nama: "Lokasi Kuliner Kauman Johar"
+            };
+
+            const infoWindow = new google.maps.InfoWindow();
+
             const {
                 AdvancedMarkerElement
             } = await google.maps.importLibrary("marker");
 
-            const infoWindow = new google.maps.InfoWindow();
-
-            const center = {
-                lat: -6.984168497010843,
-                lng: 110.40926002563694
-            };
-
+            // Map
             map = new google.maps.Map(document.getElementById("map"), {
-                center: center,
+                center: defaultPosition,
                 zoom: 16,
                 mapId: "5ee8a1d5bfc6676ac1b5f32c",
                 clickableIcons: false
             });
 
-            const locations = [{
-                    lat: -6.9815387761353795,
-                    lng: 110.41358809853638,
-                    nama: "Titik Awal Pawai Dugderan"
-                },
-                {
-                    lat: -6.972479965092438,
-                    lng: 110.42266556371769,
-                    nama: "Titik Akhir Pawai Dugderan"
-                },
-                {
-                    lat: -6.971319123580661,
-                    lng: 110.42365593082019,
-                    nama: "Lokasi Pasar Dugderan"
-                }
-            ];
+            // Marker statis
+            marker = new AdvancedMarkerElement({
+                map: map,
+                position: defaultPosition,
+                title: "Lokasi Wisata Kuliner"
+            });
 
-            const bounds = new google.maps.LatLngBounds();
-
-            // Marker
-            locations.forEach(loc => {
-                const marker = new AdvancedMarkerElement({
-                    map: map,
-                    position: loc
-                });
-
-                bounds.extend(loc);
-
-                marker.addListener("click", () => {
-                    infoWindow.setContent(`
+            marker.addListener("click", () => {
+                infoWindow.setContent(`
                         <div style="font-size:14px;">
-                            <b>${loc.nama}</b><br>
+                            <b>${defaultPosition.nama}</b><br>
                         </div>
                     `);
 
-                    infoWindow.open({
-                        anchor: marker,
-                        map,
-                    });
+                infoWindow.open({
+                    anchor: marker,
+                    map,
                 });
             });
-
-            map.fitBounds(bounds);
         }
     </script>
     <script

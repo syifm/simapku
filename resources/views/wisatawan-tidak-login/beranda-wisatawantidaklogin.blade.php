@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda</title>
+    <title>SIMAPKU | Beranda</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,9 +46,6 @@
         }
 
 
-
-        /* @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap"); */
-
         * {
             padding: 0;
             margin: 0;
@@ -72,25 +69,14 @@
 
         .container {
             margin-block: auto;
-            /* background: #fff; */
-            /* padding: 30px; */
-            border-radius: 10px;
-            /* width: min(480px, 90%); */
-            /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25); */
+            border-radius: 10px
         }
-
-        /* .container h3 {
-            font-size: 2rem;
-        } */
-
-        /* range slider styles */
 
         .range-slider {
             display: flex;
             flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
-            /* gap: 20px; */
             gap: 5px;
             padding-block: 5px;
         }
@@ -103,18 +89,15 @@
             border: none;
             outline: none;
             background: var(--gray-color);
-            /* font-size: 1.5rem; */
             font-size: 15px;
             font-weight: 500;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             width: 115px;
-            /* min-width: 64px; */
         }
 
         .range {
             width: 100%;
-            /* width: 60%; */
             display: grid;
             position: relative;
             z-index: 5;
@@ -162,7 +145,6 @@
             flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
-            /* gap: 20px; */
             gap: 5px;
             padding-block: 5px;
         }
@@ -175,18 +157,15 @@
             border: none;
             outline: none;
             background: var(--gray-color);
-            /* font-size: 1.5rem; */
             font-size: 15px;
             font-weight: 500;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             width: 115px;
-            /* min-width: 64px; */
         }
 
         .range-rating {
             width: 100%;
-            /* width: 60%; */
             display: grid;
             position: relative;
             z-index: 5;
@@ -229,13 +208,11 @@
             cursor: ew-resize;
         }
 
-        /* INI NGGAK DIPAKE ------------------------------------------------------------------- */
         .range-slider-jarak {
             display: flex;
             flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
-            /* gap: 20px; */
             gap: 5px;
             padding-block: 5px;
         }
@@ -248,18 +225,15 @@
             border: none;
             outline: none;
             background: var(--gray-color);
-            /* font-size: 1.5rem; */
             font-size: 15px;
             font-weight: 500;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             width: 115px;
-            /* min-width: 64px; */
         }
 
         .range-jarak {
             width: 100%;
-            /* width: 60%; */
             display: grid;
             position: relative;
             z-index: 5;
@@ -359,87 +333,46 @@
 
 <body class="bg-gray-100 text-gray-800">
     @if (session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: "{{ session('success') }}",
-            timer: 2000,
-            showConfirmButton: false,
-            position: 'center',
-            target: document.body
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false,
+                position: 'center',
+                target: document.body
+            });
+        </script>
     @endif
 
     @if (session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal!',
-            text: "{{ session('error') }}",
-            confirmButtonColor: '#dc2626',
-            target: document.body
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#dc2626',
+                target: document.body
+            });
+        </script>
     @endif
-    {{-- <div class="h-screen flex flex-col">
-        @include('layouts.header-wisatawan')
-
-        <div class="flex flex-1 overflow-hidden">
-             @include('layouts.sidebar-wisatawan-tidaklogin') 
-
-            <div class="flex-1 p-6 overflow-y-auto">
-                <h2 class="text-2xl text-black font-bold mb-4">
-                    Selamat datang, Wisatawan!
-                </h2>
-
-                
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- <div class="h-screen flex flex-col">
-    @include('layouts.header-wisatawan')
-
-    <div class="flex flex-1">
-        @include('layouts.sidebar-wisatawan')
-
-        <div class="flex-1 p-6 overflow-y-auto">
-            <h2 class="text-2xl text-black font-bold mb-4">
-                Selamat datang, Wisatawan!
-            </h2>
-
-            <form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-        {{ __('Log Out') }}
-    </x-dropdown-link>
-    </form>
-    </div>
-    </div>
-    </div> --}}
 
     @include('layouts.header-wisatawan')
-    @include('layouts.sidebar-wisatawan')
+    @include('layouts.sidebar-wisatawantidaklogin')
 
-    {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
-    <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
+    <div class="pt-[10px] pl-28 pr-[30px]">
         <div class="flex flex-col gap-2">
-            {{-- <h2 class="text-2xl text-black font-bold mb-4">
-                Selamat datang di SIMAPKU Semarang, temukan kuliner Semarang yang cocok untuk Anda disini!
-            </h2> --}}
             <div>
                 <p class="text-m text-black font-medium mt-2 mb-2 text-center">
                     Ingin memasukkan kuliner yang Anda ketahui?
-                    <a href="{{ route('tambahwisatakuliner') }}" class="text-[#FFA319]  hover:underline">
+                    <a href="{{ route('tambahwisatakuliner.tidaklogin') }}" class="text-[#FFA319]  hover:underline">
                         Tambah Kuliner
                     </a>
                 </p>
             </div>
 
-
-            <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
+            <form id="formCari" action="{{ route('carikuliner.tidaklogin') }}" method="GET">
                 @csrf
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-2xl z-20">
@@ -577,9 +510,9 @@
                                     <select id="kategori" name="kategori[]" data-placeholder="Pilih Kategori..."
                                         data-theme="light" multiple data-multi-select>
                                         @foreach ($kategori as $item)
-                                        <option value="{{ $item->id_kategori }}">
-                                            {{ $item->nama }}
-                                        </option>
+                                            <option value="{{ $item->id_kategori }}">
+                                                {{ $item->nama }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -628,9 +561,9 @@
                                     <select id="fasilitas" name="fasilitas[]" data-placeholder="Pilih Fasilitas..."
                                         data-theme="light" multiple data-multi-select>
                                         @foreach ($fasilitas as $item)
-                                        <option value="{{ $item->id_fasilitas }}">
-                                            {{ $item->nama }}
-                                        </option>
+                                            <option value="{{ $item->id_fasilitas }}">
+                                                {{ $item->nama }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -757,20 +690,20 @@
             </p>
             <div class="grid grid-cols-4 gap-8">
                 @foreach ($kulinerBaru as $item)
-                <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+                    <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
+                        class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
-                    <img src="{{ asset('storage/' . $item->foto) }}"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+                        <img src="{{ asset('storage/' . $item->foto) }}"
+                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
 
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
 
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg text-center px-2">
-                            {{ $item->nama }}
-                        </span>
-                    </div>
-                </a>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-semibold text-lg text-center px-2">
+                                {{ $item->nama }}
+                            </span>
+                        </div>
+                    </a>
                 @endforeach
             </div>
         </div>
@@ -781,20 +714,20 @@
             </p>
             <div class="grid grid-cols-4 gap-8">
                 @foreach ($kulinerFavorit as $item)
-                <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+                    <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
+                        class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
-                    <img src="{{ asset('storage/' . $item->foto) }}"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+                        <img src="{{ asset('storage/' . $item->foto) }}"
+                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
 
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
 
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg text-center px-2">
-                            {{ $item->nama }}
-                        </span>
-                    </div>
-                </a>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-semibold text-lg text-center px-2">
+                                {{ $item->nama }}
+                            </span>
+                        </div>
+                    </a>
                 @endforeach
             </div>
 
@@ -1391,7 +1324,9 @@
                     e.target.submit();
 
                 }, function(error) {
-                    alert("Gagal ambil lokasi, pakai pencarian biasa aja");
+                    // alert("Gagal ambil lokasi, pakai pencarian biasa aja");
+                    document.getElementById("lat").value = -6.99;
+                    document.getElementById("lng").value = 110.42;
                     e.target.submit(); // tetap submit tanpa lokasi
                 });
             } else {

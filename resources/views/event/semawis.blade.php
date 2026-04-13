@@ -79,8 +79,13 @@
         </script>
     @endif
 
-    @include('layouts.header-wisatawan')
-    @include('layouts.sidebar-wisatawan')
+    @if (Auth::check())
+        @include('layouts.header-wisatawan')
+        @include('layouts.sidebar-wisatawan')
+    @else
+        @include('layouts.header-wisatawan')
+        @include('layouts.sidebar-wisatawantidaklogin')
+    @endif
 
     {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
     <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
@@ -102,25 +107,27 @@
                 </a>
 
                 <h1 class="font-bold text-center">
-                    Dugderan
+                    Waroeng Semawis
                 </h1>
 
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-            <img src="{{ asset('kulinerkauman.png') }}" alt="dugderan"
+            <img src="{{ asset('pasarimlek.jpg') }}" alt="pasarimlek"
                 class="w-80 h-60 object-cover transition duration-300 group-hover:scale-100 mx-auto rounded-md">
-            <h1 class="text-lg font-bold mt-4">Tentang Kuliner Kauman Johar</h1>
-            <p class="text-justify">Kuliner Kauman Johar merupakan wisata kuliner yang berlokasi di Alun-Alun Kota
-                Semarang. Kuliner Kauman Johar ini dilakukan rebranding dan diresmikan pada tanggal 9 September 2023
-                yang sebelumnya sudah berjalan tetapi terancam ditutup. Kuliner ini menyediakan berbagai macam makanan
-                yang dijual oleh UMKM. Selain itu, terdapat berbagai kegiatan di momen-mone tertentu seperti penampilan
-                band, lomba, pesta kembang api, dan berbagai kegiatan menarik lainnya. Kuliner Kauman Johar ini dibuka
-                setiap weekend yaitu di hari Jumat, Sabtu, dan Minggu pukul 17.00 hingga 22.00</p>
+            <h1 class="text-lg font-bold mt-4">Tentang Waroeng Semawis</h1>
+            <p class="text-justify">Waroeng Semawis yang berlokasi tepatnya di Gang Warung ini beroperasi mulai dari
+                hari Jumat hingga Minggu pada pukul 18.00 hingga 22.00 WIB. Waroeng semawis ini menyediakan berbagai
+                hidangan khas Semarang. Selain itu, fasilitas yang disediakan sangat baik. Terdapat area indoor dan juga
+                tersedia Toilet dan Mushola. Di Waroeng Semawis ini juga diadakan berbagai kegiatan-kegiatan seperti
+                ketika merayakan Imlek. Ketika menyambut Imlek akan diadakan Pasar Imlek yang dilaksanakan selama 3
+                hari. Ketika dilaksanakan Pasar Imlek ini tidak hanya kuliner saja, tetapi terdapat kegiatan lainnya
+                seperti performa barongsai.</p>
 
             <p class="text-justify font-semibold mt-6">Informasi lebih lanjut: <a
-                    href="https://www.instagram.com/kuliner_kauman/" target="_blank" class="text-blue-400">Instagram
-                    Kuliner Kauman Johar</a>
+                    href="https://www.instagram.com/waroengsemawissemarang/" target="_blank"
+                    class="text-blue-400">Instagram
+                    Waroeng Semawis</a>
             </p>
             <div id="map" class="mt-4">
             </div>
@@ -135,9 +142,9 @@
 
         async function initMap() {
             const defaultPosition = {
-                lat: -6.984168497010843,
-                lng: 110.40926002563694,
-                nama: "Lokasi Kuliner Kauman Johar"
+                lat: -6.974478157124043,
+                lng: 110.42631793156626,
+                nama: "Lokasi Waroeng Semawis"
             };
 
             const infoWindow = new google.maps.InfoWindow();

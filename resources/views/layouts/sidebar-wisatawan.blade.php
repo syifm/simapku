@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-straight/css/uicons-bold-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
     <style>
         body {
@@ -159,6 +160,9 @@
         .menu-item i {
             width: 20px;
             margin-right: 0rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .profile-section {
@@ -203,7 +207,7 @@
             <a href="{{ route('favorit') }}"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('diarikuliner') || request()->routeIs('diarikuliner.detail') || request()->routeIs('diarikuliner.tambah') || request()->routeIs('diarikuliner.simpan') || request()->routeIs('diarikuliner.edit') || request()->routeIs('diarikuliner.update') || request()->routeIs('diarikuliner.hapus') ? 'active' : 'text-white' }}">
-                <i class="fas fa-book"></i>
+                <i class="fi fi-br-quality" style="font-size: 20px;"></i>
                 {{-- <span>Beranda</span> --}}
             </a>
 
@@ -220,7 +224,7 @@
                     @csrf
                     <button type="submit"
                         class="menu-item flex items-center p-2 rounded {{ request()->routeIs('logout') ? 'active' : 'text-white' }}">
-                        <i class="fi fi-bs-sign-out-alt text-xl ml-1 mt-1"></i>
+                        <i class="fi fi-bs-sign-out-alt text-xl ml-1"></i>
                     </button>
                 </form>
             </div>

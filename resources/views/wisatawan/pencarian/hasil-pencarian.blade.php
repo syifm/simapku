@@ -1245,11 +1245,14 @@
         });
 
         // MAPS --------------------------------------------------------------------------------
+        let defaultLat = -6.99;
+        let defaultLng = 110.42;
+
         let map;
         let userMarker = null;
         let markers = [];
-        let userLat = null;
-        let userLng = null;
+        let userLat = defaultLat;
+        let userLng = defaultLng;
 
         let directionsService;
         let directionsRenderer;
@@ -1280,9 +1283,11 @@
 
             tampilkanSemuaKuliner();
 
-            navigator.geolocation.watchPosition(success, error, {
-                enableHighAccuracy: true
-            });
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error);
+            } else {
+                updateUserLocation(defaultLat, defaultLng);
+            };
         }
 
         function success(pos) {
@@ -1298,8 +1303,9 @@
         }
 
         function error(err) {
-            console.log("ERROR:", err.message);
-            alert("Gagal ambil lokasi: " + err.message);
+            // console.log("ERROR:", err.message);
+            // alert("Gagal ambil lokasi: " + err.message);
+            updateUserLocation(defaultLat, defaultLng);
         }
 
         function updateUserLocation(lat, lng) {

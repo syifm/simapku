@@ -21,11 +21,27 @@ use Illuminate\Support\Facades\Log;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class WisatawanController extends Controller
 {
-    // Beranda
+    // Semua
+    public function dugderan()
+    {
+        return view('event.dugderan');
+    }
 
+    public function kulinerkauman()
+    {
+        return view('event.kulinerkauman');
+    }
+
+    public function semawis()
+    {
+        return view('event.semawis');
+    }
+
+    // Wisatawan Login
     public function berandaWisatawan()
     {
         $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
@@ -36,20 +52,7 @@ class WisatawanController extends Controller
         return view('wisatawan.beranda', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
     }
 
-    public function dugderan()
-    {
-        return view('wisatawan.event.dugderan');
-    }
 
-    public function kulinerkauman()
-    {
-        return view('wisatawan.event.kulinerkauman');
-    }
-
-    public function semawis()
-    {
-        return view('wisatawan.event.semawis');
-    }
 
     public function mapWisataKuliner()
     {
@@ -647,14 +650,14 @@ class WisatawanController extends Controller
     //     return response()->json($tags);
     // }
 
-    public function search(Request $request)
-    {
-        $search = $request->q;
+    // public function search(Request $request)
+    // {
+    //     $search = $request->q;
 
-        return Fasilitas::where('nama', 'like', "%{$search}%")
-            ->limit(10)
-            ->get(['id_fasilitas as id', 'nama as name']);
-    }
+    //     return Fasilitas::where('nama', 'like', "%{$search}%")
+    //         ->limit(10)
+    //         ->get(['id_fasilitas as id', 'nama as name']);
+    // }
 
     public function getngampu($id = null)
     {
@@ -784,4 +787,325 @@ class WisatawanController extends Controller
 
 
     // Tidak Login
+    public function berandaWisatawanTidakLogin()
+    {
+        $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
+        $kulinerBaru = WisataKuliner::latest()->take(4)->get();
+        $kulinerFavorit = WisataKuliner::orderBy('penilaian', 'desc')->take(4)->get();
+        $fasilitas = Fasilitas::all();
+        $kategori = Kategori::all();
+        return view('wisatawan-tidak-login.beranda-wisatawantidaklogin', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
+    }
+
+    public function halamanfavoritTidakLogin()
+    {
+        return view('wisatawan-tidak-login.favorit.halamanfavorit-wisatawantidaklogin');
+    }
+
+    public function halamantambahTidakLogin()
+    {
+        $fasilitas = Fasilitas::all();
+        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])->get();
+        return view('wisatawan-tidak-login.wisatakuliner.tambahkuliner-wisatawantidaklogin', compact('fasilitas', 'wkuliner'));
+    }
+
+    public function simpankulinerTidakLogin(Request $request)
+    {
+        $request->validate([
+            'nama_wisata_kuliner' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:50',
+            'kelurahan' => 'required|string|max:50',
+            'alamat' => 'required|string',
+            'no_telp' => 'required|string|min:10|max:15',
+            'email' => 'nullable|email|max:70',
+            'deskripsi' => 'required|string|max:255',
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:10240',
+            'latitude'  => 'required|numeric|between:-90,90|unique:wisata_kuliner,latitude',
+            'longitude' => 'required|numeric|between:-180,180|unique:wisata_kuliner,longitude',
+            'email_pengaju' => 'required|email|max:70',
+        ]);
+
+        $wisataKuliner = $request->nama;
+        $fotoPath = $request->file('foto')->storeAs(
+            'uploads',
+            'foto_' . Str::slug($wisataKuliner) . '_' . time() . '.' . $request->file('foto')->extension(),
+            'public'
+        );
+
+        $waktu_dibuat = Carbon::now('Asia/Jakarta');
+        $waktu_diubah = Carbon::now('Asia/Jakarta');
+
+        $dataMK = $request->id_fasilitas ?? [];
+        $dataKategori = $request->id_kategori ?? [];
+        $idWisata = $request->nama_wisata_kuliner;
+
+        if (!is_numeric($idWisata)) {
+            $wisata = WisataKuliner::firstOrCreate([
+                'nama' => trim($idWisata),
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'alamat' => $request->alamat,
+                'no_telp' => $request->no_telp,
+                'email' => $request->email ?? null,
+                'foto' => $fotoPath,
+                'deskripsi' => $request->deskripsi,
+                'latitude'  => $request->latitude,
+                'longitude' => $request->longitude,
+                'harga_min' => 0,
+                'harga_max' => 0,
+                'penilaian' => 0,
+                'email_pengaju' => $request->email_pengaju,
+                'status' => 'Belum Diverifikasi',
+                'waktu_dibuat' => $waktu_dibuat,
+                'waktu_diubah' => $waktu_diubah,
+            ]);
+
+            $idWisata = $wisata->id_wisata_kuliner;
+        }
+
+        $fasilitasIds = [];
+
+        foreach ($dataMK as $item) {
+
+            if (is_numeric($item)) {
+                $fasilitasId = $item;
+            } else {
+
+                $fasilitas = Fasilitas::firstOrCreate([
+                    'nama' => trim($item)
+                ]);
+
+                $fasilitasId = $fasilitas->id_fasilitas;
+            }
+
+            $fasilitasIds[] = $fasilitasId;
+        }
+
+        $wisata = WisataKuliner::find($idWisata);
+
+        $wisata->fasilitas()->sync($fasilitasIds);
+
+        $kategoriIds = [];
+
+        foreach ($dataKategori as $item) {
+
+            if (is_numeric($item)) {
+                $kategoriId = $item;
+            } else {
+
+                $kategori = Kategori::firstOrCreate([
+                    'nama' => trim($item)
+                ]);
+
+                $kategoriId = $kategori->id_kategori;
+            }
+
+            $kategoriIds[] = $kategoriId;
+        }
+
+        $wisata = WisataKuliner::find($idWisata);
+
+        $wisata->kategori()->sync($kategoriIds);
+
+        return redirect()->route('beranda.tidaklogin')->with('success', 'Kuliner Berhasil Disimpan');
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
+        $kategori = Kategori::all();
+        $fasilitas = Fasilitas::all();
+        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
+        $favoritIds = [];
+        if ($wisatawan) {
+            $favoritIds = KulinerFavorit::where('id_wisatawan', $wisatawan->id_wisatawan)
+                ->pluck('id_wisata_kuliner')
+                ->toArray();
+        }
+
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori']);
+
+        $lat = $request->lat;
+        $lng = $request->lng;
+
+        // keyword
+        $keyword = trim($request->keyword ?? '');
+
+        $isRekomendasi = false;
+
+        if ($keyword === '' || strtolower($keyword) === 'rekomendasi kuliner') {
+            $isRekomendasi = true;
+        }
+
+        if (!$isRekomendasi) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kelurahan', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('alamat', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $request->keyword . '%')
+                    ->orWhereHas('kategori', function ($q2) use ($request) {
+                        $q2->where('nama', 'like', '%' . $request->keyword . '%');
+                    });
+            });
+        }
+
+        $useHargaFilter =
+            ($request->minharga && $request->minharga != 0) ||
+            ($request->maxharga && $request->maxharga != 1000000);
+
+        $useRatingFilter =
+            ($request->minrating && $request->minrating != 0) ||
+            ($request->maxrating && $request->maxrating != 5);
+
+        $useJarakFilter =
+            ($request->jarak && $request->jarak > 0);
+
+        if ($useRatingFilter) {
+            $query->whereBetween('penilaian', [
+                $request->minrating,
+                $request->maxrating
+            ]);
+        }
+
+        if ($useHargaFilter) {
+            $query->where(function ($q) use ($request) {
+                $q->where('harga_max', '>=', $request->minharga)
+                    ->where('harga_min', '<=', $request->maxharga);
+            });
+        }
+
+        $data = $query->limit(50)->get();
+
+        if (!$isRekomendasi && $data->isEmpty()) {
+            $isRekomendasi = true;
+            $keyword = 'Rekomendasi Kuliner';
+
+            $query2 = WisataKuliner::with(['fasilitas', 'kategori']);
+
+            if ($useRatingFilter) {
+                $query2->whereBetween('penilaian', [$request->minrating, $request->maxrating]);
+            }
+            if ($useHargaFilter) {
+                $query2->where('harga_max', '>=', $request->minharga)
+                    ->where('harga_min', '<=', $request->maxharga);
+            }
+
+            $data = $query2->limit(50)->get();
+        }
+
+        // preferensi (FIX: dipindah ke atas sebelum scoring)
+        $preferensiKuliner = [];
+        if ($wisatawan) {
+            $preferensiKuliner = DB::table('preferensi')
+                ->where('id_wisatawan', $wisatawan->id_wisatawan)
+                ->pluck('id_kategori')
+                ->toArray();
+        }
+
+        if ($request->lat && $request->lng && count($data) > 0) {
+
+            // FIX: haversine dihitung di PHP dulu sebagai fallback
+            foreach ($data as $item) {
+                $item->distance_km = 6371 * 2 * atan2(
+                    sqrt(
+                        pow(sin(deg2rad($item->latitude - $lat) / 2), 2) +
+                            cos(deg2rad($lat)) * cos(deg2rad($item->latitude)) *
+                            pow(sin(deg2rad($item->longitude - $lng) / 2), 2)
+                    ),
+                    sqrt(
+                        1 - (
+                            pow(sin(deg2rad($item->latitude - $lat) / 2), 2) +
+                            cos(deg2rad($lat)) * cos(deg2rad($item->latitude)) *
+                            pow(sin(deg2rad($item->longitude - $lng) / 2), 2)
+                        )
+                    )
+                );
+            }
+
+            // FIX: filter jarak pakai distance_km yang sudah dihitung
+            if ($useJarakFilter) {
+                $data = $data->filter(fn($item) => $item->distance_km <= $request->jarak)->values();
+            }
+
+            $origin = $request->lat . ',' . $request->lng;
+
+            $destinations = $data->map(function ($item) {
+                return $item->latitude . ',' . $item->longitude;
+            })->join('|');
+
+            $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+
+            $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
+
+            $response = file_get_contents($url);
+            $response = json_decode($response, true);
+
+            foreach ($data as $index => $item) {
+                $distanceMeter = $response['rows'][0]['elements'][$index]['distance']['value'] ?? null;
+                $item->distance_km = $distanceMeter ? $distanceMeter / 1000 : $item->distance_km; // FIX: fallback ke haversine
+            }
+        }
+
+        $totalFasilitasUser = count($request->fasilitas ?? []);
+
+        // FIX: kategori & fasilitas match pakai bulk query, bukan per-item
+        $kategoriFilter = $request->kategori ?? [];
+        $fasilitasFilter = $request->fasilitas ?? [];
+        $cariKategori = !empty($kategoriFilter) ? $kategoriFilter : $preferensiKuliner;
+
+        $kulinerIds = $data->pluck('id_wisata_kuliner')->toArray();
+
+        $kategoriMatchMap = [];
+        if (!empty($cariKategori)) {
+            $kategoriMatchMap = DB::table('kategori_wisata_kuliner')
+                ->whereIn('id_wisata_kuliner', $kulinerIds)
+                ->whereIn('id_kategori', $cariKategori)
+                ->select('id_wisata_kuliner', DB::raw('COUNT(*) as match_count'))
+                ->groupBy('id_wisata_kuliner')
+                ->pluck('match_count', 'id_wisata_kuliner')
+                ->toArray();
+        }
+
+        $fasilitasMatchMap = [];
+        if (!empty($fasilitasFilter)) {
+            $fasilitasMatchMap = DB::table('fasilitas_wisata_kuliner')
+                ->whereIn('id_wisata_kuliner', $kulinerIds)
+                ->whereIn('id_fasilitas', $fasilitasFilter)
+                ->select('id_wisata_kuliner', DB::raw('COUNT(*) as match_count'))
+                ->groupBy('id_wisata_kuliner')
+                ->pluck('match_count', 'id_wisata_kuliner')
+                ->toArray();
+        }
+
+        foreach ($data as $item) {
+            $id = $item->id_wisata_kuliner;
+
+            $listKategori = $request->kategori ?? [];
+            if (!empty($listKategori)) {
+                $cariKategori = $listKategori;
+            } elseif (!empty($preferensiKuliner)) {
+                $cariKategori = $preferensiKuliner;
+            } else {
+                $cariKategori = [];
+            }
+
+            $distanceScore = 1 / (($item->distance_km ?? 999) + 1);
+            $ratingScore = ($item->penilaian ?? 0) / 5;
+            $hargaScore = 1 / (($item->harga_min ?? 1) + 1);
+            $kategoriMatch = $kategoriMatchMap[$id] ?? 0;
+            $fasilitasMatch = $fasilitasMatchMap[$id] ?? 0;
+
+            $item->score =
+                ($distanceScore * 40) +
+                ($ratingScore * 25) +
+                ($hargaScore * 20) +
+                ($kategoriMatch * 10) +
+                ($fasilitasMatch * 5);
+        }
+
+        $data = $data->sortByDesc('score')->values();
+
+        return view('wisatawan-tidak-login.wisatakuliner.hasilpencarian-wisatawantidaklogin', compact('data', 'kategori', 'fasilitas', 'favoritIds', 'keyword'));
+    }
 }

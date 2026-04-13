@@ -1404,7 +1404,9 @@
                     e.target.submit();
 
                 }, function(error) {
-                    alert("Gagal ambil lokasi, pakai pencarian biasa aja");
+                    // alert("Gagal ambil lokasi, pakai pencarian biasa aja");
+                    document.getElementById("lat").value = -6.99;
+                    document.getElementById("lng").value = 110.42;
                     e.target.submit(); // tetap submit tanpa lokasi
                 });
             } else {

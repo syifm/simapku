@@ -143,9 +143,9 @@
         </div> --}}
         <div class="grid grid-cols-[90px_1fr] items-center text-2xl relative h-full">
             <div class="flex justify-center items-center -ml-5">
-                <button id="hamburgerBtn" class="text-white text-lg ml-5">
+                {{-- <button id="hamburgerBtn" class="text-white text-lg ml-5">
                     <i class="fas fa-bars "></i>
-                </button>
+                </button> --}}
             </div>
 
             <div class="flex justify-center items-center relative">
