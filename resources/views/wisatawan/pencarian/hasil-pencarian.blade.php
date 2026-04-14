@@ -868,12 +868,11 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-800 mb-1"
                             for="komentar"><span>Komentar</span>
-                            <span class="text-red-500 font-bold">*</span></label>
-                        <textarea id="komentar" name="komentar" rows="4"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('komentar') }}</textarea>
-                        @error('komentar')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                            <textarea id="komentar" name="komentar" rows="4"
+                                class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('komentar') }}</textarea>
+                            @error('komentar')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                     </div>
 
                     <div class="flex justify-end">

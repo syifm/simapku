@@ -198,6 +198,7 @@ class PenilaianDanUlasanController extends Controller
         $id_wisatawan = Wisatawan::where('user_id', $userId)->value('id_wisatawan');
 
         $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+            ->where('status', 'Disetujui')
             ->orderBy('waktu_diubah', 'desc')
             ->get()
             ->map(function ($item) use ($id_wisatawan) {
@@ -312,12 +313,13 @@ class PenilaianDanUlasanController extends Controller
         ]);
     }
 
-    public function detail($id)
+    public function detailUlasan($id)
     {
         $userId = Auth::id();
         $id_wisatawan = Wisatawan::where('user_id', $userId)->value('id_wisatawan');
 
         $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+            ->where('status', 'Disetujui')
             ->orderBy('waktu_diubah', 'desc')
             ->get()
             ->map(function ($item) use ($id_wisatawan) {

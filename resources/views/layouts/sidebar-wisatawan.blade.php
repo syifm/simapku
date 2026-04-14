@@ -199,21 +199,21 @@
         <nav class="nav-menu">
             <a href="{{ route('beranda-Wisatawan') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Wisatawan') || request()->routeIs('wisatakulinerhalaman') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda-Wisatawan') || request()->routeIs('wisatakulinerhalaman') || request()->routeIs('penilaianulasan.simpan') || request()->routeIs('penilaianulasan.detail') || request()->routeIs('getUlasan') || request()->routeIs('editwisatakuliner') || request()->routeIs('updatewisatakuliner') ? 'active' : 'text-white' }}">
                 <i class="fas fa-map-marker-alt"></i>
                 {{-- <span>Beranda</span> --}}
             </a>
 
             <a href="{{ route('favorit') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('diarikuliner') || request()->routeIs('diarikuliner.detail') || request()->routeIs('diarikuliner.tambah') || request()->routeIs('diarikuliner.simpan') || request()->routeIs('diarikuliner.edit') || request()->routeIs('diarikuliner.update') || request()->routeIs('diarikuliner.hapus') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('favorit') || request()->routeIs('favorit.simpan') || request()->routeIs('favorit.hapusdarilist') || request()->routeIs('favorit.hapus') ? 'active' : 'text-white' }}">
                 <i class="fi fi-br-quality" style="font-size: 20px;"></i>
                 {{-- <span>Beranda</span> --}}
             </a>
 
             <a href="{{ route('tambahwisatakuliner') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('tambahwisatakuliner') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('tambahwisatakuliner') || request()->routeIs('simpanwisatakuliner') ? 'active' : 'text-white' }}">
                 <i class="fas
                 fa-plus"></i>
                 {{-- <span>Beranda</span> --}}

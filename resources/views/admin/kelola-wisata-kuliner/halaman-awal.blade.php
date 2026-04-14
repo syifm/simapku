@@ -108,7 +108,8 @@
                             <table class="table-fixed w-full border-collapse border-b-0 border-black">
                                 <colgroup>
                                     <col style="width: 30px">
-                                    <col style="width: 200px">
+                                    <col style="width: 120px">
+                                    <col style="width: 60px">
                                     <col style="width: 80px">
                                     <col style="width: 160px">
                                 </colgroup>
@@ -122,6 +123,10 @@
                                         <th
                                             class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
                                             Wisata Kuliner
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Status
                                         </th>
                                         <th
                                             class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
@@ -141,6 +146,9 @@
                                             </td>
                                             <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
                                                 {{ $kuliner->nama }}
+                                            </td>
+                                            <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
+                                                {{ $kuliner->status }}
                                             </td>
                                             <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
                                                 {{ \Carbon\Carbon::parse($kuliner->waktu_diubah)->format('d/m/Y H:i') }}
@@ -335,6 +343,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="aksiVerifikasi" class="flex justify-end gap-4 mt-6 text-sm"></div>
                             </div>
                         </div>
                     </div>
@@ -707,6 +716,19 @@
                         const lat = parseFloat(data.latitude);
                         const lng = parseFloat(data.longitude);
 
+                        const aksiDiv = document.getElementById('aksiVerifikasi');
+                        aksiDiv.innerHTML = '';
+
+                        if (data.status === 'Disetujui') {
+                            aksiDiv.innerHTML = `
+                                <button
+                                    onclick="aksiTampilkan(${data.id_wisata_kuliner})"
+                                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full btn btn-primary">
+                                    Tampilkan
+                                </button>
+                            `;
+                        }
+
                         document.getElementById('detailModal').classList.remove('hidden');
 
                         const position = {
@@ -771,6 +793,45 @@
                         document.getElementById('delete-form-' + id).submit();
                     }
                 });
+            }
+
+            function aksiTampilkan(id) {
+                Swal.fire({
+                    title: 'Tampilkan Wisata Kuliner',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Tampilkan',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        kirimAksi(id, 'Tampilkan');
+                    }
+                });
+            }
+
+            function kirimAksi(id, status, komentar = null) {
+                fetch(`/admin/tampilkanwisatakuliner/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            status: status,
+                            komentar: komentar
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: res.message,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => location.reload());
+                    });
             }
         </script>
 </body>

@@ -76,7 +76,17 @@ class AdminController extends Controller
     public function kelolaWisataKuliner()
     {
         $statuswisatakuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Tampilkan'])->exists();
-        $wisataKuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Tampilkan'])->orderBy('waktu_diubah', 'desc')->paginate(10)->withQueryString();
+        $wisataKuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Tampilkan'])
+            ->orderByRaw("
+                CASE 
+                    WHEN status = 'Disetujui' THEN 1
+                    WHEN status = 'Tampilkan' THEN 2
+                    ELSE 3
+                END
+            ")
+            ->orderBy('waktu_diubah', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
             $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
@@ -477,6 +487,27 @@ class AdminController extends Controller
                 'waktu_diubah' => $waktu_diubah,
             ]);
         }
+
+        if ($request->status === 'Tampilkan') {
+            $wisataKuliner->update([
+                'status' => 'Tampilkan',
+                'waktu_diubah' => $waktu_diubah,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'wisataKuliner' => $wisataKuliner,
+            'status' => $wisataKuliner->status,
+            'message' => 'Status berhasil diperbarui'
+        ]);
+    }
+
+    public function tampilkanWisataKuliner(Request $request, $id)
+    {
+        $wisataKuliner = WisataKuliner::findOrFail($id);
+
+        $waktu_diubah = Carbon::now('Asia/Jakarta');
 
         if ($request->status === 'Tampilkan') {
             $wisataKuliner->update([

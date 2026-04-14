@@ -45,8 +45,8 @@ class WisatawanController extends Controller
     public function berandaWisatawan()
     {
         $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
-        $kulinerBaru = WisataKuliner::latest()->take(4)->get();
-        $kulinerFavorit = WisataKuliner::orderBy('penilaian', 'desc')->take(4)->get();
+        $kulinerBaru = WisataKuliner::where('status', 'Tampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
+        $kulinerFavorit = WisataKuliner::where('status', 'Tampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
         return view('wisatawan.beranda', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
@@ -790,8 +790,8 @@ class WisatawanController extends Controller
     public function berandaWisatawanTidakLogin()
     {
         $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
-        $kulinerBaru = WisataKuliner::latest()->take(4)->get();
-        $kulinerFavorit = WisataKuliner::orderBy('penilaian', 'desc')->take(4)->get();
+        $kulinerBaru = WisataKuliner::where('status', 'Tampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
+        $kulinerFavorit = WisataKuliner::where('status', 'Tampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
         return view('wisatawan-tidak-login.beranda-wisatawantidaklogin', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));

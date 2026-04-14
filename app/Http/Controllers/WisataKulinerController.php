@@ -1910,7 +1910,7 @@ class WisataKulinerController extends Controller
                 ->toArray();
         }
 
-        $query = WisataKuliner::query()->with(['fasilitas', 'kategori']);
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Tampilkan');
 
         $lat = $request->lat;
         $lng = $request->lng;
@@ -1920,7 +1920,7 @@ class WisataKulinerController extends Controller
 
         $isRekomendasi = false;
 
-        if ($keyword === '' || strtolower($keyword) === 'rekomendasi kuliner') { 
+        if ($keyword === '' || strtolower($keyword) === 'rekomendasi kuliner') {
             $isRekomendasi = true;
         }
 
@@ -1932,8 +1932,8 @@ class WisataKulinerController extends Controller
                     ->orWhere('alamat', 'like', '%' . $request->keyword . '%')
                     ->orWhere('deskripsi', 'like', '%' . $request->keyword . '%')
                     ->orWhereHas('kategori', function ($q2) use ($request) {
-                    $q2->where('nama', 'like', '%' . $request->keyword . '%');
-                });
+                        $q2->where('nama', 'like', '%' . $request->keyword . '%');
+                    });
             });
         }
 
@@ -1997,8 +1997,8 @@ class WisataKulinerController extends Controller
                 $item->distance_km = 6371 * 2 * atan2(
                     sqrt(
                         pow(sin(deg2rad($item->latitude - $lat) / 2), 2) +
-                        cos(deg2rad($lat)) * cos(deg2rad($item->latitude)) *
-                        pow(sin(deg2rad($item->longitude - $lng) / 2), 2)
+                            cos(deg2rad($lat)) * cos(deg2rad($item->latitude)) *
+                            pow(sin(deg2rad($item->longitude - $lng) / 2), 2)
                     ),
                     sqrt(
                         1 - (
