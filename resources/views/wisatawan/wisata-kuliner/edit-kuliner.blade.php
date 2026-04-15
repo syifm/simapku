@@ -583,6 +583,12 @@
         let geocoder;
         let isAutoUpdate = false;
         let lastAlamat = "";
+        let lastKelurahan = "";
+        let lastKecamatan = "";
+        let lastKota = "";
+        let lastProvinsi = "";
+        let lastKodepos = "";
+        let isFirstLoad = true;
         const latInput = document.getElementById('latitude');
         const lngInput = document.getElementById('longitude');
         let lat = parseFloat(latInput.value);
@@ -876,6 +882,81 @@
                         lng
                     };
 
+                    // let jalan = "";
+                    // let kelurahan = "";
+                    // let kecamatan = "";
+                    // let kota = "";
+                    // let provinsi = "";
+                    // let kodepos = "";
+
+                    // components.forEach(comp => {
+                    //     if (comp.types.includes("route")) {
+                    //         jalan = comp.long_name;
+                    //     }
+                    //     if (comp.types.includes("administrative_area_level_4")) {
+                    //         kelurahan = comp.long_name;
+                    //     }
+                    //     if (comp.types.includes("administrative_area_level_3")) {
+                    //         kecamatan = comp.long_name;
+                    //     }
+                    //     if (comp.types.includes("administrative_area_level_2")) {
+                    //         kota = comp.long_name;
+                    //     }
+                    //     if (comp.types.includes("administrative_area_level_1")) {
+                    //         provinsi = comp.long_name;
+                    //     }
+                    //     if (comp.types.includes("postal_code")) {
+                    //         kodepos = comp.long_name;
+                    //     }
+                    // });
+
+                    // const parts = [kelurahan, kecamatan, kota, provinsi]
+                    //     .filter(part => part && part.trim() !== "");
+
+                    // let alamatWilayah = parts.join(', ');
+
+                    // if (kodepos) {
+                    //     alamatWilayah += ` ${kodepos}`;
+                    // }
+
+                    // let alamatLama = alamatInput.value || "";
+                    // let bagianManual = alamatLama.split(/kelurahan|kecamatan|kota|provinsi/i)[0].trim();
+                    // let wilayahList = [kelurahan, kecamatan, kota, provinsi];
+
+                    // wilayahList.forEach(w => {
+                    //     if (!w) return;
+
+                    //     let regex = new RegExp(`\\b${w}\\b`, 'gi');
+                    //     bagianManual = bagianManual.replace(regex, '');
+                    // });
+
+                    // // rapihin
+                    // bagianManual = bagianManual
+                    //     .replace(/\s+,/g, ",")
+                    //     .replace(/,+/g, ",")
+                    //     .trim()
+                    //     .replace(/^,|,$/g, "");
+                    // if (!bagianManual) {
+                    //     bagianManual = alamatLama.split(',')[0].trim();
+                    // }
+                    // let alamatDepan = "";
+                    // if (bagianManual) {
+                    //     alamatDepan = bagianManual;
+                    // } else if (jalan) {
+                    //     alamatDepan = jalan;
+                    // }
+
+                    // let alamatFinal = alamatWilayah;
+                    // if (alamatDepan) {
+                    //     alamatFinal = `${alamatDepan}, ${alamatWilayah}`;
+                    // }
+
+                    // isAutoUpdate = true;
+
+                    // document.getElementById('alamat').value = alamatFinal;
+                    // lastAlamat = alamatFinal;
+                    // Simpan di luar fungsi (scope yang sama dengan event listener marker)
+                    let jalan = "";
                     let kelurahan = "";
                     let kecamatan = "";
                     let kota = "";
@@ -883,6 +964,9 @@
                     let kodepos = "";
 
                     components.forEach(comp => {
+                        if (comp.types.includes("route")) {
+                            jalan = comp.long_name;
+                        }
                         if (comp.types.includes("administrative_area_level_4")) {
                             kelurahan = comp.long_name;
                         }
@@ -900,19 +984,92 @@
                         }
                     });
 
-                    const parts = [kelurahan, kecamatan, kota, provinsi]
-                        .filter(part => part && part.trim() !== "");
+                    const parts = [kelurahan, kecamatan, kota, provinsi].filter(part => part && part
+                        .trim() !== "");
+                    let wilayahBaru = parts.join(', ');
+                    if (kodepos) wilayahBaru += ` ${kodepos}`;
 
-                    let alamatCustom = parts.join(', ');
+                    // if (isFirstLoad) {
+                    //     lastKelurahan = kelurahan;
+                    //     isFirstLoad = false;
+                    // } else {
+                    //     let alamatLama = alamatInput.value || "";
+                    //     let bagianManual = "";
 
-                    if (kodepos) {
-                        alamatCustom += ` ${kodepos}`;
+                    //     if (lastKelurahan && alamatLama.includes(lastKelurahan)) {
+                    //         const idx = alamatLama.indexOf(lastKelurahan);
+                    //         bagianManual = alamatLama.slice(0, idx).replace(/,\s*$/, "").trim();
+                    //     } else {
+                    //         bagianManual = alamatLama.trim();
+                    //     }
+
+                    //     let alamatFinal = wilayahBaru;
+                    //     if (bagianManual) {
+                    //         alamatFinal = `${bagianManual}, ${wilayahBaru}`;
+                    //     } else if (jalan) {
+                    //         alamatFinal = `${jalan}, ${wilayahBaru}`;
+                    //     }
+
+                    //     console.log("alamatLama:", alamatLama);
+                    //     console.log("lastKelurahan:", lastKelurahan);
+                    //     console.log("includes?", alamatLama.includes(lastKelurahan));
+
+                    //     isAutoUpdate = true;
+                    //     alamatInput.value = alamatFinal;
+                    //     lastAlamat = alamatFinal;
+                    //     lastKelurahan = kelurahan;
+                    // }
+                    if (isFirstLoad) {
+                        lastKelurahan = kelurahan;
+                        lastKecamatan = kecamatan;
+                        lastKota = kota;
+                        lastProvinsi = provinsi;
+                        lastKodepos = kodepos;
+                        isFirstLoad = false;
+                    } else {
+                        let alamatLama = alamatInput.value || "";
+                        let bagianManual = "";
+                        let potongDi = -1;
+
+                        const penanda = [lastKelurahan, lastKecamatan, lastKota, lastProvinsi, lastKodepos]
+                            .filter(p => p && p.trim() !== "");
+
+                        for (const p of penanda) {
+                            const idx = alamatLama.indexOf(p);
+                            if (idx !== -1) {
+                                potongDi = idx;
+                                break;
+                            }
+                        }
+
+                        if (potongDi !== -1) {
+                            bagianManual = alamatLama.slice(0, potongDi).replace(/,\s*$/, "").trim();
+                        } else {
+                            bagianManual = "";
+                        }
+
+                        let alamatFinal = wilayahBaru;
+                        if (bagianManual) {
+                            alamatFinal = `${bagianManual}, ${wilayahBaru}`;
+                        } else if (jalan) {
+                            alamatFinal = `${jalan}, ${wilayahBaru}`;
+                        }
+
+                        console.log("alamatLama:", alamatLama);
+                        console.log("lastKelurahan:", lastKelurahan);
+                        console.log("includes?", alamatLama.includes(lastKelurahan));
+
+                        isAutoUpdate = true;
+                        alamatInput.value = alamatFinal;
+                        lastAlamat = alamatFinal;
+
+                        lastKelurahan = kelurahan;
+                        lastKelurahan = kelurahan;
+                        lastKecamatan = kecamatan;
+                        lastKota = kota;
+                        lastProvinsi = provinsi;
+                        lastKodepos = kodepos;
                     }
-
-                    isAutoUpdate = true;
-
-                    document.getElementById('alamat').value = alamatCustom;
-                    lastAlamat = alamatCustom;
 
                     const kecamatanSelect = document.getElementById('kecamatan');
                     const kelurahanSelect = document.getElementById('kelurahan');
@@ -1019,18 +1176,43 @@
                 .trim();
         }
 
+        function bersihkanManual(text) {
+            return text
+                .replace(/kelurahan\s+[^\.,]+/gi, "")
+                .replace(/kecamatan\s+[^\.,]+/gi, "")
+                .replace(/kota\s+[^\.,]+/gi, "")
+                .replace(/provinsi\s+[^\.,]+/gi, "")
+                .replace(/\s+,/g, ",")
+                .replace(/,+/g, ",")
+                .trim()
+                .replace(/^,|,$/g, "");
+        }
+
+        // function isDalamSemarang(components) {
+        //     let kota = "";
+
+        //     components.forEach(comp => {
+        //         if (comp.types.includes("administrative_area_level_2")) {
+        //             kota = comp.long_name;
+        //         }
+        //     });
+
+        //     return kota.toLowerCase().includes("semarang");
+        // }
         function isDalamSemarang(components) {
             let kota = "";
 
             components.forEach(comp => {
                 if (comp.types.includes("administrative_area_level_2")) {
-                    kota = comp.long_name;
+                    kota = comp.long_name.toLowerCase();
                 }
             });
 
-            return kota.toLowerCase().includes("semarang");
+            return kota.includes("semarang") &&
+                !kota.includes("kabupaten") &&
+                !kota.includes("kab.") &&
+                !kota.includes("regency");
         }
-
 
         function tampilkanSemuaKuliner() {
             clearMarkers();
@@ -1310,7 +1492,7 @@
         });
     </script>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=marker&callback=initMap"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=marker&callback=initMap&language=in"
         async defer></script>
 </body>
 

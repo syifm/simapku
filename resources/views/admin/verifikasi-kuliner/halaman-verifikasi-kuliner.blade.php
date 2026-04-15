@@ -59,49 +59,52 @@
             <div class="bg-white-100 pt-0">
                 <div class="mt-14">
                     @if (!$statuswisatakuliner)
-                        <table class="table-fixed w-full border-collapse border border-black">
-                            <colgroup>
-                                <col style="width: 60px">
-                                <col style="width: 600px">
-                                <col style="width: 300px">
-                                <col style="width: 171px">
-                            </colgroup>
+                        <div class="bg-white rounded-lg mt-4">
+                            <table class="table-fixed w-full border-collapse border border-black">
+                                <colgroup>
+                                    <col style="width: 30px">
+                                    <col style="width: 280px">
+                                    <col style="width: 90px">
+                                    <col style="width: 80px">
+                                </colgroup>
 
-                            <thead>
-                                <tr>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        No
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Wisata Kuliner
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Status Verifikasi
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white">
-                                <tr>
-                                    <td colspan="8" style="text-align: center" class="px-4 py-3 text-sm text-black">
-                                        Belum Tersedia Wisata Kuliner</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            No
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Wisata Kuliner
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Status Verifikasi
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Aksi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center"
+                                            class="px-4 py-3 text-sm text-black">
+                                            Belum Tersedia Wisata Kuliner</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         <div class="bg-white rounded-lg mt-4">
                             <table class="table-fixed w-full border-collapse border-b-0 border-black">
                                 <colgroup>
                                     <col style="width: 30px">
-                                    <col style="width: 200px">
-                                    <col style="width: 160px">
-                                    <col style="width: 100px">
+                                    <col style="width: 280px">
+                                    <col style="width: 90px">
+                                    <col style="width: 80px">
                                 </colgroup>
 
                                 <thead>
@@ -322,7 +325,7 @@
         @endpush
 
         <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&language=in"
             async defer></script>
         <script>
             let map = null;

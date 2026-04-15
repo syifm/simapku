@@ -21,11 +21,17 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $wisatawan = Wisatawan::where('user_id', $user->id)->first();
-        $preferensi = Preferensi::with('kategori')
-            ->where('id_wisatawan', $wisatawan->id_wisatawan)
-            ->orderByDesc('jumlah')
-            ->get();
-        return view('profile.show', compact('user', 'preferensi'));
+        if ($wisatawan) {
+            $wisatawan = Wisatawan::where('user_id', $user->id)->first();
+
+            $preferensi = Preferensi::with('kategori')
+                ->where('id_wisatawan', $wisatawan->id_wisatawan)
+                ->orderByDesc('jumlah')
+                ->get();
+        } else {
+            $preferensi = collect();
+        }
+        return view('profile.show', compact('user', 'preferensi', 'wisatawan'));
     }
 
     public function edit(Request $request): View

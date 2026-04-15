@@ -37,7 +37,7 @@
         }
     </script>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_CM3lH19159L5LAd8GJoK9pwb5raOiFk=&callback=initMap"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_CM3lH19159L5LAd8GJoK9pwb5raOiFk=&callback=initMap&language=in"
         type="text/javascript"></script>
 </body>
 
@@ -72,7 +72,7 @@
         }
     </style>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&internal_usage_attribution_ids=gmp_git_jsapisamples_v1_web-components"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&internal_usage_attribution_ids=gmp_git_jsapisamples_v1_web-components&language=in"
         defer></script>
     {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADTN5C7v__Ok0Z2gETuYxRwbWGJxvADYE8&callback=initMap"
         async defer></script> --}}

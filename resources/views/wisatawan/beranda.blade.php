@@ -698,10 +698,10 @@
         </div>
 
         <div class="mb-8">
-            <p class="text-lg text-black font-bold mt-1 mb-4">
+            <p class="text-lg text-black font-bold mt-1 mb-4 text-center">
                 Event Semarang
             </p>
-            <div class="flex justify-center gap-8 flex-wrap">
+            <div class="flex justify-center gap-20 flex-wrap">
                 <a href="{{ route('dugderan') }}"
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
                     <img src="{{ asset('dugderan.jpg') }}" alt="dugderan"
@@ -764,54 +764,57 @@
 
         </div>
 
-        <div class="mb-8">
-            <p class="text-lg text-black font-bold mt-4 mb-4">
-                Kuliner Baru Ditambahkan
-            </p>
-            <div class="grid grid-cols-4 gap-8">
-                @foreach ($kulinerBaru as $item)
-                    <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
-                        class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+        @if ($kulinerBaru == [])
+            <div class="mb-8">
+                <p class="text-lg text-black font-bold mt-4 mb-4">
+                    Kuliner Baru Ditambahkan
+                </p>
+                <div class="grid grid-cols-4 gap-8">
+                    @foreach ($kulinerBaru as $item)
+                        <a class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
-                        <img src="{{ asset('storage/' . $item->foto) }}"
-                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+                            <img src="{{ asset('storage/' . $item->foto) }}"
+                                class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
 
-                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
 
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-white font-semibold text-lg text-center px-2">
-                                {{ $item->nama }}
-                            </span>
-                        </div>
-                    </a>
-                @endforeach
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-white font-semibold text-lg text-center px-2">
+                                    {{ $item->nama }}
+                                </span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
             </div>
-        </div>
+        @endif
 
-        <div class="mb-8">
-            <p class="text-lg text-black font-bold mt-4 mb-4">
-                Kuliner Banyak Disukai
-            </p>
-            <div class="grid grid-cols-4 gap-8">
-                @foreach ($kulinerFavorit as $item)
-                    <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
-                        class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+        @if ($kulinerFavorit == [])
+            <div class="mb-8">
+                <p class="text-lg text-black font-bold mt-4 mb-4">
+                    Kuliner Banyak Disukai
+                </p>
+                <div class="grid grid-cols-4 gap-8">
+                    @foreach ($kulinerFavorit as $item)
+                        <a class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
-                        <img src="{{ asset('storage/' . $item->foto) }}"
-                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+                            <img src="{{ asset('storage/' . $item->foto) }}"
+                                class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
 
-                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
 
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-white font-semibold text-lg text-center px-2">
-                                {{ $item->nama }}
-                            </span>
-                        </div>
-                    </a>
-                @endforeach
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-white font-semibold text-lg text-center px-2">
+                                    {{ $item->nama }}
+                                </span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
             </div>
+        @endif
 
-        </div>
 
         {{-- <div class="wrapper">
             <button class="nav left" onclick="geser(-1)">❮</button>

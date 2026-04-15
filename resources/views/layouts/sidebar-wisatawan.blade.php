@@ -197,21 +197,21 @@
 <aside>
     <div class="sidebar bg-[#094B3C]">
         <nav class="nav-menu">
-            <a href="{{ route('beranda-Wisatawan') }}"
+            <a href="{{ route('beranda-Wisatawan') }}" title="Beranda"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('beranda-Wisatawan') || request()->routeIs('wisatakulinerhalaman') || request()->routeIs('penilaianulasan.simpan') || request()->routeIs('penilaianulasan.detail') || request()->routeIs('getUlasan') || request()->routeIs('editwisatakuliner') || request()->routeIs('updatewisatakuliner') ? 'active' : 'text-white' }}">
                 <i class="fas fa-map-marker-alt"></i>
                 {{-- <span>Beranda</span> --}}
             </a>
 
-            <a href="{{ route('favorit') }}"
+            <a href="{{ route('favorit') }}" title="Favorit"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('favorit') || request()->routeIs('favorit.simpan') || request()->routeIs('favorit.hapusdarilist') || request()->routeIs('favorit.hapus') ? 'active' : 'text-white' }}">
                 <i class="fi fi-br-quality" style="font-size: 20px;"></i>
                 {{-- <span>Beranda</span> --}}
             </a>
 
-            <a href="{{ route('tambahwisatakuliner') }}"
+            <a href="{{ route('tambahwisatakuliner') }}" title="Tambah Kuliner"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('tambahwisatakuliner') || request()->routeIs('simpanwisatakuliner') ? 'active' : 'text-white' }}">
                 <i class="fas
@@ -222,14 +222,14 @@
             <div class="mt-[300px]">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit"
+                    <button type="submit" title="Logout"
                         class="menu-item flex items-center p-2 rounded {{ request()->routeIs('logout') ? 'active' : 'text-white' }}">
                         <i class="fi fi-bs-sign-out-alt text-xl ml-1"></i>
                     </button>
                 </form>
             </div>
 
-            <a href="{{ route('profile.show') }}"
+            <a href="{{ route('profile.show') }}" title="Profil"
                 class="menu-item flex items-center p-2 rounded {{ request()->routeIs('profile.show') || request()->routeIs('profile.edit') || request()->routeIs('profile.update') || request()->routeIs('profile.destroy') ? 'active' : 'text-white' }}">
                 @if (Auth::user()->foto)
                     <img src="{{ asset('storage/' . Auth::user()->foto) }}" alt="Foto Profil"

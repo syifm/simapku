@@ -34,6 +34,26 @@ class WisataKulinerSeeder extends Seeder
                 'waktu_dibuat' => '08/10/2025 14:05',
                 'waktu_diubah' => '09/10/2025 16:10',
             ],
+            [
+                'nama' => 'Kampung Laut',
+                'kecamatan' => 'Semarang Barat',
+                'kelurahan' => 'Tawangsari',
+                'alamat' => 'Puri Maerokoco Tawang Mas, Jl. Anjasmoro Raya, Tawangsari, Kec. Semarang Barat, Kota Semarang, Jawa Tengah 50144',
+                'no_telp' => '088215658240',
+                'deskripsi' => 'Resto yang menyajikan seafood dikelilingi dengan pemandangan air dan diiringi dengan musik.',
+                'foto' => 'hihihihi',
+                'latitude' => '-6.961944043665627',
+                'longitude' => '110.38600824501671',
+                'harga_min' => 10000,
+                'harga_max' => 20000,
+                'penilaian' => 4,
+                'email_pengaju' => 'syifa@gmail.com',
+                'id_wisatawan' => null,
+                'id_admin' => 1,
+                'status' => 'Belum Diverifikasi',
+                'waktu_dibuat' => '08/10/2025 14:05',
+                'waktu_diubah' => '09/10/2025 16:10',
+            ],
         ];
 
         foreach ($wkulinerData as $data) {

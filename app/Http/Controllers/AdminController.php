@@ -28,16 +28,20 @@ class AdminController extends Controller
         $wkulinerBelumDiverifikasi = WisataKuliner::where('status', 'Belum Diverifikasi')
             ->count();
 
-        $wkulinerDisetujui = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])
+        $wkulinerDisetujui = WisataKuliner::where('status', 'Disetujui')
             ->count();
 
         $wkulinerDitolak = WisataKuliner::where('status', 'Ditolak')
             ->count();
 
-        $totalWisataKuliner = $wkulinerBelumDiverifikasi + $wkulinerDisetujui + $wkulinerDitolak;
+        $wkulinerDitampilkan = WisataKuliner::where('status', 'Ditampilkan')
+            ->count();
+
+        $totalWisataKuliner = $wkulinerBelumDiverifikasi + $wkulinerDisetujui + $wkulinerDitolak + $wkulinerDitampilkan;
         $persentaseWkulinerBelumDiverifikasi = $totalWisataKuliner > 0 ? ($wkulinerBelumDiverifikasi / $totalWisataKuliner) * 100 : 0;
         $persentaseWkulinerDisetujui = $totalWisataKuliner > 0 ? ($wkulinerDisetujui / $totalWisataKuliner) * 100 : 0;
         $persentaseWkulinerDitolak = $totalWisataKuliner > 0 ? ($wkulinerDitolak / $totalWisataKuliner) * 100 : 0;
+        $persentaseWkulinerDitampilkan = $totalWisataKuliner > 0 ? ($wkulinerDitampilkan / $totalWisataKuliner) * 100 : 0;
 
         $ulasanBelumDiverifikasi = PenilaiandanUlasan::where('status', 'Belum Diverifikasi')
             ->count();
@@ -46,6 +50,9 @@ class AdminController extends Controller
             ->count();
 
         $ulasanDitolak = PenilaiandanUlasan::where('status', 'Ditolak')
+            ->count();
+
+        $ulasanDitampilkan = PenilaiandanUlasan::where('status', 'Ditampilkan')
             ->count();
 
         $totalUlasan = $ulasanBelumDiverifikasi + $ulasanDisetujui + $ulasanDitolak;
@@ -57,10 +64,12 @@ class AdminController extends Controller
             'wkulinerBelumDiverifikasi',
             'wkulinerDisetujui',
             'wkulinerDitolak',
+            'wkulinerDitampilkan',
             'totalWisataKuliner',
             'persentaseWkulinerBelumDiverifikasi',
             'persentaseWkulinerDisetujui',
             'persentaseWkulinerDitolak',
+            'persentaseWkulinerDitampilkan',
             'ulasanBelumDiverifikasi',
             'ulasanDisetujui',
             'ulasanDitolak',
@@ -75,12 +84,12 @@ class AdminController extends Controller
     // Halaman Awal (Kelola Wisata Kuliner)
     public function kelolaWisataKuliner()
     {
-        $statuswisatakuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Tampilkan'])->exists();
-        $wisataKuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Tampilkan'])
+        $statuswisatakuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Ditampilkan'])->exists();
+        $wisataKuliner = WisataKuliner::whereIn('status', ['Disetujui', 'Ditampilkan'])
             ->orderByRaw("
                 CASE 
                     WHEN status = 'Disetujui' THEN 1
-                    WHEN status = 'Tampilkan' THEN 2
+                    WHEN status = 'Ditampilkan' THEN 2
                     ELSE 3
                 END
             ")
@@ -590,6 +599,25 @@ class AdminController extends Controller
             'status' => $penilaianDanUlasan->status,
             'message' => 'Status berhasil diperbarui'
         ]);
+    }
+
+    public function hapusUlasan($id)
+    {
+        try {
+
+            $ulasan = PenilaiandanUlasan::findOrFail($id);
+
+            if ($ulasan->foto && Storage::disk('public')->exists($ulasan->foto)) {
+                Storage::disk('public')->delete($ulasan->foto);
+            }
+
+            $ulasan->delete();
+
+            return redirect()->back()->with('success', 'Ulasan berhasil dihapus');
+        } catch (Exception $e) {
+            Log::error('Error in AdminController@destroy: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat menghapus ulasan.');
+        }
     }
 
     public function getngampu($id = null)

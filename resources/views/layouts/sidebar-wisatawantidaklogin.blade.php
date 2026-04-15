@@ -142,20 +142,20 @@
 <aside>
     <div class="sidebar bg-[#094B3C]">
         <nav class="nav-menu">
-            <a href="{{ route('beranda.tidaklogin') }}"
+            <a href="{{ route('beranda.tidaklogin') }}" title="Beranda"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('beranda.tidaklogin') || request()->routeIs('wisatakulinerhalaman') || request()->routeIs('dugderan') || request()->routeIs('kulinerkauman') || request()->routeIs('semawis') ? 'active' : 'text-white' }}">
                 <i class="fas fa-map-marker-alt"></i>
             </a>
 
-            <a href="{{ route('favorit.tidaklogin') }}"
+            <a href="{{ route('favorit.tidaklogin') }}" title="Favorit"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('favorit.tidaklogin') ? 'active' : 'text-white' }}">
                 <i class="fi fi-br-quality" style="font-size: 20px;"></i>
 
             </a>
 
-            <a href="{{ route('tambahwisatakuliner.tidaklogin') }}"
+            <a href="{{ route('tambahwisatakuliner.tidaklogin') }}" title="Tambah Kuliner"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('tambahwisatakuliner.tidaklogin') ? 'active' : 'text-white' }}">
                 <i class="fas
@@ -164,7 +164,7 @@
             </a>
 
             <div class="mt-[340px]">
-                <a href="{{ route('login') }}"
+                <a href="{{ route('login') }}" title="Login"
                     class="menu-item login-item flex flex-col items-center justify-center p-2 rounded hover:bg-gray-100 transition">
 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"

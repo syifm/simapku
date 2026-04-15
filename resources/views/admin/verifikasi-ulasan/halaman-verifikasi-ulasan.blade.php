@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMAPKU | Verifikasi Penilaian dan Ulasan</title>
+    <title>SIMAPKU | Verifikasi Ulasan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,61 +51,64 @@
 
     @include('layouts.sidebar-admin')
     <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
-        <h1 class="font-bold text-xl">Verifikasi Penilaian dan Ulasan</h1>
+        <h1 class="font-bold text-xl">Verifikasi Ulasan</h1>
 
         <div class="flex-1 overflow-hidden ml-1">
             <div class="bg-white-100 pt-0">
                 <div class="mt-14">
                     @if (!$statusUlasan)
-                        <table class="table-fixed w-full border-collapse border border-black">
-                            <colgroup>
-                                <col style="width: 60px">
-                                <col style="width: 350px">
-                                <col style="width: 400px">
-                                <col style="width: 200px">
-                                <col style="width: 121px">
-                            </colgroup>
+                        <div class="bg-white rounded-lg mt-4">
+                            <table class="table-fixed w-full border-collapse border border-black">
+                                <colgroup>
+                                    <col style="width: 35px">
+                                    <col style="width: 200px">
+                                    <col style="width: 150px">
+                                    <col style="width: 100px">
+                                    <col style="width: 80px">
+                                </colgroup>
 
-                            <thead>
-                                <tr>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        No
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Wisata Kuliner
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Ulasan
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Status Verifikasi
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white">
-                                <tr>
-                                    <td colspan="8" style="text-align: center" class="px-4 py-3 text-sm text-black">
-                                        Belum Tersedia Penilaian dan Ulasan Wisata Kuliner</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            No
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Wisata Kuliner
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Ulasan
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Status Verifikasi
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Aksi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center"
+                                            class="px-4 py-3 text-sm text-black">
+                                            Belum Tersedia Penilaian dan Ulasan Wisata Kuliner</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         <div class="bg-white rounded-lg mt-4">
                             <table class="table-fixed w-full border-collapse border-b-0 border-black">
                                 <colgroup>
-                                    <col style="width: 30px">
+                                    <col style="width: 35px">
                                     <col style="width: 200px">
                                     <col style="width: 150px">
-                                    <col style="width: 100px">
-                                    <col style="width: 100px">
+                                    <col style="width: 90px">
+                                    <col style="width: 150px">
                                 </colgroup>
 
                                 <thead>
@@ -174,6 +177,23 @@
                                                             </svg>
                                                             <span class="ml-1">Detail</span>
                                                         </button>
+                                                        <form id="delete-form-{{ $ulasan->id_ulasan }}"
+                                                            action="{{ route('ulasan.hapus', $ulasan->id_penilaian_dan_ulasan) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button"
+                                                                onclick="konfirmasiHapus({{ $ulasan->id_penilaian_dan_ulasan }})"
+                                                                class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.7"
+                                                                    stroke="currentColor" class="size-5">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                                </svg>
+                                                                <span class="ml-1">Hapus</span>
+                                                            </button>
+                                                        </form>
                                                     @endif
                                                 </div>
                                             </td>
@@ -353,6 +373,22 @@
 
             function tutupModalVerifikasi() {
                 document.getElementById('detailModal').classList.add('hidden');
+            }
+
+            function konfirmasiHapus(id) {
+                Swal.fire({
+                    title: 'Yakin untuk hapus ulasan?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('delete-form-' + id).submit();
+                    }
+                });
             }
 
             function aksiSetujui(id) {

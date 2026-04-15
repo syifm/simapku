@@ -68,50 +68,58 @@
             <div class="bg-white-100 pt-0">
                 <div id="informatika-content">
                     @if (!$statuswisatakuliner)
-                        <table class="table-fixed w-full border-collapse border border-black">
-                            <colgroup>
-                                <col style="width: 60px">
-                                <col style="width: 600px">
-                                <col style="width: 300px">
-                                <col style="width: 171px">
-                            </colgroup>
+                        <div class="bg-white rounded-lg mt-4">
+                            <table class="table-fixed w-full border-collapse border border-black">
+                                <colgroup>
+                                    <col style="width: 30px">
+                                    <col style="width: 140px">
+                                    <col style="width: 60px">
+                                    <col style="width: 70px">
+                                    <col style="width: 150px">
+                                </colgroup>
 
-                            <thead>
-                                <tr>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        No
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Wisata Kuliner
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Update Terakhir
-                                    </th>
-                                    <th
-                                        class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
-                                        Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white">
-                                <tr>
-                                    <td colspan="8" style="text-align: center" class="px-4 py-3 text-sm text-black">
-                                        Belum Tersedia Wisata Kuliner</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            No
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Wisata Kuliner
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Status
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Update Terakhir
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Aksi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center"
+                                            class="px-4 py-3 text-sm text-black">
+                                            Belum Tersedia Wisata Kuliner</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         <div class="bg-white rounded-lg mt-4">
                             <table class="table-fixed w-full border-collapse border-b-0 border-black">
                                 <colgroup>
                                     <col style="width: 30px">
-                                    <col style="width: 120px">
+                                    <col style="width: 140px">
                                     <col style="width: 60px">
-                                    <col style="width: 80px">
-                                    <col style="width: 160px">
+                                    <col style="width: 70px">
+                                    <col style="width: 150px">
                                 </colgroup>
 
                                 <thead>
@@ -352,9 +360,9 @@
             </div>
             {{-- </div> --}}
 
-            {{-- <a href="{{ route('beranda-Admin') }}"
+            {{-- <a href="{{ route('beranda.Admin') }}"
             class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Admin') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda.Admin') ? 'active' : 'text-white' }}">
             <div class="-ml-1.2 mr-3 -mt-0.5">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                     stroke="currentColor" class="size-5">
@@ -605,7 +613,7 @@
         @endpush
 
         <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&language=in"
             async defer></script>
         <script>
             let map = null;

@@ -121,9 +121,9 @@
         </div>
 
         <nav class="nav-menu">
-            <a href="{{ route('beranda-Admin') }}"
+            <a href="{{ route('beranda.Admin') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Admin') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda.Admin') ? 'active' : 'text-white' }}">
                 <div class="-ml-1.2 mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" class="size-5">
@@ -134,25 +134,25 @@
                 <span>Beranda</span>
             </a>
 
-            <a href="{{ route('beranda-Admin') }}"
+            <a href="{{ route('beranda.Admin') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Admin') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda.Admin') ? 'active' : 'text-white' }}">
                 <i class="fi fi-ro-book"></i>
                 <span>Beranda</span>
             </a>
 
-            <a href="{{ route('beranda-Admin') }}"
+            <a href="{{ route('beranda.Admin') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Admin') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda.Admin') ? 'active' : 'text-white' }}">
                 <span class="material-symbols-outlined -ml-1 mr-3">
                     verified
                 </span>
                 <span>Beranda</span>
             </a>
 
-            <a href="{{ route('beranda-Admin') }}"
+            <a href="{{ route('beranda.Admin') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Admin') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda.Admin') ? 'active' : 'text-white' }}">
                 <div class="-ml-1.2 mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" class="size-5">
@@ -296,9 +296,9 @@
         </div>
 
         <nav class="nav-menu">
-            <a href="{{ route('beranda-Admin') }}"
+            <a href="{{ route('beranda.Admin') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Admin') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda.Admin') ? 'active' : 'text-white' }}">
                 <div class="-ml-1.2 mr-3 -mt-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                         stroke="currentColor" class="size-5">
@@ -313,7 +313,7 @@
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('kelolawisatakuliner') || request()->routeIs('kelolawisatakuliner.tambah') || request()->routeIs('kelolawisatakuliner.simpan') || request()->routeIs('kelolawisatakuliner.edit') || request()->routeIs('kelolawisatakuliner.update') ? 'active' : 'text-white' }}">
                 <i class="fi fi-bs-map-marker text-lg "></i>
-                <span class="font-bold">Kelola Wisata Kuliner</span>
+                <span class="font-bold">Kelola Kuliner</span>
             </a>
 
             <a href="{{ route('verifikasiwisatakuliner') }}"

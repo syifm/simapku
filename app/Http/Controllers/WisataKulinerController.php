@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 class WisataKulinerController extends Controller
 {
+    // Admin
+
     public function halamanVerifKuliner()
     {
         $statuswisatakuliner = WisataKuliner::exists();
@@ -52,9 +54,9 @@ class WisataKulinerController extends Controller
             ]);
         }
 
-        if ($request->status === 'Tampilkan') {
+        if ($request->status === 'Ditampilkan') {
             $wisataKuliner->update([
-                'status' => 'Tampilkan'
+                'status' => 'Ditampilkan'
             ]);
         }
 
@@ -1910,7 +1912,7 @@ class WisataKulinerController extends Controller
                 ->toArray();
         }
 
-        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Tampilkan');
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
 
         $lat = $request->lat;
         $lng = $request->lng;
@@ -1968,7 +1970,7 @@ class WisataKulinerController extends Controller
             $isRekomendasi = true;
             $keyword = 'Rekomendasi Kuliner';
 
-            $query2 = WisataKuliner::with(['fasilitas', 'kategori']);
+            $query2 = WisataKuliner::with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
 
             if ($useRatingFilter) {
                 $query2->whereBetween('penilaian', [$request->minrating, $request->maxrating]);
@@ -1981,7 +1983,6 @@ class WisataKulinerController extends Controller
             $data = $query2->limit(50)->get();
         }
 
-        // preferensi (FIX: dipindah ke atas sebelum scoring)
         $preferensiKuliner = [];
         if ($wisatawan) {
             $preferensiKuliner = DB::table('preferensi')
@@ -2023,7 +2024,7 @@ class WisataKulinerController extends Controller
 
             $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
 
-            $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
+            $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}&language=in";
 
             $response = file_get_contents($url);
             $response = json_decode($response, true);

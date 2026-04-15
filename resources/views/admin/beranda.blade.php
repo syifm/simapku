@@ -24,16 +24,22 @@
 
             <div class="bg-white p-6 rounded-lg shadow border border-gray-300">
                 <h3 class="text-lg font-semibold text-black mb-4 text-center">
-                    Verifikasi Data Wisata Kuliner
+                    Verifikasi Kuliner
                 </h3>
-                <canvas id="wkulinerDonutChart" class="w-[350px] h-[350px] mx-auto"></canvas>
+                {{-- <canvas id="wkulinerDonutChart" class="w-[350px] h-[350px] mx-auto"></canvas> --}}
+                <div style="height:400px;">
+                    <canvas id="wkulinerDonutChart"></canvas>
+                </div>
             </div>
 
             <div class="bg-white p-6 rounded-lg shadow border border-gray-300">
                 <h3 class="text-lg font-semibold text-black mb-4 text-center">
-                    Verifikasi Penilaian dan Ulasan
+                    Verifikasi Ulasan
                 </h3>
-                <canvas id="ulasanDonutChart" class="w-[350px] h-[350px] mx-auto"></canvas>
+                {{-- <canvas id="ulasanDonutChart" class="w-[350px] h-[350px] mx-auto"></canvas> --}}
+                <div style="height:400px;">
+                    <canvas id="ulasanDonutChart"></canvas>
+                </div>
             </div>
 
         </div>
@@ -48,38 +54,56 @@
         var wkulinerBelumDiverifikasi = {{ $wkulinerBelumDiverifikasi }};
         var wkulinerDisetujui = {{ $wkulinerDisetujui }};
         var wkulinerDitolak = {{ $wkulinerDitolak }};
+        var wkulinerDitampilkan = {{ $wkulinerDitampilkan }};
         var persentaseWkulinerBelumDiverifikasi = {{ $persentaseWkulinerBelumDiverifikasi }};
         var persentaseWkulinerDisetujui = {{ $persentaseWkulinerDisetujui }};
         var persentaseWkulinerDitolak = {{ $persentaseWkulinerDitolak }};
-        // var wkulinerBelumDiverifikasi = 10;
-        // var wkulinerDisetujui = 5;
-        // var wkulinerDitolak = 15;
-        // var persentaseWkulinerBelumDiverifikasi = 85;
-        // var persentaseWkulinerDisetujui = 5;
-        // var persentaseWkulinerDitolak = 10;
+        var persentaseWkulinerDitampilkan = {{ $persentaseWkulinerDitampilkan }};
+        let dataAsli = [
+            wkulinerBelumDiverifikasi,
+            wkulinerDisetujui,
+            wkulinerDitolak,
+            wkulinerDitampilkan
+        ];
+
+        let dataPersen = [
+            persentaseWkulinerBelumDiverifikasi,
+            persentaseWkulinerDisetujui,
+            persentaseWkulinerDitolak,
+            persentaseWkulinerDitampilkan
+        ];
+
+        let labels = ['Belum Diverifikasi', 'Disetujui', 'Ditolak', 'Ditampilkan'];
+        let backgroundColor = ['#FFA319', '#094B3C', '#F83513', '#0A4174'];
+
+        const totalUlasan = dataPersen.reduce((a, b) => a + b, 0);
+
+        if (totalUlasan === 0) {
+            dataPersenUlasan = [1];
+            dataAsliUlasan = [0];
+            labelsUlasan = ['Belum Tersedia Kuliner'];
+            backgroundColorUlasan = ['#D1D5DB'];
+        }
 
         var ctx1 = document.getElementById('wkulinerDonutChart').getContext('2d');
         var wkulinerDonutChart = new Chart(ctx1, {
             type: 'doughnut',
             data: {
-                labels: ['Belum Diverifikasi', 'Disetujui', 'Ditolak'],
+                labels: labels,
                 datasets: [{
-                    dataasli: [wkulinerBelumDiverifikasi, wkulinerDisetujui,
-                        wkulinerDitolak
-                    ],
-                    data: [persentaseWkulinerBelumDiverifikasi, persentaseWkulinerDisetujui,
-                        persentaseWkulinerDitolak
-                    ],
-                    backgroundColor: ['#FFA319', '#094B3C', '#F83513'],
+                    dataasli: dataAsli,
+                    data: dataPersen,
+                    backgroundColor: backgroundColor,
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: true,
                         position: 'bottom',
+                        align: 'center',
                         labels: {
                             boxWidth: 20,
                             padding: 15,
@@ -102,7 +126,11 @@
                         callbacks: {
                             label: function(nilai) {
                                 const nilaiasli = nilai.dataset.dataasli[nilai.dataIndex];
-                                return nilaiasli + ' Wisata Kuliner';
+                                if (nilaiasli === 0) {
+                                    return 'Belum Tersedia Kuliner';
+                                }
+
+                                return nilaiasli + ' Kuliner';
                             }
                         }
                     }
@@ -117,12 +145,29 @@
         var persentaseUlasanBelumDiverifikasi = {{ $persentaseUlasanBelumDiverifikasi }};
         var persentaseUlasanDisetujui = {{ $persentaseUlasanDisetujui }};
         var persentaseUlasanDitolak = {{ $persentaseUlasanDitolak }};
-        // var ulasanBelumDiverifikasi = 10;
-        // var ulasanDisetujui = 5;
-        // var ulasanDitolak = 15;
-        // var persentaseUlasanBelumDiverifikasi = 85;
-        // var persentaseUlasanDisetujui = 5;
-        // var persentaseUlasanDitolak = 10;
+        let dataAsliUlasan = [
+            ulasanBelumDiverifikasi,
+            ulasanDisetujui,
+            ulasanDitolak,
+        ];
+
+        let dataPersenUlasan = [
+            persentaseUlasanBelumDiverifikasi,
+            persentaseUlasanDisetujui,
+            persentaseUlasanDitolak,
+        ];
+
+        let labelsUlasan = ['Belum Diverifikasi', 'Disetujui', 'Ditolak'];
+        let backgroundColorUlasan = ['#FFA319', '#094B3C', '#F83513'];
+
+        const total = dataPersenUlasan.reduce((a, b) => a + b, 0);
+
+        if (total === 0) {
+            dataPersenUlasan = [1];
+            dataAsliUlasan = [0];
+            labelsUlasan = ['Belum Tersedia Ulasan'];
+            backgroundColorUlasan = ['#D1D5DB'];
+        }
 
         var ctx1 = document.getElementById('ulasanDonutChart').getContext('2d');
         var ulasanDonutChart = new Chart(ctx1, {
@@ -130,22 +175,19 @@
             data: {
                 labels: ['Belum Diverifikasi', 'Disetujui', 'Ditolak'],
                 datasets: [{
-                    dataasli: [ulasanBelumDiverifikasi, ulasanDisetujui,
-                        ulasanDitolak
-                    ],
-                    data: [persentaseUlasanBelumDiverifikasi, persentaseUlasanDisetujui,
-                        persentaseUlasanDitolak
-                    ],
-                    backgroundColor: ['#FFA319', '#094B3C', '#F83513'],
+                    dataasli: dataAsliUlasan,
+                    data: dataPersenUlasan,
+                    backgroundColor: backgroundColorUlasan,
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: true,
                         position: 'bottom',
+                        align: 'center',
                         labels: {
                             boxWidth: 20,
                             padding: 15,
@@ -168,7 +210,11 @@
                         callbacks: {
                             label: function(nilai) {
                                 const nilaiasli = nilai.dataset.dataasli[nilai.dataIndex];
-                                return nilaiasli + ' Penilaian dan Ulasan';
+                                if (nilaiasli === 0) {
+                                    return 'Belum Tersedia Ulasan';
+                                }
+
+                                return nilaiasli + ' Ulasan';
                             }
                         }
                     }

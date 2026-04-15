@@ -45,8 +45,8 @@ class WisatawanController extends Controller
     public function berandaWisatawan()
     {
         $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
-        $kulinerBaru = WisataKuliner::where('status', 'Tampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
-        $kulinerFavorit = WisataKuliner::where('status', 'Tampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
+        $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
+        $kulinerFavorit = WisataKuliner::where('status', 'Ditampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
         return view('wisatawan.beranda', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
@@ -81,7 +81,7 @@ class WisatawanController extends Controller
     public function halamantambah()
     {
         $fasilitas = Fasilitas::all();
-        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])->get();
+        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Ditampilkan'])->get();
         return view('wisatawan.wisata-kuliner.tambah-kuliner', compact('fasilitas', 'wkuliner'));
     }
 
@@ -338,7 +338,7 @@ class WisatawanController extends Controller
     public function halamanedit($id)
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
-        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])->get();
+        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Ditampilkan'])->get();
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
             ->get();
@@ -790,8 +790,8 @@ class WisatawanController extends Controller
     public function berandaWisatawanTidakLogin()
     {
         $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
-        $kulinerBaru = WisataKuliner::where('status', 'Tampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
-        $kulinerFavorit = WisataKuliner::where('status', 'Tampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
+        $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
+        $kulinerFavorit = WisataKuliner::where('status', 'Ditampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
         return view('wisatawan-tidak-login.beranda-wisatawantidaklogin', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
@@ -805,7 +805,7 @@ class WisatawanController extends Controller
     public function halamantambahTidakLogin()
     {
         $fasilitas = Fasilitas::all();
-        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Tampilkan'])->get();
+        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Ditampilkan'])->get();
         return view('wisatawan-tidak-login.wisatakuliner.tambahkuliner-wisatawantidaklogin', compact('fasilitas', 'wkuliner'));
     }
 
@@ -923,7 +923,7 @@ class WisatawanController extends Controller
                 ->toArray();
         }
 
-        $query = WisataKuliner::query()->with(['fasilitas', 'kategori']);
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
 
         $lat = $request->lat;
         $lng = $request->lng;
@@ -981,7 +981,7 @@ class WisatawanController extends Controller
             $isRekomendasi = true;
             $keyword = 'Rekomendasi Kuliner';
 
-            $query2 = WisataKuliner::with(['fasilitas', 'kategori']);
+            $query2 = WisataKuliner::with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
 
             if ($useRatingFilter) {
                 $query2->whereBetween('penilaian', [$request->minrating, $request->maxrating]);
@@ -1036,7 +1036,7 @@ class WisatawanController extends Controller
 
             $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
 
-            $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
+            $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}&language=in";
 
             $response = file_get_contents($url);
             $response = json_decode($response, true);

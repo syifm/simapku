@@ -91,7 +91,7 @@
 
     <h1 class="text-2xl font-bold mb-8 text-center">Profil</h1>
     @if ($user->peran === 'Admin')
-        <div class="flex justify-center mb-6 mt-[80px]">
+        <div class="flex justify-center mb-6 mt-[70px]">
         @elseif($user->peran === 'Wisatawan')
             <div class="flex justify-center mb-6 mt-10">
     @endif
@@ -103,7 +103,7 @@
     </div>
 
     @if ($user->peran === 'Admin')
-        <div class="flex justify-end mt-[62px] mb-4">
+        <div class="flex justify-end mt-[70px] mb-4">
         @elseif($user->peran === 'Wisatawan')
             <div class="flex justify-end mt-4 mb-4">
     @endif
@@ -136,17 +136,19 @@
                 </div>
 
                 <!-- Preferensi -->
-                <div class="flex items-center">
-                    <label class="w-[178px] text-sm font-medium text-gray-700">Preferensi</label>
+                @if ($wisatawan)
+                    <div class="flex items-center">
+                        <label class="w-[178px] text-sm font-medium text-gray-700">Preferensi</label>
 
-                    <div class="mt-1 flex flex-wrap gap-2">
-                        @foreach ($preferensi as $p)
-                            <span class="px-2 py-1 bg-gray-200 text-black rounded-md">
-                                {{ $p->kategori->nama }}
-                            </span>
-                        @endforeach
+                        <div class="mt-1 flex flex-wrap gap-2">
+                            @foreach ($preferensi as $p)
+                                <span class="px-2 py-1 bg-gray-200 text-black rounded-md">
+                                    {{ $p->kategori->nama }}
+                                </span>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>

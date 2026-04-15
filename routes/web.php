@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'Admin'])->group(function () {
-    Route::get('/admin/beranda', [AdminController::class, 'berandaAdmin'])->name('beranda-Admin');
+    Route::get('/admin/beranda', [AdminController::class, 'berandaAdmin'])->name('beranda.Admin');
 
     Route::get('/admin/kelolawisatakuliner', [AdminController::class, 'kelolaWisataKuliner'])->name('kelolawisatakuliner');
     Route::get('/admin/tambahwisatakuliner', [AdminController::class, 'halamantambah'])->name('kelolawisatakuliner.tambah');
@@ -56,6 +56,7 @@ Route::middleware(['auth', 'Admin'])->group(function () {
     Route::get('/admin/verifikasiulasan', [AdminController::class, 'halamanVerifUlasan'])->name('verifikasiulasan');
     Route::get('/admin/verifikasiulasan/detail/{id}', [AdminController::class, 'detailVerifUlasan'])->name('verifikasiulasan.detail');
     Route::post('/admin/verifikasiulasan/{id}', [AdminController::class, 'verifikasiUlasan'])->name('verifikasiulasan.verifikasi');
+    Route::delete('/admin/verifikasiulasan/{id}', [AdminController::class, 'hapus'])->name('ulasan.hapus');
 
     Route::get('/selectmhsadmin', [AdminController::class, 'selectmhs'])->name('select.mhs.admin');
     Route::get('/selectmkadmin/{id}', [AdminController::class, 'selectmk'])->name('select.mk.admin');
@@ -84,10 +85,6 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::post('/wisatawan/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpan'])->name('simpanwisatakuliner');
     Route::get('/wisatawan/editwisatakuliner/{id}', [WisatawanController::class, 'halamanedit'])->name('editwisatakuliner');
     Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
-
-
-
-
 
     Route::get('/detailkuliner/{id}', [KulinerFavoritController::class, 'detail'])->name('detailkuliner');
     Route::get('/adatag', [WisatawanController::class, 'adatags']);
