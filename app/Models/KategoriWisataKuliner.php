@@ -12,7 +12,7 @@ class KategoriWisataKuliner extends Model
 
     protected $fillable = [
         'id_wisata_kuliner',
-        'id_kategori',
+        'id_kategori'
     ];
 
     public function wisatakuliner()

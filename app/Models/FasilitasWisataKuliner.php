@@ -12,7 +12,7 @@ class FasilitasWisataKuliner extends Model
 
     protected $fillable = [
         'id_wisata_kuliner',
-        'id_fasilitas',
+        'id_fasilitas'
     ];
 
     public function wisatakuliner()

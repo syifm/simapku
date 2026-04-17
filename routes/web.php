@@ -85,6 +85,7 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::post('/wisatawan/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpan'])->name('simpanwisatakuliner');
     Route::get('/wisatawan/editwisatakuliner/{id}', [WisatawanController::class, 'halamanedit'])->name('editwisatakuliner');
     Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
+    // Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
 
     Route::get('/detailkuliner/{id}', [KulinerFavoritController::class, 'detail'])->name('detailkuliner');
     Route::get('/adatag', [WisatawanController::class, 'adatags']);

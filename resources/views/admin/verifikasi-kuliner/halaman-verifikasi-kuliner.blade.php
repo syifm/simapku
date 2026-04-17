@@ -65,6 +65,7 @@
                                     <col style="width: 30px">
                                     <col style="width: 280px">
                                     <col style="width: 90px">
+                                    <col style="width: 90px">
                                     <col style="width: 80px">
                                 </colgroup>
 
@@ -84,13 +85,17 @@
                                         </th>
                                         <th
                                             class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Keterangan
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
                                             Aksi
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
                                     <tr>
-                                        <td colspan="4" style="text-align: center"
+                                        <td colspan="5" style="text-align: center"
                                             class="px-4 py-3 text-sm text-black">
                                             Belum Tersedia Wisata Kuliner</td>
                                     </tr>
@@ -120,6 +125,10 @@
                                         <th
                                             class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
                                             Status Verifikasi
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                            Keterangan
                                         </th>
                                         <th
                                             class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
@@ -176,6 +185,7 @@
                         </div>
                     @endif
 
+
                     <div id="detailModal"
                         class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
                         <div class="relative top-5 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
@@ -190,117 +200,233 @@
                             </div>
 
                             <div class="mt-4">
-                                <div class="grid grid-cols-2 gap-2 text-xs">
-                                    <div class="flex justify-between w-32">
-                                        <strong>Deskripsi</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="deskripsi"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Alamat</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="alamat"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Kecamatan</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="kecamatan"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Kelurahan</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="kelurahan"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Nomor Telepon</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="nomor_telepon"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Email</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="email"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Fasilitas</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="fasilitas"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Kategori</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="kategori"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Email Pengaju</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="email_pengaju"></span></div>
-                                    </div>
-
-                                    <div class="flex justify-between w-32">
-                                        <strong>Foto</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div>
-                                            <img id="foto" src="" alt="Foto Wisata Kuliner"
-                                                class="w-full max-w-xs h-40 object-cover rounded-md border hidden">
+                                <div>
+                                    <h3 class="font-semibold text-gray-600 mb-2">Data Lama</h3>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div class="flex justify-between w-32">
+                                            <strong>Deskripsi</strong>
                                         </div>
-                                    </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="deskripsi_lama"></span></div>
+                                        </div>
 
-                                    <div class="flex justify-between w-32">
-                                        <strong>Latitude</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="latitude"></span></div>
-                                    </div>
+                                        <div class="flex justify-between w-32">
+                                            <strong>Alamat</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="alamat_lama"></span></div>
+                                        </div>
 
-                                    <div class="flex justify-between w-32">
-                                        <strong>Longitude</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div class="text-justify"><span id="longitude"></span></div>
-                                    </div>
+                                        <div class="flex justify-between w-32">
+                                            <strong>Kecamatan</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="kecamatan_lama"></span></div>
+                                        </div>
 
-                                    <div class="flex justify-between w-32">
-                                        <strong>Lokasi</strong>
-                                    </div>
-                                    <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
-                                        <div>:</div>
-                                        <div>
-                                            <div id="map" class="w-full h-48 rounded-md"></div>
+                                        <div class="flex justify-between w-32">
+                                            <strong>Kelurahan</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="kelurahan_lama"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Nomor Telepon</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="nomor_telepon_lama"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Email</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="email_lama"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Fasilitas</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="fasilitas_lama"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Kategori</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="kategori_lama"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Email Pengaju</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="email_pengaju_lama"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Foto</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div>
+                                                <img id="foto_lama" src="" alt="Foto Wisata Kuliner"
+                                                    class="w-full max-w-xs h-40 object-cover rounded-md border hidden">
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Latitude</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="latitude_lama"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Longitude</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="longitude_lama"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Lokasi</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div>
+                                                <div id="map_lama" class="w-full h-48 rounded-md"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="aksiVerifikasi" class="flex justify-end gap-4 mt-6 text-sm"></div>
+                                <div>
+                                    <h3 class="font-semibold text-green-600 mb-2">Data Usulan</h3>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div class="flex justify-between w-32">
+                                            <strong>Deskripsi</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="deskripsi"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Alamat</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="alamat"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Kecamatan</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="kecamatan"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Kelurahan</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="kelurahan"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Nomor Telepon</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="nomor_telepon"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Email</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="email"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Fasilitas</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="fasilitas"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Kategori</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="kategori"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Email Pengaju</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="email_pengaju"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Foto</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div>
+                                                <img id="foto" src="" alt="Foto Wisata Kuliner"
+                                                    class="w-full max-w-xs h-40 object-cover rounded-md border hidden">
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Latitude</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="latitude"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Longitude</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div class="text-justify"><span id="longitude"></span></div>
+                                        </div>
+
+                                        <div class="flex justify-between w-32">
+                                            <strong>Lokasi</strong>
+                                        </div>
+                                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                            <div>:</div>
+                                            <div>
+                                                <div id="map" class="w-full h-48 rounded-md"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="aksiVerifikasi" class="flex justify-end gap-4 mt-6 text-sm"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -335,16 +461,31 @@
                 fetch(`/admin/verifikasiwisatakuliner/detail/${id}`)
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('modalTitle').textContent = data.nama;
-                        document.getElementById('alamat').textContent = data.alamat;
-                        document.getElementById('kecamatan').textContent = data.kecamatan;
-                        document.getElementById('kelurahan').textContent = data.kelurahan;
-                        document.getElementById('nomor_telepon').textContent = data.no_telp ?? '-';
-                        document.getElementById('email').textContent = data.email ?? '-';
-                        document.getElementById('deskripsi').textContent = data.deskripsi;
-                        document.getElementById('latitude').textContent = data.latitude;
-                        document.getElementById('longitude').textContent = data.longitude;
-                        document.getElementById('email_pengaju').textContent = data.email_pengaju;
+                        let lama = data.lama;
+                        let baru = data.baru;
+
+                        // lama
+                        document.getElementById('modalTitle').textContent = lama.nama;
+                        document.getElementById('alamat_lama').textContent = lama.alamat;
+                        document.getElementById('kecamatan_lama').textContent = lama.kecamatan;
+                        document.getElementById('kelurahan_lama').textContent = lama.kelurahan;
+                        document.getElementById('nomor_telepon_lama').textContent = lama.no_telp ?? '-';
+                        document.getElementById('email_lama').textContent = lama.email ?? '-';
+                        document.getElementById('deskripsi_lama').textContent = lama.deskripsi;
+                        document.getElementById('latitude_lama').textContent = lama.latitude;
+                        document.getElementById('longitude_lama').textContent = lama.longitude;
+                        document.getElementById('email_pengaju_lama').textContent = lama.email_pengaju;
+
+                        // document.getElementById('modalTitle').textContent = data.nama;
+                        document.getElementById('alamat').textContent = baru.alamat;
+                        document.getElementById('kecamatan').textContent = baru.kecamatan;
+                        document.getElementById('kelurahan').textContent = baru.kelurahan;
+                        document.getElementById('nomor_telepon').textContent = baru.no_telp ?? '-';
+                        document.getElementById('email').textContent = baru.email ?? '-';
+                        document.getElementById('deskripsi').textContent = baru.deskripsi;
+                        document.getElementById('latitude').textContent = baru.latitude;
+                        document.getElementById('longitude').textContent = baru.longitude;
+                        document.getElementById('email_pengaju').textContent = baru.email_pengaju;
 
                         // Foto
                         const foto = document.getElementById('foto');
@@ -604,7 +745,7 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        kirimAksi(id, 'Tampilkan');
+                        kirimAksi(id, 'Ditampilkan');
                     }
                     if (result.isDenied) {
                         kirimAksi(id, 'Disetujui');

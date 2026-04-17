@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class PengajuanKategoriWisataKuliner extends Model
+{
+    protected $table = 'pengajuan_kategori_wisata_kuliner';
+    protected $primaryKey = 'id_kategori';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'id_pengajuan',
+        'id_kategori'
+    ];
+
+    public function wisatakuliner()
+    {
+        return $this->belongsTo(WisataKuliner::class);
+    }
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id_kategori');
+    }
+}

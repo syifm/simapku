@@ -31,7 +31,7 @@ return new class extends Migration
             $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');
             $table->unsignedInteger('id_admin')->nullable();
             $table->foreign('id_admin')->references('id_admin')->on('admin')->onDelete('cascade');
-            $table->string('status', 28)->nullable();
+            $table->string('status', 28);
             $table->timestamp('waktu_dibuat');
             $table->timestamp('waktu_diubah');
         });

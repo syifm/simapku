@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PerubahanWisataKuliner extends Model
+class PengajuanWisataKuliner extends Model
 {
-    protected $table = 'perubahan_wisata_kuliner';
-    protected $primaryKey = 'id_perubahan_wisata_kuliner';
+    protected $table = 'pengajuan_wisata_kuliner';
+    protected $primaryKey = 'id_pengajuan';
     const CREATED_AT = 'waktu_dibuat';
     const UPDATED_AT = 'waktu_diubah';
 
     protected $fillable = [
+        'id_wisata_kuliner',
         'nama',
         'kecamatan',
         'kelurahan',
@@ -36,9 +37,9 @@ class PerubahanWisataKuliner extends Model
     public function fasilitas()
     {
         return $this->belongsToMany(
-            Fasilitas::class,
-            'fasilitas_wisata_kuliner',
-            'id_wisata_kuliner',
+            PengajuanFasilitasWisataKuliner::class,
+            'pengajuan_fasilitas_wisata_kuliner',
+            'id_pengajuan',
             'id_fasilitas'
         );
     }
@@ -66,9 +67,9 @@ class PerubahanWisataKuliner extends Model
     public function kategori()
     {
         return $this->belongsToMany(
-            Kategori::class,
-            'kategori_wisata_kuliner',
-            'id_wisata_kuliner',
+            PengajuanKategoriWisataKuliner::class,
+            'pengajuan_kategori_wisata_kuliner',
+            'id_pengajuan',
             'id_kategori'
         );
     }

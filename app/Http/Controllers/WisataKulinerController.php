@@ -1913,6 +1913,16 @@ class WisataKulinerController extends Controller
         }
 
         $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
+        // $query = WisataKuliner::query()
+        //     ->with([
+        //         'fasilitas' => function ($q) {
+        //             $q->wherePivot('status', '!=', 'Belum Diverifikasi');
+        //         },
+        //         'kategori' => function ($q) {
+        //             $q->wherePivot('status', '!=', 'Belum Diverifikasi');
+        //         }
+        //     ])
+        //     ->where('status', 'Ditampilkan');
 
         $lat = $request->lat;
         $lng = $request->lng;
@@ -1971,6 +1981,16 @@ class WisataKulinerController extends Controller
             $keyword = 'Rekomendasi Kuliner';
 
             $query2 = WisataKuliner::with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
+            // $query2 = WisataKuliner::query()
+            //     ->with([
+            //         'fasilitas' => function ($q) {
+            //             $q->wherePivot('status', '!=', 'Belum Diverifikasi');
+            //         },
+            //         'kategori' => function ($q) {
+            //             $q->wherePivot('status', '!=', 'Belum Diverifikasi');
+            //         }
+            //     ])
+            //     ->where('status', 'Ditampilkan');
 
             if ($useRatingFilter) {
                 $query2->whereBetween('penilaian', [$request->minrating, $request->maxrating]);

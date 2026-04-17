@@ -812,7 +812,7 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        kirimAksi(id, 'Tampilkan');
+                        kirimAksi(id, 'Ditampilkan');
                     }
                 });
             }

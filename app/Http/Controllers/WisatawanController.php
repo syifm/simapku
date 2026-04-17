@@ -12,6 +12,7 @@ use App\Models\FasilitasWisataKuliner;
 use App\Models\Kategori;
 use App\Models\KategoriWisataKuliner;
 use App\Models\KulinerFavorit;
+use App\Models\PengajuanWisataKuliner;
 use App\Models\Preferensi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -216,7 +217,7 @@ class WisatawanController extends Controller
         $wisataKuliner = $request->nama;
         $fotoPath = $request->file('foto')->storeAs(
             'uploads',
-            'foto_' . Str::slug($wisataKuliner) . '_' . time() . '.' . $request->file('foto')->extension(),
+            'foto_' . time() . '.' . $request->file('foto')->extension(),
             'public'
         );
 
@@ -341,9 +342,11 @@ class WisatawanController extends Controller
         $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Ditampilkan'])->get();
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
+            // ->where('status', '!=', 'Belum Diverifikasi')
             ->get();
         $kategori = KategoriWisataKuliner::with('kategori')
             ->where('id_wisata_kuliner', $id)
+            // ->where('status', '!=', 'Belum Diverifikasi')
             ->get();
         $from = request('from');
         return view('wisatawan.wisata-kuliner.edit-kuliner', compact(
@@ -354,6 +357,136 @@ class WisatawanController extends Controller
             'from'
         ));
     }
+
+    // public function update(Request $request, $id)
+    // {
+    //     try {
+    //         $from = request('from');
+    //         $wisataKuliner = WisataKuliner::findOrFail($id);
+
+    //         $request->validate([
+    //             'nama' => 'required|string|max:255',
+    //             'kecamatan' => 'required|string|max:50',
+    //             'kelurahan' => 'required|string|max:50',
+    //             'alamat' => 'required|string',
+    //             'no_telp' => 'required|string|min:10|max:15',
+    //             'email' => 'nullable|email|max:70',
+    //             'deskripsi' => 'required|string|max:255',
+    //             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
+    //             'latitude'  => 'required|numeric|between:-90,90',
+    //             'longitude' => 'required|numeric|between:-180,180',
+    //         ]);
+
+    //         $fotoPath = $wisataKuliner->foto;
+
+    //         if ($request->hasFile('foto')) {
+    //             if ($wisataKuliner->foto && Storage::exists('public/' . $wisataKuliner->foto)) {
+    //                 Storage::delete('public/' . $wisataKuliner->foto);
+    //             }
+
+    //             $fotoPath = $request->file('foto')->storeAs(
+    //                 'uploads',
+    //                 'foto_' . Str::slug($request->nama) . '_' . time() . '.' . $request->file('foto')->extension(),
+    //                 'public'
+    //             );
+    //         }
+
+    //         $email_pengaju = Auth::user()->email;
+
+    //         $id_wisatawan = null;
+    //         $id_admin = null;
+    //         if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
+    //             $id_admin = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
+    //         } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
+    //             $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
+    //         }
+
+    //         $waktu_diubah = Carbon::now('Asia/Jakarta');
+
+    //         $status = 'Belum Diverifikasi';
+    //         if (Auth::check() && Auth::user()->peran === 'Admin') {
+    //             $status = 'Disetujui';
+    //         }
+
+    //         $dataMK = $request->id_fasilitas ?? [];
+    //         $dataKategori = $request->id_kategori ?? [];
+    //         $idWisata = $request->nama;
+
+    //         $wisataKuliner->update([
+    //             'nama' => $request->nama,
+    //             'kecamatan' => $request->kecamatan,
+    //             'kelurahan' => $request->kelurahan,
+    //             'alamat' => $request->alamat,
+    //             'no_telp' => $request->no_telp,
+    //             'email' => $request->email ?? null,
+    //             'foto' => $fotoPath,
+    //             'deskripsi' => $request->deskripsi,
+    //             'latitude'  => $request->latitude,
+    //             'longitude' => $request->longitude,
+    //             'email_pengaju' => $email_pengaju,
+    //             'id_wisatawan' => $id_wisatawan ?? null,
+    //             'id_admin' => $id_admin ?? null,
+    //             'status' => $status,
+    //             'waktu_diubah' => $waktu_diubah,
+    //         ]);
+
+    //         $idWisata = $wisataKuliner->id_wisata_kuliner;
+
+    //         // Fasilitas
+    //         $fasilitasIds = [];
+
+    //         foreach ($dataMK as $item) {
+
+    //             if (is_numeric($item)) {
+    //                 $fasilitasId = $item;
+    //             } else {
+
+    //                 $fasilitas = Fasilitas::firstOrCreate([
+    //                     'nama' => trim($item)
+    //                 ]);
+
+    //                 $fasilitasId = $fasilitas->id_fasilitas;
+    //             }
+
+    //             $fasilitasIds[] = $fasilitasId;
+    //         }
+
+    //         $wisata = WisataKuliner::find($idWisata);
+
+    //         $wisata->fasilitas()->sync($fasilitasIds);
+
+    //         // Kategori
+    //         $kategoriIds = [];
+
+    //         foreach ($dataKategori as $item) {
+
+    //             if (is_numeric($item)) {
+    //                 $kategoriId = $item;
+    //             } else {
+
+    //                 $kategori = Kategori::firstOrCreate([
+    //                     'nama' => trim($item)
+    //                 ]);
+
+    //                 $kategoriId = $kategori->id_kategori;
+    //             }
+
+    //             $kategoriIds[] = $kategoriId;
+    //         }
+
+    //         $wisata = WisataKuliner::find($idWisata);
+
+    //         $wisata->kategori()->sync($kategoriIds);
+    //     } catch (\Exception $e) {
+    //         dd($e->getMessage());
+    //     }
+
+    //     // redirect()->route('wisatakulinerhalaman')->with('success', 'Saran Pembaruan Informasi Wisata Kuliner Berhasil Dikirim!');
+    //     // return redirect($request->from)
+    //     //     ->with('success', 'Berhasil update!');
+    //     return redirect($request->from . '&detail=' . $id)
+    //         ->with('success', 'Wisata Kuliner Berhasil Diperbarui!');
+    // }
 
     public function update(Request $request, $id)
     {
@@ -371,9 +504,7 @@ class WisatawanController extends Controller
                 'deskripsi' => 'required|string|max:255',
                 'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
                 'latitude'  => 'required|numeric|between:-90,90',
-                Rule::unique('wisata_kuliner')->ignore($wisataKuliner->id),
                 'longitude' => 'required|numeric|between:-180,180',
-                Rule::unique('wisata_kuliner')->ignore($wisataKuliner->id),
             ]);
 
             $fotoPath = $wisataKuliner->foto;
@@ -385,7 +516,7 @@ class WisatawanController extends Controller
 
                 $fotoPath = $request->file('foto')->storeAs(
                     'uploads',
-                    'foto_' . Str::slug($request->nama) . '_' . time() . '.' . $request->file('foto')->extension(),
+                    'foto_' . time() . '.' . $request->file('foto')->extension(),
                     'public'
                 );
             }
@@ -410,8 +541,12 @@ class WisatawanController extends Controller
             $dataMK = $request->id_fasilitas ?? [];
             $dataKategori = $request->id_kategori ?? [];
             $idWisata = $request->nama;
+            $harga_min = $wisataKuliner->harga_min;
+            $harga_max = $wisataKuliner->harga_max;
+            $penilaian = $wisataKuliner->penilaian;
 
-            $wisataKuliner->update([
+            $wisataKuliner = PengajuanWisataKuliner::firstOrCreate([
+                'id_wisata_kuliner' => $wisataKuliner->id_wisata_kuliner,
                 'nama' => $request->nama,
                 'kecamatan' => $request->kecamatan,
                 'kelurahan' => $request->kelurahan,
@@ -423,13 +558,16 @@ class WisatawanController extends Controller
                 'latitude'  => $request->latitude,
                 'longitude' => $request->longitude,
                 'email_pengaju' => $email_pengaju,
+                'harga_min' => $harga_min,
+                'harga_max' => $harga_max,
+                'penilaian' => $penilaian,
                 'id_wisatawan' => $id_wisatawan ?? null,
                 'id_admin' => $id_admin ?? null,
                 'status' => $status,
                 'waktu_diubah' => $waktu_diubah,
             ]);
 
-            $idWisata = $wisataKuliner->id_wisata_kuliner;
+            $idWisata = $wisataKuliner->id_pengajuan;
 
             // Fasilitas
             $fasilitasIds = [];
@@ -450,9 +588,44 @@ class WisatawanController extends Controller
                 $fasilitasIds[] = $fasilitasId;
             }
 
-            $wisata = WisataKuliner::find($idWisata);
+            $wisata = PengajuanWisataKuliner::find($idWisata);
 
             $wisata->fasilitas()->sync($fasilitasIds);
+            // $fasilitasIds = array_unique($fasilitasIds);
+
+            // $fasilitasterdaftar = DB::table('fasilitas_wisata_kuliner')
+            //     ->where('id_wisata_kuliner', $idWisata)
+            //     ->get();
+
+            // foreach ($fasilitasIds as $idf) {
+            //     $adafasilitas = false;
+
+            //     foreach ($fasilitasterdaftar as $item) {
+            //         if ($item->id_fasilitas == $idf) {
+            //             $adafasilitas = true;
+            //         }
+            //     }
+
+            //     if (!$adafasilitas) {
+            //         DB::table('fasilitas_wisata_kuliner')->insert([
+            //             'id_wisata_kuliner' => $idWisata,
+            //             'id_fasilitas' => $idf,
+            //             'status' => 'Belum Diverifikasi'
+            //         ]);
+            //     }
+            // }
+
+            // foreach ($fasilitasterdaftar as $item) {
+            //     if (!in_array($item->id_fasilitas, $fasilitasIds)) {
+
+            //         DB::table('fasilitas_wisata_kuliner')
+            //             ->where('id_wisata_kuliner', $idWisata)
+            //             ->where('id_fasilitas', $item->id_fasilitas)
+            //             ->update([
+            //                 'status' => 'Dihapus'
+            //             ]);
+            //     }
+            // }
 
             // Kategori
             $kategoriIds = [];
@@ -473,16 +646,48 @@ class WisatawanController extends Controller
                 $kategoriIds[] = $kategoriId;
             }
 
-            $wisata = WisataKuliner::find($idWisata);
+            $wisata = PengajuanWisataKuliner::find($idWisata);
 
             $wisata->kategori()->sync($kategoriIds);
+            // $kategoriIds = array_unique($kategoriIds);
+
+            // $kategoriterdaftar = DB::table('kategori_wisata_kuliner')
+            //     ->where('id_wisata_kuliner', $idWisata)
+            //     ->get();
+
+            // foreach ($kategoriIds as $idk) {
+            //     $adaKategori = false;
+
+            //     foreach ($kategoriterdaftar as $item) {
+            //         if ($item->id_kategori == $idk) {
+            //             $adaKategori = true;
+            //         }
+            //     }
+
+            //     if (!$adaKategori) {
+            //         DB::table('kategori_wisata_kuliner')->insert([
+            //             'id_wisata_kuliner' => $idWisata,
+            //             'id_kategori' => $idk,
+            //             'status' => 'Belum Diverifikasi'
+            //         ]);
+            //     }
+            // }
+
+            // foreach ($kategoriterdaftar as $item) {
+            //     if (!in_array($item->id_kategori, $kategoriIds)) {
+
+            //         DB::table('kategori_wisata_kuliner')
+            //             ->where('id_wisata_kuliner', $idWisata)
+            //             ->where('id_kategori', $item->id_kategori)
+            //             ->update([
+            //                 'status' => 'Dihapus'
+            //             ]);
+            //     }
+            // }
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
 
-        // redirect()->route('wisatakulinerhalaman')->with('success', 'Saran Pembaruan Informasi Wisata Kuliner Berhasil Dikirim!');
-        // return redirect($request->from)
-        //     ->with('success', 'Berhasil update!');
         return redirect($request->from . '&detail=' . $id)
             ->with('success', 'Wisata Kuliner Berhasil Diperbarui!');
     }
@@ -828,7 +1033,7 @@ class WisatawanController extends Controller
         $wisataKuliner = $request->nama;
         $fotoPath = $request->file('foto')->storeAs(
             'uploads',
-            'foto_' . Str::slug($wisataKuliner) . '_' . time() . '.' . $request->file('foto')->extension(),
+            'foto_' . time() . '.' . $request->file('foto')->extension(),
             'public'
         );
 
