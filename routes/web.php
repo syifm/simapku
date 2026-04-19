@@ -48,6 +48,8 @@ Route::middleware(['auth', 'Admin'])->group(function () {
     Route::put('/admin/editwisatakuliner/update/{id}', [AdminController::class, 'update'])->name('kelolawisatakuliner.update');
     Route::delete('/admin/kelolawisatakuliner/{id}', [AdminController::class, 'hapus'])->name('kelolawisatakuliner.hapus');
 
+    Route::post('/cek-lokasi', [AdminController::class, 'cekLokasi']);
+
     Route::get('/admin/verifikasiwisatakuliner', [AdminController::class, 'halamanVerifKuliner'])->name('verifikasiwisatakuliner');
     Route::get('/admin/verifikasiwisatakuliner/detail/{id}', [AdminController::class, 'detailVerifKuliner'])->name('verifikasiwisatakuliner.detail');
     Route::post('/admin/verifikasiwisatakuliner/{id}', [AdminController::class, 'verifikasiWisataKuliner'])->name('verifikasiwisatakuliner.verifikasi');
@@ -56,7 +58,7 @@ Route::middleware(['auth', 'Admin'])->group(function () {
     Route::get('/admin/verifikasiulasan', [AdminController::class, 'halamanVerifUlasan'])->name('verifikasiulasan');
     Route::get('/admin/verifikasiulasan/detail/{id}', [AdminController::class, 'detailVerifUlasan'])->name('verifikasiulasan.detail');
     Route::post('/admin/verifikasiulasan/{id}', [AdminController::class, 'verifikasiUlasan'])->name('verifikasiulasan.verifikasi');
-    Route::delete('/admin/verifikasiulasan/{id}', [AdminController::class, 'hapus'])->name('ulasan.hapus');
+    Route::delete('/admin/verifikasiulasan/hapus/{id}', [AdminController::class, 'hapusUlasan'])->name('ulasan.hapus');
 
     Route::get('/selectmhsadmin', [AdminController::class, 'selectmhs'])->name('select.mhs.admin');
     Route::get('/selectmkadmin/{id}', [AdminController::class, 'selectmk'])->name('select.mk.admin');
@@ -87,6 +89,8 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
     // Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
 
+    Route::post('/wisatawan/cek-lokasi', [WisatawanController::class, 'cekLokasi']);
+
     Route::get('/detailkuliner/{id}', [KulinerFavoritController::class, 'detail'])->name('detailkuliner');
     Route::get('/adatag', [WisatawanController::class, 'adatags']);
     Route::post('/wisatawan/category', [WisatawanController::class, 'getCategory'])->name('get-category');
@@ -102,6 +106,8 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/diarikuliner/edit/{id}', [WisatawanController::class, 'editDiari'])->name('diarikuliner.edit');
     Route::put('/wisatawan/diarikuliner/update/{id}', [WisatawanController::class, 'updateDiari'])->name('diarikuliner.update');
     Route::delete('/wisatawan/diarikuliner/hapus/{id}', [WisatawanController::class, 'hapusDiari'])->name('diarikuliner.hapus');
+
+    Route::delete('/wisatawan/hapus-preferensi', [WisatawanController::class, 'hapusPreferensi']);
 });
 
 // SEMUA

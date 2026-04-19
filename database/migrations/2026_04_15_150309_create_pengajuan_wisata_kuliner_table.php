@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('kecamatan', 50);
             $table->string('kelurahan', 50);
             $table->string('alamat');
-            $table->string('no_telp', 15);
+            $table->string('no_telp', 15)->nullable();
             $table->string('email', 70)->nullable();
             $table->string('deskripsi');
             $table->string('foto');

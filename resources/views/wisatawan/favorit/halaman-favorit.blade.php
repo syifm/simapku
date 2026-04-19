@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMAPKU | Diari Kuliner</title>
+    <title>SIMAPKU | Kuliner Favorit</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -80,11 +80,13 @@
                     <div class="flex justify-start">
                     </div>
 
-                    <div class="flex justify-center">
-                        <h1 class="font-bold">
-                            Kuliner Favorit
-                        </h1>
-                    </div>
+                    @if ($kulinerFavorit->isNotEmpty())
+                        <div class="flex justify-center">
+                            <h1 class="font-bold">
+                                Kuliner Favorit
+                            </h1>
+                        </div>
+                    @endif
                 </div>
 
                 @if ($kulinerFavorit->isNotEmpty())
@@ -149,7 +151,7 @@
                         @endforeach
                     </div>
                 @else
-                    <div class="bg-white ml-[415px] mt-24 p-10 max-w-xl mx-auto rounded-lg shadow-lg text-center">
+                    <div class="bg-white ml-[415px] mt-36 p-10 max-w-xl mx-auto rounded-lg shadow-lg text-center">
                         <div class="flex flex-col items-center">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -159,9 +161,11 @@
                                 </svg>
                             </div>
 
-                            <h2 class="text-2xl font-bold text-[#FFA319] mt-4">Kuliner Favorit Anda Belum Tersedia
+                            <h2 class="text-2xl font-bold text-[#FFA319] mt-4">Kuliner Favorit Belum Tersedia
                             </h2>
-                            {{-- <p class="text-gray-700">Silakan buat diari kuliner Anda!</p> --}}
+                            <p class="text-gray-700">Silakan cari kuliner terlebih dahulu dan masukkan kuliner ke
+                                favorit untuk mendapatkan rekomendasi kuliner selanjutnya sesuai kategori kuliner
+                                favorit Anda.</p>
                         </div>
                     </div>
                 @endif

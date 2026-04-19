@@ -486,8 +486,8 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="minharga"
                                                 class="min-price w-[95px] p-2 outline-none border-0"
-                                                value="{{ request('minharga', 0) }}" min="0"
-                                                max="1000000" />
+                                                value="{{ request('minharga', 0) }}" min="0" max="1000000"
+                                                step="25000" />
                                         </div>
 
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
@@ -495,17 +495,17 @@
                                             <input type="number" name="maxharga"
                                                 class="max-price w-[95px] p-2 outline-none border-0"
                                                 value="{{ request('maxharga', 1000000) }}" min="0"
-                                                max="1000000" />
+                                                max="1000000" step="25000" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
                                             <input type="range" class="min-input"
-                                                value="{{ request('minharga', 0) }}" min="0"
-                                                max="1000000" />
+                                                value="{{ request('minharga', 0) }}" min="0" max="1000000"
+                                                step="25000" />
                                             <input type="range" class="max-input"
                                                 value="{{ request('maxharga', 1000000) }}" min="0"
-                                                max="1000000" />
+                                                max="1000000" step="25000" />
 
                                             <div class="slider">
                                                 <div class="progress"></div>
@@ -1497,8 +1497,14 @@
                     </button>
 
                     <button onclick="editWisataKuliner(${id})"
-                        class="bg-green-500 text-white px-4 py-2 rounded-xl">
-                        Edit Wisata Kuliner
+                        class="bg-[#FFA319] hover:bg-[#F19305] text-white px-4 py-2 rounded-xl btn btn-primary flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                            class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                        </svg>
+                        <span class="ml-1">Edit</span>
                     </button>
                 </div>
 
@@ -1777,9 +1783,11 @@
         function formatTanggal(tanggal) {
             if (!tanggal) return '';
 
-            const t = new Date(tanggal);
+            // Ambil hanya bagian tanggal sebelum 'T'
+            const datePart = tanggal.split('T')[0];
+            const [year, month, day] = datePart.split('-').map(Number);
 
-            return t.toLocaleDateString('id-ID', {
+            return new Date(year, month - 1, day).toLocaleDateString('id-ID', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
@@ -1921,8 +1929,8 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Ulasan berhasil disimpan',
-                        timer: 1500,
+                        text: 'Ulasan berhasil disimpan dan akan tampil ketika sudah disetujui oleh Admin',
+                        timer: 2000,
                         showConfirmButton: false
                     });
 

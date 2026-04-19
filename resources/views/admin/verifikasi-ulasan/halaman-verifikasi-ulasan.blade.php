@@ -177,7 +177,7 @@
                                                             </svg>
                                                             <span class="ml-1">Detail</span>
                                                         </button>
-                                                        <form id="delete-form-{{ $ulasan->id_ulasan }}"
+                                                        <form id="delete-form-{{ $ulasan->id_penilaian_dan_ulasan }}"
                                                             action="{{ route('ulasan.hapus', $ulasan->id_penilaian_dan_ulasan) }}"
                                                             method="POST">
                                                             @csrf
@@ -409,6 +409,7 @@
             function aksiTolak(id) {
                 Swal.fire({
                     title: 'Tolak Penilaian dan Ulasan',
+                    icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#dc2626',
                     confirmButtonText: 'Tolak',

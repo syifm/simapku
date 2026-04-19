@@ -125,10 +125,11 @@
         }
 
         .select2-container--default .select2-selection--multiple {
-            height: 42px;
+            min-height: 42px;
+            height: auto;
             border-radius: 0.375rem;
             border: 1px solid #e0e0e1;
-            display: flex;
+            padding: 2px 4px;
             align-items: center;
         }
     </style>
@@ -186,7 +187,7 @@
                 </div>
 
                 <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-                    <form action="{{ route('updatewisatakuliner', $wisataKuliner->id_wisata_kuliner) }}" method="POST"
+                    <form id="addForm" action="{{ route('updatewisatakuliner', $wisataKuliner->id_wisata_kuliner) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -296,11 +297,10 @@
                             <!-- Nomor Telepon -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-800 mb-1" for="no_telp"><span>Nomor
-                                        Telepon</span>
-                                    <span class="text-red-500 font-bold">*</span></label>
+                                        Telepon</span></label>
                                 <input type="text" id="no_telp" name="no_telp"
-                                    value="{{ old('no_telp', $wisataKuliner->no_telp) }}" required
-                                    pattern="\d{10,15}" minlength="10" maxlength="15"
+                                    value="{{ old('no_telp', $wisataKuliner->no_telp) }}" pattern="\d{10,15}"
+                                    minlength="10" maxlength="15"
                                     class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <p class="text-xs text-gray-600 mt-2">
                                     Nomor Telepon hanya boleh berisi angka, tanpa spasi dan simbol.
@@ -343,7 +343,9 @@
                                     aria-label="Default select example">
 
                                 </select>
-
+                                <p class="text-xs text-gray-600 mt-2">
+                                    Pilih atau tambah fasilitas wisata kuliner
+                                </p>
                                 @error('id_fasilitas')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -360,7 +362,9 @@
                                     class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
                                 </select>
-
+                                <p class="text-xs text-gray-600 mt-2">
+                                    Pilih atau tambah kategori wisata kuliner
+                                </p>
                                 @error('id_kategori')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -476,7 +480,9 @@
                     icon: 'error',
                     title: 'Gagal memuat data kecamatan',
                     text: 'Silakan klik Ok untuk refresh kembali halaman ini',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();
@@ -529,7 +535,9 @@
                     icon: 'error',
                     title: 'Gagal memuat data kelurahan',
                     text: 'Silakan klik Ok untuk refresh kembali halaman ini',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();
@@ -611,6 +619,8 @@
         let activeInfoWindow = null;
         let dataKuliner = @json($wkuliner);
         let markers = [];
+        let lastCheckedLatLng = null;
+        let isLokasiValid = true;
         let currentId = "{{ $wisataKuliner->id_wisata_kuliner }}";
 
         function clearMarkers() {
@@ -681,6 +691,7 @@
                 document.getElementById('longitude').value = lng;
 
                 updateAlamatDariKoordinat(lat, lng);
+                cekLokasi();
             });
 
             // Ubah Lat Lng Saat Klik
@@ -698,6 +709,7 @@
                 document.getElementById('longitude').value = lng;
 
                 updateAlamatDariKoordinat(lat, lng);
+                cekLokasi();
             });
 
             // Ubah Marker Saat Input Lat Lng
@@ -751,8 +763,15 @@
                 });
             }
 
-            latInput.addEventListener('change', updateMarkerFromInput);
-            lngInput.addEventListener('change', updateMarkerFromInput);
+            latInput.addEventListener('change', function() {
+                updateMarkerFromInput();
+                cekLokasi();
+            });
+
+            lngInput.addEventListener('change', function() {
+                updateMarkerFromInput();
+                cekLokasi();
+            });
 
             // Cari Marker, Lat Lng, dan Alamat saat Ubah Kecamatan dan Kelurahan
             const kelurahanSelect = document.getElementById('kelurahan');
@@ -1276,6 +1295,51 @@
             });
         }
 
+        function cekLokasi() {
+            let lat = latInput.value;
+            let lng = lngInput.value;
+
+            if (!lat || !lng) return;
+
+            let current = lat + ',' + lng;
+
+            // biar nggak spam request terus
+            if (current === lastCheckedLatLng) return;
+            lastCheckedLatLng = current;
+
+            fetch('/wisatawan/cek-lokasi', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        latitude: lat,
+                        longitude: lng
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.duplikat) {
+                        isLokasiValid = false;
+
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Lokasi Sudah Digunakan',
+                            text: 'Silakan pilih titik lain',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                    } else {
+                        isLokasiValid = true;
+                    }
+                })
+                .catch(() => {
+                    isLokasiValid = false;
+                });
+        }
+
         $(document).ready(function() {
             let selectedWisata = {
                 id: "{{ $wisataKuliner->id_wisata_kuliner ?? $wisataKuliner->id }}",
@@ -1472,32 +1536,43 @@
             });
 
             $("#addForm").on('submit', function(e) {
-                e.preventDefault();
-                $("#saveBtn").html('Processing...').attr('disabled', 'disabled');
-                var link = $("#addForm").attr('action');
-                $.ajax({
-                    url: link,
-                    type: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
-                    },
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $("#saveBtn").html('SIMPAN').removeAttr('disabled');
-                        if (response.status) {
-                            $('#selectkategori').val(null).trigger("change")
-                            $('#selectmk').val(null).trigger("change")
-                            $('#selectmhs').val(null).trigger("change")
-                            alert(response.message);
-                        }
-                    },
-                    error: function(response) {
-                        $("#saveBtn").html('SIMPAN').removeAttr('disabled');
-                        alert(response.message);
-                    }
-                });
+                if (!isLokasiValid) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lokasi Sudah Digunakan',
+                        text: 'Silakan pilih titik lain',
+                    });
+
+                    return false;
+                }
+                // e.preventDefault();
+                // $("#saveBtn").html('Processing...').attr('disabled', 'disabled');
+                // var link = $("#addForm").attr('action');
+                // $.ajax({
+                //     url: link,
+                //     type: "POST",
+                //     headers: {
+                //         'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                //     },
+                //     data: new FormData(this),
+                //     processData: false,
+                //     contentType: false,
+                //     success: function(response) {
+                //         $("#saveBtn").html('SIMPAN').removeAttr('disabled');
+                //         if (response.status) {
+                //             $('#selectkategori').val(null).trigger("change")
+                //             $('#selectmk').val(null).trigger("change")
+                //             $('#selectmhs').val(null).trigger("change")
+                //             alert(response.message);
+                //         }
+                //     },
+                //     error: function(response) {
+                //         $("#saveBtn").html('SIMPAN').removeAttr('disabled');
+                //         alert(response.message);
+                //     }
+                // });
             });
         });
     </script>

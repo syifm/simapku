@@ -437,7 +437,9 @@
                     icon: 'error',
                     title: 'Gagal memuat data kecamatan',
                     text: 'Silakan klik Ok untuk refresh kembali halaman ini',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();
@@ -486,7 +488,9 @@
                     icon: 'error',
                     title: 'Gagal memuat data kelurahan',
                     text: 'Silakan klik Ok untuk refresh kembali halaman ini',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();

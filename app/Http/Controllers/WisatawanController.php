@@ -82,7 +82,7 @@ class WisatawanController extends Controller
     public function halamantambah()
     {
         $fasilitas = Fasilitas::all();
-        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Ditampilkan'])->get();
+        $wkuliner = WisataKuliner::where('status', 'Ditampilkan')->get();
         return view('wisatawan.wisata-kuliner.tambah-kuliner', compact('fasilitas', 'wkuliner'));
     }
 
@@ -237,7 +237,7 @@ class WisatawanController extends Controller
             'kecamatan' => 'required|string|max:50',
             'kelurahan' => 'required|string|max:50',
             'alamat' => 'required|string',
-            'no_telp' => 'required|string|min:10|max:15',
+            'no_telp' => 'nullable|string|min:10|max:15',
             'email' => 'nullable|email|max:70',
             'deskripsi' => 'required|string|max:255',
             'foto' => 'required|image|mimes:jpeg,png,jpg|max:10240',
@@ -292,14 +292,15 @@ class WisatawanController extends Controller
         $dataKategori = $request->id_kategori ?? [];
         $idWisata = $request->nama_wisata_kuliner;
 
-        $lat = $request->latitude;
-        $lng = $request->longitude;
+        // $lat = $request->latitude;
+        // $lng = $request->longitude;
 
-        if ($this->cekLokasiDuplikat($lat, $lng)) {
-            return back()->withErrors([
-                'latitude' => 'Lokasi sudah digunakan wisata lain'
-            ])->withInput();
-        }
+        // if ($this->cekLokasiDuplikat($lat, $lng)) {
+        //     return back()->withErrors([
+        //         'latitude' => 'Latitude sudah digunakan',
+        //         'longitude' => 'Longitude sudah digunakan'
+        //     ])->withInput();
+        // }
 
         if (!is_numeric($idWisata)) {
 
@@ -308,7 +309,7 @@ class WisatawanController extends Controller
                 'kecamatan' => $request->kecamatan,
                 'kelurahan' => $request->kelurahan,
                 'alamat' => $request->alamat,
-                'no_telp' => $request->no_telp,
+                'no_telp' => $request->no_telp ?? null,
                 'email' => $request->email ?? null,
                 'foto' => $fotoPath,
                 'deskripsi' => $request->deskripsi,
@@ -379,7 +380,7 @@ class WisatawanController extends Controller
     public function halamanedit($id)
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
-        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Ditampilkan'])->get();
+        $wkuliner = WisataKuliner::where('status', 'Ditampilkan')->get();
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
             // ->where('status', '!=', 'Belum Diverifikasi')
@@ -539,7 +540,7 @@ class WisatawanController extends Controller
                 'kecamatan' => 'required|string|max:50',
                 'kelurahan' => 'required|string|max:50',
                 'alamat' => 'required|string',
-                'no_telp' => 'required|string|min:10|max:15',
+                'no_telp' => 'nullable|string|min:10|max:15',
                 'email' => 'nullable|email|max:70',
                 'deskripsi' => 'required|string|max:255',
                 'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
@@ -591,7 +592,7 @@ class WisatawanController extends Controller
                 'kecamatan' => $request->kecamatan,
                 'kelurahan' => $request->kelurahan,
                 'alamat' => $request->alamat,
-                'no_telp' => $request->no_telp,
+                'no_telp' => $request->no_telp ?? null,
                 'email' => $request->email ?? null,
                 'foto' => $fotoPath,
                 'deskripsi' => $request->deskripsi,
@@ -1051,7 +1052,7 @@ class WisatawanController extends Controller
     public function halamantambahTidakLogin()
     {
         $fasilitas = Fasilitas::all();
-        $wkuliner = WisataKuliner::where('status', ['Disetujui', 'Ditampilkan'])->get();
+        $wkuliner = WisataKuliner::where('status', 'Ditampilkan')->get();
         return view('wisatawan-tidak-login.wisatakuliner.tambahkuliner-wisatawantidaklogin', compact('fasilitas', 'wkuliner'));
     }
 
@@ -1062,7 +1063,7 @@ class WisatawanController extends Controller
             'kecamatan' => 'required|string|max:50',
             'kelurahan' => 'required|string|max:50',
             'alamat' => 'required|string',
-            'no_telp' => 'required|string|min:10|max:15',
+            'no_telp' => 'nullable|string|min:10|max:15',
             'email' => 'nullable|email|max:70',
             'deskripsi' => 'required|string|max:255',
             'foto' => 'required|image|mimes:jpeg,png,jpg|max:10240',
@@ -1090,7 +1091,7 @@ class WisatawanController extends Controller
                 'kecamatan' => $request->kecamatan,
                 'kelurahan' => $request->kelurahan,
                 'alamat' => $request->alamat,
-                'no_telp' => $request->no_telp,
+                'no_telp' => $request->no_telp ?? null,
                 'email' => $request->email ?? null,
                 'foto' => $fotoPath,
                 'deskripsi' => $request->deskripsi,
@@ -1353,5 +1354,22 @@ class WisatawanController extends Controller
         $data = $data->sortByDesc('score')->values();
 
         return view('wisatawan-tidak-login.wisatakuliner.hasilpencarian-wisatawantidaklogin', compact('data', 'kategori', 'fasilitas', 'favoritIds', 'keyword'));
+    }
+
+    public function hapusPreferensi(Request $request)
+    {
+        $request->validate([
+            'id_kategori' => 'required|integer'
+        ]);
+
+        $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
+
+        Preferensi::where('id_wisatawan', $id_wisatawan)
+            ->where('id_kategori', $request->id_kategori)
+            ->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 }

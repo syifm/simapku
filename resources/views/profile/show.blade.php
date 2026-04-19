@@ -107,10 +107,10 @@
         @elseif($user->peran === 'Wisatawan')
             <div class="flex justify-end mt-4 mb-4">
     @endif
-    <a href="{{ route('profile.edit') }}"
+    {{-- <a href="{{ route('profile.edit') }}"
         class="py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white bg-[#FB991A] hover:bg-orange-600 transition duration-300">
         Edit Profil
-    </a>
+    </a> --}}
     </div>
 
     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -137,24 +137,155 @@
 
                 <!-- Preferensi -->
                 @if ($wisatawan)
-                    <div class="flex items-center">
-                        <label class="w-[178px] text-sm font-medium text-gray-700">Preferensi</label>
+                    <div class="flex items-start gap-2" id="preferensi-view">
+                        <div class="w-[172px] flex flex-col">
+                            <label class="text-sm font-medium text-gray-700">Preferensi</label>
+
+                            @if ($preferensi && $preferensi->isNotEmpty())
+                                <button type="button" onclick="toggleEditPreferensi()"
+                                    class="text-blue-600 text-xs mt-1 text-left hover:underline">
+                                    Edit Preferensi
+                                </button>
+                            @endif
+                        </div>
 
                         <div class="mt-1 flex flex-wrap gap-2">
-                            @foreach ($preferensi as $p)
-                                <span class="px-2 py-1 bg-gray-200 text-black rounded-md">
-                                    {{ $p->kategori->nama }}
-                                </span>
-                            @endforeach
+                            @if ($preferensi && $preferensi->isNotEmpty())
+                                @foreach ($preferensi as $p)
+                                    <span class="px-2 py-1 bg-gray-200 text-black rounded-md">
+                                        {{ $p->kategori->nama }}
+                                    </span>
+                                @endforeach
+                            @else
+                                <span>-</span>
+                            @endif
                         </div>
                     </div>
                 @endif
+
+
+                <div id="preferensi-edit" class="hidden flex items-start gap-2">
+                    <div class="w-[172px] flex flex-col">
+                        <label class="text-sm font-medium text-gray-700">Preferensi</label>
+
+                        <button type="button" onclick="toggleEditPreferensi()"
+                            class="text-blue-600 text-xs mt-1 text-left hover:underline">
+                            Selesai
+                        </button>
+                    </div>
+
+                    <div class="mt-1 flex flex-wrap gap-2">
+
+                        @foreach ($preferensi as $p)
+                            <span id="pref-{{ $p->id_kategori }}"
+                                class="flex items-center gap-1 px-2 py-1 bg-gray-200 rounded-md">
+
+                                <button type="button" onclick="hapusPreferensi({{ $p->id_kategori }})"
+                                    class="text-gray-500 hover:text-gray-800 text-xs">
+                                    ✕
+                                </button>
+
+                                {{ $p->kategori->nama }}
+                            </span>
+                        @endforeach
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 
 
+    <script>
+        function toggleEditPreferensi() {
+            const view = document.getElementById('preferensi-view');
+            const edit = document.getElementById('preferensi-edit');
 
+            if (edit.classList.contains('hidden')) {
+                view.classList.add('hidden');
+                edit.classList.remove('hidden');
+            } else {
+                edit.classList.add('hidden');
+                view.classList.remove('hidden');
+            }
+        }
+
+        // function hapusPreferensi(id) {
+        //     Swal.fire({
+        //         title: 'Hapus preferensi?',
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Ya',
+        //         cancelButtonText: 'Batal',
+        //         confirmButtonColor: '#dc2626',
+        //         cancelButtonColor: '#6b7280',
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             fetch(`/wisatawan/hapus-preferensi/${id}`, {
+        //                     method: 'DELETE',
+        //                     headers: {
+        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //                     }
+        //                 })
+        //                 .then(res => res.json())
+        //                 .then(res => {
+        //                     if (res.success) {
+        //                         location.reload();
+        //                     }
+        //                 });
+        //         }
+        //     });
+        // }
+
+        function hapusPreferensi(id_kategori) {
+            Swal.fire({
+                title: 'Hapus preferensi?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/wisatawan/hapus-preferensi', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                id_kategori: id_kategori
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.success) {
+                                const el = document.getElementById('pref-' + id_kategori);
+                                if (el) el.remove();
+
+                                const container = document.querySelector('#preferensi-edit .flex.flex-wrap');
+
+                                if (container.children.length === 0) {
+                                    container.innerHTML = '<span>-</span>';
+
+                                    const btn = document.getElementById('btnEditPreferensi');
+                                    if (btn) btn.remove();
+
+                                    toggleEditPreferensi();
+                                }
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Preferensi berhasil dihapus',
+                                    timer: 2000
+                                });
+                            }
+                        });
+                }
+            });
+        }
+    </script>
 
 </body>
 

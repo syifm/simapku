@@ -155,6 +155,12 @@ class PenilaianDanUlasanController extends Controller
                 'waktu_diubah' => $waktu_diubah,
             ]);
 
+            if ($ulasan->status == 'Ditolak' || $ulasan->status == 'Disetujui') {
+                $ulasan->update([
+                    'status' => 'Belum Diverifikasi',
+                ]);
+            }
+
             return response()->json([
                 'status' => 'Diperbarui',
                 'message' => 'Ulasan berhasil diperbarui'
@@ -176,16 +182,16 @@ class PenilaianDanUlasanController extends Controller
             ]);
         }
 
-        $wisataKuliner = WisataKuliner::findOrFail($request->id_wisata_kuliner);
-        $min_total = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->min('harga_min');
-        $max_total = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->max('harga_max');
-        $penilaian_ratarata = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->avg('penilaian');
-        $wisataKuliner->update([
-            'harga_min' => $min_total,
-            'harga_max' => $max_total,
-            'penilaian' => $penilaian_ratarata,
-            'waktu_diubah' => $waktu_diubah,
-        ]);
+        // $wisataKuliner = WisataKuliner::findOrFail($request->id_wisata_kuliner);
+        // $min_total = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->min('harga_min');
+        // $max_total = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->max('harga_max');
+        // $penilaian_ratarata = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->avg('penilaian');
+        // $wisataKuliner->update([
+        //     'harga_min' => $min_total,
+        //     'harga_max' => $max_total,
+        //     'penilaian' => $penilaian_ratarata,
+        //     'waktu_diubah' => $waktu_diubah,
+        // ]);
 
         return response()->json([
             'status' => 'success'
