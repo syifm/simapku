@@ -142,6 +142,16 @@
     @include('layouts.header-wisatawan')
     @include('layouts.sidebar-wisatawan')
     <div class="pt-[10px] pl-28 pr-[25px] pb-[30px]">
+        @if ($errors->any())
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: @json($errors->first()),
+                });
+            </script>
+        @endif
+
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
@@ -447,8 +457,12 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal memuat data kecamatan',
-                    text: 'Silakan refresh kembali halaman ini',
+                    text: 'Silakan klik Ok untuk refresh kembali halaman ini',
                     confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
                 });
             }
 
@@ -492,8 +506,12 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal memuat data kelurahan',
-                    text: 'Silakan refresh kembali halaman ini',
+                    text: 'Silakan klik Ok untuk refresh kembali halaman ini',
                     confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
                 });
                 return [];
             }

@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             AdminSeeder::class,
-            WisataKulinerSeeder::class,
-            PenilaianDanUlasanSeeder::class,
+            PengajuanWisataKulinerSeeder::class,
+            // PenilaianDanUlasanSeeder::class,
             WisatawanSeeder::class,
         ]);
     }

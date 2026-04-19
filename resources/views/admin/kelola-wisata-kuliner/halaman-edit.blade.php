@@ -152,10 +152,17 @@
         <!-- Konten -->
         <div class="flex-1 flex flex-col">
             <div class="flex-1 overflow-y-auto">
-                <div class="mt-2 text-sm flex justify-start gap-6">
-                    <a href="{{ route('kelolawisatakuliner') }}" class="back-btn flex items-center">
+                <div class="mt-3 text-sm flex justify-start gap-6">
+                    <a onclick="history.back()"
+                        class="back-btn w-10 flex items-center justify-center group relative cursor-pointer">
+
+                        <span
+                            class="absolute w-10 h-10 rounded-full bg-gray-200 
+               scale-0 group-hover:scale-100 
+               transition duration-50"></span>
+
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
-                            stroke="currentColor" class="size-4">
+                            stroke="currentColor" class="size-5 relative z-10">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                         </svg>
@@ -456,8 +463,12 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal memuat data kecamatan',
-                    text: 'Silakan refresh kembali halaman ini',
-                    confirmButtonText: 'OK'
+                    text: 'Silakan klik Ok untuk refresh kembali halaman ini',
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
                 });
             }
 
@@ -505,8 +516,12 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal memuat data kelurahan',
-                    text: 'Silakan refresh kembali halaman ini',
+                    text: 'Silakan klik Ok untuk refresh kembali halaman ini',
                     confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
                 });
                 return [];
             }

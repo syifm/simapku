@@ -3,36 +3,37 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\WisataKuliner;
+use App\Models\PengajuanWisataKuliner;
 use Illuminate\Database\Seeder;
 
-class WisataKulinerSeeder extends Seeder
+class PengajuanWisataKulinerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $wkulinerData = [
+        $pwkulinerData = [
             [
-                'nama' => 'Pesta Keboen',
-                'kecamatan' => 'Gajahmungkur',
-                'kelurahan' => 'Lempongsari',
-                'alamat' => 'Jl. Veteran No.29, Lempongsari, Kec. Gajahmungkur, Kota Semarang, Jawa Tengah 50231',
-                'no_telp' => '0248310620',
-                'deskripsi' => 'Straightforward restaurant serving classic Javanese dishes amid bright, traditional decor.',
+                'nama' => 'Layang-Layang Resto',
+                'kecamatan' => 'Banyumanik',
+                'kelurahan' => 'Ngesrep',
+                'alamat' => 'Jl. B. Jaya No.16, Ngesrep, Kec. Banyumanik, Kota Semarang, Jawa Tengah 50261',
+                'no_telp' => '08112916162',
+                'deskripsi' => 'Resto yang menyajikan makanan nusantara dengan dilengkapi oleh pemandangan kota dari rooftop',
                 'foto' => 'hihihihi',
-                'latitude' => '-6.996418149883837',
-                'longitude' => '110.41534564234345',
-                'harga_min' => 10000,
-                'harga_max' => 20000,
+                'latitude' => '-7.044985619474768',
+                'longitude' => '110.42868816935768',
+                'harga_min' => 50000,
+                'harga_max' => 100000,
                 'penilaian' => 4,
-                'email_pengaju' => 'syifa@gmail.com',
+                'email_pengaju' => 'syif@gmail.com',
                 'id_wisatawan' => null,
                 'id_admin' => 1,
                 'status' => 'Belum Diverifikasi',
-                'waktu_dibuat' => '08/10/2025 14:05',
-                'waktu_diubah' => '09/10/2025 16:10',
+                'jenis_pengajuan' => 'Baru',
+                'waktu_dibuat' => now(),
+                'waktu_diubah' => now(),
             ],
             [
                 'nama' => 'Kampung Laut',
@@ -51,13 +52,14 @@ class WisataKulinerSeeder extends Seeder
                 'id_wisatawan' => null,
                 'id_admin' => 1,
                 'status' => 'Belum Diverifikasi',
-                'waktu_dibuat' => '08/10/2025 14:05',
-                'waktu_diubah' => '09/10/2025 16:10',
+                'jenis_pengajuan' => 'Baru',
+                'waktu_dibuat' => now(),
+                'waktu_diubah' => now(),
             ],
         ];
 
-        foreach ($wkulinerData as $data) {
-            WisataKuliner::create([
+        foreach ($pwkulinerData as $data) {
+            PengajuanWisataKuliner::create([
                 'nama' => $data['nama'],
                 'kecamatan' => $data['kecamatan'],
                 'kelurahan' => $data['kelurahan'],
@@ -74,6 +76,7 @@ class WisataKulinerSeeder extends Seeder
                 'id_wisatawan' => null,
                 'id_admin' => $data['id_admin'],
                 'status' => $data['status'],
+                'jenis_pengajuan' => $data['jenis_pengajuan'],
                 'waktu_dibuat' => $data['waktu_dibuat'],
                 'waktu_diubah' => $data['waktu_diubah'],
             ]);

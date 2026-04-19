@@ -30,6 +30,7 @@ class PengajuanWisataKuliner extends Model
         'id_wisatawan',
         'id_admin',
         'status',
+        'jenis_pengajuan',
         'waktu_dibuat',
         'waktu_diubah',
     ];
@@ -37,7 +38,7 @@ class PengajuanWisataKuliner extends Model
     public function fasilitas()
     {
         return $this->belongsToMany(
-            PengajuanFasilitasWisataKuliner::class,
+            Fasilitas::class,
             'pengajuan_fasilitas_wisata_kuliner',
             'id_pengajuan',
             'id_fasilitas'
@@ -67,7 +68,7 @@ class PengajuanWisataKuliner extends Model
     public function kategori()
     {
         return $this->belongsToMany(
-            PengajuanKategoriWisataKuliner::class,
+            Kategori::class,
             'pengajuan_kategori_wisata_kuliner',
             'id_pengajuan',
             'id_kategori'

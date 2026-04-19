@@ -475,8 +475,12 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal memuat data kecamatan',
-                    text: 'Silakan refresh kembali halaman ini',
+                    text: 'Silakan klik Ok untuk refresh kembali halaman ini',
                     confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
                 });
             }
 
@@ -524,8 +528,12 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal memuat data kelurahan',
-                    text: 'Silakan refresh kembali halaman ini',
+                    text: 'Silakan klik Ok untuk refresh kembali halaman ini',
                     confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
                 });
                 return [];
             }

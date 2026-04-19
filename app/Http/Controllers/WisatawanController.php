@@ -198,6 +198,37 @@ class WisatawanController extends Controller
 
     //     return redirect()->route('beranda-Wisatawan')->with('success', 'Wisata Kuliner Berhasil Disimpan');
     // }
+    public function cekLokasi(Request $request)
+    {
+        $isDuplikat = $this->cekLokasiDuplikat(
+            $request->latitude,
+            $request->longitude
+        );
+
+        return response()->json([
+            'duplikat' => $isDuplikat
+        ]);
+    }
+
+    private function cekLokasiDuplikat($lat, $lng, $idwisata = null, $idpengajuan = null)
+    {
+        $queryWisata = WisataKuliner::where('latitude', $lat)
+            ->where('longitude', $lng);
+
+        if ($idwisata) {
+            $queryWisata->where('id_wisata_kuliner', '!=', $idwisata);
+        }
+
+        $queryPengajuan = PengajuanWisataKuliner::where('latitude', $lat)
+            ->where('longitude', $lng)
+            ->where('status', 'Belum Diverifikasi');
+
+        if ($idpengajuan) {
+            $queryPengajuan->where('id_pengajuan', '!=', $idpengajuan);
+        }
+
+        return $queryWisata->exists() || $queryPengajuan->exists();
+    }
 
     public function simpan(Request $request)
     {
@@ -214,7 +245,6 @@ class WisatawanController extends Controller
             'longitude' => 'required|numeric|between:-180,180|unique:wisata_kuliner,longitude',
         ]);
 
-        $wisataKuliner = $request->nama;
         $fotoPath = $request->file('foto')->storeAs(
             'uploads',
             'foto_' . time() . '.' . $request->file('foto')->extension(),
@@ -262,9 +292,18 @@ class WisatawanController extends Controller
         $dataKategori = $request->id_kategori ?? [];
         $idWisata = $request->nama_wisata_kuliner;
 
+        $lat = $request->latitude;
+        $lng = $request->longitude;
+
+        if ($this->cekLokasiDuplikat($lat, $lng)) {
+            return back()->withErrors([
+                'latitude' => 'Lokasi sudah digunakan wisata lain'
+            ])->withInput();
+        }
+
         if (!is_numeric($idWisata)) {
 
-            $wisata = WisataKuliner::firstOrCreate([
+            $wisata = PengajuanWisataKuliner::firstOrCreate([
                 'nama' => trim($idWisata),
                 'kecamatan' => $request->kecamatan,
                 'kelurahan' => $request->kelurahan,
@@ -282,11 +321,12 @@ class WisatawanController extends Controller
                 'id_wisatawan' => $id_wisatawan ?? null,
                 'id_admin' => $id_admin ?? null,
                 'status' => $status,
+                'jenis_pengajuan' => 'Baru',
                 'waktu_dibuat' => $waktu_dibuat,
                 'waktu_diubah' => $waktu_diubah,
             ]);
 
-            $idWisata = $wisata->id_wisata_kuliner;
+            $idWisata = $wisata->id_pengajuan;
         }
 
         $fasilitasIds = [];
@@ -307,7 +347,7 @@ class WisatawanController extends Controller
             $fasilitasIds[] = $fasilitasId;
         }
 
-        $wisata = WisataKuliner::find($idWisata);
+        $wisata = PengajuanWisataKuliner::find($idWisata);
 
         $wisata->fasilitas()->sync($fasilitasIds);
 
@@ -329,7 +369,7 @@ class WisatawanController extends Controller
             $kategoriIds[] = $kategoriId;
         }
 
-        $wisata = WisataKuliner::find($idWisata);
+        $wisata = PengajuanWisataKuliner::find($idWisata);
 
         $wisata->kategori()->sync($kategoriIds);
 
@@ -564,6 +604,7 @@ class WisatawanController extends Controller
                 'id_wisatawan' => $id_wisatawan ?? null,
                 'id_admin' => $id_admin ?? null,
                 'status' => $status,
+                'jenis_pengajuan' => 'Perubahan',
                 'waktu_diubah' => $waktu_diubah,
             ]);
 
@@ -1030,7 +1071,6 @@ class WisatawanController extends Controller
             'email_pengaju' => 'required|email|max:70',
         ]);
 
-        $wisataKuliner = $request->nama;
         $fotoPath = $request->file('foto')->storeAs(
             'uploads',
             'foto_' . time() . '.' . $request->file('foto')->extension(),
@@ -1045,7 +1085,7 @@ class WisatawanController extends Controller
         $idWisata = $request->nama_wisata_kuliner;
 
         if (!is_numeric($idWisata)) {
-            $wisata = WisataKuliner::firstOrCreate([
+            $wisata = PengajuanWisataKuliner::firstOrCreate([
                 'nama' => trim($idWisata),
                 'kecamatan' => $request->kecamatan,
                 'kelurahan' => $request->kelurahan,
@@ -1061,6 +1101,7 @@ class WisatawanController extends Controller
                 'penilaian' => 0,
                 'email_pengaju' => $request->email_pengaju,
                 'status' => 'Belum Diverifikasi',
+                'status' => 'Baru',
                 'waktu_dibuat' => $waktu_dibuat,
                 'waktu_diubah' => $waktu_diubah,
             ]);
@@ -1112,7 +1153,7 @@ class WisatawanController extends Controller
 
         $wisata->kategori()->sync($kategoriIds);
 
-        return redirect()->route('beranda.tidaklogin')->with('success', 'Kuliner Berhasil Disimpan');
+        return redirect()->route('beranda.tidaklogin')->with('success', 'Wisata Kuliner Berhasil Disimpan');
     }
 
     public function search(Request $request)

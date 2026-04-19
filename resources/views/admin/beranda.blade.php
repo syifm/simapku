@@ -76,13 +76,19 @@
         let labels = ['Belum Diverifikasi', 'Disetujui', 'Ditolak', 'Ditampilkan'];
         let backgroundColor = ['#FFA319', '#094B3C', '#F83513', '#0A4174'];
 
-        const totalUlasan = dataPersen.reduce((a, b) => a + b, 0);
+        // const totalUlasan = dataPersen.reduce((a, b) => a + b, 0);
 
-        if (totalUlasan === 0) {
-            dataPersenUlasan = [1];
-            dataAsliUlasan = [0];
-            labelsUlasan = ['Belum Tersedia Kuliner'];
-            backgroundColorUlasan = ['#D1D5DB'];
+        // if (totalUlasan === 0) {
+        //     dataPersenUlasan = [1];
+        //     dataAsliUlasan = [0];
+        //     labelsUlasan = ['Belum Tersedia Kuliner'];
+        //     backgroundColorUlasan = ['#D1D5DB'];
+        // }
+        const total = dataAsli.reduce((a, b) => a + b, 0);
+
+        if (total === 0) {
+            dataPersen = [1];
+            dataAsli = [0];
         }
 
         var ctx1 = document.getElementById('wkulinerDonutChart').getContext('2d');
@@ -93,7 +99,7 @@
                 datasets: [{
                     dataasli: dataAsli,
                     data: dataPersen,
-                    backgroundColor: backgroundColor,
+                    backgroundColor: total === 0 ? ['#D1D5DB'] : backgroundColor,
                 }]
             },
             options: {
@@ -109,6 +115,31 @@
                             padding: 15,
                             usePointStyle: true,
                             generateLabels: function(chart) {
+                                return [{
+                                        text: 'Belum Diverifikasi',
+                                        fillStyle: '#FFA319',
+                                        strokeStyle: 'transparent',
+                                        lineWidth: 0
+                                    },
+                                    {
+                                        text: 'Disetujui',
+                                        fillStyle: '#094B3C',
+                                        strokeStyle: 'transparent',
+                                        lineWidth: 0
+                                    },
+                                    {
+                                        text: 'Ditolak',
+                                        fillStyle: '#F83513',
+                                        strokeStyle: 'transparent',
+                                        lineWidth: 0
+                                    },
+                                    {
+                                        text: 'Ditampilkan',
+                                        fillStyle: '#0A4174',
+                                        strokeStyle: 'transparent',
+                                        lineWidth: 0
+                                    }
+                                ];
                                 const data = chart.data.datasets[0].data;
                                 const labels = chart.data.labels;
                                 return labels.map((label, i) => ({
@@ -125,10 +156,13 @@
                     tooltip: {
                         callbacks: {
                             label: function(nilai) {
-                                const nilaiasli = nilai.dataset.dataasli[nilai.dataIndex];
-                                if (nilaiasli === 0) {
+                                if (total === 0) {
                                     return 'Belum Tersedia Kuliner';
                                 }
+                                const nilaiasli = nilai.dataset.dataasli[nilai.dataIndex];
+                                // if (nilaiasli === 0) {
+                                //     return 'Belum Tersedia Kuliner';
+                                // }
 
                                 return nilaiasli + ' Kuliner';
                             }
@@ -160,13 +194,19 @@
         let labelsUlasan = ['Belum Diverifikasi', 'Disetujui', 'Ditolak'];
         let backgroundColorUlasan = ['#FFA319', '#094B3C', '#F83513'];
 
-        const total = dataPersenUlasan.reduce((a, b) => a + b, 0);
+        // const total = dataPersenUlasan.reduce((a, b) => a + b, 0);
 
-        if (total === 0) {
+        // if (total === 0) {
+        //     dataPersenUlasan = [1];
+        //     dataAsliUlasan = [0];
+        //     labelsUlasan = ['Belum Tersedia Ulasan'];
+        //     backgroundColorUlasan = ['#D1D5DB'];
+        // }
+        const totalUlasan = dataAsliUlasan.reduce((a, b) => a + b, 0);
+
+        if (totalUlasan === 0) {
             dataPersenUlasan = [1];
             dataAsliUlasan = [0];
-            labelsUlasan = ['Belum Tersedia Ulasan'];
-            backgroundColorUlasan = ['#D1D5DB'];
         }
 
         var ctx1 = document.getElementById('ulasanDonutChart').getContext('2d');
@@ -177,7 +217,7 @@
                 datasets: [{
                     dataasli: dataAsliUlasan,
                     data: dataPersenUlasan,
-                    backgroundColor: backgroundColorUlasan,
+                    backgroundColor: totalUlasan === 0 ? ['#D1D5DB'] : backgroundColorUlasan,
                 }]
             },
             options: {
@@ -193,6 +233,25 @@
                             padding: 15,
                             usePointStyle: true,
                             generateLabels: function(chart) {
+                                return [{
+                                        text: 'Belum Diverifikasi',
+                                        fillStyle: '#FFA319',
+                                        strokeStyle: 'transparent',
+                                        lineWidth: 0
+                                    },
+                                    {
+                                        text: 'Disetujui',
+                                        fillStyle: '#094B3C',
+                                        strokeStyle: 'transparent',
+                                        lineWidth: 0
+                                    },
+                                    {
+                                        text: 'Ditolak',
+                                        fillStyle: '#F83513',
+                                        strokeStyle: 'transparent',
+                                        lineWidth: 0
+                                    }
+                                ];
                                 const data = chart.data.datasets[0].data;
                                 const labels = chart.data.labels;
                                 return labels.map((label, i) => ({
@@ -209,10 +268,13 @@
                     tooltip: {
                         callbacks: {
                             label: function(nilai) {
-                                const nilaiasli = nilai.dataset.dataasli[nilai.dataIndex];
-                                if (nilaiasli === 0) {
+                                if (totalUlasan === 0) {
                                     return 'Belum Tersedia Ulasan';
                                 }
+                                const nilaiasli = nilai.dataset.dataasli[nilai.dataIndex];
+                                // if (nilaiasli === 0) {
+                                //     return 'Belum Tersedia Ulasan';
+                                // }
 
                                 return nilaiasli + ' Ulasan';
                             }

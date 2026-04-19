@@ -794,7 +794,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#dc2626',
                     cancelButtonColor: '#6b7280',
-                    confirmButtonText: 'Ya, hapus',
+                    confirmButtonText: 'Ya',
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -805,11 +805,13 @@
 
             function aksiTampilkan(id) {
                 Swal.fire({
-                    title: 'Tampilkan Wisata Kuliner',
+                    title: 'Tampilkan Wisata Kuliner?',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: 'Tampilkan',
-                    cancelButtonText: 'Batal'
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#16a34a',
+                    cancelButtonColor: '#6b7280',
                 }).then((result) => {
                     if (result.isConfirmed) {
                         kirimAksi(id, 'Ditampilkan');
