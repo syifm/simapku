@@ -377,7 +377,7 @@
 
             function konfirmasiHapus(id) {
                 Swal.fire({
-                    title: 'Yakin untuk hapus ulasan?',
+                    title: 'Hapus ulasan?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#dc2626',

@@ -187,8 +187,8 @@
                 </div>
 
                 <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-                    <form id="addForm" action="{{ route('updatewisatakuliner', $wisataKuliner->id_wisata_kuliner) }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form id="addForm" action="{{ route('updatewisatakuliner', $wisataKuliner->id_wisata_kuliner) }}"
+                        method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="from" value="{{ $from }}">
@@ -1397,6 +1397,13 @@
                     }
                 }
             });
+            $("#selectmhs").on('select2:open', function() {
+                let searchField = document.querySelector('.select2-container--open .select2-search__field');
+                if (searchField) {
+                    searchField.placeholder = 'Ketik disini untuk mencari atau menambah wisata kuliner';
+                }
+            });
+
             $("#selectmk").attr("multiple", "multiple");
             $("#selectmk").select2({
                 allowClear: true,

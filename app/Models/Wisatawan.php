@@ -28,11 +28,16 @@ class Wisatawan extends Model
 
     public function penilaianDanUlasan()
     {
-        return $this->hasMany(PenilaianDanUlasan::class, 'id_wisatawan', 'id_wisatawan');
+        return $this->hasMany(PenilaiandanUlasan::class, 'id_wisatawan', 'id_wisatawan');
     }
 
     public function diarikuliner()
     {
         return $this->hasMany(DiariKuliner::class, 'id_wisatawan', 'id_wisatawan');
+    }
+
+    public function preferensi()
+    {
+        return $this->hasMany(Preferensi::class, 'id_wisatawan', 'id_wisatawan');
     }
 }

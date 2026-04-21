@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda</title>
+    <title>SIMAPKU | Beranda</title>
     {{-- <link rel="icon" type="image/png" href="{{ asset('simapku.png') }}"> --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -459,8 +459,7 @@
                         <div
                             class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
-                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar"
-                                value="{{ request('keyword', $keyword ?? '') }}">
+                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar" value="{{ $keyword }}">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -472,7 +471,7 @@
                             {{-- <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
                             </div> --}}
-                            <div onclick="cariKulinerTerdekat()"
+                            <div onclick="cariKulinerTerdekat(event)"
                                 class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
                             </div>
@@ -570,12 +569,12 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="jarak"
                                                 class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
-                                                value="0" min="0" max="10" />
+                                                value="10" min="0" max="10" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range-jarak-dua">
-                                            <input type="range" class="input-jarak-dua" value="0" min="0"
+                                            <input type="range" class="input-jarak-dua" value="10" min="0"
                                                 max="10" />
 
                                             <div class="slider-jarak-dua">
@@ -590,7 +589,11 @@
                                     <select id="kategori" name="kategori[]" data-placeholder="Pilih Kategori..."
                                         data-theme="light" multiple data-multi-select>
                                         @foreach ($kategori as $item)
-                                            <option value="{{ $item->id_kategori }}">
+                                            {{-- <option value="{{ $item->id_kategori }}">
+                                                {{ $item->nama }}
+                                            </option> --}}
+                                            <option value="{{ $item->id_kategori }}"
+                                                {{ in_array($item->id_kategori, request('kategori', $kategoriUser)) ? 'selected' : '' }}>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach
@@ -612,22 +615,22 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="minharga"
                                                 class="min-price w-[95px] p-2 outline-none border-0" value="0"
-                                                min="0" max="1000000" />
+                                                min="0" max="1000000" step="25000" />
                                         </div>
 
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="maxharga"
                                                 class="max-price w-[95px] p-2 outline-none border-0" value="1000000"
-                                                min="0" max="1000000" />
+                                                min="0" max="1000000" step="25000" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
                                             <input type="range" class="min-input" value="0" min="0"
-                                                max="1000000" />
+                                                max="1000000" step="25000" />
                                             <input type="range" class="max-input" value="1000000" min="0"
-                                                max="1000000" />
+                                                max="1000000" step="25000" />
 
                                             <div class="slider">
                                                 <div class="progress"></div>
@@ -641,7 +644,11 @@
                                     <select id="fasilitas" name="fasilitas[]" data-placeholder="Pilih Fasilitas..."
                                         data-theme="light" multiple data-multi-select>
                                         @foreach ($fasilitas as $item)
-                                            <option value="{{ $item->id_fasilitas }}">
+                                            {{-- <option value="{{ $item->id_fasilitas }}">
+                                                {{ $item->nama }}
+                                            </option> --}}
+                                            <option value="{{ $item->id_fasilitas }}"
+                                                {{ in_array($item->id_fasilitas, request('fasilitas', [])) ? 'selected' : '' }}>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach
@@ -1385,6 +1392,18 @@
             advancedFilter.classList.toggle("hidden");
         });
 
+        const defaultText = 'Rekomendasi Kuliner';
+        searchBar.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.value = defaultText;
+            }
+        });
+        // searchBar.addEventListener('input', function() {
+        //     if (this.value === '') {
+        //         this.value = defaultText;
+        //     }
+        // });
+
         document.addEventListener("click", function(e) {
 
             if (!searchBar.contains(e.target) && !searchPanel.contains(e.target)) {
@@ -1393,31 +1412,299 @@
 
         });
 
-        document.getElementById("formCari").addEventListener("submit", function(e) {
+        // document.getElementById("formCari").addEventListener("submit", function(e) {
 
-            e.preventDefault(); // tahan submit dulu
+        //     e.preventDefault(); // tahan submit dulu
+
+        //     if (navigator.geolocation) {
+        //         navigator.geolocation.getCurrentPosition(function(position) {
+
+        //             document.getElementById("lat").value = position.coords.latitude;
+        //             document.getElementById("lng").value = position.coords.longitude;
+
+        //             // submit ulang setelah dapet lokasi
+        //             e.target.submit();
+
+        //         }, function(error) {
+        //             // alert("Gagal ambil lokasi, pakai pencarian biasa aja");
+        //             document.getElementById("lat").value = -6.99;
+        //             document.getElementById("lng").value = 110.42;
+        //             e.target.submit(); // tetap submit tanpa lokasi
+        //         });
+        //     } else {
+        //         alert("Browser tidak support lokasi");
+        //         e.target.submit();
+        //     }
+
+        // });
+
+        // document.getElementById("formCari").addEventListener("submit", function(e) {
+        //     e.preventDefault();
+
+        //     const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
+
+        //     const isTerdekat =
+        //         keyword.includes("terdekat") ||
+        //         keyword.includes("dekat") ||
+        //         keyword.includes("near");
+
+        //     if (isTerdekat) {
+
+        //         if (!navigator.geolocation) {
+        //             Swal.fire({
+        //                 icon: "error",
+        //                 title: "GPS tidak didukung",
+        //                 text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'"
+        //             });
+        //             return;
+        //         }
+
+        //         navigator.geolocation.getCurrentPosition(
+        //             function(position) {
+
+        //                 const lat = position.coords.latitude;
+        //                 const lng = position.coords.longitude;
+
+        //                 document.getElementById("lat").value = lat;
+        //                 document.getElementById("lng").value = lng;
+
+        //                 e.target.submit();
+        //                 cariKulinerTerdekat(e);
+        //             },
+
+        //             function() {
+        //                 Swal.fire({
+        //                     icon: "warning",
+        //                     title: 'Lokasi Tidak Tersedia',
+        //                     text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+        //                     showConfirmButton: false,
+        //                     timer: 2000
+        //                 });
+        //                 return;
+        //             }
+        //         );
+
+        //         return;
+        //     }
+
+        //     if (navigator.geolocation) {
+        //         navigator.geolocation.getCurrentPosition(function(position) {
+
+        //             document.getElementById("lat").value = position.coords.latitude;
+        //             document.getElementById("lng").value = position.coords.longitude;
+
+        //             e.target.submit();
+
+        //         }, function() {
+        //             document.getElementById("lat").value = -6.99;
+        //             document.getElementById("lng").value = 110.42;
+
+        //             e.target.submit();
+        //         });
+        //     } else {
+        //         e.target.submit();
+        //     }
+        // });
+        document.getElementById("formCari").addEventListener("submit", function(e) {
+            if (searchBar.value.trim() === '') {
+                searchBar.value = defaultText;
+            }
+            e.preventDefault();
+
+            const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
+
+            const isTerdekat =
+                keyword.includes("terdekat") ||
+                keyword.includes("dekat") ||
+                keyword.includes("near");
+
+            if (isTerdekat) {
+
+                if (!navigator.geolocation) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "GPS tidak tersedia",
+                        text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        inputJarakDua.value = 5;
+                        nilaiJarakDua.value = 5;
+                        updateProgressJarakDua();
+
+                        minInput.value = 0;
+                        maxInput.value = 500000;
+                        minPriceInput.value = 0;
+                        maxPriceInput.value = 500000;
+                        updateProgress();
+
+                        const minRating = document.querySelector(".min-rating");
+                        const maxRating = document.querySelector(".max-rating");
+
+                        if (minRating && maxRating) {
+                            minRating.value = 0;
+                            maxRating.value = 5;
+                        }
+
+                        document.getElementById("lat").value = lat;
+                        document.getElementById("lng").value = lng;
+
+                        e.target.submit();
+                    },
+
+                    function() {
+                        Swal.fire({
+                            icon: "warning",
+                            title: 'Lokasi Tidak Tersedia',
+                            text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                );
+
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById("lat").value = position.coords.latitude;
+                    document.getElementById("lng").value = position.coords.longitude;
+                    e.target.submit();
+                },
+                function() {
+                    document.getElementById("lat").value = -6.99;
+                    document.getElementById("lng").value = 110.42;
+                    e.target.submit();
+                }
+            );
+        });
+
+        function cariKulinerTerdekat(e) {
+            e.preventDefault();
+            e.stopPropagation();
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
 
-                    document.getElementById("lat").value = position.coords.latitude;
-                    document.getElementById("lng").value = position.coords.longitude;
+                        inputJarakDua.value = 5;
+                        nilaiJarakDua.value = 5;
+                        updateProgressJarakDua();
 
-                    // submit ulang setelah dapet lokasi
-                    e.target.submit();
+                        minInput.value = 0;
+                        maxInput.value = 500000;
+                        minPriceInput.value = 0;
+                        maxPriceInput.value = 500000;
+                        updateProgress();
 
-                }, function(error) {
-                    // alert("Gagal ambil lokasi, pakai pencarian biasa aja");
-                    document.getElementById("lat").value = -6.99;
-                    document.getElementById("lng").value = 110.42;
-                    e.target.submit(); // tetap submit tanpa lokasi
-                });
+                        const minRating = document.querySelector(".min-rating");
+                        const maxRating = document.querySelector(".max-rating");
+
+                        if (minRating && maxRating) {
+                            minRating.value = 0;
+                            maxRating.value = 5;
+                        }
+
+                        const params = new URLSearchParams(window.location.search);
+
+                        params.set("lat", lat);
+                        params.set("lng", lng);
+                        params.set("jarak", 5);
+                        params.set("minharga", 0);
+                        params.set("maxharga", 500000);
+                        params.set("minrating", 0);
+                        params.set("maxrating", 5);
+                        params.set("keyword", "Kuliner Terdekat");
+
+                        window.location.href = "/wisata-kuliner-cari?" + params.toString();
+                    },
+                    function(error) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Lokasi Tidak Tersedia',
+                            text: 'Silakan nyalakan GPS Anda untuk mencari kuliner terdekat',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    });
             } else {
-                alert("Browser tidak support lokasi");
-                e.target.submit();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Browser kamu tidak mendukung fitur lokasi 😢',
+                    confirmButtonText: 'OK'
+                });
             }
+        }
 
-        });
+        // document.getElementById("formCari").addEventListener("submit", function(e) {
+        //     e.preventDefault();
+        //     const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
+
+        //     const isTerdekat =
+        //         keyword.includes("terdekat") ||
+        //         keyword.includes("dekat") ||
+        //         keyword.includes("near");
+
+        //     if (isTerdekat) {
+        //         // e.preventDefault();
+        //         handleTerdekatSearch();
+        //         cariKulinerTerdekat(e);
+        //     }
+
+        //     this.submit();
+        // });
+
+        // function handleTerdekatSearch() {
+        //     if (!navigator.geolocation) {
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Browser tidak mendukung GPS',
+        //             text: 'Silakan cari dengan keyword biasa'
+        //         });
+        //         return;
+        //     }
+
+        //     navigator.geolocation.getCurrentPosition(
+        //         function(position) {
+        //             const lat = position.coords.latitude;
+        //             const lng = position.coords.longitude;
+
+        //             const params = new URLSearchParams(window.location.search);
+
+        //             params.set("lat", lat);
+        //             params.set("lng", lng);
+        //             params.set("jarak", 5);
+        //             params.set("minharga", 0);
+        //             params.set("maxharga", 500000);
+        //             params.set("keyword", "Kuliner Terdekat");
+
+        //             window.location.href = "/wisata-kuliner-cari?" + params.toString();
+        //         },
+
+        //         function(error) {
+        //             Swal.fire({
+        //                 icon: 'warning',
+        //                 title: 'Lokasi Tidak Tersedia',
+        //                 text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+        //                 showConfirmButton: false,
+        //                 timer: 2000
+        //             });
+
+        //             // return;
+        //         }
+        //     );
+        // }
 
         // const range = document.getElementById("rangeJarak");
         // const value = document.getElementById("valueJarak");

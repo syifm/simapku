@@ -43,14 +43,28 @@ class WisatawanController extends Controller
     }
 
     // Wisatawan Login
-    public function berandaWisatawan()
+    public function berandaWisatawan(Request $request)
     {
-        $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
+        $keyword = trim($request->keyword ?? '');
+
+        if ($keyword === '') {
+            $keyword = 'Rekomendasi Kuliner';
+        }
         $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
         $kulinerFavorit = WisataKuliner::where('status', 'Ditampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
-        return view('wisatawan.beranda', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
+        $user = Auth::user();
+
+        $kategoriUser = $user->wisatawan
+            ? $user->wisatawan->preferensi()->pluck('id_kategori')->toArray()
+            : [];
+        // dd([
+        //     'user' => $user->id,
+        //     'wisatawan' => $user->wisatawan,
+        //     'kategoriUser' => $kategoriUser,
+        // ]);
+        return view('wisatawan.beranda', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit', 'kategoriUser'));
     }
 
 
@@ -374,7 +388,7 @@ class WisatawanController extends Controller
 
         $wisata->kategori()->sync($kategoriIds);
 
-        return redirect()->route('beranda-Wisatawan')->with('success', 'Wisata Kuliner Berhasil Disimpan');
+        return redirect()->route('beranda-Wisatawan')->with('success', 'Wisata Kuliner berhasil disimpan');
     }
 
     public function halamanedit($id)
@@ -731,7 +745,7 @@ class WisatawanController extends Controller
         }
 
         return redirect($request->from . '&detail=' . $id)
-            ->with('success', 'Wisata Kuliner Berhasil Diperbarui!');
+            ->with('success', 'Wisata Kuliner berhasil diperbarui!');
     }
 
     private string $regencyCode = '33.74';
@@ -797,7 +811,7 @@ class WisatawanController extends Controller
             'waktu_diubah' => $waktu_diubah,
         ]);
 
-        return redirect()->route('diarikuliner')->with('success', 'Diari Kuliner Berhasil Disimpan');
+        return redirect()->route('diarikuliner')->with('success', 'Diari Kuliner berhasil disimpan');
     }
 
     public function detailDiari($id)
@@ -860,7 +874,7 @@ class WisatawanController extends Controller
         $diariKuliner->update($data);
 
         return redirect()->route('diarikuliner')
-            ->with('success', 'Diari Kuliner Berhasil Diperbarui');
+            ->with('success', 'Diari Kuliner berhasil diperbarui');
     }
 
     public function hapusDiari($id)
@@ -1025,7 +1039,7 @@ class WisatawanController extends Controller
             ->where('id_wisata_kuliner', $request->id_wisata_kuliner)
             ->delete();
 
-        return back()->with('success', 'Berhasil dihapus dari favorit');
+        return back()->with('success', 'Berhasil dihapus dari Kuliner Favorit');
     }
 
 
@@ -1154,7 +1168,7 @@ class WisatawanController extends Controller
 
         $wisata->kategori()->sync($kategoriIds);
 
-        return redirect()->route('beranda.tidaklogin')->with('success', 'Wisata Kuliner Berhasil Disimpan');
+        return redirect()->route('beranda.tidaklogin')->with('success', 'Wisata Kuliner berhasil disimpan');
     }
 
     public function search(Request $request)

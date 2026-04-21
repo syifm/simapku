@@ -1911,6 +1911,11 @@ class WisataKulinerController extends Controller
                 ->pluck('id_wisata_kuliner')
                 ->toArray();
         }
+        $user = Auth::user();
+
+        $kategoriUser = $user->wisatawan
+            ? $user->wisatawan->preferensi()->pluck('id_kategori')->toArray()
+            : [];
 
         $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
         // $query = WisataKuliner::query()
@@ -1929,14 +1934,31 @@ class WisataKulinerController extends Controller
 
         // keyword
         $keyword = trim($request->keyword ?? '');
+        $keywordLower = strtolower($keyword);
 
-        $isRekomendasi = false;
+        $isTerdekat =
+            str_contains($keywordLower, 'terdekat') ||
+            str_contains($keywordLower, 'dekat') ||
+            str_contains($keywordLower, 'near');
 
-        if ($keyword === '' || strtolower($keyword) === 'rekomendasi kuliner') {
-            $isRekomendasi = true;
-        }
+        $isRekomendasi =
+            $keyword === '' ||
+            str_contains($keywordLower, 'rekomendasi') ||
+            str_contains($keywordLower, 'kuliner') ||
+            str_contains($keywordLower, 'recommendation') ||
+            str_contains($keywordLower, 'culinary');
 
-        if (!$isRekomendasi) {
+        // $data = $query->limit(50)->get();
+
+        // $isRekomendasi = false;
+        // $isFallback = false;
+
+        
+        // if ($keyword === '' || strtolower($keyword) === 'rekomendasi kuliner') {
+        //     $isRekomendasi = true;
+        // }
+
+        if (!$isRekomendasi && !$isTerdekat) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->keyword . '%')
                     ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
@@ -1949,9 +1971,12 @@ class WisataKulinerController extends Controller
             });
         }
 
+        // $useHargaFilter =
+        //     ($request->minharga && $request->minharga != 0) ||
+        //     ($request->maxharga && $request->maxharga != 1000000);
         $useHargaFilter =
-            ($request->minharga && $request->minharga != 0) ||
-            ($request->maxharga && $request->maxharga != 1000000);
+            ($request->minharga !== null && $request->minharga != 0) ||
+            ($request->maxharga !== null && $request->maxharga != 1000000);
 
         $useRatingFilter =
             ($request->minrating && $request->minrating != 0) ||
@@ -1967,18 +1992,76 @@ class WisataKulinerController extends Controller
             ]);
         }
 
-        if ($useHargaFilter) {
-            $query->where(function ($q) use ($request) {
-                $q->where('harga_max', '>=', $request->minharga)
-                    ->where('harga_min', '<=', $request->maxharga);
-            });
-        }
+        // if ($useHargaFilter) {
+        //     $query->where(function ($q) use ($request) {
+        //         $q->where('harga_max', '>=', $request->minharga)
+        //             ->where('harga_min', '<=', $request->maxharga);
+        //     });
+        // }
+        // if ($useHargaFilter) {
+        //     $query->where(function ($q) use ($request) {
+        //         if (!is_null($request->minharga) && !is_null($request->maxharga)) {
+        //             $q->where('harga_max', '>=', $request->minharga)
+        //                 ->where('harga_min', '<=', $request->maxharga);
+        //         } elseif (!is_null($request->minharga)) {
+        //             $q->where('harga_max', '>=', $request->minharga);
+        //         } elseif (!is_null($request->maxharga)) {
+        //             $q->where('harga_min', '<=', $request->maxharga);
+        //         }
+        //     });
+        // }
+        $maxSliderHarga = 500000;
+
+        $query->where(function ($q) use ($request, $maxSliderHarga) {
+            if (!is_null($request->minharga)) {
+                $q->where(function ($sub) use ($request) {
+                    $sub->where('harga_max', '>=', $request->minharga)
+                        ->orWhereNull('harga_max');
+                });
+            }
+
+            if (!is_null($request->maxharga) && $request->maxharga < $maxSliderHarga) {
+                $q->where('harga_min', '<=', $request->maxharga);
+            }
+        });
 
         $data = $query->limit(50)->get();
 
-        if (!$isRekomendasi && $data->isEmpty()) {
-            $isRekomendasi = true;
-            $keyword = 'Rekomendasi Kuliner';
+        $isFallback = false;
+
+        if ($data->isEmpty()) {
+            // $isRekomendasi = true;
+            $isFallback = true;
+            // $fallback = WisataKuliner::with(['fasilitas','kategori'])
+            //             ->where('status','Ditampilkan');
+
+            // if ($useHargaFilter) {
+            //     $fallback->where('harga_max', '>=', $request->minharga)
+            //             ->where('harga_min', '<=', $request->maxharga);
+            // }
+
+            // if ($useRatingFilter) {
+            //     $fallback->whereBetween('penilaian', [
+            //         $request->minrating,
+            //         $request->maxrating
+            //     ]);
+            // }
+
+            // $data = $fallback->limit(50)->get();
+            // $keyword = 'Rekomendasi Kuliner';
+
+            // $keywordLower = strtolower($keyword);
+
+            // $isKeywordKhusus =
+            //     str_contains($keywordLower, 'rekomendasi') ||
+            //     str_contains($keywordLower, 'kuliner') ||
+            //     str_contains($keywordLower, 'terdekat') ||
+            //     str_contains($keywordLower, 'dekat') ||
+            //     str_contains($keywordLower, 'near');
+
+            // $isRekomendasi = true;
+
+            // $isFallback = !$isKeywordKhusus;
 
             $query2 = WisataKuliner::with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
             // $query2 = WisataKuliner::query()
@@ -1998,6 +2081,35 @@ class WisataKulinerController extends Controller
             if ($useHargaFilter) {
                 $query2->where('harga_max', '>=', $request->minharga)
                     ->where('harga_min', '<=', $request->maxharga);
+                if ($useHargaFilter) {
+                //     $query2->where(function ($q) use ($request) {
+                //         if (!is_null($request->minharga) && !is_null($request->maxharga)) {
+                //             $q->where('harga_max', '>=', $request->minharga)
+                //                 ->where('harga_min', '<=', $request->maxharga);
+                //         } elseif (!is_null($request->minharga)) {
+                //             $q->where('harga_max', '>=', $request->minharga);
+                //         } elseif (!is_null($request->maxharga)) {
+                //             $q->where('harga_min', '<=', $request->maxharga);
+                //         }
+                //     });
+                        $query2->where(function ($q) use ($request) {
+                        if (!is_null($request->minharga) && !is_null($request->maxharga)) {
+                            $q->where(function ($sub) use ($request) {
+                                $sub->where('harga_max', '>=', $request->minharga)
+                                    ->orWhereNull('harga_max'); 
+                            })
+                            ->where('harga_min', '<=', $request->maxharga);
+                        } elseif (!is_null($request->minharga)) {
+                            $q->where(function ($sub) use ($request) {
+                                $sub->where('harga_max', '>=', $request->minharga)
+                                    ->orWhereNull('harga_max');
+                            });
+                        } elseif (!is_null($request->maxharga)) {
+                            $q->where('harga_min', '<=', $request->maxharga);
+                        }
+                    });
+                }
+                
             }
 
             $data = $query2->limit(50)->get();
@@ -2012,8 +2124,6 @@ class WisataKulinerController extends Controller
         }
 
         if ($request->lat && $request->lng && count($data) > 0) {
-
-            // FIX: haversine dihitung di PHP dulu sebagai fallback
             foreach ($data as $item) {
                 $item->distance_km = 6371 * 2 * atan2(
                     sqrt(
@@ -2031,10 +2141,9 @@ class WisataKulinerController extends Controller
                 );
             }
 
-            // FIX: filter jarak pakai distance_km yang sudah dihitung
-            if ($useJarakFilter) {
-                $data = $data->filter(fn($item) => $item->distance_km <= $request->jarak)->values();
-            }
+            // if ($useJarakFilter) {
+            //     $data = $data->filter(fn($item) => $item->distance_km <= $request->jarak)->values();
+            // }
 
             $origin = $request->lat . ',' . $request->lng;
 
@@ -2051,13 +2160,23 @@ class WisataKulinerController extends Controller
 
             foreach ($data as $index => $item) {
                 $distanceMeter = $response['rows'][0]['elements'][$index]['distance']['value'] ?? null;
-                $item->distance_km = $distanceMeter ? $distanceMeter / 1000 : $item->distance_km; // FIX: fallback ke haversine
+                $item->distance_km = $distanceMeter ? $distanceMeter / 1000 : $item->distance_km; 
+            }
+
+            // if ($useJarakFilter) {
+            //     $data = $data->filter(fn($item) => $item->distance_km <= $request->jarak)->values();
+            // }
+            $maxSliderJarak = 10;
+
+            if ($useJarakFilter) {
+                if ($request->jarak < $maxSliderJarak) {
+                    $data = $data->filter(fn($item) => $item->distance_km <= $request->jarak)->values();
+                } 
             }
         }
 
         $totalFasilitasUser = count($request->fasilitas ?? []);
 
-        // FIX: kategori & fasilitas match pakai bulk query, bukan per-item
         $kategoriFilter = $request->kategori ?? [];
         $fasilitasFilter = $request->fasilitas ?? [];
         $cariKategori = !empty($kategoriFilter) ? $kategoriFilter : $preferensiKuliner;
@@ -2112,9 +2231,22 @@ class WisataKulinerController extends Controller
                 ($fasilitasMatch * 5);
         }
 
-        $data = $data->sortByDesc('score')->values();
+        // if ($isFallback && $data->isEmpty()) {
+        //     $query3 = WisataKuliner::with(['fasilitas', 'kategori'])
+        //         ->where('status', 'Ditampilkan');
 
-        return view('wisatawan.pencarian.hasil-pencarian', compact('data', 'kategori', 'fasilitas', 'favoritIds', 'keyword'));
+        //     $data = $query3->limit(50)->get();
+
+        //     $isFallback = true;
+        // }
+        // $data = $data->sortByDesc('score')->values();
+        if ($isTerdekat && $request->lat && $request->lng) {
+            $data = $data->sortBy('distance_km')->values();
+        } else {
+            $data = $data->sortByDesc('score')->values();
+        }
+
+        return view('wisatawan.pencarian.hasil-pencarian', compact('data', 'kategori', 'fasilitas', 'favoritIds', 'keyword', 'kategoriUser', 'isFallback'));
     }
 
     public function coba()

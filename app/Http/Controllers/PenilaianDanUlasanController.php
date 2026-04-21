@@ -132,10 +132,21 @@ class PenilaianDanUlasanController extends Controller
             $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
         }
 
-        $range = explode('-', $request->harga_per_orang);
+        // $range = explode('-', $request->harga_per_orang);
+        $hargaperorangnya = $request->harga_per_orang;
 
-        $min = $range[0] ?? null;
-        $max = $range[1] ?? null;
+        // $min = $range[0] ?? null;
+        // $max = $range[1] ?? null;
+
+        if (str_contains($hargaperorangnya, '+')) {
+            $min = (int) str_replace('+', '', $hargaperorangnya);
+            $max = null;
+        } elseif (str_contains($hargaperorangnya, '-')) {
+            [$min, $max] = explode('-', $hargaperorangnya);
+
+            $min = (int) $min;
+            $max = (int) $max;
+        }
 
         $ulasan = null;
 

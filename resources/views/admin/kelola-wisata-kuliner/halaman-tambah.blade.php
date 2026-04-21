@@ -942,6 +942,7 @@
                         document.getElementById('longitude').value = lng;
 
                         updateAlamatDariKoordinat(lat, lng);
+                        // cekLokasi();
                     }
                 });
             });

@@ -277,7 +277,9 @@
 
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Preferensi berhasil dihapus',
+                                    title: 'Berhasil!',
+                                    text: 'Preferensi berhasil dihapus',
+                                    showConfirmButton: false,
                                     timer: 2000
                                 });
                             }

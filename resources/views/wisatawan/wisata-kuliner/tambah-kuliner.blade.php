@@ -1333,6 +1333,12 @@
                     }
                 }
             });
+            $("#selectmhs").on('select2:open', function() {
+                let searchField = document.querySelector('.select2-container--open .select2-search__field');
+                if (searchField) {
+                    searchField.placeholder = 'Ketik disini untuk mencari atau menambah wisata kuliner';
+                }
+            });
 
             $("#selectmk").attr("multiple", "multiple");
             $("#selectmk").select2({

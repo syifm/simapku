@@ -24,7 +24,7 @@ return new class extends Migration
             $table->double('latitude')->unique();
             $table->double('longitude')->unique();
             $table->integer('harga_min');
-            $table->integer('harga_max');
+            $table->integer('harga_max')->nullable();;
             $table->double('penilaian');
             $table->string('email_pengaju', 70);
             $table->unsignedInteger('id_wisatawan')->nullable();

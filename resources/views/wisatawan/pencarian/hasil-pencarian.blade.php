@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Beranda</title>
+    <title>SIMAPKU | Wisata Kuliner</title>
     {{-- <link rel="icon" type="image/png" href="{{ asset('simapku.png') }}"> --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -402,7 +402,7 @@
             </div>
 
             <!-- search bar -->
-            <form action="{{ route('wisatakulinerhalaman') }}" method="GET">
+            <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
                 @csrf
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-2xl z-20">
@@ -410,7 +410,7 @@
                             class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
                                 class="flex-1 px-5 py-3 focus:outline-none" id="searchBar"
-                                value="{{ request('keyword', 'Rekomendasi Kuliner') }}">
+                                value="{{ request('keyword') }}">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -470,7 +470,7 @@
                                         data-theme="light" multiple data-multi-select>
                                         @foreach ($kategori as $item)
                                             <option value="{{ $item->id_kategori }}"
-                                                {{ in_array($item->id_kategori, request('kategori', [])) ? 'selected' : '' }}>
+                                                {{ in_array($item->id_kategori, request('kategori', $kategoriUser)) ? 'selected' : '' }}>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach
@@ -486,7 +486,7 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="minharga"
                                                 class="min-price w-[95px] p-2 outline-none border-0"
-                                                value="{{ request('minharga', 0) }}" min="0" max="1000000"
+                                                value="{{ request('minharga', 0) }}" min="0" max="500000"
                                                 step="25000" />
                                         </div>
 
@@ -494,18 +494,18 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="maxharga"
                                                 class="max-price w-[95px] p-2 outline-none border-0"
-                                                value="{{ request('maxharga', 1000000) }}" min="0"
+                                                value="{{ request('maxharga', 500000) }}" min="0"
                                                 max="1000000" step="25000" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
                                             <input type="range" class="min-input"
-                                                value="{{ request('minharga', 0) }}" min="0" max="1000000"
+                                                value="{{ request('minharga', 0) }}" min="0" max="500000"
                                                 step="25000" />
                                             <input type="range" class="max-input"
-                                                value="{{ request('maxharga', 1000000) }}" min="0"
-                                                max="1000000" step="25000" />
+                                                value="{{ request('maxharga', 500000) }}" min="0"
+                                                max="500000" step="25000" />
 
                                             <div class="slider">
                                                 <div class="progress"></div>
@@ -526,7 +526,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-
                                 <div class="container">
                                     <label class="font-medium">Nilai Kuliner</label>
 
@@ -572,7 +571,15 @@
                                         </div>
                                     </div>
                                 </div>
+
+
                             </div>
+                            {{-- <div>
+                                <p class="text-xs text-gray-600 mt-2 text-right">
+                                    Cari Wilayah dengan mengaktifkan GPS atau melalui
+                                    kolom Kecamatan dan Kelurahan
+                                </p>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -601,17 +608,27 @@
             </div> --}}
             {{-- <div class="col-span-7 space-y-4"> --}}
             <div id="listKuliner" class="col-span-7 space-y-4 overflow-y-auto pr-2">
-                @foreach ($data as $kuliner)
+                @if ($isFallback)
+                    <div class="text-center text-sm text-gray-500 mb-3">
+                        Hasil tidak ditemukan untuk
+                        <span class="font-semibold">"{{ $keyword }}"</span>.
+                        Menampilkan rekomendasi kuliner yang mungkin Anda suka
+                    </div>
+                @endif
+                {{-- @foreach ($data as $kuliner) --}}
+                @forelse ($data as $kuliner)
                     {{-- <div
                         class="flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition"> --}}
                     {{-- <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
                         data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"> --}}
+
                     <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
                         data-id="{{ $kuliner->id_wisata_kuliner }}" data-nama="{{ $kuliner->nama }}"
                         data-alamat="{{ $kuliner->alamat }}" data-min="{{ $kuliner->harga_min }}"
                         data-max="{{ $kuliner->harga_max }}" data-foto="{{ asset('storage/' . $kuliner->foto) }}"
                         data-fasilitas='@json($kuliner->fasilitas)' data-kategori='@json($kuliner->kategori)'
-                        data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}">
+                        data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"
+                        data-no_telp="{{ $kuliner->no_telp }}" data-email="{{ $kuliner->email }}">
 
                         <div class="flex gap-4 items-center flex-1">
 
@@ -689,7 +706,19 @@
                         </div>
 
                     </div>
-                @endforeach
+                    {{-- @endforeach --}}
+                @empty
+                    <div class="col-span-7 -mt-5 flex items-center justify-center h-full">
+                        <div class="text-center">
+                            <p class="text-gray-800 text-lg font-semibold">
+                                Mohon Maaf Wisata Kuliner Tidak Ditemukan
+                            </p>
+                            <p class="text-gray-600 text-sm mt-2">
+                                Coba ubah keyword atau filter pencarian Anda
+                            </p>
+                        </div>
+                    </div>
+                @endforelse
             </div>
 
             {{-- <div id="detailPanel"
@@ -795,8 +824,7 @@
                     <!-- Harga per orang -->
                     <div>
                         <label class="block text-sm font-medium text-gray-800 mb-1" for="harga_per_orang"><span>Harga
-                                Per Orang</span>
-                            <span class="text-red-500 font-bold">*</span></label>
+                                Per Orang</span></label>
                         {{-- <input type="number" id="harga_per_orang" name="harga_per_orang" rows="6"
                             class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required>{{ old('harga_per_orang') }}</input> --}}
@@ -807,11 +835,23 @@
                                 Pilih rentang harga untuk per orang
                             </option>
 
-                            @for ($i = 0; $i < 300000; $i += 25000)
+                            {{-- @for ($i = 0; $i < 300000; $i += 25000)
                                 <option value="{{ $i }}-{{ $i + 25000 }}">
                                     Rp {{ number_format($i, 0, ',', '.') }} -
                                     {{ number_format($i + 25000, 0, ',', '.') }}
                                 </option>
+                            @endfor --}}
+                            @for ($i = 0; $i <= 500000; $i += 25000)
+                                @if ($i == 500000)
+                                    <option value="500000+">
+                                        Rp 500.000+
+                                    </option>
+                                @else
+                                    <option value="{{ $i }}-{{ $i + 25000 }}">
+                                        Rp {{ number_format($i, 0, ',', '.') }} -
+                                        {{ number_format($i + 25000, 0, ',', '.') }}
+                                    </option>
+                                @endif
                             @endfor
                         </select>
                         @error('harga_per_orang')
@@ -1228,11 +1268,19 @@
             searchPanel.classList.toggle("hidden");
         });
 
+
         const advancedBtn = document.getElementById("advancedBtn");
         const advancedFilter = document.getElementById("advancedFilter");
 
         advancedBtn.addEventListener("click", () => {
             advancedFilter.classList.toggle("hidden");
+        });
+
+        const defaultText = 'Rekomendasi Kuliner';
+        searchBar.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.value = defaultText;
+            }
         });
 
         document.addEventListener("click", function(e) {
@@ -1390,6 +1438,10 @@
 
                 let nama = this.dataset.nama;
                 let alamat = this.dataset.alamat;
+                let no_telp = this.dataset.no_telp;
+                let email = this.dataset.email;
+                let penilaian = this.dataset.penilaian;
+
                 let foto = this.dataset.foto;
                 let lat = parseFloat(this.dataset.lat);
                 let lng = parseFloat(this.dataset.lng);
@@ -1438,6 +1490,9 @@
                 `;
                 }
 
+                console.log(email);
+                console.log(penilaian);
+
                 // Fasilitas
                 let fasilitasHTML = '';
 
@@ -1450,6 +1505,36 @@
                         <p class="text-sm font-semibold text-gray-500">Fasilitas</p>
                         <div class="flex flex-wrap gap-2 mt-1">
                             ${isiFasilitas}
+                        </div>
+                    `;
+                }
+
+                let kontakHTML = '';
+
+
+                if (no_telp || email) {
+                    let isiKontak = '';
+
+                    if (no_telp) {
+                        isiKontak += `
+                            <span class="inline-block px-2 py-1 bg-gray-200 text-black rounded-md text-sm">
+                                📞 ${no_telp}
+                            </span>
+                        `;
+                    }
+
+                    if (email) {
+                        isiKontak += `
+                            <span class="inline-block px-2 py-1 bg-gray-200 text-black rounded-md text-sm">
+                                ✉️ ${email}
+                            </span>
+                        `;
+                    }
+
+                    kontakHTML = `
+                        <p class="text-sm font-semibold text-gray-500">Kontak</p>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            ${isiKontak}
                         </div>
                     `;
                 }
@@ -1474,6 +1559,9 @@
 
                 <p class="text-gray-600">${alamat}</p>
 
+                <div class="mt-3">
+                    ${kontakHTML}
+                </div>
 
                 <div class="mt-3">
                     ${kategoriHTML}
@@ -1862,7 +1950,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Berhasil ditambahkan ke kuliner favorit',
+                        text: 'Berhasil ditambahkan ke Kuliner Favorit',
                         timer: 1500,
                         showConfirmButton: false
                     });
@@ -1898,7 +1986,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Berhasil dihapus dari kuliner favorit',
+                        text: 'Berhasil dihapus dari Kuliner Favorit',
                         showConfirmButton: false,
                         timer: 3000
                     });
@@ -2060,6 +2148,145 @@
                 alert('Mohon pilih penilaian bintang terlebih dahulu.')
             }
         })
+
+        document.getElementById("formCari").addEventListener("submit", function(e) {
+            if (searchBar.value.trim() === '') {
+                searchBar.value = defaultText;
+            }
+            e.preventDefault();
+
+            const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
+
+            const isTerdekat =
+                keyword.includes("terdekat") ||
+                keyword.includes("dekat") ||
+                keyword.includes("near");
+
+            if (isTerdekat) {
+
+                if (!navigator.geolocation) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "GPS tidak tersedia",
+                        text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        inputJarakDua.value = 5;
+                        nilaiJarakDua.value = 5;
+                        updateProgressJarakDua();
+
+                        minInput.value = 0;
+                        maxInput.value = 500000;
+                        minPriceInput.value = 0;
+                        maxPriceInput.value = 500000;
+                        updateProgress();
+
+                        const minRating = document.querySelector(".min-rating");
+                        const maxRating = document.querySelector(".max-rating");
+
+                        if (minRating && maxRating) {
+                            minRating.value = 0;
+                            maxRating.value = 5;
+                        }
+
+                        document.getElementById("lat").value = lat;
+                        document.getElementById("lng").value = lng;
+
+                        e.target.submit();
+                    },
+
+                    function() {
+                        Swal.fire({
+                            icon: "warning",
+                            title: 'Lokasi Tidak Tersedia',
+                            text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                );
+
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById("lat").value = position.coords.latitude;
+                    document.getElementById("lng").value = position.coords.longitude;
+                    e.target.submit();
+                },
+                function() {
+                    document.getElementById("lat").value = -6.99;
+                    document.getElementById("lng").value = 110.42;
+                    e.target.submit();
+                }
+            );
+        });
+
+        function cariKulinerTerdekat() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    inputJarakDua.value = 5;
+                    nilaiJarakDua.value = 5;
+                    updateProgressJarakDua();
+
+                    minInput.value = 0;
+                    maxInput.value = 500000;
+                    minPriceInput.value = 0;
+                    maxPriceInput.value = 500000;
+                    updateProgress();
+
+                    const minRating = document.querySelector(".min-rating");
+                    const maxRating = document.querySelector(".max-rating");
+
+                    if (minRating && maxRating) {
+                        minRating.value = 0;
+                        maxRating.value = 5;
+                    }
+
+                    const params = new URLSearchParams(window.location.search);
+
+                    params.set("lat", lat);
+                    params.set("lng", lng);
+                    params.set("jarak", 5);
+                    params.set("minharga", 0);
+                    params.set("maxharga", 500000);
+                    params.set("minrating", 0);
+                    params.set("maxrating", 5);
+                    params.set("keyword", "Kuliner Terdekat");
+
+                    window.location.href =
+                        window.location.pathname + "?" + params.toString();
+                }, function(error) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Lokasi Tidak Tersedia',
+                        text: 'Silakan nyalakan GPS Anda untuk mencari kuliner terdekat',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Browser kamu tidak mendukung fitur lokasi 😢',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
 
         // async function cariKulinerTerdekat() {
 

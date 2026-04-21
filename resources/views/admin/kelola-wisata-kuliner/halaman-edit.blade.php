@@ -287,8 +287,8 @@
                                 <label class="block text-sm font-medium text-gray-800 mb-1" for="no_telp"><span>Nomor
                                         Telepon</span></label>
                                 <input type="text" id="no_telp" name="no_telp"
-                                    value="{{ old('no_telp', $wisataKuliner->no_telp) }}"
-                                    pattern="\d{10,15}" minlength="10" maxlength="15"
+                                    value="{{ old('no_telp', $wisataKuliner->no_telp) }}" pattern="\d{10,15}"
+                                    minlength="10" maxlength="15"
                                     class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <p class="text-xs text-gray-600 mt-2">
                                     Nomor Telepon hanya boleh berisi angka, tanpa spasi dan simbol.
@@ -1100,6 +1100,7 @@
                         document.getElementById('longitude').value = lng;
 
                         updateAlamatDariKoordinat(lat, lng);
+                        // cekLokasi();
                     }
                 });
             });
@@ -1467,6 +1468,7 @@
             if (current === lastCheckedLatLng) return;
             lastCheckedLatLng = current;
 
+
             fetch('/cek-lokasi', {
                     method: 'POST',
                     headers: {
@@ -1555,6 +1557,12 @@
                             })
                         }
                     }
+                }
+            });
+            $("#selectmhsadmin").on('select2:open', function() {
+                let searchField = document.querySelector('.select2-container--open .select2-search__field');
+                if (searchField) {
+                    searchField.placeholder = 'Ketik disini untuk mencari atau menambah wisata kuliner';
                 }
             });
             // var idmhs = $("#selectmhsadmin").val();

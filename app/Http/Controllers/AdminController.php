@@ -288,7 +288,7 @@ class AdminController extends Controller
 
         $wisata->kategori()->sync($kategoriIds);
 
-        return redirect()->route('kelolawisatakuliner')->with('success', 'Wisata Kuliner Berhasil Disimpan');
+        return redirect()->route('kelolawisatakuliner')->with('success', 'Wisata Kuliner berhasil disimpan');
     }
 
     private string $regencyCode = '33.74';
@@ -461,31 +461,31 @@ class AdminController extends Controller
             $wisata->kategori()->sync($kategoriIds);
 
 
-            $favorit = KulinerFavorit::where('id_wisata_kuliner', $idWisata)->get();
-            $kategoriWisata = $wisata->kategori->pluck('id_kategori')->toArray();
-            foreach ($favorit as $f) {
-                $id_wisatawan = $f->id_wisatawan;
+            // $favorit = KulinerFavorit::where('id_wisata_kuliner', $idWisata)->get();
+            // $kategoriWisata = $wisata->kategori->pluck('id_kategori')->toArray();
+            // foreach ($favorit as $f) {
+            //     $id_wisatawan = $f->id_wisatawan;
 
-                foreach ($kategoriWisata as $id_kategori) {
+            //     foreach ($kategoriWisata as $id_kategori) {
 
-                    $sudahAda = Preferensi::where('id_wisatawan', $id_wisatawan)
-                        ->where('id_kategori', $id_kategori)
-                        ->exists();
+            //         $sudahAda = Preferensi::where('id_wisatawan', $id_wisatawan)
+            //             ->where('id_kategori', $id_kategori)
+            //             ->exists();
 
-                    if (!$sudahAda) {
-                        Preferensi::create([
-                            'id_wisatawan' => $id_wisatawan,
-                            'id_kategori' => $id_kategori,
-                            'jumlah' => 1
-                        ]);
-                    }
-                }
-            }
+            //         if (!$sudahAda) {
+            //             Preferensi::create([
+            //                 'id_wisatawan' => $id_wisatawan,
+            //                 'id_kategori' => $id_kategori,
+            //                 'jumlah' => 1
+            //             ]);
+            //         }
+            //     }
+            // }
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
 
-        return redirect()->route('kelolawisatakuliner')->with('success', 'Wisata Kuliner Berhasil Diperbarui');
+        return redirect()->route('kelolawisatakuliner')->with('success', 'Wisata Kuliner berhasil diperbarui');
     }
 
     public function hapus($id)
@@ -500,7 +500,7 @@ class AdminController extends Controller
 
             $wisataKuliner->delete();
 
-            return redirect()->back()->with('success', 'Wisata Kuliner Berhasil Dihapus');
+            return redirect()->back()->with('success', 'Wisata Kuliner berhasil dihapus');
         } catch (Exception $e) {
             Log::error('Error in AdminController@destroy: ' . $e->getMessage());
             return back()->with('error', 'Terjadi Kesalahan Saat Menghapus Wisata Kuliner.');
@@ -696,38 +696,67 @@ class AdminController extends Controller
                     'waktu_diubah' => $waktu_diubah,
                 ]);
 
+                // $kategoriLama = $wisata->kategori()->pluck('id_kategori')->toArray();
+
                 $fasilitasIds = $pengajuan->fasilitas()->pluck('fasilitas.id_fasilitas')->toArray();
                 $kategoriIds = $pengajuan->kategori()->pluck('kategori.id_kategori')->toArray();
-
-                $kategoriLama = $wisata->kategori()->pluck('id_kategori')->toArray();
 
                 $wisata->fasilitas()->sync($fasilitasIds);
                 $wisata->kategori()->sync($kategoriIds);
 
-                $kategoriBaru = $kategoriIds;
-                $kategoriDihapus = array_diff($kategoriLama, $kategoriBaru);
-                $idWisata = $wisata->id_wisata_kuliner;
+                // $kategoriBaru = $kategoriIds;
+                // $kategoriDihapus = array_diff($kategoriLama, $kategoriBaru);
+                // $idWisata = $wisata->id_wisata_kuliner;
 
-                $favorit = KulinerFavorit::where('id_wisata_kuliner', $idWisata)->get();
-                $kategoriWisata = $wisata->kategori->pluck('id_kategori')->toArray();
-                foreach ($favorit as $f) {
-                    $id_wisatawan = $f->id_wisatawan;
+                // $favorit = KulinerFavorit::where('id_wisata_kuliner', $idWisata)->get();
+                // $kategoriWisata = $wisata->kategori->pluck('id_kategori')->toArray();
+                // foreach ($favorit as $f) {
+                //     $id_wisatawan = $f->id_wisatawan;
 
-                    foreach ($kategoriWisata as $id_kategori) {
+                //     foreach ($kategoriWisata as $id_kategori) {
 
-                        $sudahAda = Preferensi::where('id_wisatawan', $id_wisatawan)
-                            ->where('id_kategori', $id_kategori)
-                            ->exists();
+                //         $sudahAda = Preferensi::where('id_wisatawan', $id_wisatawan)
+                //             ->where('id_kategori', $id_kategori)
+                //             ->exists();
 
-                        if (!$sudahAda) {
-                            Preferensi::create([
-                                'id_wisatawan' => $id_wisatawan,
-                                'id_kategori' => $id_kategori,
-                                'jumlah' => 1
-                            ]);
-                        }
-                    }
-                }
+                //         if (!$sudahAda) {
+                //             Preferensi::create([
+                //                 'id_wisatawan' => $id_wisatawan,
+                //                 'id_kategori' => $id_kategori,
+                //                 'jumlah' => 1
+                //             ]);
+                //         }
+                //     }
+                // }
+                // $favorit = KulinerFavorit::where('id_wisata_kuliner', $idWisata)->get();
+
+                // foreach ($favorit as $f) {
+                //     $id_wisatawan = $f->id_wisatawan;
+
+                //     foreach ($kategoriDihapus as $id_kategori) {
+
+                //         $masihDipakai = KulinerFavorit::where('id_wisatawan', $id_wisatawan)
+                //             ->whereHas('wisata.kategori', function ($q) use ($id_kategori) {
+                //                 $q->where('id_kategori', $id_kategori);
+                //             })
+                //             ->exists();
+
+                //         if (!$masihDipakai) {
+                //             Preferensi::where('id_wisatawan', $id_wisatawan)
+                //                 ->where('id_kategori', $id_kategori)
+                //                 ->delete();
+                //         }
+                //     }
+
+                //     foreach ($kategoriBaru as $id_kategori) {
+                //         Preferensi::firstOrCreate([
+                //             'id_wisatawan' => $id_wisatawan,
+                //             'id_kategori' => $id_kategori
+                //         ], [
+                //             'jumlah' => 1
+                //         ]);
+                //     }
+                // }
 
                 $pengajuan->update([
                     'status' => 'Disetujui',
@@ -779,28 +808,28 @@ class AdminController extends Controller
                 $wisata->fasilitas()->sync($fasilitasIds);
                 $wisata->kategori()->sync($kategoriIds);
 
-                $idWisata = $wisata->id_wisata_kuliner;
+                // $idWisata = $wisata->id_wisata_kuliner;
 
-                $favorit = KulinerFavorit::where('id_wisata_kuliner', $idWisata)->get();
-                $kategoriWisata = $wisata->kategori->pluck('id_kategori')->toArray();
-                foreach ($favorit as $f) {
-                    $id_wisatawan = $f->id_wisatawan;
+                // $favorit = KulinerFavorit::where('id_wisata_kuliner', $idWisata)->get();
+                // $kategoriWisata = $wisata->kategori->pluck('id_kategori')->toArray();
+                // foreach ($favorit as $f) {
+                //     $id_wisatawan = $f->id_wisatawan;
 
-                    foreach ($kategoriWisata as $id_kategori) {
+                //     foreach ($kategoriWisata as $id_kategori) {
 
-                        $sudahAda = Preferensi::where('id_wisatawan', $id_wisatawan)
-                            ->where('id_kategori', $id_kategori)
-                            ->exists();
+                //         $sudahAda = Preferensi::where('id_wisatawan', $id_wisatawan)
+                //             ->where('id_kategori', $id_kategori)
+                //             ->exists();
 
-                        if (!$sudahAda) {
-                            Preferensi::create([
-                                'id_wisatawan' => $id_wisatawan,
-                                'id_kategori' => $id_kategori,
-                                'jumlah' => 1
-                            ]);
-                        }
-                    }
-                }
+                //         if (!$sudahAda) {
+                //             Preferensi::create([
+                //                 'id_wisatawan' => $id_wisatawan,
+                //                 'id_kategori' => $id_kategori,
+                //                 'jumlah' => 1
+                //             ]);
+                //         }
+                //     }
+                // }
 
                 $pengajuan->update([
                     'status' => 'Disetujui',
@@ -859,7 +888,7 @@ class AdminController extends Controller
             'success' => true,
             'wisataKuliner' => $wisataKuliner,
             'status' => $wisataKuliner->status,
-            'message' => 'Wisata Kuliner Berhasil Ditampilkan'
+            'message' => 'Wisata Kuliner berhasil ditampilkan'
         ]);
     }
 

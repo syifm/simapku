@@ -2898,7 +2898,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Berhasil ditambahkan ke kuliner favorit',
+                        text: 'Berhasil ditambahkan ke Kuliner Favorit',
                         timer: 1500,
                         showConfirmButton: false
                     });
@@ -2934,7 +2934,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Berhasil dihapus dari kuliner favorit',
+                        text: 'Berhasil dihapus dari Kuliner Favorit',
                         showConfirmButton: false,
                         timer: 3000
                     });

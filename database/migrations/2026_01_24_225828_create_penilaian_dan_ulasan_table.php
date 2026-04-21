@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedInteger('penilaian');
             $table->string('ulasan');
             $table->string('foto_ulasan')->nullable();
-            $table->unsignedInteger('harga_min');
-            $table->unsignedInteger('harga_max');
+            $table->unsignedInteger('harga_min')->nullable();
+            $table->unsignedInteger('harga_max')->nullable();
             $table->string('email_pengulas', 70);
             $table->unsignedInteger('id_wisatawan')->nullable();
             $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');

@@ -336,12 +336,11 @@
                 const form = this.closest('form');
 
                 Swal.fire({
-                    // title: 'Yakin?',
-                    text: "Hapus Data Favorit?",
+                    title: "Hapus Data Favorit?",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#FFA319',
-                    cancelButtonColor: '#d33',
+                    // cancelButtonColor: '#d33',
                     confirmButtonText: 'Ya',
                     cancelButtonText: 'Batal'
                 }).then((result) => {
