@@ -19,6 +19,7 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet"
@@ -435,9 +436,9 @@
 
     @include('layouts.header-wisatawan')
     @include('layouts.sidebar-wisatawan')
-
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
-    <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
+    <div class="pt-[10px] pl-28 pr-[30px] pb-[5px]">
         <div class="flex flex-col gap-2">
             {{-- <h2 class="text-2xl text-black font-bold mb-4">
                 Selamat datang di SIMAPKU Semarang, temukan kuliner Semarang yang cocok untuk Anda disini!
@@ -771,56 +772,54 @@
 
         </div>
 
-        @if ($kulinerBaru == [])
-            <div class="mb-8">
-                <p class="text-lg text-black font-bold mt-4 mb-4">
-                    Kuliner Baru Ditambahkan
-                </p>
-                <div class="grid grid-cols-4 gap-8">
-                    @foreach ($kulinerBaru as $item)
-                        <a class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+        <div class="mb-2">
+            <p class="text-lg text-black font-bold mt-4 mb-4">
+                Kuliner Baru Ditambahkan
+            </p>
+            <div class="grid grid-cols-4 gap-8">
+                @foreach ($kulinerBaru as $item)
+                    <a href="#"
+                        class="pointer-events-none relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
-                            <img src="{{ asset('storage/' . $item->foto) }}"
-                                class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+                        <img src="{{ asset('storage/' . $item->foto) }}"
+                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
 
-                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
 
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="text-white font-semibold text-lg text-center px-2">
-                                    {{ $item->nama }}
-                                </span>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-semibold text-lg text-center px-2">
+                                {{ $item->nama }}
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
             </div>
-        @endif
+        </div>
 
-        @if ($kulinerFavorit == [])
-            <div class="mb-8">
-                <p class="text-lg text-black font-bold mt-4 mb-4">
-                    Kuliner Banyak Disukai
-                </p>
-                <div class="grid grid-cols-4 gap-8">
-                    @foreach ($kulinerFavorit as $item)
-                        <a class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+        <div class="mb-8">
+            <p class="text-lg text-black font-bold mt-4 mb-4">
+                Kuliner Banyak Disukai
+            </p>
+            <div class="grid grid-cols-4 gap-8">
+                @foreach ($kulinerFavorit as $item)
+                    <a href="#"
+                        class="pointer-events-none relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
-                            <img src="{{ asset('storage/' . $item->foto) }}"
-                                class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+                        <img src="{{ asset('storage/' . $item->foto) }}"
+                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
 
-                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
 
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="text-white font-semibold text-lg text-center px-2">
-                                    {{ $item->nama }}
-                                </span>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-semibold text-lg text-center px-2">
+                                {{ $item->nama }}
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
             </div>
-        @endif
+
+        </div>
 
 
         {{-- <div class="wrapper">

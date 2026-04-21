@@ -73,8 +73,8 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
 
     Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'search'])->name('wisatakulinerhalaman');
     Route::post('/wisatawan/penilaiandanulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('penilaianulasan.simpan');
-    Route::get('/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('penilaianulasan.detail');
-    Route::get('/ulasan/modalulasan/{id}', [PenilaianDanUlasanController::class, 'getUlasan']);
+    Route::get('/wisatawan/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('penilaianulasan.detail');
+    Route::get('/wisatawan/ulasan/modalulasan/{id}', [PenilaianDanUlasanController::class, 'getUlasan']);
 
     // Icon Favorit
     Route::get('/wisatawan/favorit', [WisatawanController::class, 'halamanFavorit'])->name('favorit');
@@ -88,8 +88,6 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/editwisatakuliner/{id}', [WisatawanController::class, 'halamanedit'])->name('editwisatakuliner');
     Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
     // Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
-
-    Route::post('/wisatawan/cek-lokasi', [WisatawanController::class, 'cekLokasi']);
 
     Route::get('/detailkuliner/{id}', [KulinerFavoritController::class, 'detail'])->name('detailkuliner');
     Route::get('/adatag', [WisatawanController::class, 'adatags']);
@@ -116,10 +114,12 @@ Route::get('/', [WisatawanController::class, 'berandaWisatawanTidakLogin'])->nam
 Route::get('/favorit', [WisatawanController::class, 'halamanFavoritTidakLogin'])->name('favorit.tidaklogin');
 Route::get('/tambahwisatakuliner', [WisatawanController::class, 'halamantambahTidakLogin'])->name('tambahwisatakuliner.tidaklogin');
 Route::post('/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpankulinerTidakLogin'])->name('simpanwisatakuliner.tidaklogin');
+Route::get('/editwisatakuliner/{id}', [WisatawanController::class, 'halamaneditTidakLogin'])->name('editwisatakuliner.tidaklogin');
+Route::put('/editwisatakuliner/update/{id}', [WisatawanController::class, 'updateTidakLogin'])->name('updatewisatakuliner.tidaklogin');
 Route::get('/carikuliner', [WisatawanController::class, 'search'])->name('carikuliner.tidaklogin');
-Route::post('/penilaiandanulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('simpanpenilaianulasan.tidaklogin');
-Route::get('/penilaiandanulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('detailpenilaianulasan.tidaklogin');
-Route::get('/penilaiandanulasan/modalulasan/{id}', [PenilaianDanUlasanController::class, 'getUlasan']);
+Route::post('/ulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('simpanpenilaianulasan.tidaklogin');
+Route::get('/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('detailpenilaianulasan.tidaklogin');
+Route::get('/ulasan/modalulasan/{id}', [PenilaianDanUlasanController::class, 'getUlasan']);
 
 // Event
 Route::get('/wisatawan/eventsemarang/dugderan', [WisatawanController::class, 'dugderan'])->name('dugderan');
@@ -134,6 +134,8 @@ Route::get('/selectmk/{id}', [WisatawanController::class, 'selectmk'])->name('se
 Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
 Route::get('/selectkategori/{id}', [WisatawanController::class, 'selectkategori'])->name('select.kategori');
 Route::get('/ngampukategori/{id}', [WisatawanController::class, 'getKategori'])->name('getngampukategori');
+Route::post('/wisatawan/cek-lokasi', [WisatawanController::class, 'cekLokasi']);
+
 
 
 

@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.css">
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
 
 
     {{-- <link rel='stylesheet'
@@ -628,7 +630,8 @@
                         data-max="{{ $kuliner->harga_max }}" data-foto="{{ asset('storage/' . $kuliner->foto) }}"
                         data-fasilitas='@json($kuliner->fasilitas)' data-kategori='@json($kuliner->kategori)'
                         data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"
-                        data-no_telp="{{ $kuliner->no_telp }}" data-email="{{ $kuliner->email }}">
+                        data-no_telp="{{ $kuliner->no_telp }}" data-email="{{ $kuliner->email }}"
+                        data-deskripsi="{{ $kuliner->deskripsi }}">
 
                         <div class="flex gap-4 items-center flex-1">
 
@@ -1325,7 +1328,9 @@
             });
 
             directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                suppressMarkers: true
+            });
             directionsRenderer.setMap(map);
 
             tampilkanSemuaKuliner();
@@ -1441,6 +1446,7 @@
                 let no_telp = this.dataset.no_telp;
                 let email = this.dataset.email;
                 let penilaian = this.dataset.penilaian;
+                let deskripsi = this.dataset.deskripsi;
 
                 let foto = this.dataset.foto;
                 let lat = parseFloat(this.dataset.lat);
@@ -1509,34 +1515,69 @@
                     `;
                 }
 
-                let kontakHTML = '';
+                // let kontakHTML = '';
 
 
-                if (no_telp || email) {
-                    let isiKontak = '';
+                // if (no_telp || email) {
+                //     let isiKontak = '';
 
-                    if (no_telp) {
-                        isiKontak += `
-                            <span class="inline-block px-2 py-1 bg-gray-200 text-black rounded-md text-sm">
-                                📞 ${no_telp}
-                            </span>
-                        `;
-                    }
+                //     if (no_telp) {
+                //         isiKontak += `
+            //             <div class="flex items-center gap-2 text-sm text-gray-700">
+            //                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            //                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.110-.902.055-1.173.417l-.970 1.293c-.282.376-.769.542-1.210.380a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.380-1.210l1.293-.970c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+            //                 </svg>
+            //                 <span>${no_telp}</span>
+            //             </div>
+            //         `;
+                //     }
 
-                    if (email) {
-                        isiKontak += `
-                            <span class="inline-block px-2 py-1 bg-gray-200 text-black rounded-md text-sm">
-                                ✉️ ${email}
-                            </span>
-                        `;
-                    }
+                //     if (email) {
+                //         isiKontak += `
+            //             <div class="flex items-center gap-2 text-sm text-gray-700">
+            //                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            //                     <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.070 1.916l-7.500 4.615a2.25 2.25 0 0 1-2.360 0L3.320 8.91a2.25 2.25 0 0 1-1.070-1.916V6.75" />
+            //                 </svg>
+            //                 <span>${email}</span>
+            //             </div>
+            //         `;
+                //     }
 
-                    kontakHTML = `
-                        <p class="text-sm font-semibold text-gray-500">Kontak</p>
-                        <div class="flex flex-wrap gap-2 mt-1">
-                            ${isiKontak}
-                        </div>
-                    `;
+                //     kontakHTML = `
+            //         <div class="flex flex-col gap-2 mt-1">
+            //             ${isiKontak}
+            //         </div>
+            //     `;
+                // }
+                let hargaHTML = '';
+                let notelpHTML = '';
+                let emailHTML = '';
+
+                if (harga) {
+                    hargaHTML = `<div class="flex items-center gap-2 text-sm text-gray-700 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                            </svg>
+                            <span>${harga}</span>
+                        </div>`;
+                }
+
+                if (no_telp) {
+                    notelpHTML = `<div class="flex items-center gap-2 text-sm text-gray-700 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.110-.902.055-1.173.417l-.970 1.293c-.282.376-.769.542-1.210.380a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.380-1.210l1.293-.970c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                            </svg>
+                            <span>${no_telp}</span>
+                        </div>`;
+                }
+
+                if (email) {
+                    emailHTML = `<div class="flex items-center gap-2 text-sm text-gray-700 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.070 1.916l-7.500 4.615a2.25 2.25 0 0 1-2.360 0L3.320 8.91a2.25 2.25 0 0 1-1.070-1.916V6.75" />
+                            </svg>
+                            <span>${email}</span>
+                        </div>`;
                 }
 
                 const url = new URL(window.location.href);
@@ -1553,46 +1594,60 @@
 
                 <img src="${foto}" class="w-full h-56 object-cover rounded-xl mb-4">
 
-                <h2 class="text-2xl font-bold">${nama}</h2>
+                <h2 class="flex text-2xl font-bold justify-normal">${nama}</h2>
 
-                <p class="text-gray-600">${harga}</p>
+                <p class="flex gap-2 text-gray-700 justify-normal">${deskripsi}</p>
 
-                <p class="text-gray-600">${alamat}</p>
 
-                <div class="mt-3">
-                    ${kontakHTML}
-                </div>
 
-                <div class="mt-3">
+                <div class="mt-5">  
+                    <div class="flex items-center gap-2 text-sm text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                        </svg>
+                        <span>${alamat}</span>
+                    </div>
+
+                    ${hargaHTML}
+                    ${notelpHTML}
+                    ${emailHTML}
+                </div>  
+                <div class="mt-2">
                     ${kategoriHTML}
                 </div>
 
-                <div class="mt-3">
+                <div class="mt-2">
                     ${fasilitasHTML}
                 </div>
 
                 <div class="flex justify-end gap-2 mt-6">
-                    <button onclick="handleFavorit(${id}, this)"
-                        class="px-4 py-2 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isFavorit ? 'black' : 'none'}" stroke="${isFavorit ?'none' : 'currentColor'}" class="size-6">
+                    <button title="Favorit" onclick="handleFavorit(${id}, this)"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="${isFavorit ? 'black' : 'none'}"
+                            stroke="${isFavorit ? 'none' : 'currentColor'}"
+                            class="w-6 h-6">
                             <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
                         </svg>
                     </button>
 
-                    <button onclick="lihatRute(${lat}, ${lng})"
-                        class="bg-blue-500 text-white px-4 py-2 rounded-xl">
-                        Lihat Rute
+                    <button title="Rute" onclick="lihatRute(${lat}, ${lng})"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
+                        <i class="fi fi-rs-route text-md"></i>
                     </button>
 
-                    <button onclick="editWisataKuliner(${id})"
-                        class="bg-[#FFA319] hover:bg-[#F19305] text-white px-4 py-2 rounded-xl btn btn-primary flex items-center gap-1">
+                    <button title="Edit" onclick="editWisataKuliner(${id})"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                            class="size-4">
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                         </svg>
-                        <span class="ml-1">Edit</span>
+
+                        
                     </button>
                 </div>
 
@@ -1746,7 +1801,7 @@
 
         function loadUlasan(idKuliner) {
 
-            fetch(`/ulasan/${idKuliner}`)
+            fetch(`/wisatawan/ulasan/${idKuliner}`)
                 .then(res => res.json())
                 .then(data => {
 
@@ -1862,6 +1917,23 @@
             directionsService.route(request, function(result, status) {
                 if (status === 'OK') {
                     directionsRenderer.setDirections(result);
+
+                    const route = result.routes[0].overview_path;
+                    const lastPoint = route[route.length - 1];
+                    new google.maps.Polyline({
+                        path: [
+                            lastPoint,
+                            {
+                                lat: destLat,
+                                lng: destLng
+                            }
+                        ],
+                        geodesic: true,
+                        strokeColor: "#4285F4",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 4,
+                        map: map
+                    });
                 } else {
                     alert("Gagal menampilkan rute");
                 }
@@ -2037,7 +2109,7 @@
         function openModal(id) {
             kulinerAktif = id
             document.getElementById('id_wisata_kuliner').value = id
-            fetch(`/ulasan/modalulasan/${id}`)
+            fetch(`/wisatawan/ulasan/modalulasan/${id}`)
                 .then(res => res.json())
                 .then(data => {
 

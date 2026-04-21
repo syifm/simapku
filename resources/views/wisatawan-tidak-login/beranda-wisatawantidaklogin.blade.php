@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMAPKU | Beranda</title>
+    {{-- <link rel="icon" type="image/png" href="{{ asset('simapku.png') }}"> --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,7 +19,14 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-multiselect@0.9.13/dist/css/bootstrap-multiselect.css"> --}}
+
+
+    {{-- <script src="https://refinedguides.com/assets/social.js?linkColor=%23fff&textColor=%23000" defer></script> --}}
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -46,6 +54,9 @@
         }
 
 
+
+        /* @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap"); */
+
         * {
             padding: 0;
             margin: 0;
@@ -69,14 +80,25 @@
 
         .container {
             margin-block: auto;
-            border-radius: 10px
+            /* background: #fff; */
+            /* padding: 30px; */
+            border-radius: 10px;
+            /* width: min(480px, 90%); */
+            /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25); */
         }
+
+        /* .container h3 {
+            font-size: 2rem;
+        } */
+
+        /* range slider styles */
 
         .range-slider {
             display: flex;
             flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
+            /* gap: 20px; */
             gap: 5px;
             padding-block: 5px;
         }
@@ -89,15 +111,18 @@
             border: none;
             outline: none;
             background: var(--gray-color);
+            /* font-size: 1.5rem; */
             font-size: 15px;
             font-weight: 500;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             width: 115px;
+            /* min-width: 64px; */
         }
 
         .range {
             width: 100%;
+            /* width: 60%; */
             display: grid;
             position: relative;
             z-index: 5;
@@ -145,6 +170,7 @@
             flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
+            /* gap: 20px; */
             gap: 5px;
             padding-block: 5px;
         }
@@ -157,15 +183,18 @@
             border: none;
             outline: none;
             background: var(--gray-color);
+            /* font-size: 1.5rem; */
             font-size: 15px;
             font-weight: 500;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             width: 115px;
+            /* min-width: 64px; */
         }
 
         .range-rating {
             width: 100%;
+            /* width: 60%; */
             display: grid;
             position: relative;
             z-index: 5;
@@ -208,11 +237,13 @@
             cursor: ew-resize;
         }
 
+        /* INI NGGAK DIPAKE ------------------------------------------------------------------- */
         .range-slider-jarak {
             display: flex;
             flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
+            /* gap: 20px; */
             gap: 5px;
             padding-block: 5px;
         }
@@ -225,15 +256,18 @@
             border: none;
             outline: none;
             background: var(--gray-color);
+            /* font-size: 1.5rem; */
             font-size: 15px;
             font-weight: 500;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             width: 115px;
+            /* min-width: 64px; */
         }
 
         .range-jarak {
             width: 100%;
+            /* width: 60%; */
             display: grid;
             position: relative;
             z-index: 5;
@@ -275,6 +309,12 @@
             background: var(--yellow-color);
             cursor: ew-resize;
         }
+
+        /* INI NGGAK DIPAKE ------------------------------------------------------------------- */
+
+
+
+
 
         .range-slider-jarak-dua {
             display: flex;
@@ -357,11 +397,42 @@
             });
         </script>
     @endif
+    {{-- <div class="h-screen flex flex-col">
+        @include('layouts.header-wisatawan')
+
+        <div class="flex flex-1 overflow-hidden">
+             @include('layouts.sidebar-wisatawan') 
+
+            <div class="flex-1 p-6 overflow-y-auto">
+                <h2 class="text-2xl text-black font-bold mb-4">
+                    Selamat datang, Wisatawan!
+                </h2>
+
+                
+            </div>
+        </div>
+    </div> --}}
+
+    {{-- <div class="h-screen flex flex-col">
+    @include('layouts.header-wisatawan')
+
+    <div class="flex flex-1">
+        @include('layouts.sidebar-wisatawan')
+
+        <div class="flex-1 p-6 overflow-y-auto">
+            <h2 class="text-2xl text-black font-bold mb-4">
+                Selamat datang, Wisatawan!
+            </h2>
+
+        </div>
+    </div>
+    </div> --}}
 
     @include('layouts.header-wisatawan')
     @include('layouts.sidebar-wisatawantidaklogin')
-
-    <div class="pt-[10px] pl-28 pr-[30px]">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
+    <div class="pt-[10px] pl-28 pr-[30px] pb-[5px]">
         <div class="flex flex-col gap-2">
             <div>
                 <p class="text-m text-black font-medium mt-2 mb-2 text-center">
@@ -372,6 +443,7 @@
                 </p>
             </div>
 
+
             <form id="formCari" action="{{ route('carikuliner.tidaklogin') }}" method="GET">
                 @csrf
                 <div class="relative w-full flex justify-center mb-6">
@@ -379,8 +451,7 @@
                         <div
                             class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
-                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar"
-                                value="{{ request('keyword', $keyword ?? '') }}">
+                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar" value="{{ $keyword }}">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -389,10 +460,7 @@
                         <div id="searchPanel"
                             class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
                             <!-- Kuliner Terdekat -->
-                            {{-- <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
-                                Kuliner Terdekat
-                            </div> --}}
-                            <div onclick="cariKulinerTerdekat()"
+                            <div onclick="cariKulinerTerdekat(event)"
                                 class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
                             </div>
@@ -411,72 +479,7 @@
                                 </span>
                             </div>
                             <!-- Filter Advanced -->
-                            {{-- <div id="advancedFilter" class="hidden mt-3 space-y-3"> --}}
                             <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3 mr-3">
-
-                                {{-- <input type="hidden" name="lat" id="lat">
-                                <input type="hidden" name="lng" id="lng"> --}}
-                                {{-- <div>
-                                    <select class="w-full border rounded-lg p-2" name="rating">
-                                        <option>Rating Minimal</option>
-                                        <option>⭐ 3+</option>
-                                        <option>⭐ 4+</option>
-                                        <option>⭐ 4.5+</option>
-                                    </select>
-                                </div> --}}
-
-                                {{-- <label>Rating</label> --}}
-
-                                {{-- <input type="range" id="minRating" min="1" max="5" value="1">
-                                <input type="range" id="maxRating" min="1" max="5" value="5">
-
-                                <p>
-                                    Min: <span id="minVal">1</span> ⭐ -
-                                    Max: <span id="maxVal">5</span> ⭐
-                                </p> --}}
-
-                                {{-- <input type="hidden" name="min_rating" id="min_rating">
-                                <input type="hidden" name="max_rating" id="max_rating"> --}}
-
-
-
-
-
-
-
-                                {{-- <div class="container">
-                                    <label class="font-medium">Jarak</label>
-
-                                    <!-- .range-slider -->
-                                    <div class="range-slider-jarak flex justify-between items-center">
-                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
-                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
-                                            <input type="number" name="minjarak"
-                                                class="min-jarak w-[40px] p-2 outline-none border-0" value="1"
-                                                min="1" max="5" />
-                                        </div>
-
-                                        <div
-                                            class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
-                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
-                                            <input type="number" name="maxjarak"
-                                                class="max-jarak w-[40px] p-2 outline-none border-0" value="5"
-                                                min="1" max="5" />
-                                        </div>
-
-                                        <!-- .range -->
-                                        <div class="range">
-                                            <input type="range" class="min-input-jarak" value="1" min="1"
-                                                max="5" />
-                                            <input type="range" class="max-input-jarak" value="5" min="1"
-                                                max="5" />
-
-                                            <div class="slider">
-                                                <div class="progress-jarak"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
 
 
                                 <input type="hidden" name="lat" id="lat">
@@ -490,12 +493,12 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="jarak"
                                                 class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
-                                                value="0" min="0" max="10" />
+                                                value="10" min="0" max="10" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range-jarak-dua">
-                                            <input type="range" class="input-jarak-dua" value="0" min="0"
+                                            <input type="range" class="input-jarak-dua" value="10" min="0"
                                                 max="10" />
 
                                             <div class="slider-jarak-dua">
@@ -510,7 +513,8 @@
                                     <select id="kategori" name="kategori[]" data-placeholder="Pilih Kategori..."
                                         data-theme="light" multiple data-multi-select>
                                         @foreach ($kategori as $item)
-                                            <option value="{{ $item->id_kategori }}">
+                                            <option value="{{ $item->id_kategori }}"
+                                                {{ in_array($item->id_kategori, request('kategori', [])) ? 'selected' : '' }}>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach
@@ -518,36 +522,30 @@
                                 </div>
 
                                 <div class="container">
-                                    {{-- <h3>Filter by Price</h3> --}}
                                     <label class="font-medium">Harga</label>
 
                                     <!-- .range-slider -->
                                     <div class="range-slider flex justify-between items-center">
-                                        {{-- <input type="number" class="min-price" value="100000" min="500"
-                                            max="1000000" />
-                                        <input type="number" class="max-price" value="500000" min="500"
-                                            max="1000000" /> --}}
-
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="minharga"
                                                 class="min-price w-[95px] p-2 outline-none border-0" value="0"
-                                                min="0" max="1000000" />
+                                                min="0" max="1000000" step="25000" />
                                         </div>
 
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="maxharga"
                                                 class="max-price w-[95px] p-2 outline-none border-0" value="1000000"
-                                                min="0" max="1000000" />
+                                                min="0" max="1000000" step="25000" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
                                             <input type="range" class="min-input" value="0" min="0"
-                                                max="1000000" />
+                                                max="1000000" step="25000" />
                                             <input type="range" class="max-input" value="1000000" min="0"
-                                                max="1000000" />
+                                                max="1000000" step="25000" />
 
                                             <div class="slider">
                                                 <div class="progress"></div>
@@ -561,7 +559,11 @@
                                     <select id="fasilitas" name="fasilitas[]" data-placeholder="Pilih Fasilitas..."
                                         data-theme="light" multiple data-multi-select>
                                         @foreach ($fasilitas as $item)
-                                            <option value="{{ $item->id_fasilitas }}">
+                                            {{-- <option value="{{ $item->id_fasilitas }}">
+                                                {{ $item->nama }}
+                                            </option> --}}
+                                            <option value="{{ $item->id_fasilitas }}"
+                                                {{ in_array($item->id_fasilitas, request('fasilitas', [])) ? 'selected' : '' }}>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach
@@ -618,10 +620,10 @@
         </div>
 
         <div class="mb-8">
-            <p class="text-lg text-black font-bold mt-1 mb-4">
+            <p class="text-lg text-black font-bold mt-1 mb-4 text-center">
                 Event Semarang
             </p>
-            <div class="flex justify-center gap-8 flex-wrap">
+            <div class="flex justify-center gap-20 flex-wrap">
                 <a href="{{ route('dugderan') }}"
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
                     <img src="{{ asset('dugderan.jpg') }}" alt="dugderan"
@@ -633,17 +635,6 @@
                         </span>
                     </div>
                 </a>
-                {{-- <a href="{{ route('event') }}"
-                class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                <img src="{{ asset('pasarsentiling.jpg') }}" alt="dugderan"
-                    class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-white font-semibold text-lg">
-                        Festival Kota Lama
-                    </span>
-                </div>
-                </a> --}}
                 <a href="{{ route('kulinerkauman') }}"
                     class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
                     <img src="{{ asset('kulinerkauman.png') }}" alt="kulinerkauman"
@@ -667,31 +658,18 @@
                         </span>
                     </div>
                 </a>
-                {{-- <a href="{{ route('dugderan') }}"
-                class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                <img src="{{ asset('chengho.jpg') }}" alt="dugderan"
-                    class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
-                </div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-white font-semibold text-lg">
-                        Festival Arak-Arakan Cheng Ho
-                    </span>
-                </div>
-                </a> --}}
-
             </div>
 
         </div>
 
-        <div class="mb-8">
+        <div class="mb-2">
             <p class="text-lg text-black font-bold mt-4 mb-4">
                 Kuliner Baru Ditambahkan
             </p>
             <div class="grid grid-cols-4 gap-8">
                 @foreach ($kulinerBaru as $item)
-                    <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
-                        class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+                    <a href="#"
+                        class="pointer-events-none relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
                         <img src="{{ asset('storage/' . $item->foto) }}"
                             class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
@@ -714,8 +692,8 @@
             </p>
             <div class="grid grid-cols-4 gap-8">
                 @foreach ($kulinerFavorit as $item)
-                    <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
-                        class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+                    <a href="#"
+                        class="pointer-events-none relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
                         <img src="{{ asset('storage/' . $item->foto) }}"
                             class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
@@ -732,171 +710,11 @@
             </div>
 
         </div>
-
-        {{-- <div class="wrapper">
-            <button class="nav left" onclick="geser(-1)">❮</button>
-
-            <div class="slider" id="slider">
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
-            </div>
-
-            <button class="nav right" onclick="geser(1)">❯</button>
-        </div> --}}
-
-
-        {{-- <div class="slider-container">
-            <div class="slider" id="slider">
-                <div class="card">CARD 1</div>
-                <div class="card">CARD 2</div>
-                <div class="card">CARD 3</div>
-                <div class="card">CARD 1</div>
-                <div class="card">CARD 2</div>
-                <div class="card">CARD 3</div>
-            </div>
-
-            <div class="dots" id="dots"></div>
-        </div> --}}
-
-        {{-- <div class="slider-wrapper">
-            <button onclick="prev()">❮</button>
-
-            <div class="viewport gap-6">
-                <div class="slider" id="slider">
-                    <div class="card">
-                        <div>ISI CARD NANTI</div>
-                    </div>
-
-                    <div class="card">1</div>
-                    <div class="card">2</div>
-                    <div class="card">3</div>
-                    <div class="card">4</div>
-                    <div class="card">5</div>
-                    <div class="card">6</div>
-                    <div class="card">7</div>
-                    <div class="card">8</div>
-                    <div class="card">9</div>
-                </div>
-            </div>
-
-            <button onclick="next()">❯</button>
-        </div>
-
-        <div class="dots" id="dots"></div> --}}
-
-
-
-
-
-
-
-
-
-        {{-- <div class="slider-wrapper">
-            <button class="arrow left" onclick="prev()"><i class="fas fa-chevron-left"
-                    style="color: #ffffff;"></i></button>
-
-            <div class="viewport">
-                <div class="slider" id="slider">
-                    <div class="card">1</div>
-                    <div class="card">2</div>
-                    <div class="card">3</div>
-                    <div class="card">4</div>
-                    <div class="card">5</div>
-                    <div class="card">6</div>
-                    <div class="card">7</div>
-                    <div class="card">8</div>
-                    <div class="card">9</div>
-                </div>
-            </div>
-
-            <button class="arrow right" onclick="next()"><i class="fas fa-chevron-right"
-                    style="color: #ffffff;"></i></button>
-        </div>
-
-        <div class="dots" id="dots"></div> --}}
-
-
-
-
-
-        {{-- <a href="{{ route('map-WisataKuliner') }}" class="text-[#FFA319] hover:underline">
-        Map Wisata Kuliner
-        </a>
-
-        <a href="{{ route('map-WisataKuliner2') }}" class="text-[#FFA319]  hover:underline">
-            Map Wisata Kuliner 2
-        </a> --}}
-
-        {{-- <a href="{{ route('map-WisataKuliner3') }}" class="text-[#FFA319] hover:underline">
-        Map Wisata Kuliner 3
-        </a> --}}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
 
     <script>
-        // const menuBtn = document.getElementById('menuBtn');
-        // const sidebar = document.getElementById('sidebar');
-        // const texts = document.querySelectorAll('.sidebar-text');
-
-        // if (menuBtn && sidebar) {
-        //     menuBtn.addEventListener('click', () => {
-        //         sidebar.classList.toggle('w-16');
-        //         sidebar.classList.toggle('w-64');
-
-        //         texts.forEach(t => t.classList.toggle('hidden'));
-        //     });
-        // }
         // slider Jarak
         const sliderJarakDua = document.querySelector(".range-slider-jarak-dua");
         const progressJarakDua = sliderJarakDua.querySelector(".progress-jarak-dua");
@@ -935,117 +753,6 @@
         });
 
         updateProgressJarakDua();
-
-
-        // const sliderJarak = document.querySelector(".range-slider-jarak");
-        // const progressJarak = sliderJarak.querySelector(".progress-jarak");
-        // const minJarakInput = sliderJarak.querySelector(".min-jarak");
-        // const maxJarakInput = sliderJarak.querySelector(".max-jarak");
-        // const minInputJarak = sliderJarak.querySelector(".min-input-jarak");
-        // const maxInputJarak = sliderJarak.querySelector(".max-input-jarak");
-
-        // const updateProgressJarak = () => {
-        //     const minValueJarak = parseInt(minInputJarak.value);
-        //     const maxValueJarak = parseInt(maxInputJarak.value);
-
-        //     const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
-        //     const valueRangeJarak = maxValueJarak - minValueJarak;
-
-        //     const widthJarak = (valueRangeJarak / totalRangeJarak) * 100;
-        //     const minOffsetJarak = ((minValueJarak - minInputJarak.min) / totalRangeJarak) * 100;
-
-        //     progressJarak.style.width = widthJarak + "%";
-        //     progressJarak.style.left = minOffsetJarak + "%";
-
-        //     minJarakInput.value = minValueJarak;
-        //     maxJarakInput.value = maxValueJarak;
-        // };
-
-        // const updateRangeJarak = (event) => {
-        //     const inputJarak = event.target;
-
-        //     let minJarak = parseInt(minJarakInput.value);
-        //     let maxJarak = parseInt(maxJarakInput.value);
-
-        //     if (inputJarak === minJarakInput && minJarak > maxJarak) {
-        //         maxJarak = minJarak;
-        //         maxJarakInput.value = maxJarak;
-        //     } else if (inputJarak === maxJarakInput && maxJarak < minJarak) {
-        //         minJarak = maxJarak;
-        //         minJarakInput.value = minJarak;
-        //     }
-
-        //     minInputJarak.value = minJarak;
-        //     maxInputJarak.value = maxJarak;
-
-        //     updateProgressJarak();
-        // };
-
-        // minJarakInput.addEventListener("input", updateRangeJarak);
-        // maxJarakInput.addEventListener("input", updateRangeJarak);
-
-        // minInputJarak.addEventListener("input", () => {
-        //     if (parseInt(minInputJarak.value) >= parseInt(maxInputJarak.value)) {
-        //         maxInputJarak.value = minInputJarak.value;
-        //     }
-        //     updateProgressJarak();
-        // });
-
-        // maxInputJarak.addEventListener("input", () => {
-        //     if (parseInt(maxInputJarak.value) <= parseInt(minInputJarak.value)) {
-        //         minInputJarak.value = maxInputJarak.value;
-        //     }
-        //     updateProgressJarak();
-        // });
-
-        // let isDraggingJarak = false;
-        // let startOffsetXJarak;
-
-        // progressJarak.addEventListener("mousedown", (e) => {
-        //     e.preventDefault();
-
-        //     isDraggingJarak = true;
-        //     startOffsetXJarak = e.clientX - progressJarak.getBoundingClientRect().left;
-
-        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        // });
-
-        // document.addEventListener("mousemove", (e) => {
-        //     if (isDraggingJarak) {
-        //         const sliderRectJarak = sliderJarak.getBoundingClientRect();
-        //         const progressWidthJarak = parseFloat(progressJarak.style.width || 0);
-
-        //         let newLeftJarak =
-        //             ((e.clientX - sliderRectJarak.left - startOffsetXJarak) / sliderRectJarak.width) * 100;
-
-        //         newLeftJarak = Math.min(Math.max(newLeftJarak, 0), 100 - progressWidthJarak);
-
-        //         progressJarak.style.left = newLeftJarak + "%";
-
-        //         const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
-        //         const newMinJarak = Math.round((newLeftJarak / 100) * totalRangeJarak) + parseInt(minInputJarak
-        //             .min);
-        //         const newMaxJarak = newMinJarak + parseInt(maxInputJarak.value) - parseInt(minInputJarak.value);
-
-        //         minInputJarak.value = newMinJarak;
-        //         maxInputJarak.value = newMaxJarak;
-
-        //         updateProgressJarak();
-        //     }
-
-        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        // });
-
-        // document.addEventListener("mouseup", () => {
-        //     if (isDraggingJarak) {
-        //         isDraggingJarak = false;
-        //     }
-        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        // });
-
-        // updateProgressJarak();
-
-
 
         // slider Harga
         const slider = document.querySelector(".range-slider");
@@ -1302,6 +1009,13 @@
             advancedFilter.classList.toggle("hidden");
         });
 
+        const defaultText = 'Rekomendasi Kuliner';
+        searchBar.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.value = defaultText;
+            }
+        });
+
         document.addEventListener("click", function(e) {
 
             if (!searchBar.contains(e.target) && !searchPanel.contains(e.target)) {
@@ -1309,182 +1023,148 @@
             }
 
         });
-
         document.getElementById("formCari").addEventListener("submit", function(e) {
+            if (searchBar.value.trim() === '') {
+                searchBar.value = defaultText;
+            }
+            e.preventDefault();
 
-            e.preventDefault(); // tahan submit dulu
+            const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
+
+            const isTerdekat =
+                keyword.includes("terdekat") ||
+                keyword.includes("dekat") ||
+                keyword.includes("near");
+
+            if (isTerdekat) {
+
+                if (!navigator.geolocation) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "GPS tidak tersedia",
+                        text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        inputJarakDua.value = 5;
+                        nilaiJarakDua.value = 5;
+                        updateProgressJarakDua();
+
+                        minInput.value = 0;
+                        maxInput.value = 500000;
+                        minPriceInput.value = 0;
+                        maxPriceInput.value = 500000;
+                        updateProgress();
+
+                        const minRating = document.querySelector(".min-rating");
+                        const maxRating = document.querySelector(".max-rating");
+
+                        if (minRating && maxRating) {
+                            minRating.value = 0;
+                            maxRating.value = 5;
+                        }
+
+                        document.getElementById("lat").value = lat;
+                        document.getElementById("lng").value = lng;
+
+                        e.target.submit();
+                    },
+
+                    function() {
+                        Swal.fire({
+                            icon: "warning",
+                            title: 'Lokasi Tidak Tersedia',
+                            text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                );
+
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById("lat").value = position.coords.latitude;
+                    document.getElementById("lng").value = position.coords.longitude;
+                    e.target.submit();
+                },
+                function() {
+                    document.getElementById("lat").value = -6.99;
+                    document.getElementById("lng").value = 110.42;
+                    e.target.submit();
+                }
+            );
+        });
+
+        function cariKulinerTerdekat(e) {
+            e.preventDefault();
+            e.stopPropagation();
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
 
-                    document.getElementById("lat").value = position.coords.latitude;
-                    document.getElementById("lng").value = position.coords.longitude;
+                        inputJarakDua.value = 5;
+                        nilaiJarakDua.value = 5;
+                        updateProgressJarakDua();
 
-                    // submit ulang setelah dapet lokasi
-                    e.target.submit();
+                        minInput.value = 0;
+                        maxInput.value = 500000;
+                        minPriceInput.value = 0;
+                        maxPriceInput.value = 500000;
+                        updateProgress();
 
-                }, function(error) {
-                    // alert("Gagal ambil lokasi, pakai pencarian biasa aja");
-                    document.getElementById("lat").value = -6.99;
-                    document.getElementById("lng").value = 110.42;
-                    e.target.submit(); // tetap submit tanpa lokasi
-                });
+                        const minRating = document.querySelector(".min-rating");
+                        const maxRating = document.querySelector(".max-rating");
+
+                        if (minRating && maxRating) {
+                            minRating.value = 0;
+                            maxRating.value = 5;
+                        }
+
+                        const params = new URLSearchParams(window.location.search);
+
+                        params.set("lat", lat);
+                        params.set("lng", lng);
+                        params.set("jarak", 5);
+                        params.set("minharga", 0);
+                        params.set("maxharga", 500000);
+                        params.set("minrating", 0);
+                        params.set("maxrating", 5);
+                        params.set("keyword", "Kuliner Terdekat");
+
+                        window.location.href = "/wisata-kuliner-cari?" + params.toString();
+                    },
+                    function(error) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Lokasi Tidak Tersedia',
+                            text: 'Silakan nyalakan GPS Anda untuk mencari kuliner terdekat',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    });
             } else {
-                alert("Browser tidak support lokasi");
-                e.target.submit();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Browser kamu tidak mendukung fitur lokasi 😢',
+                    confirmButtonText: 'OK'
+                });
             }
-
-        });
-
-        // const range = document.getElementById("rangeJarak");
-        // const value = document.getElementById("valueJarak");
-
-        // range.addEventListener("input", function() {
-        // value.innerText = this.value;
-        // });
-
-
-
-
-
-
-
-
-
-        // document.addEventListener("DOMContentLoaded", function() {
-        // const lat = localStorage.getItem('user_lat');
-        // const lng = localStorage.getItem('user_lng');
-
-        // if (lat && lng) {
-        // document.getElementById('lat').value = lat;
-        // document.getElementById('lng').value = lng;
-        // }
-        // });
-
-
-        // function geser(arah) {
-        // const slider = document.getElementById("slider");
-        // slider.scrollBy({
-        // left: arah * 360,
-        // behavior: "smooth"
-        // });
-        // }
-
-        // const slider = document.getElementById("slider");
-        // const dotsContainer = document.getElementById("dots");
-        // const cards = document.querySelectorAll(".card");
-
-        // // bikin dots
-        // cards.forEach((_, i) => {
-        // const dot = document.createElement("div");
-        // dot.classList.add("dot");
-        // if (i === 0) dot.classList.add("active");
-        // dotsContainer.appendChild(dot);
-        // });
-
-        // // update dot saat geser
-        // slider.addEventListener("scroll", () => {
-        // const index = Math.round(slider.scrollLeft / cards[0].offsetWidth);
-        // document.querySelectorAll(".dot").forEach((dot, i) => {
-        // dot.classList.toggle("active", i === index);
-        // });
-        // });
-
-        // ------
-        // const slider = document.getElementById("slider");
-        // const cards = document.querySelectorAll(".card");
-        // const dotsContainer = document.getElementById("dots");
-
-        // const perPage = 3;
-        // const totalPage = Math.ceil(cards.length / perPage);
-        // let page = 0;
-
-        // // bikin dots
-        // for (let i = 0; i < totalPage; i++) { // const dot=document.createElement("div"); // dot.className = "dot" +
-        // (i === 0 ? " active" : ""); // dot.onclick=()=> goToPage(i);
-        // dotsContainer.appendChild(dot);
-        // }
-
-        // function updateSlider() {
-        // slider.style.transform = `translateX(-${page * 100}%)`;
-        // document.querySelectorAll(".dot").forEach((d, i) => {
-        // d.classList.toggle("active", i === page);
-        // });
-        // }
-
-        // function next() {
-        // if (page < totalPage - 1) { // page++; // updateSlider(); // } // } // function prev() { // if (page> 0) {
-        // page--;
-        // updateSlider();
-        // }
-        // }
-
-        // function goToPage(i) {
-        // page = i;
-        // updateSlider();
-        // }
-        // ---------
-
-        // const slider = document.getElementById("slider");
-        // const card = document.querySelector(".card");
-        // let index = 0;
-
-        // function next() {
-        // const maxIndex = slider.children.length - 3;
-        // if (index < maxIndex) { // index++; // geser(); // } // } // function prev() { // if (index> 0) {
-        // index--;
-        // geser();
-        // }
-        // }
-
-        // function geser() {
-        // const cardWidth = card.offsetWidth + 20; // 20 = gap
-        // slider.style.transform = `translateX(-${index * cardWidth}px)`;
-        // }
-
-
-        // -----------
-        // $(document).ready(function() {
-
-        // const itemsPerPage = 3;
-
-        // const owl = $('.bidang-carousel').owlCarousel({
-        // loop: true,
-        // margin: 20,
-        // nav: true,
-        // dots: true,
-        // items: 3,
-        // slideBy: 1, // 👉 panah geser 1–1
-        // autoplay: true,
-        // autoplayTimeout: 3000,
-        // autoplayHoverPause: true
-        // });
-
-        // owl.on('changed.owl.carousel', function(event) {
-        // const totalItems = event.item.count;
-        // const currentIndex = event.item.index - event.relatedTarget._clones.length / 2;
-
-        // const realIndex = (currentIndex + totalItems) % totalItems;
-
-        // const pageIndex = Math.floor(realIndex / itemsPerPage);
-
-        // // reset semua dots
-        // $('.owl-dot').removeClass('active');
-
-        // // aktifkan dot sesuai halaman (1–3 / 4–6)
-        // $('.owl-dot').eq(pageIndex).addClass('active');
-        // });
-
-        // });
+        }
     </script>
-    {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-multiselect@0.9.13/dist/js/bootstrap-multiselect.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#minimal-multiselect').multiselect();
-        });
-    </script> --}}
 
 </body>
 

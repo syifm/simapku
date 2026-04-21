@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Beranda</title>
+    <title>SIMAPKU | Wisata Kuliner</title>
     {{-- <link rel="icon" type="image/png" href="{{ asset('simapku.png') }}"> --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.css">
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
 
 
     {{-- <link rel='stylesheet'
@@ -402,7 +404,7 @@
             </div>
 
             <!-- search bar -->
-            <form action="{{ route('carikuliner.tidaklogin') }}" method="GET">
+            <form id="formCari" action="{{ route('carikuliner.tidaklogin') }}" method="GET">
                 @csrf
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-2xl z-20">
@@ -410,7 +412,7 @@
                             class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
                                 class="flex-1 px-5 py-3 focus:outline-none" id="searchBar"
-                                value="{{ request('keyword', 'Rekomendasi Kuliner') }}">
+                                value="{{ request('keyword') }}">
                             <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -486,26 +488,26 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="minharga"
                                                 class="min-price w-[95px] p-2 outline-none border-0"
-                                                value="{{ request('minharga', 0) }}" min="0"
-                                                max="1000000" />
+                                                value="{{ request('minharga', 0) }}" min="0" max="500000"
+                                                step="25000" />
                                         </div>
 
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="maxharga"
                                                 class="max-price w-[95px] p-2 outline-none border-0"
-                                                value="{{ request('maxharga', 1000000) }}" min="0"
-                                                max="1000000" />
+                                                value="{{ request('maxharga', 500000) }}" min="0"
+                                                max="1000000" step="25000" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
                                             <input type="range" class="min-input"
-                                                value="{{ request('minharga', 0) }}" min="0"
-                                                max="1000000" />
+                                                value="{{ request('minharga', 0) }}" min="0" max="500000"
+                                                step="25000" />
                                             <input type="range" class="max-input"
-                                                value="{{ request('maxharga', 1000000) }}" min="0"
-                                                max="1000000" />
+                                                value="{{ request('maxharga', 500000) }}" min="0"
+                                                max="500000" step="25000" />
 
                                             <div class="slider">
                                                 <div class="progress"></div>
@@ -526,7 +528,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-
                                 <div class="container">
                                     <label class="font-medium">Nilai Kuliner</label>
 
@@ -572,7 +573,15 @@
                                         </div>
                                     </div>
                                 </div>
+
+
                             </div>
+                            {{-- <div>
+                                <p class="text-xs text-gray-600 mt-2 text-right">
+                                    Cari Wilayah dengan mengaktifkan GPS atau melalui
+                                    kolom Kecamatan dan Kelurahan
+                                </p>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -601,17 +610,28 @@
             </div> --}}
             {{-- <div class="col-span-7 space-y-4"> --}}
             <div id="listKuliner" class="col-span-7 space-y-4 overflow-y-auto pr-2">
-                @foreach ($data as $kuliner)
+                @if ($isFallback)
+                    <div class="text-center text-sm text-gray-500 mb-3">
+                        Hasil tidak ditemukan untuk
+                        <span class="font-semibold">"{{ $keyword }}"</span>.
+                        Menampilkan rekomendasi kuliner yang mungkin Anda suka
+                    </div>
+                @endif
+                {{-- @foreach ($data as $kuliner) --}}
+                @forelse ($data as $kuliner)
                     {{-- <div
                         class="flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition"> --}}
                     {{-- <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
                         data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"> --}}
+
                     <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
                         data-id="{{ $kuliner->id_wisata_kuliner }}" data-nama="{{ $kuliner->nama }}"
                         data-alamat="{{ $kuliner->alamat }}" data-min="{{ $kuliner->harga_min }}"
                         data-max="{{ $kuliner->harga_max }}" data-foto="{{ asset('storage/' . $kuliner->foto) }}"
                         data-fasilitas='@json($kuliner->fasilitas)' data-kategori='@json($kuliner->kategori)'
-                        data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}">
+                        data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"
+                        data-no_telp="{{ $kuliner->no_telp }}" data-email="{{ $kuliner->email }}"
+                        data-deskripsi="{{ $kuliner->deskripsi }}">
 
                         <div class="flex gap-4 items-center flex-1">
 
@@ -689,7 +709,19 @@
                         </div>
 
                     </div>
-                @endforeach
+                    {{-- @endforeach --}}
+                @empty
+                    <div class="col-span-7 -mt-5 flex items-center justify-center h-full">
+                        <div class="text-center">
+                            <p class="text-gray-800 text-lg font-semibold">
+                                Mohon Maaf Wisata Kuliner Tidak Ditemukan
+                            </p>
+                            <p class="text-gray-600 text-sm mt-2">
+                                Coba ubah keyword atau filter pencarian Anda
+                            </p>
+                        </div>
+                    </div>
+                @endforelse
             </div>
 
             {{-- <div id="detailPanel"
@@ -739,13 +771,23 @@
                     <h2 class="text-xl font-bold mb-4 text-center">Tambah Ulasan</h2>
 
                     <input type="hidden" id="id_wisata_kuliner" name="id_wisata_kuliner">
+
+                    <!-- Email Anda -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-800 mb-1" for="email_pengaju"><span>Email
+                                Anda</span><span class="text-red-500 font-bold"> *</span></label>
+                        <input type="email" id="email_pengaju" name="email_pengaju"
+                            value="{{ old('email_pengaju') }}"
+                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
+                    </div>
+
                     <!-- Penilaian -->
-                    <label class="block text-sm font-medium text-gray-800 mb-2">
+                    <label class="block text-sm font-medium text-gray-800 mb-2 mt-3">
                         Penilaian
                         <span class="text-red-500 font-bold">*</span>
                     </label>
-
-                    <div id="ratingStars" class="flex gap-1 cursor-pointer">
+                    <div id="ratingStars" class="flex gap-1 pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed">
 
                         <svg data-value="1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400 star">
@@ -785,8 +827,9 @@
                         <label class="block text-sm font-medium text-gray-800 mb-1 mt-3"
                             for="ulasan"><span>Ulasan</span>
                             <span class="text-red-500 font-bold">*</span></label>
-                        <textarea id="ulasan" name="ulasan" rows="4"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>{{ old('deskripsiulasan') }}</textarea>
+                        <textarea id="ulasan" name="ulasan" rows="4" disabled
+                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+                            required>{{ old('deskripsiulasan') }}</textarea>
                         @error('ulasan')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -795,40 +838,37 @@
                     <!-- Harga per orang -->
                     <div>
                         <label class="block text-sm font-medium text-gray-800 mb-1" for="harga_per_orang"><span>Harga
-                                Per Orang</span>
-                            <span class="text-red-500 font-bold">*</span></label>
+                                Per Orang</span></label>
                         {{-- <input type="number" id="harga_per_orang" name="harga_per_orang" rows="6"
                             class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required>{{ old('harga_per_orang') }}</input> --}}
                         <select id="harga_per_orang" name="harga_per_orang"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
+                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+                            required disabled>
                             <option value="" disabled selected hidden>
                                 Pilih rentang harga untuk per orang
                             </option>
 
-                            @for ($i = 0; $i < 300000; $i += 25000)
+                            {{-- @for ($i = 0; $i < 300000; $i += 25000)
                                 <option value="{{ $i }}-{{ $i + 25000 }}">
                                     Rp {{ number_format($i, 0, ',', '.') }} -
                                     {{ number_format($i + 25000, 0, ',', '.') }}
                                 </option>
+                            @endfor --}}
+                            @for ($i = 0; $i <= 500000; $i += 25000)
+                                @if ($i == 500000)
+                                    <option value="500000+">
+                                        Rp 500.000+
+                                    </option>
+                                @else
+                                    <option value="{{ $i }}-{{ $i + 25000 }}">
+                                        Rp {{ number_format($i, 0, ',', '.') }} -
+                                        {{ number_format($i + 25000, 0, ',', '.') }}
+                                    </option>
+                                @endif
                             @endfor
                         </select>
                         @error('harga_per_orang')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Email Anda-->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-800 mb-1 mt-2"
-                            for="email_pengulas"><span>Email
-                                Anda</span><span class="text-red-500 font-bold">*</span></label>
-                        <input type="email" id="email_pengulas" name="email_pengulas"
-                            value="{{ old('email_pengulas') }}"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
-                        @error('email_pengulas')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -839,7 +879,7 @@
                             <span>Foto</span>
                         </label>
                         <input type="file" name="foto_ulasan" id="foto_ulasan" accept="image/*"
-                            class="file-input-wrapper">
+                            class="file-input-wrapper disabled:bg-gray-100 disabled:cursor-not-allowed" disabled>
 
 
                         <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -882,12 +922,11 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-800 mb-1"
                             for="komentar"><span>Komentar</span>
-                            <span class="text-red-500 font-bold">*</span></label>
-                        <textarea id="komentar" name="komentar" rows="4"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('komentar') }}</textarea>
-                        @error('komentar')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                            <textarea id="komentar" name="komentar" rows="4"
+                                class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('komentar') }}</textarea>
+                            @error('komentar')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                     </div>
 
                     <div class="flex justify-end">
@@ -1243,11 +1282,19 @@
             searchPanel.classList.toggle("hidden");
         });
 
+
         const advancedBtn = document.getElementById("advancedBtn");
         const advancedFilter = document.getElementById("advancedFilter");
 
         advancedBtn.addEventListener("click", () => {
             advancedFilter.classList.toggle("hidden");
+        });
+
+        const defaultText = 'Rekomendasi Kuliner';
+        searchBar.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.value = defaultText;
+            }
         });
 
         document.addEventListener("click", function(e) {
@@ -1292,7 +1339,9 @@
             });
 
             directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                suppressMarkers: true
+            });
             directionsRenderer.setMap(map);
 
             tampilkanSemuaKuliner();
@@ -1405,6 +1454,11 @@
 
                 let nama = this.dataset.nama;
                 let alamat = this.dataset.alamat;
+                let no_telp = this.dataset.no_telp;
+                let email = this.dataset.email;
+                let penilaian = this.dataset.penilaian;
+                let deskripsi = this.dataset.deskripsi;
+
                 let foto = this.dataset.foto;
                 let lat = parseFloat(this.dataset.lat);
                 let lng = parseFloat(this.dataset.lng);
@@ -1453,6 +1507,9 @@
                 `;
                 }
 
+                console.log(email);
+                console.log(penilaian);
+
                 // Fasilitas
                 let fasilitasHTML = '';
 
@@ -1469,6 +1526,71 @@
                     `;
                 }
 
+                let kontakHTML = '';
+
+
+                // if (no_telp || email) {
+                //     let isiKontak = '';
+
+                //     if (no_telp) {
+                //         isiKontak += `
+            //             <div class="flex items-center gap-2 text-sm text-gray-700">
+            //                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            //                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.110-.902.055-1.173.417l-.970 1.293c-.282.376-.769.542-1.210.380a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.380-1.210l1.293-.970c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+            //                 </svg>
+            //                 <span>${no_telp}</span>
+            //             </div>
+            //         `;
+                //     }
+
+                //     if (email) {
+                //         isiKontak += `
+            //             <div class="flex items-center gap-2 text-sm text-gray-700">
+            //                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            //                     <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.070 1.916l-7.500 4.615a2.25 2.25 0 0 1-2.360 0L3.320 8.91a2.25 2.25 0 0 1-1.070-1.916V6.75" />
+            //                 </svg>
+            //                 <span>${email}</span>
+            //             </div>
+            //         `;
+                //     }
+
+                //     kontakHTML = `
+            //         <div class="flex flex-col gap-2 mt-1">
+            //             ${isiKontak}
+            //         </div>
+            //     `;
+                // }
+                let hargaHTML = '';
+                let notelpHTML = '';
+                let emailHTML = '';
+
+                if (harga) {
+                    hargaHTML = `<div class="flex items-center gap-2 text-sm text-gray-700 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                            </svg>
+                            <span>${harga}</span>
+                        </div>`;
+                }
+
+                if (no_telp) {
+                    notelpHTML = `<div class="flex items-center gap-2 text-sm text-gray-700 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.110-.902.055-1.173.417l-.970 1.293c-.282.376-.769.542-1.210.380a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.380-1.210l1.293-.970c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                            </svg>
+                            <span>${no_telp}</span>
+                        </div>`;
+                }
+
+                if (email) {
+                    emailHTML = `<div class="flex items-center gap-2 text-sm text-gray-700 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.070 1.916l-7.500 4.615a2.25 2.25 0 0 1-2.360 0L3.320 8.91a2.25 2.25 0 0 1-1.070-1.916V6.75" />
+                            </svg>
+                            <span>${email}</span>
+                        </div>`;
+                }
+
                 const url = new URL(window.location.href);
                 url.searchParams.set('detail', id);
                 history.pushState(null, '', url);
@@ -1483,37 +1605,61 @@
 
                 <img src="${foto}" class="w-full h-56 object-cover rounded-xl mb-4">
 
-                <h2 class="text-2xl font-bold">${nama}</h2>
+                <h2 class="flex text-2xl font-bold justify-normal">${nama}</h2>
 
-                <p class="text-gray-600">${harga}</p>
-
-                <p class="text-gray-600">${alamat}</p>
+                <p class="flex gap-2 text-gray-700 justify-normal">${deskripsi}</p>
 
 
-                <div class="mt-3">
+
+                <div class="mt-5">  
+                    <div class="flex items-center gap-2 text-sm text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                        </svg>
+                        <span>${alamat}</span>
+                    </div>
+
+                    ${hargaHTML}
+                    ${notelpHTML}
+                    ${emailHTML}
+                    
+                </div>  
+                <div class="mt-2">
                     ${kategoriHTML}
                 </div>
 
-                <div class="mt-3">
+                <div class="mt-2">
                     ${fasilitasHTML}
                 </div>
 
                 <div class="flex justify-end gap-2 mt-6">
-                    <button onclick="handleFavorit(${id}, this)"
-                        class="px-4 py-2 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${isFavorit ? 'black' : 'none'}" stroke="${isFavorit ?'none' : 'currentColor'}" class="size-6">
+                    <button title="Favorit" onclick="handleFavorit(${id}, this)"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="${isFavorit ? 'black' : 'none'}"
+                            stroke="${isFavorit ? 'none' : 'currentColor'}"
+                            class="w-6 h-6">
                             <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
                         </svg>
                     </button>
 
-                    <button onclick="lihatRute(${lat}, ${lng})"
-                        class="bg-blue-500 text-white px-4 py-2 rounded-xl">
-                        Lihat Rute
+                    <button title="Rute" onclick="lihatRute(${lat}, ${lng})"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
+                        <i class="fi fi-rs-route text-md"></i>
                     </button>
 
-                    <button onclick="editWisataKuliner(${id})"
-                        class="bg-green-500 text-white px-4 py-2 rounded-xl">
-                        Edit Wisata Kuliner
+                    <button title="Edit" onclick="editWisataKuliner(${id})"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                        </svg>
+
+                        
                     </button>
                 </div>
 
@@ -1690,30 +1836,6 @@
                         `;
                             }
 
-                            //         html += `
-                        //     <div class="border-b py-3">
-                        //         <div class="font-semibold">${namaUser}</div>
-
-                        //         <div class="flex items-center gap-1">
-                        //             <span class="text-orange-400"><svg xmlns="http://www.w3.org/2000/svg"
-                        //                     viewBox="0 0 24 24" fill="currentColor" class="size-4">
-                        //                     <path fill-rule="evenodd"
-                        //                         d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                        //                         clip-rule="evenodd" />
-                        //                 </svg>
-                        //             </span>
-                        //             <span class="font-semibold">
-                        //                 ${item.penilaian}
-                        //             </span>
-                        //         </div>
-
-                        //         <div class="text-gray-600 text-sm">
-                        //             ${item.ulasan}
-                        //         </div>
-
-                        //         ${fotoUlasan}
-                        //     </div>
-                        // `
                             html += `
     <div class="border-b py-4 flex gap-3">
 
@@ -1783,6 +1905,23 @@
             directionsService.route(request, function(result, status) {
                 if (status === 'OK') {
                     directionsRenderer.setDirections(result);
+
+                    const route = result.routes[0].overview_path;
+                    const lastPoint = route[route.length - 1];
+                    new google.maps.Polyline({
+                        path: [
+                            lastPoint,
+                            {
+                                lat: destLat,
+                                lng: destLng
+                            }
+                        ],
+                        geodesic: true,
+                        strokeColor: "#4285F4",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 4,
+                        map: map
+                    });
                 } else {
                     alert("Gagal menampilkan rute");
                 }
@@ -1792,9 +1931,10 @@
         function formatTanggal(tanggal) {
             if (!tanggal) return '';
 
-            const t = new Date(tanggal);
+            const datePart = tanggal.split('T')[0];
+            const [year, month, day] = datePart.split('-').map(Number);
 
-            return t.toLocaleDateString('id-ID', {
+            return new Date(year, month - 1, day).toLocaleDateString('id-ID', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
@@ -1803,10 +1943,8 @@
 
         // Edit Wisata Kuliner
         function editWisataKuliner(id) {
-
-            // window.location.href = `/wisatawan/editwisatakuliner/${id}`;
             window.location.href =
-                `/wisatawan/editwisatakuliner/${id}?from=` + encodeURIComponent(window.location.href);
+                `/editwisatakuliner/${id}?from=` + encodeURIComponent(window.location.href);
         }
 
         // Favorit
@@ -1936,8 +2074,8 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Ulasan berhasil disimpan',
-                        timer: 1500,
+                        text: 'Ulasan berhasil disimpan dan akan tampil ketika sudah disetujui oleh Admin',
+                        timer: 2000,
                         showConfirmButton: false
                     });
 
@@ -1974,13 +2112,9 @@
                             document.getElementById('fotoPreview').src = `/storage/${data.foto_ulasan}`;
                         }
 
-                        // document.querySelector('#formUlasan button[type="submit"]').textContent = 'Perbarui';
-
                     } else {
                         document.getElementById('formUlasan').reset();
                         setRatingStars(0);
-
-                        // document.querySelector('#formUlasan button[type="submit"]').textContent = 'Simpan';
                     }
 
                 })
@@ -2068,175 +2202,174 @@
             }
         })
 
-        // async function cariKulinerTerdekat() {
+        document.getElementById("formCari").addEventListener("submit", function(e) {
+            if (searchBar.value.trim() === '') {
+                searchBar.value = defaultText;
+            }
+            e.preventDefault();
 
-        //     let params = new URLSearchParams({
-        //         lat: userLat,
-        //         lng: userLng,
-        //         radius: 5 // km (bisa dari input)
-        //     });
+            const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
 
-        //     let response = await fetch(`/api/kuliner-terdekat?${params}`);
-        //     let data = await response.json();
+            const isTerdekat =
+                keyword.includes("terdekat") ||
+                keyword.includes("dekat") ||
+                keyword.includes("near");
 
-        //     tampilkanSemuaKuliner(data);
-        // }
+            if (isTerdekat) {
 
+                if (!navigator.geolocation) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "GPS tidak tersedia",
+                        text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    return;
+                }
 
-        // async function cariKulinerTerdekat() {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
 
-        //     if (!userLat || !userLng) {
-        //         alert("Lokasi belum tersedia");
-        //         return;
-        //     }
+                        inputJarakDua.value = 5;
+                        nilaiJarakDua.value = 5;
+                        updateProgressJarakDua();
 
-        //     let params = new URLSearchParams({
-        //         lat: userLat,
-        //         lng: userLng,
-        //         radius: 5 // bisa kamu ubah nanti
-        //     });
+                        minInput.value = 0;
+                        maxInput.value = 500000;
+                        minPriceInput.value = 0;
+                        maxPriceInput.value = 500000;
+                        updateProgress();
 
-        //     try {
-        //         let response = await fetch(`/api/kuliner-terdekat?${params}`);
-        //         let data = await response.json();
+                        const minRating = document.querySelector(".min-rating");
+                        const maxRating = document.querySelector(".max-rating");
 
-        //         console.log("HASIL TERDEKAT:", data);
+                        if (minRating && maxRating) {
+                            minRating.value = 0;
+                            maxRating.value = 5;
+                        }
 
-        //         tampilkanHasilTerdekat(data);
+                        document.getElementById("lat").value = lat;
+                        document.getElementById("lng").value = lng;
 
-        //     } catch (error) {
-        //         console.error("Error:", error);
-        //     }
-        // }
+                        e.target.submit();
+                    },
 
+                    function() {
+                        Swal.fire({
+                            icon: "warning",
+                            title: 'Lokasi Tidak Tersedia',
+                            text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                );
 
-        // function tampilkanHasilTerdekat(data) {
+                return;
+            }
 
-        //     clearMarkers();
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById("lat").value = position.coords.latitude;
+                    document.getElementById("lng").value = position.coords.longitude;
+                    e.target.submit();
+                },
+                function() {
+                    document.getElementById("lat").value = -6.99;
+                    document.getElementById("lng").value = 110.42;
+                    e.target.submit();
+                }
+            );
+        });
 
-        //     let bounds = new google.maps.LatLngBounds();
+        function cariKulinerTerdekat() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
 
-        //     data.forEach(item => {
+                    inputJarakDua.value = 5;
+                    nilaiJarakDua.value = 5;
+                    updateProgressJarakDua();
 
-        //         let posisi = {
-        //             lat: parseFloat(item.latitude),
-        //             lng: parseFloat(item.longitude)
-        //         };
+                    minInput.value = 0;
+                    maxInput.value = 500000;
+                    minPriceInput.value = 0;
+                    maxPriceInput.value = 500000;
+                    updateProgress();
 
-        //         let marker = new google.maps.Marker({
-        //             position: posisi,
-        //             map: map,
-        //             title: item.nama,
-        //             icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-        //         });
+                    const minRating = document.querySelector(".min-rating");
+                    const maxRating = document.querySelector(".max-rating");
 
-        //         markers.push(marker);
-        //         bounds.extend(posisi);
+                    if (minRating && maxRating) {
+                        minRating.value = 0;
+                        maxRating.value = 5;
+                    }
 
-        //     });
+                    const params = new URLSearchParams(window.location.search);
 
-        //     if (data.length > 0) {
-        //         map.fitBounds(bounds);
-        //     } else {
-        //         alert("Tidak ada kuliner dalam radius ini");
-        //     }
-        // }
+                    params.set("lat", lat);
+                    params.set("lng", lng);
+                    params.set("jarak", 5);
+                    params.set("minharga", 0);
+                    params.set("maxharga", 500000);
+                    params.set("minrating", 0);
+                    params.set("maxrating", 5);
+                    params.set("keyword", "Kuliner Terdekat");
 
+                    window.location.href =
+                        window.location.pathname + "?" + params.toString();
+                }, function(error) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Lokasi Tidak Tersedia',
+                        text: 'Silakan nyalakan GPS Anda untuk mencari kuliner terdekat',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Browser kamu tidak mendukung fitur lokasi 😢',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
 
+        const emailInput = document.getElementById('email_pengaju');
 
-        // async function simpanUlasan() {
+        const fields = [
+            document.getElementById('ulasan'),
+            document.getElementById('harga_per_orang'),
+            document.getElementById('foto_ulasan')
+        ];
 
-        //     let formData = new FormData()
+        const ratingContainer = document.getElementById('ratingStars');
 
-        //     formData.append('id_wisata_kuliner', document.getElementById('id_wisata_kuliner').value)
-        //     formData.append('penilaian', document.getElementById('penilaian').value)
-        //     formData.append('ulasan', document.getElementById('ulasan').value)
-        //     formData.append('harga_per_orang', document.getElementById('harga_per_orang').value)
+        emailInput.addEventListener('input', function() {
+            const isi = emailInput.value.trim() !== '';
 
-        //     let file = document.getElementById('foto_ulasan').files[0]
-        //     if (file) {
-        //         formData.append('foto_ulasan', file)
-        //     }
+            fields.forEach(el => {
+                if (isi) {
+                    el.removeAttribute('disabled');
+                } else {
+                    el.setAttribute('disabled', true);
+                }
+            });
 
-        //     let response = await fetch("{{ route('penilaianulasan.simpan') }}", {
-        //         method: "POST",
-        //         headers: {
-        //             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-        //         },
-        //         body: formData
-        //     })
-
-        //     let result = await response.text()
-
-        //     console.log(result)
-
-        //     // alert('Ulasan berhasil disimpan 👍')
-        //     if (response.ok) {
-        //         alert('Ulasan berhasil disimpan 👍')
-        //     } else {
-        //         alert('Gagal simpan 😭')
-        //     }
-        //     location.reload()
-
-        // }
-
-        // function renderStars(val) {
-
-        //     let stars = document.querySelectorAll('#ratingStars i')
-
-        //     stars.forEach((star, index) => {
-
-        //         if (index + 1 <= val) {
-
-        //             star.classList.remove('text-gray-300')
-        //             star.classList.add('text-yellow-400')
-
-        //         } else {
-
-        //             star.classList.remove('text-yellow-400')
-        //             star.classList.add('text-gray-300')
-
-        //         }
-
-        //     })
-
-        // }
-
-        // document.getElementById('btnKirimUlasan').onclick = function() {
-
-        //     let teks = document.getElementById('inputUlasan').value
-        //     let file = document.getElementById('fotoUlasan').files[0]
-
-        //     let formData = new FormData()
-
-        //     formData.append('kuliner_id', kulinerAktif)
-        //     formData.append('ulasan', teks)
-        //     formData.append('rating', ratingDipilih)
-
-        //     if (file) {
-        //         formData.append('foto', file)
-        //     }
-
-        //     fetch('/ulasan/store', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //             },
-        //             body: formData
-        //         })
-        //         .then(res => res.json())
-        //         .then(res => {
-
-        //             closeModal()
-
-        //             document.getElementById('inputUlasan').value = ''
-        //             document.getElementById('fotoUlasan').value = ''
-
-        //             loadUlasan(kulinerAktif)
-
-        //         })
-
-        // }
+            if (isi) {
+                ratingContainer.classList.remove('pointer-events-none', 'opacity-50', 'cursor-not-allowed');
+                ratingContainer.classList.add('cursor-pointer');
+            } else {
+                ratingContainer.classList.add('pointer-events-none', 'opacity-50', 'cursor-not-allowed');
+                ratingContainer.classList.remove('cursor-pointer');
+            }
+        });
     </script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initApp&libraries=maps,marker&v=weekly&language=in"

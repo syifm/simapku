@@ -219,7 +219,7 @@
                 {{-- <span>Beranda</span> --}}
             </a>
 
-            <div class="mt-[300px]">
+            <div class="mt-[310px]">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" title="Logout"
