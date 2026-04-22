@@ -78,20 +78,49 @@ class PenilaianDanUlasanController extends Controller
 
     //     return redirect()->route('beranda-Wisatawan')->with('success', 'Penilaian dan Ulasan Berhasil Disimpan');
     // }
+    // public function getUlasan($id)
+    // {
+    //     $user = Auth::user();
+
+    //     $wisatawan = Wisatawan::where('user_id', $user->id)->first();
+
+    //     if (!$wisatawan) {
+    //         return response()->json(null);
+    //     }
+
+    //     // $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+    //     //     ->where('id_wisatawan', $wisatawan->id_wisatawan)
+    //     //     ->first();
+    //     $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+    //         ->where(function ($q) use ($wisatawan, $user) {
+    //             $q->where('id_wisatawan', $wisatawan->id_wisatawan);
+
+    //             $q->orWhereHas('wisatawan.user', function ($q2) use ($user) {
+    //                 $q2->where('email_pengulas', $user->email);
+    //             });
+    //         })
+    //         ->first();
+
+    //     return response()->json($ulasan);
+    // }
     public function getUlasan($id)
     {
-        if (!Auth::check()) {
-            return response()->json(null);
-        }
-
-        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
-
-        if (!$wisatawan) {
-            return response()->json(null);
-        }
+        $user = Auth::user();
+        $wisatawan = $user
+            ? Wisatawan::where('user_id', $user->id)->first()
+            : null;
 
         $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
-            ->where('id_wisatawan', $wisatawan->id_wisatawan)
+            ->where(function ($q) use ($wisatawan, $user) {
+
+                if ($wisatawan) {
+                    $q->where('id_wisatawan', $wisatawan->id_wisatawan);
+                }
+
+                if ($user && $user->email) {
+                    $q->orWhere('email_pengulas', $user->email);
+                }
+            })
             ->first();
 
         return response()->json($ulasan);
@@ -209,32 +238,119 @@ class PenilaianDanUlasanController extends Controller
         ]);
     }
 
+    // public function detail($id)
+    // {
+    //     $userId = Auth::id();
+    //     $id_wisatawan = Wisatawan::where('user_id', $userId)->value('id_wisatawan');
+
+    //     $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+    //         ->where('status', 'Disetujui')
+    //         ->orderBy('waktu_diubah', 'desc')
+    //         ->get()
+    //         ->map(function ($item) use ($id_wisatawan) {
+    //             return [
+    //                 'penilaian' => $item->penilaian,
+    //                 'ulasan' => $item->ulasan,
+    //                 'foto_ulasan' => $item->foto_ulasan,
+    //                 'waktu_diubah' => $item->waktu_diubah,
+    //                 'nama' => $item->wisatawan->nama ?? null,
+    //                 'punya_sendiri' => $item->id_wisatawan == $id_wisatawan
+    //             ];
+    //         });
+    //     // $user = Auth::user();
+
+    //     // $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+    //     //     ->where('status', 'Disetujui');
+
+    //     // if ($user) {
+
+    //     //     $wisatawan = Wisatawan::where('user_id', $user->id)->first();
+
+    //     //     $ulasan->where(function ($q) use ($wisatawan, $user) {
+
+    //     //         if ($wisatawan) {
+    //     //             $q->where('id_wisatawan', $wisatawan->id_wisatawan);
+    //     //         }
+
+    //     //         $q->orWhereHas('wisatawan', function ($q2) use ($user) {
+    //     //             $q2->where('email_pengulas', $user->email);
+    //     //         });
+    //     //     });
+    //     // }
+
+    //     return response()->json($ulasan);
+    // }
+
     public function detail($id)
     {
+        // $userId = Auth::id();
+        // $id_wisatawan = Wisatawan::where('user_id', $userId)->value('id_wisatawan');
+
+        // $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+        //     ->where('status', 'Disetujui')
+        //     ->orderBy('waktu_diubah', 'desc')
+        //     ->get()
+        //     ->map(function ($item) use ($id_wisatawan) {
+        //         return [
+        //             'penilaian' => $item->penilaian,
+        //             'ulasan' => $item->ulasan,
+        //             'foto_ulasan' => $item->foto_ulasan,
+        //             'waktu_diubah' => $item->waktu_diubah,
+        //             'nama' => $item->wisatawan->nama ?? null,
+        //             'punya_sendiri' => $item->id_wisatawan == $id_wisatawan
+        //         ];
+        //     });
+
+
+        $user = Auth::user();
         $userId = Auth::id();
+        $emailUser = $user?->email;
         $id_wisatawan = Wisatawan::where('user_id', $userId)->value('id_wisatawan');
 
         $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
             ->where('status', 'Disetujui')
             ->orderBy('waktu_diubah', 'desc')
             ->get()
-            ->map(function ($item) use ($id_wisatawan) {
+            ->map(function ($item) use ($id_wisatawan, $emailUser) {
                 return [
                     'penilaian' => $item->penilaian,
                     'ulasan' => $item->ulasan,
                     'foto_ulasan' => $item->foto_ulasan,
                     'waktu_diubah' => $item->waktu_diubah,
                     'nama' => $item->wisatawan->nama ?? null,
-                    'punya_sendiri' => $item->id_wisatawan == $id_wisatawan
+                    'punya_sendiri' => ($id_wisatawan && $item->id_wisatawan == $id_wisatawan) ||
+                        ($emailUser && $item->email_pengulas == $emailUser)
                 ];
             });
+        // $user = Auth::user();
+
+        // $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+        //     ->where('status', 'Disetujui');
+
+        // if ($user) {
+
+        //     $wisatawan = Wisatawan::where('user_id', $user->id)->first();
+
+        //     $ulasan->where(function ($q) use ($wisatawan, $user) {
+
+        //         if ($wisatawan) {
+        //             $q->where('id_wisatawan', $wisatawan->id_wisatawan);
+        //         }
+
+        //         $q->orWhereHas('wisatawan', function ($q2) use ($user) {
+        //             $q2->where('email_pengulas', $user->email);
+        //         });
+        //     });
+        // }
 
         return response()->json($ulasan);
     }
 
 
+
+
     // Wisatawan Tidak Login
-    public function simpanUlasan(Request $request)
+    public function simpanTidakLogin(Request $request)
     {
         $request->validate([
             'id_wisata_kuliner' => 'required|integer',
@@ -254,9 +370,7 @@ class PenilaianDanUlasanController extends Controller
             );
         }
 
-        $email_pengulas = Auth::check()
-            ? Auth::user()->email
-            : $request->email_pengulas;
+        $email_pengulas = $request->email_pengulas;
 
         $id_wisatawan = null;
         $id_admin = null;
@@ -277,42 +391,58 @@ class PenilaianDanUlasanController extends Controller
 
         $ulasan = null;
 
-        if ($id_wisatawan) {
-            $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)
-                ->where('id_wisatawan', $id_wisatawan)
-                ->first();
-        }
+        // if ($id_wisatawan) {
+        //     $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)
+        //         ->where('id_wisatawan', $id_wisatawan)
+        //         ->first();
+        // }
 
-        if ($ulasan) {
-            $ulasan->update([
-                'penilaian' => $request->penilaian,
-                'ulasan' => $request->ulasan,
-                'foto_ulasan' => $fotoPath ?? $ulasan->foto_ulasan,
-                'harga_min' => $min,
-                'harga_max' => $max,
-                'waktu_diubah' => $waktu_diubah,
-            ]);
+        // if ($ulasan) {
+        //     $ulasan->update([
+        //         'penilaian' => $request->penilaian,
+        //         'ulasan' => $request->ulasan,
+        //         'foto_ulasan' => $fotoPath ?? $ulasan->foto_ulasan,
+        //         'harga_min' => $min,
+        //         'harga_max' => $max,
+        //         'waktu_diubah' => $waktu_diubah,
+        //     ]);
 
-            return response()->json([
-                'status' => 'Diperbarui',
-                'message' => 'Ulasan berhasil diperbarui'
-            ]);
-        } else {
-            PenilaiandanUlasan::create([
+        //     return response()->json([
+        //         'status' => 'Diperbarui',
+        //         'message' => 'Ulasan berhasil diperbarui'
+        //     ]);
+        // } else {
+        //     PenilaiandanUlasan::create([
+        //         'id_wisata_kuliner' => $request->id_wisata_kuliner,
+        //         'penilaian' => $request->penilaian,
+        //         'ulasan' => $request->ulasan,
+        //         'foto_ulasan' => $fotoPath,
+        //         'harga_min' => $min,
+        //         'harga_max' => $max,
+        //         'email_pengulas' => $email_pengulas,
+        //         'id_wisatawan' => $id_wisatawan ?? null,
+        //         'id_admin' => $id_admin ?? null,
+        //         'status' => 'Belum Diverifikasi',
+        //         'waktu_dibuat' => $waktu_dibuat,
+        //         'waktu_diubah' => $waktu_diubah,
+        //     ]);
+        // }
+        PenilaiandanUlasan::updateOrCreate(
+            [
                 'id_wisata_kuliner' => $request->id_wisata_kuliner,
+                'email_pengulas' => $request->email_pengulas,
+            ],
+            [
                 'penilaian' => $request->penilaian,
                 'ulasan' => $request->ulasan,
                 'foto_ulasan' => $fotoPath,
                 'harga_min' => $min,
                 'harga_max' => $max,
-                'email_pengulas' => $email_pengulas,
-                'id_wisatawan' => $id_wisatawan,
-                'id_admin' => $id_admin,
                 'status' => 'Belum Diverifikasi',
                 'waktu_dibuat' => $waktu_dibuat,
                 'waktu_diubah' => $waktu_diubah,
-            ]);
-        }
+            ]
+        );
 
         $wisataKuliner = WisataKuliner::findOrFail($request->id_wisata_kuliner);
         $min_total = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->min('harga_min');
@@ -330,25 +460,110 @@ class PenilaianDanUlasanController extends Controller
         ]);
     }
 
-    public function detailUlasan($id)
+    // public function detailTidakLogin($id)
+    // {
+    //     $userId = Auth::id();
+    //     $id_wisatawan = Wisatawan::where('user_id', $userId)->value('id_wisatawan');
+
+    //     $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+    //         ->where('status', 'Disetujui')
+    //         ->orderBy('waktu_diubah', 'desc')
+    //         ->get()
+    //         ->map(function ($item) use ($id_wisatawan) {
+    //             return [
+    //                 'penilaian' => $item->penilaian,
+    //                 'ulasan' => $item->ulasan,
+    //                 'foto_ulasan' => $item->foto_ulasan,
+    //                 'waktu_diubah' => $item->waktu_diubah,
+    //                 'nama' => $item->wisatawan->nama ?? null,
+    //                 'punya_sendiri' => $item->id_wisatawan == $id_wisatawan
+    //             ];
+    //         });
+
+    //     return response()->json($ulasan);
+    // }
+    public function detailTidakLogin($id)
     {
         $userId = Auth::id();
-        $id_wisatawan = Wisatawan::where('user_id', $userId)->value('id_wisatawan');
+
+        $id_wisatawan = null;
+
+        if ($userId) {
+            $id_wisatawan = Wisatawan::where('user_id', $userId)
+                ->value('id_wisatawan');
+        }
 
         $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
             ->where('status', 'Disetujui')
             ->orderBy('waktu_diubah', 'desc')
             ->get()
-            ->map(function ($item) use ($id_wisatawan) {
+            ->map(function ($item) use ($id_wisatawan, $userId) {
                 return [
                     'penilaian' => $item->penilaian,
                     'ulasan' => $item->ulasan,
                     'foto_ulasan' => $item->foto_ulasan,
                     'waktu_diubah' => $item->waktu_diubah,
                     'nama' => $item->wisatawan->nama ?? null,
-                    'punya_sendiri' => $item->id_wisatawan == $id_wisatawan
+
+                    'punya_sendiri' => $userId
+                        ? $item->id_wisatawan == $id_wisatawan
+                        : false
                 ];
             });
+
+        return response()->json($ulasan);
+    }
+
+
+    // public function detailTidakLogin(Request $request, $id)
+    // {
+    //     $emailInput = $request->email;
+
+    //     $query = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+    //         ->where('status', 'Disetujui');
+
+    //     $query->whereHas('wisatawan', function ($q) use ($emailInput) {
+    //         $q->where('email', $emailInput);
+    //     });
+
+    //     $ulasan = $query->orderBy('waktu_diubah', 'desc')
+    //         ->get()
+    //         ->map(function ($item) {
+    //             return [
+    //                 'penilaian' => $item->penilaian,
+    //                 'ulasan' => $item->ulasan,
+    //                 'foto_ulasan' => $item->foto_ulasan,
+    //                 'waktu_diubah' => $item->waktu_diubah,
+    //                 'nama' => $item->wisatawan->nama ?? null,
+    //             ];
+    //         });
+
+    //     return response()->json($ulasan);
+    // }
+
+    public function getUlasanTidakLogin(Request $request, $id)
+    {
+        // if (!Auth::check()) {
+        //     return response()->json(null);
+        // }
+
+        // $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
+
+        // if (!$wisatawan) {
+        //     return response()->json(null);
+        // }
+
+        // $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+        //     ->where('id_wisatawan', $wisatawan->id_wisatawan)
+        //     ->first();
+
+        // return response()->json($ulasan);
+
+        $email_pengulas = $request->email_pengulas;
+
+        $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+            ->where('email_pengulas', $email_pengulas)
+            ->first();
 
         return response()->json($ulasan);
     }

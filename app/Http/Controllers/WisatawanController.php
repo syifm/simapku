@@ -50,7 +50,7 @@ class WisatawanController extends Controller
         if ($keyword === '') {
             $keyword = 'Rekomendasi Kuliner';
         }
-        $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
+        $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_dibuat', 'desc')->take(4)->get();
         $kulinerFavorit = WisataKuliner::where('status', 'Ditampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
@@ -1042,11 +1042,6 @@ class WisatawanController extends Controller
         return back()->with('success', 'Berhasil dihapus dari Kuliner Favorit');
     }
 
-
-
-
-
-
     // Tidak Login
     public function berandaWisatawanTidakLogin()
     {
@@ -1054,7 +1049,7 @@ class WisatawanController extends Controller
 
         if ($keyword === '') {
           
-        $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
+        $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_dibuat', 'desc')->take(4)->get();
         $kulinerFavorit = WisataKuliner::where('status', 'Ditampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();

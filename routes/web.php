@@ -72,7 +72,7 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/beranda', [WisatawanController::class, 'berandaWisatawan'])->name('beranda-Wisatawan');
 
     Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'search'])->name('wisatakulinerhalaman');
-    Route::post('/wisatawan/penilaiandanulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('penilaianulasan.simpan');
+    Route::post('/wisatawan/ulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('penilaianulasan.simpan');
     Route::get('/wisatawan/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('penilaianulasan.detail');
     Route::get('/wisatawan/ulasan/modalulasan/{id}', [PenilaianDanUlasanController::class, 'getUlasan']);
 
@@ -117,9 +117,9 @@ Route::post('/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpank
 Route::get('/editwisatakuliner/{id}', [WisatawanController::class, 'halamaneditTidakLogin'])->name('editwisatakuliner.tidaklogin');
 Route::put('/editwisatakuliner/update/{id}', [WisatawanController::class, 'updateTidakLogin'])->name('updatewisatakuliner.tidaklogin');
 Route::get('/carikuliner', [WisatawanController::class, 'search'])->name('carikuliner.tidaklogin');
-Route::post('/ulasan/simpan', [PenilaianDanUlasanController::class, 'simpan'])->name('simpanpenilaianulasan.tidaklogin');
-Route::get('/ulasan/{id}', [PenilaianDanUlasanController::class, 'detail'])->name('detailpenilaianulasan.tidaklogin');
-Route::get('/ulasan/modalulasan/{id}', [PenilaianDanUlasanController::class, 'getUlasan']);
+Route::post('/ulasan/simpan', [PenilaianDanUlasanController::class, 'simpanTidakLogin'])->name('simpanpenilaianulasan.tidaklogin');
+Route::get('/ulasan/{id}', [PenilaianDanUlasanController::class, 'detailTidakLogin'])->name('detailpenilaianulasan.tidaklogin');
+Route::get('/ulasan/modalulasan/{id}', [PenilaianDanUlasanController::class, 'getUlasanTidakLogin']);
 
 // Event
 Route::get('/wisatawan/eventsemarang/dugderan', [WisatawanController::class, 'dugderan'])->name('dugderan');

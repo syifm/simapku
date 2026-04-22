@@ -148,7 +148,7 @@
                 <i class="fas fa-map-marker-alt"></i>
             </a>
 
-            <a href="{{ route('favorit.tidaklogin') }}" title="Favorit"
+            <a onclick="handleLogin()" title="Favorit"
                 class="menu-item flex items-center p-2 rounded
                 {{ request()->routeIs('favorit.tidaklogin') ? 'active' : 'text-white' }}">
                 <i class="fi fi-br-quality" style="font-size: 20px;"></i>
@@ -178,6 +178,34 @@
             </div>
         </nav>
     </div>
+
+    <script>
+        const islogin = {{ auth()->check() ? 'true' : 'false' }};
+
+        function handleLogin() {
+
+            const islogin = false;
+
+            if (!islogin) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak Dapat Diakses',
+                    text: 'Mohon maaf tidak dapat mengakses halaman ini. Silakan login terlebih dahulu untuk mengakses halaman Kuliner Favorit',
+                    showCancelButton: true,
+                    confirmButtonColor: '#fb991a',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Login',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login';
+                    }
+                });
+
+                return;
+            }
+        }
+    </script>
     </body>
 
 </html>

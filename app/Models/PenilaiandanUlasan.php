@@ -31,7 +31,7 @@ class PenilaiandanUlasan extends Model
         return $this->belongsTo(WisataKuliner::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
     }
 
-    public function pengulas()
+    public function wisatawan()
     {
         return $this->belongsTo(Wisatawan::class, 'id_wisatawan', 'id_wisatawan');
     }

@@ -757,7 +757,7 @@
 
         <div id="modalUlasan"
             class="fixed left-0 right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto z-50 items-center justify-center">
-            <form id="formUlasan" action="{{ route('penilaianulasan.simpan') }}" method="POST"
+            <form id="formUlasan" action="{{ route('simpanpenilaianulasan.tidaklogin') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
 
@@ -768,16 +768,22 @@
 
                     <button type="button" onclick="closeModal()" class="absolute right-4 top-3 text-xl">✕</button>
 
-                    <h2 class="text-xl font-bold mb-4 text-center">Tambah Ulasan</h2>
+                    <h2 class="text-xl font-bold mb-2 text-center">Tambah Ulasan</h2>
 
                     <input type="hidden" id="id_wisata_kuliner" name="id_wisata_kuliner">
+                    {{-- <p class="text-xs text-gray-500 mt-1">
+                        Isi email terlebih dahulu untuk memberi penilaian
+                    </p> --}}
+                    <p class="text-xs text-gray-600 mb-3 text-center">
+                        Isi email terlebih dahulu untuk mengaktifkan kolom lainnya
+                    </p>
 
                     <!-- Email Anda -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-800 mb-1" for="email_pengaju"><span>Email
+                        <label class="block text-sm font-medium text-gray-800 mb-1" for="email_pengulas"><span>Email
                                 Anda</span><span class="text-red-500 font-bold"> *</span></label>
-                        <input type="email" id="email_pengaju" name="email_pengaju"
-                            value="{{ old('email_pengaju') }}"
+                        <input type="email" id="email_pengulas" name="email_pengulas"
+                            value="{{ old('email_pengulas') }}"
                             class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required>
                     </div>
@@ -787,7 +793,7 @@
                         Penilaian
                         <span class="text-red-500 font-bold">*</span>
                     </label>
-                    <div id="ratingStars" class="flex gap-1 pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed">
+                    <div id="ratingStars" class="flex gap-1 opacity-50 pointer-events-none cursor-not-allowed">
 
                         <svg data-value="1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400 star">
@@ -824,7 +830,7 @@
 
                     <!-- Ulasan -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-800 mb-1 mt-3"
+                        <label class="block text-sm font-medium text-gray-800 mb-1 mt-4"
                             for="ulasan"><span>Ulasan</span>
                             <span class="text-red-500 font-bold">*</span></label>
                         <textarea id="ulasan" name="ulasan" rows="4" disabled
@@ -907,36 +913,41 @@
 
         <div id="modalFavorit"
             class="fixed left-0 right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto z-50 items-center justify-center">
-            <form id="formFavorit" action="{{ route('favorit.simpan') }}" enctype="multipart/form-data">
-                @csrf
+            {{-- <form id="formFavorit" action="{{ route('favorit.simpan') }}" enctype="multipart/form-data">
+                @csrf --}}
 
-                <div
-                    class="relative left-[30px] top-[90px] mx-auto p-5 border w-[600px] shadow-lg rounded-xl bg-white">
-                    <button type="button" onclick="closeModalFavorit()"
-                        class="absolute right-4 top-3 text-xl">✕</button>
+            <div class="relative left-[30px] top-[90px] mx-auto p-5 border w-[600px] shadow-lg rounded-xl bg-white">
+                <button type="button" onclick="closeModalFavorit()"
+                    class="absolute right-4 top-3 text-xl">✕</button>
 
-                    <h2 class="text-xl font-bold mb-4 text-center">Tambah Favorit</h2>
-                    <input type="hidden" id="id_wisata_kuliner_favorit" name="id_wisata_kuliner_favorit">
+                <div class="flex-1 flex flex-col">
+                    <div class="flex-1">
+                        <div
+                            class="bg-white ml-[350px] mt-[120px] p-10 max-w-2xl mx-auto rounded-lg shadow-lg text-center">
+                            <div class="flex flex-col items-center">
+                                <div
+                                    class="relative w-20 h-20 flex items-center justify-center bg-red-200 rounded-full shadow-md">
+                                    <svg class="w-12 h-12 text-red-500" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </div>
 
-                    <!-- Komentar -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-800 mb-1"
-                            for="komentar"><span>Komentar</span>
-                            <textarea id="komentar" name="komentar" rows="4"
-                                class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('komentar') }}</textarea>
-                            @error('komentar')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit"
-                            class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold">
-                            Simpan
-                        </button>
+                                <h2 class="text-2xl font-bold text-red-600 mt-4">Mohon Maaf Halaman Tidak Dapat Diakses
+                                </h2>
+                                <p class="text-gray-700 mt-2">Mohon login terlebih dahulu untuk mengakses halaman ini.
+                                </p>
+                                <a href="{{ route('login') }}"
+                                    class="bg-[#FB991A] text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 mt-5">
+                                    Login
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </form>
+            </div>
+            {{-- </form> --}}
         </div>
 
         <!-- Modal: Belum Login -->
@@ -1950,7 +1961,40 @@
         // Favorit
         let kulinerAktif = null
 
+        // function handleFavorit(id, btn) {
+        //     let isFavorit = favoritIds.includes(parseInt(id));
+
+        //     if (isFavorit) {
+        //         hapusFavorit(id, btn);
+        //     } else {
+        //         openModalFavorit(id);
+        //     }
+        // }
+        const isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+
         function handleFavorit(id, btn) {
+
+            const isLoggedIn = false;
+
+            if (!isLoggedIn) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak Dapat Diakses',
+                    text: 'Mohon maaf Anda tidak dapat mengakses fitur ini. Silakan login terlebih dahulu untuk menambahkan ke kuliner favorit',
+                    showCancelButton: true,
+                    confirmButtonColor: '#fb991a',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Login',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login';
+                    }
+                });
+
+                return;
+            }
+
             let isFavorit = favoritIds.includes(parseInt(id));
 
             if (isFavorit) {
@@ -1960,95 +2004,95 @@
             }
         }
 
-        function openModalFavorit(id) {
-            kulinerAktif = id
-            document.getElementById('id_wisata_kuliner_favorit').value = id
-            document.getElementById('modalFavorit').classList.remove('hidden')
-            document.body.style.overflow = 'hidden'
-        }
+        // function openModalFavorit(id) {
+        //     kulinerAktif = id
+        //     document.getElementById('id_wisata_kuliner_favorit').value = id
+        //     document.getElementById('modalFavorit').classList.remove('hidden')
+        //     document.body.style.overflow = 'hidden'
+        // }
 
-        function closeModalFavorit() {
-            document.getElementById('modalFavorit').classList.add('hidden')
-            document.body.style.overflow = ''
-        }
+        // function closeModalFavorit() {
+        //     document.getElementById('modalFavorit').classList.add('hidden')
+        //     document.body.style.overflow = ''
+        // }
 
-        document.getElementById('formFavorit').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // document.getElementById('formFavorit').addEventListener('submit', function(e) {
+        //     e.preventDefault();
 
-            let id = document.getElementById('id_wisata_kuliner_favorit').value;
-            let komentar = document.getElementById('komentar').value;
+        //     let id = document.getElementById('id_wisata_kuliner_favorit').value;
+        //     let komentar = document.getElementById('komentar').value;
 
-            fetch("{{ route('favorit.simpan') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({
-                        id_wisata_kuliner_favorit: id,
-                        komentar: komentar
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    let btn = document.querySelector(`button[onclick="handleFavorit(${id}, this)"]`);
-                    if (btn) {
-                        let svg = btn.querySelector('svg');
-                        svg.setAttribute('fill', 'black');
-                        svg.setAttribute('stroke', 'none');
-                    }
+        //     fetch("{{ route('favorit.simpan') }}", {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': csrfToken
+        //             },
+        //             body: JSON.stringify({
+        //                 id_wisata_kuliner_favorit: id,
+        //                 komentar: komentar
+        //             })
+        //         })
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             let btn = document.querySelector(`button[onclick="handleFavorit(${id}, this)"]`);
+        //             if (btn) {
+        //                 let svg = btn.querySelector('svg');
+        //                 svg.setAttribute('fill', 'black');
+        //                 svg.setAttribute('stroke', 'none');
+        //             }
 
-                    favoritIds.push(parseInt(id));
+        //             favoritIds.push(parseInt(id));
 
-                    closeModalFavorit();
+        //             closeModalFavorit();
 
-                    document.getElementById('formFavorit').reset();
+        //             document.getElementById('formFavorit').reset();
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Berhasil ditambahkan ke Kuliner Favorit',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
+        //             Swal.fire({
+        //                 icon: 'success',
+        //                 title: 'Berhasil!',
+        //                 text: 'Berhasil ditambahkan ke Kuliner Favorit',
+        //                 timer: 1500,
+        //                 showConfirmButton: false
+        //             });
 
-                })
-                .catch(err => {
-                    console.error(err);
+        //         })
+        //         .catch(err => {
+        //             console.error(err);
 
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Gagal menyimpan favorit'
-                    });
-                });
-        });
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Oops...',
+        //                 text: 'Gagal menyimpan favorit'
+        //             });
+        //         });
+        // });
 
-        function hapusFavorit(id, btn) {
-            fetch(`/favorit/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    let svg = btn.querySelector('svg');
+        // function hapusFavorit(id, btn) {
+        //     fetch(`/favorit/${id}`, {
+        //             method: 'DELETE',
+        //             headers: {
+        //                 'X-CSRF-TOKEN': csrfToken
+        //             }
+        //         })
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             let svg = btn.querySelector('svg');
 
-                    svg.setAttribute('fill', 'none');
-                    svg.setAttribute('stroke', 'currentColor');
+        //             svg.setAttribute('fill', 'none');
+        //             svg.setAttribute('stroke', 'currentColor');
 
-                    favoritIds = favoritIds.filter(f => f !== parseInt(id));
+        //             favoritIds = favoritIds.filter(f => f !== parseInt(id));
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Berhasil dihapus dari Kuliner Favorit',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                });
-        }
+        //             Swal.fire({
+        //                 icon: 'success',
+        //                 title: 'Berhasil!',
+        //                 text: 'Berhasil dihapus dari Kuliner Favorit',
+        //                 showConfirmButton: false,
+        //                 timer: 3000
+        //             });
+        //         });
+        // }
 
         // Ulasan
         document.getElementById('formUlasan').addEventListener('submit', function(e) {
@@ -2057,7 +2101,7 @@
             let form = document.getElementById('formUlasan');
             let formData = new FormData(form);
 
-            fetch("{{ route('penilaianulasan.simpan') }}", {
+            fetch("{{ route('simpanpenilaianulasan.tidaklogin') }}", {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken
@@ -2090,6 +2134,8 @@
                     });
                 });
         });
+
+        let isRatingDisabled = true;
 
         function openModal(id) {
             kulinerAktif = id
@@ -2159,6 +2205,7 @@
             stars.forEach(star => {
 
                 star.addEventListener('click', function() {
+                    if (isRatingDisabled) return;
 
                     ratingValue = parseInt(this.dataset.value)
 
@@ -2341,34 +2388,202 @@
             }
         }
 
-        const emailInput = document.getElementById('email_pengaju');
+        //         const emailInput = document.getElementById('email_pengulas');
 
-        const fields = [
-            document.getElementById('ulasan'),
-            document.getElementById('harga_per_orang'),
-            document.getElementById('foto_ulasan')
-        ];
+        //         const fields = [
+        //             document.getElementById('ulasan'),
+        //             document.getElementById('harga_per_orang'),
+        //             document.getElementById('foto_ulasan')
+        //         ];
 
-        const ratingContainer = document.getElementById('ratingStars');
+        //         const ratingContainer = document.getElementById('ratingStars');
+
+        //     //     emailInput.addEventListener('input', function() {
+        //     //         // const isi = emailInput.value.trim() !== '';
+
+        //     //         // fields.forEach(el => {
+        //     //         //     if (isi) {
+        //     //         //         el.removeAttribute('disabled');
+        //     //         //     } else {
+        //     //         //         el.setAttribute('disabled', true);
+        //     //         //     }
+        //     //         // });
+
+        //     //         // if (isi) {
+        //     //         //     ratingContainer.classList.remove('pointer-events-none', 'opacity-50', 'cursor-not-allowed');
+        //     //         //     ratingContainer.classList.add('cursor-pointer');
+        //     //         // } else {
+        //     //         //     ratingContainer.classList.add('pointer-events-none', 'opacity-50', 'cursor-not-allowed');
+        //     //         //     ratingContainer.classList.remove('cursor-pointer');
+        //     //         // }
+        //     //         if (this.value.trim() !== '') {
+        //     //     isRatingDisabled = false;
+
+        //     //     document.getElementById('ratingStars').classList.remove('pointer-events-none', 'opacity-50');
+
+        //     //     // enable field lain juga
+        //     //     document.getElementById('ulasan').disabled = false;
+        //     //     document.getElementById('harga_per_orang').disabled = false;
+        //     //     document.getElementById('foto_ulasan').disabled = false;
+        //     // } else {
+        //     //     isRatingDisabled = true;
+
+        //     //     document.getElementById('ratingStars').classList.add('pointer-events-none', 'opacity-50');
+
+        //     //     document.getElementById('ulasan').disabled = true;
+        //     //     document.getElementById('harga_per_orang').disabled = true;
+        //     //     document.getElementById('foto_ulasan').disabled = true;
+        //     // }
+        //     //     });
+        //     emailInput.addEventListener('blur', function () {
+        //     const email = this.value.trim();
+
+        //     if (!email) return;
+
+        //     fetch(`/ulasan/modalulasan/${kulinerAktif}?email=${email}`)
+        //         .then(res => res.json())
+        //         .then(data => {
+
+        //             if (data) {
+
+        //                 document.getElementById('ulasan').value = data.ulasan || '';
+        //                 document.getElementById('penilaian').value = data.penilaian || '';
+
+        //                 setRatingStars(data.penilaian || 0);
+
+        //                 if (data.harga_min && data.harga_max) {
+        //                     document.getElementById('harga_per_orang').value =
+        //                         data.harga_min + "-" + data.harga_max;
+        //                 }
+
+        //                 if (data.foto_ulasan) {
+        //                     document.getElementById('previewWrapper').classList.remove('hidden');
+        //                     document.getElementById('fotoPreview').src = `/storage/${data.foto_ulasan}`;
+        //                 }
+
+        //             } else {
+        //                 // reset kalau nggak ada ulasan
+        //                 document.getElementById('ulasan').value = '';
+        //                 setRatingStars(0);
+        //             }
+
+        //         })
+        //         .catch(err => console.error(err));
+        // });
+
+        // if (email !== '') {
+
+        //     document.getElementById('ulasan').disabled = false;
+        //     document.getElementById('harga_per_orang').disabled = false;
+        //     document.getElementById('foto_ulasan').disabled = false;
+
+        //     document.getElementById('ratingStars')
+        //         .classList.remove('opacity-50', 'pointer-events-none');
+
+        // }
+        const emailInput = document.getElementById('email_pengulas');
+
+        const ulasan = document.getElementById('ulasan');
+        const harga = document.getElementById('harga_per_orang');
+        const foto = document.getElementById('foto_ulasan');
+        const rating = document.getElementById('ratingStars');
+
+        function toggleFields(enable) {
+            ulasan.disabled = !enable;
+            harga.disabled = !enable;
+            foto.disabled = !enable;
+
+            isRatingDisabled = !enable;
+
+            if (enable) {
+                rating.classList.remove('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                rating.classList.add('cursor-pointer');
+            } else {
+                rating.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                rating.classList.remove('cursor-pointer');
+            }
+        }
+
+        // let timeout = null;
+        //         emailInput.addEventListener('input', function() {
+        //             const isValid = this.checkValidity();
+        //             toggleFields(isValid);
+        //         });
+
+        // emailInput.addEventListener('blur', function() {
+        //     const email = this.value.trim();
+        //     if (!email) return;
+
+        //     fetch(`/ulasan/modalulasan/${kulinerAktif}?email_pengulas=${email}`)
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             if (data) {
+        //                 ulasan.value = data.ulasan || '';
+        //                 document.getElementById('penilaian').value = data.penilaian || '';
+
+        //                 setRatingStars(data.penilaian || 0);
+
+        //                 if (data.harga_min && data.harga_max) {
+        //                     harga.value = `${data.harga_min}-${data.harga_max}`;
+        //                 }
+
+        //                 if (data.foto_ulasan) {
+        //                     document.getElementById('previewWrapper').classList.remove('hidden');
+        //                     document.getElementById('fotoPreview').src = `/storage/${data.foto_ulasan}`;
+        //                 }
+        //             } else {
+        //                 // reset kalau belum pernah ulas
+        //                 ulasan.value = '';
+        //                 harga.value = '';
+        //                 setRatingStars(0);
+
+        //                 document.getElementById('previewWrapper').classList.add('hidden');
+        //             }
+        //         })
+        //         .catch(err => console.error(err));
+        // });
+        let timeout = null;
 
         emailInput.addEventListener('input', function() {
-            const isi = emailInput.value.trim() !== '';
+            const isValid = this.checkValidity();
 
-            fields.forEach(el => {
-                if (isi) {
-                    el.removeAttribute('disabled');
-                } else {
-                    el.setAttribute('disabled', true);
-                }
-            });
+            toggleFields(isValid);
 
-            if (isi) {
-                ratingContainer.classList.remove('pointer-events-none', 'opacity-50', 'cursor-not-allowed');
-                ratingContainer.classList.add('cursor-pointer');
-            } else {
-                ratingContainer.classList.add('pointer-events-none', 'opacity-50', 'cursor-not-allowed');
-                ratingContainer.classList.remove('cursor-pointer');
-            }
+            clearTimeout(timeout);
+
+            if (!isValid) return;
+
+            const email = this.value;
+
+            timeout = setTimeout(() => {
+                fetch(`/ulasan/modalulasan/${kulinerAktif}?email_pengulas=${email}`)
+                    .then(res => res.json())
+                    .then(data => {
+
+                        if (data) {
+                            ulasan.value = data.ulasan || '';
+                            document.getElementById('penilaian').value = data.penilaian || '';
+
+                            setRatingStars(data.penilaian || 0);
+
+                            if (data.harga_min && data.harga_max) {
+                                harga.value = `${data.harga_min}-${data.harga_max}`;
+                            }
+
+                            if (data.foto_ulasan) {
+                                document.getElementById('previewWrapper').classList.remove('hidden');
+                                document.getElementById('fotoPreview').src =
+                                    `/storage/${data.foto_ulasan}`;
+                            }
+
+                        } else {
+                            ulasan.value = '';
+                            harga.value = '';
+                            setRatingStars(0);
+                        }
+
+                    });
+            }, 500);
         });
     </script>
     <script
