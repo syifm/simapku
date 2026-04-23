@@ -205,7 +205,7 @@
 
 
                     <div id="detailModalPerubahan"
-                        class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
+                        class="fixed left-[300px] right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto">
                         <div class="relative top-5 mx-auto p-5 border w-[1000px] shadow-lg rounded-xl bg-white">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold flex-1 text-center" id="modalTitlePerubahan">Detail
@@ -467,7 +467,7 @@
                     </div>
 
                     <div id="detailModal"
-                        class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
+                        class="fixed left-[300px] right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto">
                         <div class="relative top-5 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold flex-1 text-center" id="modalTitle"></h3>
@@ -596,7 +596,7 @@
                         </div>
                     </div>
                     {{-- <div id="detailModal"
-                        class="fixed left-[300px] right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto">
+                        class="fixed left-[300px] right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto">
                         <div class="relative top-5 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold flex-1 text-center" id="modalTitle"></h3>

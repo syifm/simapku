@@ -756,7 +756,7 @@
         </div>
 
         <div id="modalUlasan"
-            class="fixed left-0 right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto z-50 items-center justify-center">
+            class="fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto z-50 items-center justify-center">
             <form id="formUlasan" action="{{ route('simpanpenilaianulasan.tidaklogin') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
@@ -912,7 +912,7 @@
         </div>
 
         <div id="modalFavorit"
-            class="fixed left-0 right-0 top-0 bottom-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto z-50 items-center justify-center">
+            class="fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto z-50 items-center justify-center">
             {{-- <form id="formFavorit" action="{{ route('favorit.simpan') }}" enctype="multipart/form-data">
                 @csrf --}}
 

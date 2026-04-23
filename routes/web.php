@@ -7,6 +7,7 @@ use App\Http\Controllers\PenilaianDanUlasanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WisataKulinerController;
 use App\Http\Controllers\KulinerFavoritController;
+use App\Http\Controllers\KategoriController;
 use App\Models\PenilaiandanUlasan;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,19 @@ Route::middleware(['auth', 'Admin'])->group(function () {
     Route::get('/admin/verifikasiwisatakuliner/detail/{id}', [AdminController::class, 'detailVerifKuliner'])->name('verifikasiwisatakuliner.detail');
     Route::post('/admin/verifikasiwisatakuliner/{id}', [AdminController::class, 'verifikasiWisataKuliner'])->name('verifikasiwisatakuliner.verifikasi');
     Route::post('/admin/tampilkanwisatakuliner/{id}', [AdminController::class, 'tampilkanWisataKuliner'])->name('verifikasiwisatakuliner.tampilkan');
+
+    Route::get('/admin/kelolakategori', [KategoriController::class, 'kelolaKategori'])->name('kelolakategori');
+    Route::post('/admin/kategori', [KategoriController::class, 'simpan'])->name('kelolakategori.simpan');
+    Route::put('/admin/kategori/{id}', [KategoriController::class, 'update'])->name('kelolakategori.update');
+    Route::delete('/admin/kategori/hapus/{id}', [KategoriController::class, 'hapus'])->name('kelolakategori.hapus');
+    // Route::get('/admin/tambahwisatakuliner', [AdminController::class, 'halamantambah'])->name('kelolawisatakuliner.tambah');
+    // Route::get('/wisata/api/kecamatan', [AdminController::class, 'getKecamatan']);
+    // Route::get('/wisata/api/kelurahan/{districtCode}', [AdminController::class, 'getKelurahan']);
+    // Route::post('/admin/tambahwisatakuliner/simpan', [AdminController::class, 'simpan'])->name('kelolawisatakuliner.simpan');
+    // Route::get('/admin/kelolawisatakuliner/detail/{id}', [AdminController::class, 'detail'])->name('kelolawisatakuliner.detail');
+    // Route::get('/admin/editwisatakuliner/edit/{id}', [AdminController::class, 'halamanedit'])->name('kelolawisatakuliner.edit');
+    // Route::put('/admin/editwisatakuliner/update/{id}', [AdminController::class, 'update'])->name('kelolawisatakuliner.update');
+    // Route::delete('/admin/kelolawisatakuliner/{id}', [AdminController::class, 'hapus'])->name('kelolawisatakuliner.hapus');
 
     Route::get('/admin/verifikasiulasan', [AdminController::class, 'halamanVerifUlasan'])->name('verifikasiulasan');
     Route::get('/admin/verifikasiulasan/detail/{id}', [AdminController::class, 'detailVerifUlasan'])->name('verifikasiulasan.detail');

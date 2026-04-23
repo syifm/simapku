@@ -144,7 +144,7 @@
         <nav class="nav-menu">
             <a href="{{ route('beranda.tidaklogin') }}" title="Beranda"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda.tidaklogin') || request()->routeIs('wisatakulinerhalaman') || request()->routeIs('dugderan') || request()->routeIs('kulinerkauman') || request()->routeIs('semawis') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda.tidaklogin') || request()->routeIs('carikuliner.tidaklogin') || request()->routeIs('simpanpenilaianulasan.tidaklogin') || request()->routeIs('detailpenilaianulasan.tidaklogin') || request()->routeIs('getUlasanTidakLogin') || request()->routeIs('editwisatakuliner.tidaklogin') || request()->routeIs('updatewisatakuliner.tidaklogin') || request()->routeIs('dugderan') || request()->routeIs('kulinerkauman') || request()->routeIs('semawis') ? 'active' : 'text-white' }}">
                 <i class="fas fa-map-marker-alt"></i>
             </a>
 
@@ -157,7 +157,7 @@
 
             <a href="{{ route('tambahwisatakuliner.tidaklogin') }}" title="Tambah Kuliner"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('tambahwisatakuliner.tidaklogin') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('tambahwisatakuliner.tidaklogin') || request()->routeIs('simpanwisatakuliner.tidaklogin') ? 'active' : 'text-white' }}">
                 <i class="fas
                 fa-plus"></i>
                 {{-- <span>Beranda</span> --}}
