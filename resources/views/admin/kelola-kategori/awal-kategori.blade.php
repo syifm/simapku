@@ -189,6 +189,18 @@
                                                     <span class="ml-1">Edit</span>
                                                 </button> --}}
                                                 <button type="button"
+                                                    onclick="openDetailModal({{ $k->id_kategori }}, {{ $k->wisata_kuliner_count }})"
+                                                    class="bg-[#094B3C] hover:bg-[#06362a] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor"
+                                                        class="size-5">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                                    </svg>
+                                                    <span class="ml-1">Detail</span>
+                                                </button>
+
+                                                <button type="button"
                                                     onclick="openEditModal({{ $k->id_kategori }}, @js($k->nama))"
                                                     class="bg-[#FFA319] hover:bg-[#F19305] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -199,11 +211,6 @@
                                                     </svg>
                                                     <span class="ml-1">Edit</span>
                                                 </button>
-                                                {{-- <form id="delete-form-{{ $kuliner->id_wisata_kuliner }}"
-                                                    action="{{ route('kelolawisatakuliner.hapus', $kuliner->id_wisata_kuliner) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE') --}}
                                                 <button type="button"
                                                     onclick="openHapusModal({{ $k->id_kategori }}, {{ $k->wisata_kuliner_count }})"
                                                     class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
@@ -215,7 +222,6 @@
                                                     </svg>
                                                     <span class="ml-1">Hapus</span>
                                                 </button>
-                                                {{-- </form> --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -229,11 +235,60 @@
                     @endif
                 </div>
 
+                <div id="modalDetail"
+                    class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center overflow-y-auto">
+                    <div class="bg-white p-6 rounded-xl w-[700px] relative">
+                        <button onclick="closeDetailModal()" class="absolute top-3 right-3 text-lg">✕</button>
+                        <h2 class="text-lg font-semibold mb-2">Detail Kategori</h2>
+
+                        <p class="text-sm text-gray-600 mb-4">
+                            Digunakan oleh <span id="jumlahDipakai" class="font-bold"></span> wisata kuliner
+                        </p>
+
+                        {{-- <form id="formHapus" method="POST">
+                            @csrf
+                            @method('DELETE') --}}
+
+                        <!-- GLOBAL REASSIGN -->
+                        {{-- <div class="mb-4">
+                                <label class="text-sm">Pindahkan semua ke:</label>
+                                <select id="globalSelect" class="w-full border px-3 py-2 rounded-lg">
+                                    <option value="">-- Pilih kategori --</option>
+                                </select>
+                            </div> --}}
+
+                        <!-- TABEL -->
+                        <div class="max-h-64 overflow-y-auto border rounded-lg">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-100 sticky top-0">
+                                    <tr>
+                                        <th class="p-2 text-left">Nama</th>
+                                        {{-- <th class="p-2">Reassign</th>
+                                            <th class="p-2">Aksi</th> --}}
+                                    </tr>
+                                </thead>
+
+                                <tbody id="tableBody">
+                                    <!-- diisi via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{-- <div class="flex justify-end mt-4">
+                                <button class="bg-red-600 text-white px-4 py-2 rounded-lg">
+                                    Hapus Kategori
+                                </button>
+                            </div> --}}
+                        {{-- </form> --}}
+                    </div>
+                </div>
+
                 <div id="modalKategori"
                     class="fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto z-50 items-center justify-center">
                     <div
                         class="relative left-[30px] top-[220px] mx-auto p-5 border w-[400px] shadow-lg rounded-xl bg-white">
-                        <button type="button" onclick="closeModal()" class="absolute right-4 top-3 text-xl">✕</button>
+                        <button type="button" onclick="closeModal()"
+                            class="absolute right-4 top-3 text-xl">✕</button>
 
                         <h2 id="modalTitle" class="text-lg font-semibold mb-4"></h2>
 
@@ -373,60 +428,11 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&language=in"
         async defer></script>
     <script>
-        let map = null;
-        let marker = null;
-
-        function openTambahModal() {
-            document.getElementById('modalTitle').innerText = "Tambah Kategori";
-
-            const form = document.getElementById('formKategori');
-            form.action = "/admin/kategori";
-
-            // document.getElementById('methodField').value = "POST";
-            document.getElementById('methodField').value = "";
-            document.getElementById('namaKategori').value = "";
-
-            document.getElementById('modalKategori').classList.remove('hidden');
-        }
-
-        function openEditModal(id, nama) {
-            document.getElementById('modalTitle').innerText = "Edit Kategori";
-
-            const form = document.getElementById('formKategori');
-            form.action = `/admin/kategori/${id}`;
-
-            document.getElementById('methodField').value = "PUT";
-            document.getElementById('namaKategori').value = nama;
-
-            document.getElementById('modalKategori').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('modalKategori').classList.add('hidden');
-        }
-
-        //         function openHapusModal(id, jumlahDipakai) {
-        //     const form = document.getElementById('formHapus');
-        //     form.action = `/admin/kategori/${id}`;
-
-        //     const reassign = document.getElementById('reassignSection');
-
-        //     if (jumlahDipakai > 0) {
-        //         reassign.classList.remove('hidden');
-        //     } else {
-        //         reassign.classList.add('hidden');
-        //     }
-
-        //     document.getElementById('modalHapus').classList.remove('hidden');
-        // }
-
-        // function closeHapusModal() {
-        //     document.getElementById('modalHapus').classList.add('hidden');
-        // }
         const allKategori = @json($kategori->items());;
         const allKuliner = @json($wisataKuliner);
 
         console.log(allKuliner);
+
         let kategoriDihapus = null;
 
         function openHapusModal(id, jumlah) {
@@ -443,15 +449,12 @@
             tbody.innerHTML = "";
             globalSelect.innerHTML = '<option value="">-- Pilih kategori --</option>';
 
-            // FILTER kategori (exclude yg dihapus)
             const kategoriValid = allKategori.filter(k => k.id_kategori != id);
 
-            // isi dropdown global
             kategoriValid.forEach(k => {
                 globalSelect.innerHTML += `<option value="${k.id_kategori}">${k.nama}</option>`;
             });
 
-            // FILTER kuliner yg pakai kategori ini
             const kulinerTerpakai = allKuliner.filter(k =>
                 k.kategori.some(kt => kt.id_kategori == id)
             );
@@ -520,10 +523,8 @@
 
             const row = event.target.closest('tr');
 
-            // tandai row ini sudah dihapus
             row.setAttribute('data-deleted', 'true');
 
-            // disable select biar nggak ikut validasi
             const select = row.querySelector('.reassign-select');
             if (select) select.disabled = true;
 
@@ -600,7 +601,6 @@
                 return;
             }
 
-            // 🔥 KONFIRMASI
             e.preventDefault();
 
             Swal.fire({
@@ -664,6 +664,72 @@
                     }
                 });
         });
+
+
+
+
+        function openDetailModal(id, jumlah) {
+            document.getElementById('jumlahDipakai').innerText = jumlah;
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = "";
+            const kulinerTerpakai = allKuliner.filter(k =>
+                k.kategori.some(kt => kt.id_kategori == id)
+            );
+
+            kulinerTerpakai.forEach(item => {
+                tbody.innerHTML += `
+                    <tr class="border-t">
+                        <td class="p-2">${item.nama}</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('modalDetail').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('modalDetail').classList.add('hidden');
+        }
+
+
+
+
+
+
+
+
+
+        function openTambahModal() {
+            document.getElementById('modalTitle').innerText = "Tambah Kategori";
+
+            const form = document.getElementById('formKategori');
+            form.action = "/admin/kategori";
+
+            // document.getElementById('methodField').value = "POST";
+            document.getElementById('methodField').value = "";
+            document.getElementById('namaKategori').value = "";
+
+            document.getElementById('modalKategori').classList.remove('hidden');
+        }
+
+        function openEditModal(id, nama) {
+            document.getElementById('modalTitle').innerText = "Edit Kategori";
+
+            const form = document.getElementById('formKategori');
+            form.action = `/admin/kategori/${id}`;
+
+            document.getElementById('methodField').value = "PUT";
+            document.getElementById('namaKategori').value = nama;
+
+            document.getElementById('modalKategori').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modalKategori').classList.add('hidden');
+        }
+
+
+
         //         document.getElementById('formHapus').addEventListener('submit', function(e) {
 
         //     let valid = true;

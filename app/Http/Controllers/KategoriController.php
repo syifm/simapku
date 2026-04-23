@@ -36,31 +36,6 @@ class KategoriController extends Controller
     }
 
     // Tambah Kategori (Kelola Kategori)
-
-    // public function simpan(Request $request)
-    // {
-    //     $request->validate([
-    //         'nama' => [
-    //             'required',
-    //             'string',
-    //             'max:100',
-    //             Rule::unique('kategori')->where(function ($query) use ($request) {
-    //                 return $query->whereRaw('LOWER(nama) = ?', [strtolower(trim($request->nama))]);
-    //             })
-    //         ],
-    //     ], [
-    //         'nama.required' => 'Nama kategori harus diisi.',
-    //         'nama.unique' => 'Nama kategori sudah tersedia.'
-    //     ]);
-
-    //     Kategori::create([
-    //         'nama' => trim($request->nama),
-    //         'waktu_dibuat' => Carbon::now('Asia/Jakarta'),
-    //         'waktu_diubah' => Carbon::now('Asia/Jakarta'),
-    //     ]);
-
-    //     return redirect()->route('kelolakategori')->with('success', 'Kategori berhasil ditambahkan');
-    // }
     public function simpan(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -95,38 +70,6 @@ class KategoriController extends Controller
     }
 
     // Update Kategori (Kelola Kategori)
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'nama' => [
-    //             'required',
-    //             'string',
-    //             'max:100',
-    //             Rule::unique('kategori')
-    //                 ->where(function ($query) use ($request) {
-    //                     return $query->whereRaw('LOWER(nama) = ?', [strtolower(trim($request->nama))]);
-    //                 })
-    //                 ->ignore($id, 'id_kategori')
-    //         ],
-    //     ], [
-    //         'nama.required' => 'Nama kategori harus diisi.',
-    //         'nama.unique' => 'Nama kategori sudah tersedia.'
-    //     ]);
-
-    //     $kategori = Kategori::findOrFail($id);
-
-    //     $kategori->nama = trim($request->nama);
-
-    //     if (!$kategori->isDirty()) {
-    //         return redirect()->route('kelolakategori');
-    //     }
-
-    //     $kategori->waktu_diubah = Carbon::now('Asia/Jakarta');
-    //     $kategori->save();
-
-
-    //     return redirect()->route('kelolakategori')->with('success', 'Kategori berhasil diperbarui');
-    // }
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
