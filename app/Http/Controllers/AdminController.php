@@ -1047,17 +1047,30 @@ class AdminController extends Controller
 
     public function selectmk($id)
     {
-        $data = Fasilitas::where('nama', 'LIKE', '%' . request('q') . '%')
-            ->paginate(10);
+        // $data = Fasilitas::where('nama', 'LIKE', '%' . request('q') . '%')
+        //     ->paginate(10);
+        $query = Fasilitas::query();
+
+        if (request('q')) {
+            $query->where('nama', 'LIKE', '%' . request('q') . '%');
+        }
+
+        $data = $query->get();
 
         return response()->json($data);
     }
 
     public function selectkategori($id)
     {
-        $data = Kategori::where('nama', 'LIKE', '%' . request('q') . '%')
-            ->paginate(10);
+        // $data = Kategori::where('nama', 'LIKE', '%' . request('q') . '%')
+        //     ->paginate(10);
+        $query = Kategori::query();
 
+        if (request('q')) {
+            $query->where('nama', 'LIKE', '%' . request('q') . '%');
+        }
+
+        $data = $query->get();
         return response()->json($data);
     }
 

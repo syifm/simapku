@@ -814,7 +814,7 @@
 
             function konfirmasiHapus(id) {
                 Swal.fire({
-                    title: 'Hapus wisata kuliner?',
+                    title: 'Hapus Wisata Kuliner?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#dc2626',

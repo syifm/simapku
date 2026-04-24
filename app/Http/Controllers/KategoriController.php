@@ -201,6 +201,41 @@ class KategoriController extends Controller
     //     return back()->with('success', 'Kategori berhasil dihapus & data disesuaikan');
     // }
 
+    // -------------------------------------------------------------------------------------------------------------------
+    // public function hapus(Request $request, $id)
+    // {
+    //     $kategori = Kategori::findOrFail($id);
+
+    //     $reassign = $request->reassign ?? [];
+    //     $hapusIds = $request->hapus_ids ?? [];
+
+    //     foreach ($reassign as $kulinerId => $kategoriBaru) {
+    //         if (in_array($kulinerId, $hapusIds)) continue;
+
+    //         if ($kategoriBaru) {
+
+    //             $kuliner = WisataKuliner::find($kulinerId);
+
+    //             if ($kuliner) {
+    //                 $kuliner->kategori()->syncWithoutDetaching([$kategoriBaru]);
+
+    //                 $kuliner->kategori()->detach($id);
+    //             }
+    //         }
+    //     }
+
+    //     DB::table('kategori_wisata_kuliner')
+    //         ->where('id_kategori', $id)
+    //         ->whereNotIn('id_wisata_kuliner', array_keys($reassign))
+    //         ->delete();
+
+    //     $kategori->delete();
+
+    //     return back()->with('success', 'Kategori berhasil dihapus');
+    // }
+
+    // -----------------------------------------------------------------------------------------------------------------------------
+
 
     public function hapus(Request $request, $id)
     {
@@ -209,18 +244,39 @@ class KategoriController extends Controller
         $reassign = $request->reassign ?? [];
         $hapusIds = $request->hapus_ids ?? [];
 
+        $kulinerList = DB::table('kategori_wisata_kuliner')
+            ->where('id_kategori', $id)
+            ->pluck('id_wisata_kuliner');
+
+        foreach ($kulinerList as $kulinerId) {
+            $jumlahKategori = DB::table('kategori_wisata_kuliner')
+                ->where('id_wisata_kuliner', $kulinerId)
+                ->count();
+
+            if ($jumlahKategori == 1) {
+                if (!isset($reassign[$kulinerId]) || !$reassign[$kulinerId]) {
+                    // return back()->with(
+                    //     'error',
+                    //     "Ada wisata kuliner yang hanya punya 1 kategori. Harus direassign dulu sebelum kategori dihapus."
+                    // );
+                    return response()->json([
+                        'error' => 'Ada wisata kuliner yang hanya punya 1 kategori. Harus direassign dulu sebelum kategori dihapus.'
+                    ]);
+                }
+            }
+        }
+
         foreach ($reassign as $kulinerId => $kategoriBaru) {
             if (in_array($kulinerId, $hapusIds)) continue;
 
             if ($kategoriBaru) {
-
-                $kuliner = WisataKuliner::find($kulinerId);
-
-                if ($kuliner) {
-                    $kuliner->kategori()->syncWithoutDetaching([$kategoriBaru]);
-
-                    $kuliner->kategori()->detach($id);
-                }
+                DB::table('kategori_wisata_kuliner')
+                    ->where('id_wisata_kuliner', $kulinerId)
+                    ->where('id_kategori', $id)
+                    ->where('id_kategori', '!=', $kategoriBaru)
+                    ->update([
+                        'id_kategori' => $kategoriBaru
+                    ]);
             }
         }
 
@@ -229,12 +285,19 @@ class KategoriController extends Controller
             ->whereNotIn('id_wisata_kuliner', array_keys($reassign))
             ->delete();
 
+        if (!empty($hapusIds)) {
+            DB::table('kategori_wisata_kuliner')
+                ->where('id_kategori', $id)
+                ->whereIn('id_wisata_kuliner', $hapusIds)
+                ->delete();
+
+            //     WisataKuliner::whereIn('id', $hapusIds)->delete();
+        }
+
         $kategori->delete();
 
-        return back()->with('success', 'Kategori berhasil dihapus & direassign');
+        return back()->with('success', 'Kategori berhasil dihapus');
     }
-
-
 
 
     // Hapus Kategori (Kelola Kategori)

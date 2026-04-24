@@ -86,7 +86,7 @@
                         <div class="bg-white rounded-lg mt-4">
                             <table class="table-fixed w-full border-collapse border border-black">
                                 <colgroup>
-                                    <col style="width: 30px">
+                                    <col style="width: 20px">
                                     <col style="width: 140px">
                                     {{-- <col style="width: 130px"> --}}
                                     {{-- <col style="width: 70px"> --}}
@@ -130,7 +130,7 @@
                         <div class="bg-white rounded-lg mt-4">
                             <table class="table-fixed w-full border-collapse border-b-0 border-black">
                                 <colgroup>
-                                    <col style="width: 30px">
+                                    <col style="width: 20px">
                                     <col style="width: 140px">
                                     {{-- <col style="width: 130px"> --}}
                                     {{-- <col style="width: 70px"> --}}
@@ -242,44 +242,23 @@
                         <h2 class="text-lg font-semibold mb-2">Detail Kategori</h2>
 
                         <p class="text-sm text-gray-600 mb-4">
-                            Digunakan oleh <span id="jumlahDipakai" class="font-bold"></span> wisata kuliner
+                            Digunakan oleh <span id="jumlahDipakaiDetail" class="font-bold"></span> wisata kuliner
                         </p>
 
-                        {{-- <form id="formHapus" method="POST">
-                            @csrf
-                            @method('DELETE') --}}
-
-                        <!-- GLOBAL REASSIGN -->
-                        {{-- <div class="mb-4">
-                                <label class="text-sm">Pindahkan semua ke:</label>
-                                <select id="globalSelect" class="w-full border px-3 py-2 rounded-lg">
-                                    <option value="">-- Pilih kategori --</option>
-                                </select>
-                            </div> --}}
-
-                        <!-- TABEL -->
                         <div class="max-h-64 overflow-y-auto border rounded-lg">
                             <table class="w-full text-sm">
                                 <thead class="bg-gray-100 sticky top-0">
                                     <tr>
-                                        <th class="p-2 text-left">Nama</th>
-                                        {{-- <th class="p-2">Reassign</th>
-                                            <th class="p-2">Aksi</th> --}}
+                                        <th class="p-2 text-left">Nama Wisata Kuliner</th>
                                     </tr>
                                 </thead>
 
-                                <tbody id="tableBody">
-                                    <!-- diisi via JS -->
+                                <tbody id="tableBodyDetail">
+
                                 </tbody>
                             </table>
                         </div>
 
-                        {{-- <div class="flex justify-end mt-4">
-                                <button class="bg-red-600 text-white px-4 py-2 rounded-lg">
-                                    Hapus Kategori
-                                </button>
-                            </div> --}}
-                        {{-- </form> --}}
                     </div>
                 </div>
 
@@ -300,7 +279,6 @@
                                 class="w-full border rounded-lg px-3 py-2 mb-4" placeholder="Nama kategori">
 
                             <div class="flex justify-end gap-2">
-                                {{-- <button type="button" onclick="closeModal()">Batal</button> --}}
                                 <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg">
                                     Simpan
                                 </button>
@@ -373,27 +351,25 @@
                             @csrf
                             @method('DELETE')
 
-                            <!-- GLOBAL REASSIGN -->
                             <div class="mb-4">
-                                <label class="text-sm">Pindahkan semua ke:</label>
+                                <label class="text-sm">Pindahkan kategori:</label>
                                 <select id="globalSelect" class="w-full border px-3 py-2 rounded-lg">
                                     <option value="">-- Pilih kategori --</option>
                                 </select>
                             </div>
 
-                            <!-- TABEL -->
                             <div class="max-h-64 overflow-y-auto border rounded-lg">
                                 <table class="w-full text-sm">
                                     <thead class="bg-gray-100 sticky top-0">
                                         <tr>
-                                            <th class="p-2 text-left">Nama</th>
-                                            <th class="p-2">Reassign</th>
+                                            <th class="p-2 text-left">Nama Wisata Kuliner</th>
+                                            <th class="p-2">Kategori</th>
                                             <th class="p-2">Aksi</th>
                                         </tr>
                                     </thead>
 
                                     <tbody id="tableBody">
-                                        <!-- diisi via JS -->
+
                                     </tbody>
                                 </table>
                             </div>
@@ -431,12 +407,27 @@
         const allKategori = @json($kategori->items());;
         const allKuliner = @json($wisataKuliner);
 
-        console.log(allKuliner);
-
         let kategoriDihapus = null;
 
         function openHapusModal(id, jumlah) {
             kategoriDihapus = id;
+
+            if (jumlah == 0) {
+                Swal.fire({
+                    title: 'Hapus Kategori?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/admin/kategori/hapus/${id}`;
+                    }
+                });
+                return;
+            }
 
             document.getElementById('jumlahDipakai').innerText = jumlah;
 
@@ -447,10 +438,9 @@
             const globalSelect = document.getElementById('globalSelect');
 
             tbody.innerHTML = "";
-            globalSelect.innerHTML = '<option value="">-- Pilih kategori --</option>';
+            globalSelect.innerHTML = '<option value="">Pilih kategori</option>';
 
             const kategoriValid = allKategori.filter(k => k.id_kategori != id);
-
             kategoriValid.forEach(k => {
                 globalSelect.innerHTML += `<option value="${k.id_kategori}">${k.nama}</option>`;
             });
@@ -460,13 +450,25 @@
             );
 
             kulinerTerpakai.forEach(item => {
+                const kategoriDipakai = item.kategori.map(k => k.id_kategori);
+                const kategoriTersedia = allKategori.filter(k =>
+                    k.id_kategori != id &&
+                    !kategoriDipakai.includes(k.id_kategori)
+                );
+                let select = `<select name="reassign[${item.id_wisata_kuliner}]" class="reassign-select border px-2 py-1 rounded">
+            <option value="">Pilih Kategori</option>`;
 
-                let select = `<select name="reassign[${item.id}]" class="reassign-select border px-2 py-1 rounded">
-            <option value="">-- Pilih Kategori --</option>`;
+                if (kategoriTersedia.length > 0) {
+                    kategoriTersedia.forEach(k => {
+                        select += `<option value="${k.id_kategori}">${k.nama}</option>`;
+                    });
+                } else {
+                    select += `<option value="" disabled>Tidak ada kategori tersedia</option>`;
+                }
 
-                kategoriValid.forEach(k => {
-                    select += `<option value="${k.id_kategori}">${k.nama}</option>`;
-                });
+                // kategoriValid.forEach(k => {
+                //     select += `<option value="${k.id_kategori}">${k.nama}</option>`;
+                // });
 
                 select += `</select>`;
 
@@ -477,20 +479,21 @@
                             Wajib pilih kategori
                         </p></td>
                         <td class="p-2 text-center">
-                            <button type="button" onclick="hapusItem(${item.id})" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor"
-                                        class="size-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                    </svg>
+                            <div class="flex justify-center">
+                            <button type="button" onclick="toggleHapusItem(event, ${item.id_wisata_kuliner})" class=" hover:text-red-700 text-red-500 px-4 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor"
+                                    class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
                             </button>
+                            </div>
                         </td>
                     </tr>
                 `;
             });
 
-            // GLOBAL APPLY
             globalSelect.addEventListener('change', function() {
                 const val = this.value;
 
@@ -502,17 +505,19 @@
             document.getElementById('modalHapus').classList.remove('hidden');
         }
 
-        // function hapusItem(id) {
-        //     let input = document.createElement('input');
-        //     input.type = "hidden";
-        //     input.name = "hapus_ids[]";
-        //     input.value = id;
+        function hapusItem(e, id) {
 
-        //     document.getElementById('formHapus').appendChild(input);
+            const kuliner = allKuliner.find(k => k.id_wisata_kuliner == id);
+            if (!kuliner) return;
 
-        //     event.target.closest('tr').remove();
-        // }
-        function hapusItem(id) {
+            if (kuliner.kategori.length <= 1) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak Dapat Dihapus',
+                    text: 'Kuliner ini hanya memiliki 1 kategori. Silakan pindahkan ke kategori lain terlebih dahulu'
+                });
+                return;
+            }
 
             let input = document.createElement('input');
             input.type = "hidden";
@@ -521,72 +526,43 @@
 
             document.getElementById('formHapus').appendChild(input);
 
-            const row = event.target.closest('tr');
+            const row = e.target.closest('tr');
 
             row.setAttribute('data-deleted', 'true');
 
             const select = row.querySelector('.reassign-select');
             if (select) select.disabled = true;
 
-            // kasih visual
             row.classList.add('opacity-50');
         }
 
-        function closeHapusModal() {
-            document.getElementById('modalHapus').classList.add('hidden');
-        }
-
-        // document.getElementById('formHapus').addEventListener('submit', function(e) {
-
-        //     const hapusIds = document.querySelectorAll("input[name='hapus_ids[]']");
-
-        //     for (let input of hapusIds) {
-
-        //         const idKuliner = input.value;
-
-        //         const kuliner = allKuliner.find(k => k.id == idKuliner);
-
-        //         // jumlah kategori dia
-        //         const jumlahKategori = kuliner.kategori.length;
-
-        //         if (jumlahKategori <= 1) {
-        //             e.preventDefault();
-
-        //             Swal.fire({
-        //                 icon: 'warning',
-        //                 title: 'Tidak bisa dihapus',
-        //                 text: 'Minimal 1 kategori harus ada'
-        //             });
-
-        //             return;
-        //         }
-        //     }
-
-        // });
         document.getElementById('formHapus').addEventListener('submit', function(e) {
 
             let valid = true;
-
             const rows = document.querySelectorAll("#tableBody tr");
 
             rows.forEach(row => {
 
                 const select = row.querySelector(".reassign-select");
                 const errorText = row.querySelector(".error-text");
-
-                // ✅ INI YANG KAMU TANYA (taruh di sini)
                 const isDeleted = row.getAttribute('data-deleted') === 'true';
 
-                // ❗ hanya validasi yang TIDAK dihapus
-                if (!isDeleted && select && !select.value) {
-                    valid = false;
+                const id = select?.name.match(/\d+/)?.[0];
+                const kuliner = allKuliner.find(k => k.id_wisata_kuliner == id);
 
+                if (!kuliner) return;
+
+                const jumlahKategori = kuliner.kategori.length;
+
+                if (!isDeleted && !select.value) {
+                    valid = false;
                     errorText.classList.remove('hidden');
                     select.classList.add('border-red-500');
                 } else {
                     errorText.classList.add('hidden');
                     select.classList.remove('border-red-500');
                 }
+
             });
 
             if (!valid) {
@@ -594,8 +570,8 @@
 
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Belum lengkap',
-                    text: 'Semua harus diproses (hapus atau pilih kategori baru)'
+                    title: 'Tidak Dapat Dihapus',
+                    text: 'Semua wisata kuliner harus dihapus atau dipindahkan ke kategori lain terlebih dahulu'
                 });
 
                 return;
@@ -604,10 +580,13 @@
             e.preventDefault();
 
             Swal.fire({
-                title: 'Yakin hapus kategori?',
+                title: 'Hapus Kategori?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, hapus'
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
                     e.target.submit();
@@ -615,6 +594,284 @@
             });
 
         });
+
+
+        function toggleHapusItem(e, id) {
+
+            const row = e.target.closest('tr');
+            const form = document.getElementById('formHapus');
+            const select = row.querySelector('.reassign-select');
+            const btn = row.querySelector('.btn-hapus');
+
+            const kuliner = allKuliner.find(k => k.id_wisata_kuliner == id);
+            if (!kuliner) return;
+
+            const isDeleted = row.getAttribute('data-deleted') === 'true';
+
+            if (!isDeleted) {
+
+                if (kuliner.kategori.length <= 1) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Tidak Dapat Dihapus',
+                        text: 'Kuliner ini hanya memiliki 1 kategori. Silakan pindahkan ke kategori lain terlebih dahulu'
+                    });
+                    return;
+                }
+
+                let input = document.createElement('input');
+                input.type = "hidden";
+                input.name = "hapus_ids[]";
+                input.value = id;
+                input.setAttribute('data-id', id);
+
+                form.appendChild(input);
+
+                row.setAttribute('data-deleted', 'true');
+                row.classList.add('opacity-50');
+
+                if (select) select.disabled = true;
+
+                btn.classList.remove('bg-red-600');
+                btn.classList.add('bg-gray-500');
+
+            } else {
+                const input = form.querySelector(`input[name="hapus_ids[]"][value="${id}"]`);
+                if (input) input.remove();
+
+                row.setAttribute('data-deleted', 'false');
+                row.classList.remove('opacity-50');
+
+                if (select) select.disabled = false;
+                btn.classList.remove('bg-gray-500');
+                btn.classList.add('bg-red-600');
+            }
+        }
+
+        function closeHapusModal() {
+            document.getElementById('modalHapus').classList.add('hidden');
+        }
+
+        // function hapusItem(id) {
+
+        //     let input = document.createElement('input');
+        //     input.type = "hidden";
+        //     input.name = "hapus_ids[]";
+        //     input.value = id;
+
+        //     document.getElementById('formHapus').appendChild(input);
+
+        //     const row = event.target.closest('tr');
+
+        //     row.setAttribute('data-deleted', 'true');
+
+        //     const select = row.querySelector('.reassign-select');
+        //     if (select) select.disabled = true;
+
+        //     row.classList.add('opacity-50');
+        // }
+        // function hapusItem(id) {
+
+        //     const kuliner = allKuliner.find(k => k.id_kategori == id);
+        //     if (!kuliner) return;
+
+        //     if (kuliner.kategori.length <= 1) {
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Tidak bisa dihapus',
+        //             text: 'Wisata kuliner ini hanya punya 1 kategori. Harus reassign dulu.'
+        //         });
+        //         return;
+        //     }
+
+        //     let input = document.createElement('input');
+        //     input.type = "hidden";
+        //     input.name = "hapus_ids[]";
+        //     input.value = id;
+
+        //     document.getElementById('formHapus').appendChild(input);
+
+        //     const row = event.target.closest('tr');
+
+        //     row.setAttribute('data-deleted', 'true');
+
+        //     const select = row.querySelector('.reassign-select');
+        //     if (select) select.disabled = true;
+
+        //     row.classList.add('opacity-50');
+
+        //     let valid = true;
+
+        //     const rows = document.querySelectorAll("#tableBody tr");
+
+        //     rows.forEach(row => {
+
+        //         const select = row.querySelector(".reassign-select");
+        //         const errorText = row.querySelector(".error-text");
+
+        //         const isDeleted = row.getAttribute('data-deleted') === 'true';
+
+        //         if (!isDeleted && select && !select.value) {
+        //             valid = false;
+
+        //             errorText.classList.remove('hidden');
+        //             select.classList.add('border-red-500');
+        //         } else {
+        //             errorText.classList.add('hidden');
+        //             select.classList.remove('border-red-500');
+        //         }
+        //     });
+
+        //     if (!valid) {
+        //         e.preventDefault();
+
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Belum lengkap',
+        //             text: 'Semua harus diproses (hapus atau pilih kategori baru)'
+        //         });
+
+        //         return;
+        //     }
+
+        //     e.preventDefault();
+
+        //     Swal.fire({
+        //         title: 'Yakin hapus kategori?',
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Ya, hapus'
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             e.target.submit();
+        //         }
+        //     });
+        // }
+
+
+
+        // document.getElementById('formHapus').addEventListener('submit', function(e) {
+
+        //     let valid = true;
+        //     const rows = document.querySelectorAll("#tableBody tr");
+
+        //     rows.forEach(row => {
+
+        //         const select = row.querySelector(".reassign-select");
+        //         const errorText = row.querySelector(".error-text");
+        //         const isDeleted = row.getAttribute('data-deleted') === 'true';
+
+        //         const id = select?.name.match(/\d+/)?.[0];
+        //         const kuliner = allKuliner.find(k => k.id == id);
+
+        //         if (!kuliner) return;
+
+        //         const jumlahKategori = kuliner.kategori.length;
+
+        //         // ❗ kalau cuma 1 kategori → wajib reassign
+        //         if (jumlahKategori <= 1) {
+        //             if (!select.value) {
+        //                 valid = false;
+        //                 errorText.classList.remove('hidden');
+        //                 select.classList.add('border-red-500');
+        //             }
+        //         }
+
+        //         // ❗ kalau >1 kategori
+        //         else {
+        //             // harus pilih salah satu: hapus atau reassign
+        //             if (!isDeleted && !select.value) {
+        //                 valid = false;
+        //                 errorText.classList.remove('hidden');
+        //                 select.classList.add('border-red-500');
+        //             }
+        //         }
+
+        //         if ((isDeleted || select.value)) {
+        //             errorText.classList.add('hidden');
+        //             select.classList.remove('border-red-500');
+        //         }
+
+        //     });
+
+        //     if (!valid) {
+        //         e.preventDefault();
+
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Belum lengkap',
+        //             text: 'Setiap data harus dihapus atau direassign'
+        //         });
+
+        //         return;
+        //     }
+
+        //     // confirm
+        //     e.preventDefault();
+
+        //     Swal.fire({
+        //         title: 'Yakin hapus kategori?',
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Ya, hapus'
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             e.target.submit();
+        //         }
+        //     });
+
+        // });
+
+        // document.getElementById('formHapus').addEventListener('submit', function(e) {
+
+        //     let valid = true;
+
+        //     const rows = document.querySelectorAll("#tableBody tr");
+
+        //     rows.forEach(row => {
+
+        //         const select = row.querySelector(".reassign-select");
+        //         const errorText = row.querySelector(".error-text");
+
+        //         const isDeleted = row.getAttribute('data-deleted') === 'true';
+
+        //         if (!isDeleted && select && !select.value) {
+        //             valid = false;
+
+        //             errorText.classList.remove('hidden');
+        //             select.classList.add('border-red-500');
+        //         } else {
+        //             errorText.classList.add('hidden');
+        //             select.classList.remove('border-red-500');
+        //         }
+        //     });
+
+        //     if (!valid) {
+        //         e.preventDefault();
+
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Belum lengkap',
+        //             text: 'Semua harus diproses (hapus atau pilih kategori baru)'
+        //         });
+
+        //         return;
+        //     }
+
+        //     e.preventDefault();
+
+        //     Swal.fire({
+        //         title: 'Yakin hapus kategori?',
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Ya, hapus'
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             e.target.submit();
+        //         }
+        //     });
+
+        // });
 
         document.getElementById("formKategori").addEventListener("submit", function(e) {
             e.preventDefault();
@@ -648,17 +905,19 @@
                             timer: 2000,
                             showConfirmButton: false,
                         }).then(() => {
+                            document.getElementById("modalKategori").classList.add("hidden");
                             location.reload();
                         });
 
                     } else if (data.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Berhasil',
+                            title: 'Berhasil!',
                             text: data.success,
                             timer: 2000,
                             showConfirmButton: false,
                         }).then(() => {
+                            document.getElementById("modalKategori").classList.add("hidden");
                             location.reload();
                         });
                     }
@@ -666,37 +925,39 @@
         });
 
 
-
-
         function openDetailModal(id, jumlah) {
-            document.getElementById('jumlahDipakai').innerText = jumlah;
+            document.getElementById('jumlahDipakaiDetail').innerText = jumlah;
 
-            const tbody = document.getElementById('tableBody');
+            const tbody = document.getElementById('tableBodyDetail');
             tbody.innerHTML = "";
             const kulinerTerpakai = allKuliner.filter(k =>
                 k.kategori.some(kt => kt.id_kategori == id)
             );
 
-            kulinerTerpakai.forEach(item => {
-                tbody.innerHTML += `
+            if (jumlah > 0) {
+                kulinerTerpakai.forEach(item => {
+                    tbody.innerHTML += `
                     <tr class="border-t">
                         <td class="p-2">${item.nama}</td>
                     </tr>
                 `;
-            });
+                });
+            } else {
+                kulinerTerpakai.forEach(item => {
+                    tbody.innerHTML += `
+                    <tr class="border-t">
+                        <td class="p-2 text-center">Kategori Belum Digunakan</td>
+                    </tr>
+                `;
+                });
+            }
+
             document.getElementById('modalDetail').classList.remove('hidden');
         }
 
         function closeDetailModal() {
             document.getElementById('modalDetail').classList.add('hidden');
         }
-
-
-
-
-
-
-
 
 
         function openTambahModal() {
