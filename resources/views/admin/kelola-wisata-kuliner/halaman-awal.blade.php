@@ -54,7 +54,7 @@
         <h1 class="font-bold text-xl">Daftar Wisata Kuliner</h1>
         <div class="flex justify-between items-center">
             <div class="flex gap-4">
-                <a href="{{ route('kelolawisatakuliner.tambah') }}"
+                <a href="{{ route('kelolafasilitas') }}"
                     class="bg-[#094B3C] hover:bg-[#06362a]
                 btn btn-primary text-white rounded-full px-4 py-2 mt-14 text-sm flex items-center gap-2 transition mb-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"

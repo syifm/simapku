@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WisataKulinerController;
 use App\Http\Controllers\KulinerFavoritController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\FasilitasController;
 use App\Models\PenilaiandanUlasan;
 use Illuminate\Support\Facades\Route;
 
@@ -57,9 +58,14 @@ Route::middleware(['auth', 'Admin'])->group(function () {
     Route::post('/admin/tampilkanwisatakuliner/{id}', [AdminController::class, 'tampilkanWisataKuliner'])->name('verifikasiwisatakuliner.tampilkan');
 
     Route::get('/admin/kelolakategori', [KategoriController::class, 'kelolaKategori'])->name('kelolakategori');
-    Route::post('/admin/kategori', [KategoriController::class, 'simpan'])->name('kelolakategori.simpan');
-    Route::put('/admin/kategori/{id}', [KategoriController::class, 'update'])->name('kelolakategori.update');
-    Route::delete('/admin/kategori/hapus/{id}', [KategoriController::class, 'hapus'])->name('kelolakategori.hapus');
+    Route::post('/admin/kelolakategori', [KategoriController::class, 'simpan'])->name('kelolakategori.simpan');
+    Route::put('/admin/kelolakategori/{id}', [KategoriController::class, 'update'])->name('kelolakategori.update');
+    Route::delete('/admin/kelolakategori/hapus/{id}', [KategoriController::class, 'hapus'])->name('kelolakategori.hapus');
+
+    Route::get('/admin/kelolafasilitas', [FasilitasController::class, 'kelolaFasilitas'])->name('kelolafasilitas');
+    Route::post('/admin/kelolafasilitas', [FasilitasController::class, 'simpan'])->name('kelolafasilitas.simpan');
+    Route::put('/admin/kelolafasilitas/{id}', [FasilitasController::class, 'update'])->name('kelolafasilitas.update');
+    Route::delete('/admin/kelolafasilitas/hapus/{id}', [FasilitasController::class, 'hapus'])->name('kelolafasilitas.hapus');
     // Route::get('/admin/tambahwisatakuliner', [AdminController::class, 'halamantambah'])->name('kelolawisatakuliner.tambah');
     // Route::get('/wisata/api/kecamatan', [AdminController::class, 'getKecamatan']);
     // Route::get('/wisata/api/kelurahan/{districtCode}', [AdminController::class, 'getKelurahan']);

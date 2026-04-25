@@ -121,7 +121,7 @@
                                     <tr>
                                         <td colspan="3" style="text-align: center"
                                             class="px-4 py-3 text-sm text-black">
-                                            Belum Tersedia Wisata Kuliner</td>
+                                            Belum Tersedia Kategori</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -249,7 +249,7 @@
                             <table class="w-full text-sm">
                                 <thead class="bg-gray-100 sticky top-0">
                                     <tr>
-                                        <th class="p-2 text-left">Nama Wisata Kuliner</th>
+                                        <th class="p-2 text-center">Wisata Kuliner</th>
                                     </tr>
                                 </thead>
 
@@ -346,6 +346,10 @@
                         <p class="text-sm text-gray-600 mb-4">
                             Digunakan oleh <span id="jumlahDipakai" class="font-bold"></span> wisata kuliner
                         </p>
+                        <p class="text-red-500 text-xs mt-1 hidden error-text">
+                            Tidak Tersedia pada kolom kategori berarti seluruh kategori terdaftar sudah digunakan wisata
+                            kuliner tersebut
+                        </p>
 
                         <form id="formHapus" method="POST">
                             @csrf
@@ -362,7 +366,7 @@
                                 <table class="w-full text-sm">
                                     <thead class="bg-gray-100 sticky top-0">
                                         <tr>
-                                            <th class="p-2 text-left">Nama Wisata Kuliner</th>
+                                            <th class="p-2 text-center">Wisata Kuliner</th>
                                             <th class="p-2">Kategori</th>
                                             <th class="p-2">Aksi</th>
                                         </tr>
@@ -423,7 +427,9 @@
                     cancelButtonText: 'Batal'
                 }).then(result => {
                     if (result.isConfirmed) {
-                        window.location.href = `/admin/kategori/hapus/${id}`;
+                        const form = document.getElementById('formHapus');
+                        form.action = `/admin/kelolakategori/hapus/${id}`;
+                        form.submit();
                     }
                 });
                 return;
@@ -432,7 +438,7 @@
             document.getElementById('jumlahDipakai').innerText = jumlah;
 
             const form = document.getElementById('formHapus');
-            form.action = `/admin/kategori/hapus/${id}`;
+            form.action = `/admin/kelolakategori/hapus/${id}`;
 
             const tbody = document.getElementById('tableBody');
             const globalSelect = document.getElementById('globalSelect');
@@ -455,7 +461,7 @@
                     k.id_kategori != id &&
                     !kategoriDipakai.includes(k.id_kategori)
                 );
-                let select = `<select name="reassign[${item.id_wisata_kuliner}]" class="reassign-select border px-2 py-1 rounded">
+                let select = `<select name="reassign[${item.id_wisata_kuliner}]" class="reassign-select border px-2 py-1 rounded w-[200px] min-w-[140px] max-w-full">
             <option value="">Pilih Kategori</option>`;
 
                 if (kategoriTersedia.length > 0) {
@@ -463,7 +469,9 @@
                         select += `<option value="${k.id_kategori}">${k.nama}</option>`;
                     });
                 } else {
-                    select += `<option value="" disabled>Tidak ada kategori tersedia</option>`;
+                    select = `<div class="h-[38px] flex items-center justify-center text-gray-400 text-sm">
+                        Tidak tersedia
+                    </div>`;
                 }
 
                 // kategoriValid.forEach(k => {
@@ -476,7 +484,7 @@
                     <tr class="border-t">
                         <td class="p-2">${item.nama}</td>
                         <td class="p-2 text-center">${select}<p class="text-red-500 text-xs mt-1 hidden error-text">
-                            Wajib pilih kategori
+                            Pilih kategori atau hapus
                         </p></td>
                         <td class="p-2 text-center">
                             <div class="flex justify-center">
@@ -934,22 +942,23 @@
                 k.kategori.some(kt => kt.id_kategori == id)
             );
 
-            if (jumlah > 0) {
+            console.log(jumlah);
+            if (kulinerTerpakai.length > 0) {
                 kulinerTerpakai.forEach(item => {
                     tbody.innerHTML += `
-                    <tr class="border-t">
+                    <tr class="border-t text-center ">
                         <td class="p-2">${item.nama}</td>
                     </tr>
                 `;
                 });
             } else {
-                kulinerTerpakai.forEach(item => {
-                    tbody.innerHTML += `
+                tbody.innerHTML += `
                     <tr class="border-t">
-                        <td class="p-2 text-center">Kategori Belum Digunakan</td>
+                        <td class="p-2 text-center text-gray-500">
+                            Kategori belum digunakan
+                        </td>
                     </tr>
                 `;
-                });
             }
 
             document.getElementById('modalDetail').classList.remove('hidden');
@@ -964,7 +973,7 @@
             document.getElementById('modalTitle').innerText = "Tambah Kategori";
 
             const form = document.getElementById('formKategori');
-            form.action = "/admin/kategori";
+            form.action = "/admin/kelolakategori";
 
             // document.getElementById('methodField').value = "POST";
             document.getElementById('methodField').value = "";
@@ -977,7 +986,7 @@
             document.getElementById('modalTitle').innerText = "Edit Kategori";
 
             const form = document.getElementById('formKategori');
-            form.action = `/admin/kategori/${id}`;
+            form.action = `/admin/kelolakategori/${id}`;
 
             document.getElementById('methodField').value = "PUT";
             document.getElementById('namaKategori').value = nama;

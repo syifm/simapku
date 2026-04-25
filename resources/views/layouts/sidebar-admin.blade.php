@@ -311,7 +311,7 @@
 
             <a href="{{ route('kelolawisatakuliner') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('kelolawisatakuliner') || request()->routeIs('kelolawisatakuliner.tambah') || request()->routeIs('kelolawisatakuliner.simpan') || request()->routeIs('kelolawisatakuliner.edit') || request()->routeIs('kelolawisatakuliner.update') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('kelolawisatakuliner') || request()->routeIs('kelolawisatakuliner.tambah') || request()->routeIs('kelolawisatakuliner.simpan') || request()->routeIs('kelolawisatakuliner.edit') || request()->routeIs('kelolawisatakuliner.update') || request()->routeIs('kelolawisatakuliner.hapus') || request()->routeIs('kelolakategori') || request()->routeIs('kelolakategori.simpan') || request()->routeIs('kelolakategori.update') || request()->routeIs('kelolakategori.hapus') || request()->routeIs('kelolafasilitas') || request()->routeIs('kelolafasilitas.simpan') || request()->routeIs('kelolafasilitas.update') || request()->routeIs('kelolafasilitas.hapus') ? 'active' : 'text-white' }}">
                 <i class="fi fi-bs-map-marker text-lg "></i>
                 <span class="font-bold">Kelola Kuliner</span>
             </a>
