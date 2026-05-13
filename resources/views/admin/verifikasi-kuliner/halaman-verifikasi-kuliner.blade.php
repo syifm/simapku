@@ -1500,18 +1500,37 @@
                 });
             }
 
+            // function aksiSetujui(id) {
+            //     Swal.fire({
+            //         title: 'Verifikasi Wisata Kuliner',
+            //         text: 'Setujui & Tampilkan: Tampilkan kuliner ke wisatawan. Setujui & Edit: Setuju tanpa menampilkan dan dapat melakukan edit di menu Kelola Wisata Kuliner.',
+            //         icon: 'question',
+            //         showCancelButton: true,
+            //         showDenyButton: true,
+            //         confirmButtonText: 'Setujui & Tampilkan',
+            //         denyButtonText: 'Setujui & Edit',
+            //         cancelButtonText: 'Batal',
+            //         confirmButtonColor: '#16a34a',
+            //         denyButtonColor: '#3085d6',
+            //         cancelButtonColor: '#6b7280',
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             kirimAksi(id, 'Ditampilkan');
+            //         }
+            //         if (result.isDenied) {
+            //             kirimAksi(id, 'Disetujui');
+            //         }
+            //     });
+            // }
+
             function aksiSetujui(id) {
                 Swal.fire({
-                    title: 'Verifikasi Wisata Kuliner',
-                    text: 'Setujui & Tampilkan: Tampilkan kuliner ke wisatawan. Setujui & Edit: Setuju tanpa menampilkan dan dapat melakukan edit di menu Kelola Wisata Kuliner.',
+                    title: 'Setujui Wisata Kuliner?',
                     icon: 'question',
                     showCancelButton: true,
-                    showDenyButton: true,
-                    confirmButtonText: 'Setujui & Tampilkan',
-                    denyButtonText: 'Setujui & Edit',
+                    confirmButtonText: 'Setujui',
                     cancelButtonText: 'Batal',
-                    confirmButtonColor: '#16a34a',
-                    denyButtonColor: '#3085d6',
+                    confirmButtonColor: '#dc2626',
                     cancelButtonColor: '#6b7280',
                 }).then((result) => {
                     if (result.isConfirmed) {

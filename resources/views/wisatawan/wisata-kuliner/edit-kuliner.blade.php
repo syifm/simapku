@@ -1343,7 +1343,7 @@
         $(document).ready(function() {
             let selectedWisata = {
                 id: "{{ $wisataKuliner->id_wisata_kuliner ?? $wisataKuliner->id }}",
-                text: "{{ $wisataKuliner->nama }}"
+                text: @json($wisataKuliner->nama)
             };
 
             let option = new Option(selectedWisata.text, selectedWisata.id, true, true);

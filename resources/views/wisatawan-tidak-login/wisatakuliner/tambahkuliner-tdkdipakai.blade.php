@@ -8,10 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script> --}}
+    {{-- <link href="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/js/tom-select.complete.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
         integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous">
@@ -109,19 +117,32 @@
         }
 
         .select2-container--default .select2-selection--multiple {
-            height: 42px;
+            min-height: 42px;
+            height: auto;
             border-radius: 0.375rem;
             border: 1px solid #e0e0e1;
-            display: flex;
+            padding: 2px 4px;
             align-items: center;
         }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 
 <body class="bg-gray-100 text-gray-800">
     @include('layouts.header-wisatawan')
     @include('layouts.sidebar-wisatawantidaklogin')
     <div class="pt-[10px] pl-28 pr-[25px] pb-[30px]">
+        @if ($errors->any())
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: @json($errors->first()),
+                });
+            </script>
+        @endif
+
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
@@ -160,7 +181,7 @@
 
                 </div>
                 <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-                    <form action="{{ route('simpanwisatakuliner.tidaklogin') }}" method="POST"
+                    <form id="addForm" action="{{ route('simpanwisatakuliner.tidaklogin') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
 
@@ -264,10 +285,9 @@
                             <!-- Nomor Telepon -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-800 mb-1" for="no_telp"><span>Nomor
-                                        Telepon</span>
-                                    <span class="text-red-500 font-bold">*</span></label>
+                                        Telepon</span></label>
                                 <input type="text" id="no_telp" name="no_telp" value="{{ old('no_telp') }}"
-                                    required pattern="\d{10,15}" minlength="10" maxlength="15"
+                                    pattern="\d{10,15}" minlength="10" maxlength="15"
                                     class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <p class="text-xs text-gray-600 mt-2">
                                     Nomor Telepon hanya boleh berisi angka, tanpa spasi dan simbol.
@@ -309,6 +329,9 @@
                                     aria-label="Default select example">
 
                                 </select>
+                                <p class="text-xs text-gray-600 mt-2">
+                                    Pilih atau tambah fasilitas wisata kuliner
+                                </p>
 
                                 @error('id_fasilitas')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -326,7 +349,9 @@
                                     class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
                                 </select>
-
+                                <p class="text-xs text-gray-600 mt-2">
+                                    Pilih atau tambah kategori wisata kuliner
+                                </p>
                                 @error('id_kategori')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -410,6 +435,8 @@
         let isKecamatanLoaded = false;
 
         document.addEventListener('DOMContentLoaded', async function() {
+
+
             try {
                 const res = await fetch('/wisatawan/wisata/api/kecamatan');
                 const data = await res.json();
@@ -433,6 +460,7 @@
                 initGPS();
 
             } catch {
+                // alert('Gagal memuat data kecamatan');
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal memuat data kecamatan',
@@ -559,6 +587,12 @@
         let geocoder;
         let isAutoUpdate = false;
         let lastAlamat = "";
+        let lastKelurahan = "";
+        let lastKecamatan = "";
+        let lastKota = "";
+        let lastProvinsi = "";
+        let lastKodepos = "";
+        let isFirstLoad = true;
         let lastValidPosition = {
             lat: -6.984168497010843,
             lng: 110.40926002563694
@@ -569,6 +603,8 @@
         let activeInfoWindow = null;
         let dataKuliner = @json($wkuliner);
         let markers = [];
+        let lastCheckedLatLng = null;
+        let isLokasiValid = true;
 
         function clearMarkers() {
             markers.forEach(m => m.setMap(null));
@@ -612,6 +648,9 @@
                 gmpDraggable: true
             });
 
+            console.log("datakuliner", dataKuliner);
+
+
             // Geocoder
             geocoder = new google.maps.Geocoder();
 
@@ -635,6 +674,7 @@
                 document.getElementById('longitude').value = lng;
 
                 updateAlamatDariKoordinat(lat, lng);
+                cekLokasi();
             });
 
             // Ubah Lat Lng Saat Klik
@@ -652,6 +692,7 @@
                 document.getElementById('longitude').value = lng;
 
                 updateAlamatDariKoordinat(lat, lng);
+                cekLokasi();
             });
 
             // Ubah Marker Saat Input Lat Lng
@@ -706,8 +747,15 @@
                 });
             }
 
-            latInput.addEventListener('change', updateMarkerFromInput);
-            lngInput.addEventListener('change', updateMarkerFromInput);
+            latInput.addEventListener('change', function() {
+                updateMarkerFromInput();
+                cekLokasi();
+            });
+
+            lngInput.addEventListener('change', function() {
+                updateMarkerFromInput();
+                cekLokasi();
+            });
 
             // Cari Marker, Lat Lng, dan Alamat saat Ubah Kecamatan dan Kelurahan
             const kelurahanSelect = document.getElementById('kelurahan');
@@ -738,10 +786,6 @@
 
                 if (!alamat) return;
 
-                // if (lastAlamat !== "" && alamat !== lastAlamat) {
-                //     return;
-                // }
-
                 const alamatLengkap = `${alamat}, Kota Semarang, Jawa Tengah`;
 
                 cariKoordinatDariAlamat(alamatLengkap);
@@ -754,6 +798,7 @@
 
         // GPS
         function initGPS() {
+            console.log("initGPS dipanggil");
             if (!navigator.geolocation) return;
 
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -847,7 +892,7 @@
                         lng
                     };
 
-                    // let jalan = "";
+                    let jalan = "";
                     let kelurahan = "";
                     let kecamatan = "";
                     let kota = "";
@@ -855,6 +900,9 @@
                     let kodepos = "";
 
                     components.forEach(comp => {
+                        if (comp.types.includes("route")) {
+                            jalan = comp.long_name;
+                        }
                         if (comp.types.includes("administrative_area_level_4")) {
                             kelurahan = comp.long_name;
                         }
@@ -872,19 +920,61 @@
                         }
                     });
 
-                    const parts = [kelurahan, kecamatan, kota, provinsi]
-                        .filter(part => part && part.trim() !== "");
+                    const parts = [kelurahan, kecamatan, kota, provinsi].filter(part => part && part
+                        .trim() !== "");
+                    let wilayahBaru = parts.join(', ');
+                    if (kodepos) wilayahBaru += ` ${kodepos}`;
+                    if (isFirstLoad) {
+                        lastKelurahan = kelurahan;
+                        lastKecamatan = kecamatan;
+                        lastKota = kota;
+                        lastProvinsi = provinsi;
+                        lastKodepos = kodepos;
+                        isFirstLoad = false;
+                    } else {
+                        let alamatLama = alamatInput.value || "";
+                        let bagianManual = "";
+                        let potongDi = -1;
 
-                    let alamatCustom = parts.join(', ');
+                        const penanda = [lastKelurahan, lastKecamatan, lastKota, lastProvinsi, lastKodepos]
+                            .filter(p => p && p.trim() !== "");
 
-                    if (kodepos) {
-                        alamatCustom += ` ${kodepos}`;
+                        for (const p of penanda) {
+                            const idx = alamatLama.indexOf(p);
+                            if (idx !== -1) {
+                                potongDi = idx;
+                                break;
+                            }
+                        }
+
+                        if (potongDi !== -1) {
+                            bagianManual = alamatLama.slice(0, potongDi).replace(/,\s*$/, "").trim();
+                        } else {
+                            bagianManual = "";
+                        }
+
+                        let alamatFinal = wilayahBaru;
+                        if (bagianManual) {
+                            alamatFinal = `${bagianManual}, ${wilayahBaru}`;
+                        } else if (jalan) {
+                            alamatFinal = `${jalan}, ${wilayahBaru}`;
+                        }
+
+                        console.log("alamatLama:", alamatLama);
+                        console.log("lastKelurahan:", lastKelurahan);
+                        console.log("includes?", alamatLama.includes(lastKelurahan));
+
+                        isAutoUpdate = true;
+                        alamatInput.value = alamatFinal;
+                        lastAlamat = alamatFinal;
+
+                        lastKelurahan = kelurahan;
+                        lastKelurahan = kelurahan;
+                        lastKecamatan = kecamatan;
+                        lastKota = kota;
+                        lastProvinsi = provinsi;
+                        lastKodepos = kodepos;
                     }
-
-                    isAutoUpdate = true;
-
-                    document.getElementById('alamat').value = alamatCustom;
-                    lastAlamat = alamatCustom;
 
                     const kecamatanSelect = document.getElementById('kecamatan');
                     const kelurahanSelect = document.getElementById('kelurahan');
@@ -1054,6 +1144,50 @@
             });
         }
 
+        function cekLokasi() {
+            let lat = latInput.value;
+            let lng = lngInput.value;
+
+            if (!lat || !lng) return;
+
+            let current = lat + ',' + lng;
+
+            if (current === lastCheckedLatLng) return;
+            lastCheckedLatLng = current;
+
+            fetch('/wisatawan/cek-lokasi', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        latitude: lat,
+                        longitude: lng
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.duplikat) {
+                        isLokasiValid = false;
+
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Lokasi Sudah Digunakan',
+                            text: 'Silakan pilih titik lain',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                    } else {
+                        isLokasiValid = true;
+                    }
+                })
+                .catch(() => {
+                    isLokasiValid = false;
+                });
+        }
+
         $(document).ready(function() {
             $("#selectmhs").select2({
                 tags: true,
@@ -1099,6 +1233,12 @@
                             })
                         }
                     }
+                }
+            });
+            $("#selectmhs").on('select2:open', function() {
+                let searchField = document.querySelector('.select2-container--open .select2-search__field');
+                if (searchField) {
+                    searchField.placeholder = 'Ketik disini untuk mencari atau menambah wisata kuliner';
                 }
             });
 
@@ -1221,32 +1361,17 @@
 
             //save form
             $("#addForm").on('submit', function(e) {
-                e.preventDefault();
-                $("#saveBtn").html('Processing...').attr('disabled', 'disabled');
-                var link = $("#addForm").attr('action');
-                $.ajax({
-                    url: link,
-                    type: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
-                    },
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $("#saveBtn").html('SIMPAN').removeAttr('disabled');
-                        if (response.status) {
-                            $('#selectkategori').val(null).trigger("change")
-                            $('#selectmk').val(null).trigger("change")
-                            $('#selectmhs').val(null).trigger("change")
-                            alert(response.message);
-                        }
-                    },
-                    error: function(response) {
-                        $("#saveBtn").html('SIMPAN').removeAttr('disabled');
-                        alert(response.message);
-                    }
-                });
+                if (!isLokasiValid) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lokasi Sudah Digunakan',
+                        text: 'Silakan pilih titik lain',
+                    });
+
+                    return false;
+                }
             });
         });
     </script>

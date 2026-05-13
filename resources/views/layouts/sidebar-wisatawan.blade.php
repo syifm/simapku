@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-straight/css/uicons-bold-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
     <style>
         body {
@@ -219,7 +220,13 @@
                 {{-- <span>Beranda</span> --}}
             </a>
 
-            <div class="mt-[310px]">
+            <a href="{{ route('riwayatpengajuan') }}" title="Riwayat Pengajuan"
+                class="menu-item flex items-center p-2 rounded
+                {{ request()->routeIs('riwayatpengajuan') || request()->routeIs('simpanwisatakuliner') ? 'active' : 'text-white' }}">
+                <i class="fi fi-br-time-past"></i>
+            </a>
+
+            <div class="mt-[260px]">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" title="Logout"

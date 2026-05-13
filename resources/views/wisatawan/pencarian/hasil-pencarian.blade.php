@@ -389,6 +389,18 @@
         </script>
     @endif
 
+    @if (session('info'))
+        <script>
+            Swal.fire({
+                icon: 'info',
+                title: 'Info',
+                text: "{{ session('info') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+
     @include('layouts.header-wisatawan')
     @include('layouts.sidebar-wisatawan')
 
@@ -810,7 +822,7 @@
                         </svg>
                     </div>
 
-                    <input type="hidden" id="penilaian" name="penilaian">
+                    <input type="hidden" id="penilaian" name="penilaian" required>
 
                     <!-- Ulasan -->
                     <div>
@@ -832,8 +844,7 @@
                             class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required>{{ old('harga_per_orang') }}</input> --}}
                         <select id="harga_per_orang" name="harga_per_orang"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
+                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="" disabled selected hidden>
                                 Pilih rentang harga untuk per orang
                             </option>
@@ -1295,8 +1306,8 @@
         });
 
         // MAPS --------------------------------------------------------------------------------
-        let defaultLat = -6.99;
-        let defaultLng = 110.42;
+        let defaultLat = -6.984168497010843;
+        let defaultLng = 110.40926002563694;
 
         let map;
         let userMarker = null;
@@ -1312,8 +1323,8 @@
 
         async function initApp() {
             let defaultLocation = {
-                lat: -6.99,
-                lng: 110.42
+                lat: -6.984168497010843,
+                lng: 110.40926002563694
             };
 
             const markerLib = await google.maps.importLibrary("marker");
@@ -1598,8 +1609,6 @@
 
                 <p class="flex gap-2 text-gray-700 justify-normal">${deskripsi}</p>
 
-
-
                 <div class="mt-5">  
                     <div class="flex items-center gap-2 text-sm text-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -1813,7 +1822,7 @@
 
                             let namaUser = item.punya_sendiri ?
                                 'Anda' :
-                                (item.nama ?? 'Anonim');
+                                (item.nama);
 
                             let fotoUlasan = '';
 
@@ -1849,44 +1858,44 @@
                         //     </div>
                         // `
                             html += `
-    <div class="border-b py-4 flex gap-3">
+                            <div class="border-b py-4 flex gap-3">
 
 
-        <!-- Konten -->
-        <div class="flex-1">
+                                <!-- Konten -->
+                                <div class="flex-1">
 
-            <!-- Nama + tanggal -->
-            <div class="flex items-center gap-2 text-sm">
-                <span class="font-semibold">${namaUser}</span>
-                <span class="text-gray-400">•</span>
-                <span class="text-gray-500">${formatTanggal(item.waktu_diubah)}</span>
-            </div>
+                                    <!-- Nama + tanggal -->
+                                    <div class="flex items-center gap-2 text-sm">
+                                        <span class="font-semibold">${namaUser}</span>
+                                        <span class="text-gray-400">•</span>
+                                        <span class="text-gray-500">${formatTanggal(item.waktu_diubah)}</span>
+                                    </div>
 
-            <!-- Rating -->
-            <div class="text-yellow-500 text-sm mt-1 flex items-center gap-1">
-                <span class="text-orange-400"><svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24" fill="currentColor" class="size-4">
-                        <path fill-rule="evenodd"
-                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </span>
-                <span class="font-semibold">
-                    ${item.penilaian}
-                </span>
-            </div>
+                                    <!-- Rating -->
+                                    <div class="text-yellow-500 text-sm mt-1 flex items-center gap-1">
+                                        <span class="text-orange-400"><svg xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                                                <path fill-rule="evenodd"
+                                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <span class="font-semibold">
+                                            ${item.penilaian}
+                                        </span>
+                                    </div>
 
-            <!-- Ulasan -->
-            <div class="text-gray-600 text-sm mt-1">
-                ${item.ulasan}
-            </div>
+                                    <!-- Ulasan -->
+                                    <div class="text-gray-600 text-sm mt-1">
+                                        ${item.ulasan}
+                                    </div>
 
-            <!-- Foto -->
-            ${fotoUlasan}
+                                    <!-- Foto -->
+                                    ${fotoUlasan}
 
-        </div>
-    </div>
-`;
+                                </div>
+                            </div>
+                        `;
                         })
                     }
                     document.getElementById('ulasanArea').innerHTML = html
@@ -1971,28 +1980,75 @@
             if (isFavorit) {
                 hapusFavorit(id, btn);
             } else {
-                openModalFavorit(id);
+                // openModalFavorit(id);
+                simpanFavorit(id, btn);
             }
         }
 
-        function openModalFavorit(id) {
-            kulinerAktif = id
-            document.getElementById('id_wisata_kuliner_favorit').value = id
-            document.getElementById('modalFavorit').classList.remove('hidden')
-            document.body.style.overflow = 'hidden'
-        }
+        // function openModalFavorit(id) {
+        //     kulinerAktif = id
+        //     document.getElementById('id_wisata_kuliner_favorit').value = id
+        //     document.getElementById('modalFavorit').classList.remove('hidden')
+        //     document.body.style.overflow = 'hidden'
+        // }
 
-        function closeModalFavorit() {
-            document.getElementById('modalFavorit').classList.add('hidden')
-            document.body.style.overflow = ''
-        }
+        // function closeModalFavorit() {
+        //     document.getElementById('modalFavorit').classList.add('hidden')
+        //     document.body.style.overflow = ''
+        // }
 
-        document.getElementById('formFavorit').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // document.getElementById('formFavorit').addEventListener('submit', function(e) {
+        //     e.preventDefault();
 
-            let id = document.getElementById('id_wisata_kuliner_favorit').value;
-            let komentar = document.getElementById('komentar').value;
+        //     let id = document.getElementById('id_wisata_kuliner_favorit').value;
+        //     let komentar = document.getElementById('komentar').value;
 
+        //     fetch("{{ route('favorit.simpan') }}", {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': csrfToken
+        //             },
+        //             body: JSON.stringify({
+        //                 id_wisata_kuliner_favorit: id,
+        //                 komentar: komentar
+        //             })
+        //         })
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             let btn = document.querySelector(`button[onclick="handleFavorit(${id}, this)"]`);
+        //             if (btn) {
+        //                 let svg = btn.querySelector('svg');
+        //                 svg.setAttribute('fill', 'black');
+        //                 svg.setAttribute('stroke', 'none');
+        //             }
+
+        //             favoritIds.push(parseInt(id));
+
+        //             closeModalFavorit();
+
+        //             document.getElementById('formFavorit').reset();
+
+        //             Swal.fire({
+        //                 icon: 'success',
+        //                 title: 'Berhasil!',
+        //                 text: 'Berhasil ditambahkan ke Kuliner Favorit',
+        //                 timer: 1500,
+        //                 showConfirmButton: false
+        //             });
+
+        //         })
+        //         .catch(err => {
+        //             console.error(err);
+
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Gagal menyimpan favorit',
+        //             });
+        //         });
+        // });
+
+        function simpanFavorit(id, btn) {
             fetch("{{ route('favorit.simpan') }}", {
                     method: 'POST',
                     headers: {
@@ -2001,43 +2057,26 @@
                     },
                     body: JSON.stringify({
                         id_wisata_kuliner_favorit: id,
-                        komentar: komentar
                     })
                 })
                 .then(res => res.json())
                 .then(data => {
-                    let btn = document.querySelector(`button[onclick="handleFavorit(${id}, this)"]`);
-                    if (btn) {
-                        let svg = btn.querySelector('svg');
-                        svg.setAttribute('fill', 'black');
-                        svg.setAttribute('stroke', 'none');
-                    }
+                    let svg = btn.querySelector('svg');
 
-                    favoritIds.push(parseInt(id));
+                    svg.setAttribute('fill', 'black');
+                    svg.setAttribute('stroke', 'none');
 
-                    closeModalFavorit();
-
-                    document.getElementById('formFavorit').reset();
+                    favoritIds = favoritIds.filter(f => f !== parseInt(id));
 
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Berhasil ditambahkan ke Kuliner Favorit',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-
-                })
-                .catch(err => {
-                    console.error(err);
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Gagal menyimpan favorit'
+                        text: 'Berhasil ditambahkan dari Kuliner Favorit',
+                        showConfirmButton: false,
+                        timer: 3000
                     });
                 });
-        });
+        }
 
         function hapusFavorit(id, btn) {
             fetch(`/favorit/${id}`, {
@@ -2069,6 +2108,21 @@
         document.getElementById('formUlasan').addEventListener('submit', function(e) {
             e.preventDefault();
 
+            const penilaian = document.getElementById('penilaian').value
+            if (!penilaian || penilaian == 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Penilaian Belum Diisi",
+                    text: "Mohon pilih penilaian terlebih dahulu",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+
+                return;
+            }
+
+            console.log(document.getElementById('penilaian').value);
+
             let form = document.getElementById('formUlasan');
             let formData = new FormData(form);
 
@@ -2082,27 +2136,64 @@
                 .then(res => res.json())
                 .then(data => {
 
-                    closeModal();
+                    if (data.status === 'success') {
 
-                    form.reset();
+                        closeModal();
+                        form.reset();
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Ulasan berhasil disimpan dan akan tampil ketika sudah disetujui oleh Admin',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Ulasan berhasil disimpan.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                    } else if (data.status === 'info') {
+
+                        closeModal();
+
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Info',
+                            text: data.message,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                    }
+
 
                 })
                 .catch(err => {
                     console.error(err);
-
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops...',
-                        text: 'Gagal menyimpan ulasan'
+                        title: 'Ulasan Belum Lengkap',
+                        text: 'Gagal menyimpan ulasan',
+                        showConfirmButton: false,
+                        timer: 2000
                     });
+                    // Swal.fire({
+                    //     icon: 'info',
+                    //     title: 'Info',
+                    //     text: data.message,
+                    //     timer: 2000,
+                    //     showConfirmButton: false
+                    // });
+                    // document.querySelector('#modalUlasan form').addEventListener('submit', function(e) {
+                    //     const penilaian = document.getElementById('penilaian').value
+                    //     if (!penilaian || penilaian == 0) {
+                    //         e.preventDefault()
+                    //         Swal.fire({
+                    //             icon: "error",
+                    //             title: "Penilaian Belum Diisi",
+                    //             text: "Mohon pilih penilaian bintang terlebih dahulu",
+                    //             showConfirmButton: false,
+                    //             timer: 2000
+                    //         });
+                    //     }
+                    // })
                 });
         });
 
@@ -2213,14 +2304,6 @@
 
         })
 
-        document.querySelector('#modalUlasan form').addEventListener('submit', function(e) {
-            const penilaian = document.getElementById('penilaian').value
-            if (!penilaian || penilaian == 0) {
-                e.preventDefault()
-                alert('Mohon pilih penilaian bintang terlebih dahulu.')
-            }
-        })
-
         document.getElementById("formCari").addEventListener("submit", function(e) {
             if (searchBar.value.trim() === '') {
                 searchBar.value = defaultText;
@@ -2297,8 +2380,8 @@
                     e.target.submit();
                 },
                 function() {
-                    document.getElementById("lat").value = -6.99;
-                    document.getElementById("lng").value = 110.42;
+                    document.getElementById("lat").value = -6.984168497010843;
+                    document.getElementById("lng").value = 110.40926002563694;
                     e.target.submit();
                 }
             );

@@ -95,7 +95,7 @@ class FasilitasController extends Controller
         $fasilitas->nama = $nama;
         if (!$fasilitas->isDirty()) {
             return response()->json([
-                'info' => 'Tidak ada perubahan'
+                'info' => 'Tidak Terdapat Perubahan'
             ]);
         }
 

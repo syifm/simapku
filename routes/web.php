@@ -9,6 +9,7 @@ use App\Http\Controllers\WisataKulinerController;
 use App\Http\Controllers\KulinerFavoritController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\FasilitasController;
+use App\Http\Controllers\RiwayatController;
 use App\Models\PenilaiandanUlasan;
 use Illuminate\Support\Facades\Route;
 
@@ -107,6 +108,14 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::post('/wisatawan/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpan'])->name('simpanwisatakuliner');
     Route::get('/wisatawan/editwisatakuliner/{id}', [WisatawanController::class, 'halamanedit'])->name('editwisatakuliner');
     Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
+
+    Route::get('/wisatawan/wisata/api/kecamatan', [WisatawanController::class, 'getKecamatan']);
+    Route::get('/wisatawan/wisata/api/kelurahan/{districtCode}', [WisatawanController::class, 'getKelurahan']);
+    Route::get('/selectmhs', [WisatawanController::class, 'selectmhs'])->name('select.mhs');
+    Route::get('/selectmk/{id}', [WisatawanController::class, 'selectmk'])->name('select.mk');
+    Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
+    Route::get('/selectkategori/{id}', [WisatawanController::class, 'selectkategori'])->name('select.kategori');
+    Route::get('/ngampukategori/{id}', [WisatawanController::class, 'getKategori'])->name('getngampukategori');
     // Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
 
     Route::get('/detailkuliner/{id}', [KulinerFavoritController::class, 'detail'])->name('detailkuliner');
@@ -115,6 +124,11 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/mapwisatakuliner', [WisatawanController::class, 'mapWisataKuliner'])->name('map-WisataKuliner');
     Route::get('/wisatawan/mapwisatakuliner2', [WisatawanController::class, 'mapWisataKuliner2'])->name('map-WisataKuliner2');
     Route::get('/cobaya', [WisataKulinerController::class, 'coba'])->name('cobacoba');
+
+    Route::get('/wisatawan/riwayatpengajuan/', [RiwayatController::class, 'riwayat'])->name('riwayatpengajuan');
+    Route::get('/wisatawan/riwayatpengajuan/detail/kuliner/{id}', [RiwayatController::class, 'detailKuliner'])->name('riwayatpengajuan.detail');
+    Route::get('/wisatawan/riwayatpengajuan/detail/ulasan/{id}', [RiwayatController::class, 'detailUlasan'])->name('riwayatpengajuan.detail');
+
 
     Route::post('/store', [WisatawanController::class, 'store'])->name('store');
     Route::get('/wisatawan/diarikuliner', [WisatawanController::class, 'halamanDiari'])->name('diarikuliner');
@@ -147,21 +161,7 @@ Route::get('/wisatawan/eventsemarang/kulinerkauman', [WisatawanController::class
 Route::get('/wisatawan/eventsemarang/semawis', [WisatawanController::class, 'semawis'])->name('semawis');
 
 // Kecamatan, Kelurahan, Dropdown nama kategori fasilitas
-Route::get('/wisatawan/wisata/api/kecamatan', [WisatawanController::class, 'getKecamatan']);
-Route::get('/wisatawan/wisata/api/kelurahan/{districtCode}', [WisatawanController::class, 'getKelurahan']);
-Route::get('/selectmhs', [WisatawanController::class, 'selectmhs'])->name('select.mhs');
-Route::get('/selectmk/{id}', [WisatawanController::class, 'selectmk'])->name('select.mk');
-Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
-Route::get('/selectkategori/{id}', [WisatawanController::class, 'selectkategori'])->name('select.kategori');
-Route::get('/ngampukategori/{id}', [WisatawanController::class, 'getKategori'])->name('getngampukategori');
 Route::post('/wisatawan/cek-lokasi', [WisatawanController::class, 'cekLokasi']);
-
-
-
-
-
-
-
 
 
 require __DIR__ . '/auth.php';

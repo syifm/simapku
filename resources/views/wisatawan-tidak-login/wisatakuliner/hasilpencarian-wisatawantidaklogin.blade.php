@@ -1645,7 +1645,7 @@
                 </div>
 
                 <div class="flex justify-end gap-2 mt-6">
-                    <button title="Favorit" onclick="handleFavorit(${id}, this)"
+                    <button title="Favorit" onclick="handleLogin(${id}, this)"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -1661,7 +1661,7 @@
                         <i class="fi fi-rs-route text-md"></i>
                     </button>
 
-                    <button title="Edit" onclick="editWisataKuliner(${id})"
+                    <button title="Edit" onclick="handleLogin(${id}, this)"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -1676,7 +1676,7 @@
 
                 <hr class="my-4">
 
-                <button onclick="openModal(${id})"
+                <button onclick="handleLogin(${id}, this)"
                         class="bg-gray-100 w-full text-gray-500 border px-4 py-2 rounded-xl mt-4 flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -1972,7 +1972,7 @@
         // }
         const isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
 
-        function handleFavorit(id, btn) {
+        function handleLogin(id, btn) {
 
             const isLoggedIn = false;
 
@@ -1980,7 +1980,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Tidak Dapat Diakses',
-                    text: 'Mohon maaf Anda tidak dapat mengakses fitur ini. Silakan login terlebih dahulu untuk menambahkan ke kuliner favorit',
+                    text: 'Mohon maaf Anda tidak dapat mengakses fitur ini. Silakan login terlebih dahulu untuk mengakses fitur ini',
                     showCancelButton: true,
                     confirmButtonColor: '#fb991a',
                     cancelButtonColor: '#6b7280',

@@ -155,15 +155,20 @@
 
             </a>
 
-            <a href="{{ route('tambahwisatakuliner.tidaklogin') }}" title="Tambah Kuliner"
+            <a onclick="handleLogin()" title="Tambah Kuliner"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('tambahwisatakuliner.tidaklogin') || request()->routeIs('simpanwisatakuliner.tidaklogin') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('tambahwisatakuliner.tidaklogin') ? 'active' : 'text-white' }}">
                 <i class="fas
                 fa-plus"></i>
-                {{-- <span>Beranda</span> --}}
             </a>
 
-            <div class="mt-[340px]">
+            <a onclick="handleLogin()" title="Riwayat Pengajuan"
+                class="menu-item flex items-center p-2 rounded
+                {{ request()->routeIs('tambahwisatakuliner.tidaklogin') ? 'active' : 'text-white' }}">
+                <i class="fi fi-br-time-past"></i>
+            </a>
+
+            <div class="mt-[280px]">
                 <a href="{{ route('login') }}" title="Login"
                     class="menu-item login-item flex flex-col items-center justify-center p-2 rounded hover:bg-gray-100 transition">
 
@@ -190,7 +195,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Tidak Dapat Diakses',
-                    text: 'Mohon maaf tidak dapat mengakses halaman ini. Silakan login terlebih dahulu untuk mengakses halaman Kuliner Favorit',
+                    text: 'Mohon maaf tidak dapat mengakses halaman ini. Silakan login terlebih dahulu untuk mengakses halaman ini',
                     showCancelButton: true,
                     confirmButtonColor: '#fb991a',
                     cancelButtonColor: '#6b7280',

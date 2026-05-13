@@ -169,21 +169,18 @@
         <div class="flex-1 flex flex-col">
             <div class="flex-1">
                 <div class="mt-4 relative text-2xl">
-                    <a onclick="history.back()"
-                        class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 
-          flex items-center justify-center group cursor-pointer">
+                    {{-- <a onclick="history.back()"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center group cursor-pointer">
 
                         <span
-                            class="absolute inset-0 rounded-full bg-gray-200 
-                 scale-0 group-hover:scale-100 
-                 duration-50"></span>
+                            class="absolute inset-0 rounded-full bg-gray-200 scale-0 group-hover:scale-100 duration-50"></span>
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
                             stroke="currentColor" class="size-5 relative z-10">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                         </svg>
-                    </a>
+                    </a> --}}
 
                     <h1 class="font-bold text-center">
                         Tambah Kuliner

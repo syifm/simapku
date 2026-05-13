@@ -37,11 +37,11 @@
                 Daftar
             </h1>
 
-            <div class="mt-4 mb-4 text-center">
+            {{-- <div class="mt-4 mb-4 text-center">
                 @error('email')
                     <span class="text-sm text-orange-500">{{ $message }}</span>
                 @enderror
-            </div>
+            </div> --}}
 
             <form method="POST" action="{{ route('register') }}" class="space-y-4">
                 @csrf

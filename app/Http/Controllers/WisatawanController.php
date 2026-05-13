@@ -270,7 +270,7 @@ class WisatawanController extends Controller
         $id_wisatawan = null;
         $id_admin = null;
         if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
-            $id_admin = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
+            $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
         } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
             $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
         }
@@ -581,7 +581,7 @@ class WisatawanController extends Controller
             $id_wisatawan = null;
             $id_admin = null;
             if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
-                $id_admin = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
+                $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
             } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
                 $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
             }
@@ -600,6 +600,24 @@ class WisatawanController extends Controller
             $harga_max = $wisataKuliner->harga_max;
             $penilaian = $wisataKuliner->penilaian;
 
+            $wisataKuliner->fill([
+                'nama' => $request->nama,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'alamat' => $request->alamat,
+                'no_telp' => $request->no_telp ?? null,
+                'email' => $request->email ?? null,
+                'foto' => $fotoPath,
+                'deskripsi' => $request->deskripsi,
+                'latitude'  => $request->latitude,
+                'longitude' => $request->longitude,
+            ]);
+
+            if (!$wisataKuliner->isDirty()) {
+                return redirect($request->from . '&detail=' . $id)
+                    ->with('info', 'Tidak Terdapat Perubahan');
+            }
+            
             $wisataKuliner = PengajuanWisataKuliner::firstOrCreate([
                 'id_wisata_kuliner' => $wisataKuliner->id_wisata_kuliner,
                 'nama' => $request->nama,
@@ -1066,9 +1084,9 @@ class WisatawanController extends Controller
 
     public function halamantambahTidakLogin()
     {
-        $fasilitas = Fasilitas::all();
-        $wkuliner = WisataKuliner::where('status', 'Ditampilkan')->get();
-        return view('wisatawan-tidak-login.wisatakuliner.tambahkuliner-wisatawantidaklogin', compact('fasilitas', 'wkuliner'));
+        // $fasilitas = Fasilitas::all();
+        // $wkuliner = WisataKuliner::where('status', 'Ditampilkan')->get();
+        return view('wisatawan-tidak-login.wisatakuliner.tambahkuliner-wisatawantidaklogin');
     }
 
     public function simpankulinerTidakLogin(Request $request)

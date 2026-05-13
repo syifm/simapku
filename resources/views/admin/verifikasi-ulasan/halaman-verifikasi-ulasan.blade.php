@@ -393,7 +393,7 @@
 
             function aksiSetujui(id) {
                 Swal.fire({
-                    title: 'Setujui Penilaian dan Ulasan?',
+                    title: 'Setujui Ulasan?',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#16a34a',
@@ -408,7 +408,7 @@
 
             function aksiTolak(id) {
                 Swal.fire({
-                    title: 'Tolak Penilaian dan Ulasan',
+                    title: 'Tolak Ulasan',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#dc2626',

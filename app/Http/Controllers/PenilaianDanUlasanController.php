@@ -111,6 +111,7 @@ class PenilaianDanUlasanController extends Controller
             : null;
 
         $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
+            ->where('status', 'Disetujui')
             ->where(function ($q) use ($wisatawan, $user) {
 
                 if ($wisatawan) {
@@ -121,6 +122,7 @@ class PenilaianDanUlasanController extends Controller
                     $q->orWhere('email_pengulas', $user->email);
                 }
             })
+            ->orderBy('waktu_diubah', 'desc')
             ->first();
 
         return response()->json($ulasan);
@@ -179,48 +181,68 @@ class PenilaianDanUlasanController extends Controller
 
         $ulasan = null;
 
-        if ($id_wisatawan) {
-            $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)
-                ->where('id_wisatawan', $id_wisatawan)
-                ->first();
-        }
+        $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)
+            ->where('id_wisatawan', $id_wisatawan)
+            ->orderBy('waktu_diubah', 'desc')
+            ->first();
+
+        // if ($ulasan) {
+        //     dd($ulasan->penilaian);
+        // } else {
+        // dd('data tidak ditemukan');
+        // }
 
         if ($ulasan) {
-            $ulasan->update([
+            $ulasan->fill([
                 'penilaian' => $request->penilaian,
-                'ulasan' => $request->ulasan,
+                'ulasan' => trim($request->ulasan),
                 'foto_ulasan' => $fotoPath ?? $ulasan->foto_ulasan,
-                'harga_min' => $min,
-                'harga_max' => $max,
-                'waktu_diubah' => $waktu_diubah,
+                'harga_min' => $min ?? null,
+                'harga_max' => $max ?? null,
             ]);
-
-            if ($ulasan->status == 'Ditolak' || $ulasan->status == 'Disetujui') {
-                $ulasan->update([
-                    'status' => 'Belum Diverifikasi',
+            if (!$ulasan->isDirty()) {
+                return response()->json([
+                    'status' => 'info',
+                    'message' => 'Tidak terdapat perubahan'
                 ]);
             }
-
-            return response()->json([
-                'status' => 'Diperbarui',
-                'message' => 'Ulasan berhasil diperbarui'
-            ]);
-        } else {
-            PenilaiandanUlasan::create([
-                'id_wisata_kuliner' => $request->id_wisata_kuliner,
-                'penilaian' => $request->penilaian,
-                'ulasan' => $request->ulasan,
-                'foto_ulasan' => $fotoPath,
-                'harga_min' => $min,
-                'harga_max' => $max,
-                'email_pengulas' => $email_pengulas,
-                'id_wisatawan' => $id_wisatawan,
-                'id_admin' => $id_admin,
-                'status' => 'Belum Diverifikasi',
-                'waktu_dibuat' => $waktu_dibuat,
-                'waktu_diubah' => $waktu_diubah,
-            ]);
         }
+
+        //     $ulasan->update([
+        //         'penilaian' => $request->penilaian,
+        //         'ulasan' => $request->ulasan,
+        //         'foto_ulasan' => $fotoPath ?? $ulasan->foto_ulasan,
+        //         'harga_min' => $min ?? null,
+        //         'harga_max' => $max ?? null,
+        //         'waktu_diubah' => $waktu_diubah,
+        //     ]);
+
+        //     if ($ulasan->status == 'Ditolak' || $ulasan->status == 'Disetujui') {
+        //         $ulasan->update([
+        //             'status' => 'Belum Diverifikasi',
+        //         ]);
+        //     }
+
+        //     return response()->json([
+        //         'status' => 'Diperbarui',
+        //         'message' => 'Ulasan berhasil diperbarui'
+        //     ]);
+        // } else {
+        PenilaiandanUlasan::create([
+            'id_wisata_kuliner' => $request->id_wisata_kuliner,
+            'penilaian' => $request->penilaian,
+            'ulasan' => $request->ulasan,
+            'foto_ulasan' => $fotoPath ?? ($ulasan->foto_ulasan ?? null),
+            'harga_min' => $min ?? null,
+            'harga_max' => $max ?? null,
+            'email_pengulas' => $email_pengulas,
+            'id_wisatawan' => $id_wisatawan,
+            'id_admin' => $id_admin,
+            'status' => 'Belum Diverifikasi',
+            'waktu_dibuat' => $waktu_dibuat,
+            'waktu_diubah' => $waktu_diubah,
+        ]);
+        // }
 
         // $wisataKuliner = WisataKuliner::findOrFail($request->id_wisata_kuliner);
         // $min_total = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)->min('harga_min');
@@ -310,6 +332,7 @@ class PenilaianDanUlasanController extends Controller
         $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $id)
             ->where('status', 'Disetujui')
             ->orderBy('waktu_diubah', 'desc')
+            ->take(1)
             ->get()
             ->map(function ($item) use ($id_wisatawan, $emailUser) {
                 return [
@@ -391,11 +414,11 @@ class PenilaianDanUlasanController extends Controller
 
         $ulasan = null;
 
-        // if ($id_wisatawan) {
-        //     $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)
-        //         ->where('id_wisatawan', $id_wisatawan)
-        //         ->first();
-        // }
+        if ($id_wisatawan) {
+            $ulasan = PenilaiandanUlasan::where('id_wisata_kuliner', $request->id_wisata_kuliner)
+                ->where('id_wisatawan', $id_wisatawan)
+                ->first();
+        }
 
         // if ($ulasan) {
         //     $ulasan->update([
@@ -435,7 +458,7 @@ class PenilaianDanUlasanController extends Controller
             [
                 'penilaian' => $request->penilaian,
                 'ulasan' => $request->ulasan,
-                'foto_ulasan' => $fotoPath,
+                'foto_ulasan' => $fotoPath ?? $ulasan->foto_ulasan,
                 'harga_min' => $min,
                 'harga_max' => $max,
                 'status' => 'Belum Diverifikasi',

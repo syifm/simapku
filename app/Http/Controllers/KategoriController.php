@@ -95,7 +95,7 @@ class KategoriController extends Controller
         $kategori->nama = $nama;
         if (!$kategori->isDirty()) {
             return response()->json([
-                'info' => 'Tidak ada perubahan'
+                'info' => 'Tidak Terdapat Perubahan'
             ]);
         }
 
@@ -172,5 +172,4 @@ class KategoriController extends Controller
 
         return back()->with('success', 'Kategori berhasil dihapus');
     }
-
 }

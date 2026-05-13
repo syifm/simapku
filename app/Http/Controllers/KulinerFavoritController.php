@@ -161,7 +161,7 @@ class KulinerFavoritController extends Controller
                 Preferensi::create([
                     'id_wisatawan' => $wisatawan->id_wisatawan,
                     'id_kategori' => $k->id_kategori,
-                    'jumlah' => 1
+                    'jumlah' => ($k->jumlah) + 1,
                 ]);
             }
         }

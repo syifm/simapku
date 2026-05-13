@@ -1144,7 +1144,7 @@
                         params.set("maxrating", 5);
                         params.set("keyword", "Kuliner Terdekat");
 
-                        window.location.href = "/wisata-kuliner-cari?" + params.toString();
+                        window.location.href = "/carikuliner?" + params.toString();
                     },
                     function(error) {
                         Swal.fire({

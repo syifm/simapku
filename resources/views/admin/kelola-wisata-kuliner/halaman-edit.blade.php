@@ -149,6 +149,18 @@
             </div>
         @endif
 
+        @if (session('info'))
+            <script>
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Info',
+                    text: "{{ session('info') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
+
         <!-- Konten -->
         <div class="flex-1 flex flex-col">
             <div class="flex-1 overflow-y-auto">
@@ -1505,7 +1517,7 @@
         $(document).ready(function() {
             let selectedWisata = {
                 id: "{{ $wisataKuliner->id_wisata_kuliner ?? $wisataKuliner->id }}",
-                text: "{{ $wisataKuliner->nama }}"
+                text: @json($wisataKuliner->nama)
             };
 
             let option = new Option(selectedWisata.text, selectedWisata.id, true, true);
@@ -1722,6 +1734,7 @@
 
                     return false;
                 }
+
                 // e.preventDefault();
                 // $("#saveBtn").html('Processing...').attr('disabled', 'disabled');
                 // var link = $("#addForm").attr('action');

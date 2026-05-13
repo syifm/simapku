@@ -393,6 +393,24 @@ class AdminController extends Controller
             $dataKategori = $request->id_kategori ?? [];
             $idWisata = $request->nama;
 
+            $wisataKuliner->fill([
+                'nama' => $request->nama,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'alamat' => $request->alamat,
+                'no_telp' => $request->no_telp ?? null,
+                'email' => $request->email ?? null,
+                'foto' => $fotoPath,
+                'deskripsi' => $request->deskripsi,
+                'latitude'  => $request->latitude,
+                'longitude' => $request->longitude,
+            ]);
+
+            if (!$wisataKuliner->isDirty()) {
+                return redirect()->route('kelolawisatakuliner')
+                    ->with('info', 'Tidak Terdapat Perubahan');
+            }
+
             $wisataKuliner->update([
                 'nama' => $request->nama,
                 'kecamatan' => $request->kecamatan,
