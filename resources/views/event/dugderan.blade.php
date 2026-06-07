@@ -153,8 +153,8 @@
             const infoWindow = new google.maps.InfoWindow();
 
             const center = {
-                lat: -6.984168497010843,
-                lng: 110.40926002563694
+                lat: -6.969054045894555,
+                lng: 110.42432058292049
             };
 
             map = new google.maps.Map(document.getElementById("map"), {

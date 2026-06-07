@@ -429,7 +429,7 @@
             </div> --}}
 
             <!-- search bar -->
-            <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
+            {{-- <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
                 @csrf
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-2xl z-20">
@@ -601,12 +601,287 @@
 
 
                             </div>
-                            {{-- <div>
-                                <p class="text-xs text-gray-600 mt-2 text-right">
-                                    Cari Wilayah dengan mengaktifkan GPS atau melalui
-                                    kolom Kecamatan dan Kelurahan
-                                </p>
-                            </div> --}}
+                        </div>
+                    </div>
+                </div>
+            </form> --}}
+            <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
+                @csrf
+                <div class="relative w-full flex justify-center mb-6">
+                    <div class="w-full max-w-2xl z-20">
+                        <div
+                            class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
+                            <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
+                                class="flex-1 px-5 py-3 focus:outline-none" value="{{ request('keyword') }}"
+                                id="searchBar">
+                            <button type="submit" id="btnSearchKeyword"
+                                class="bg-[#FFA319] px-4 py-3 text-white enabled:hover:bg-[#F19305] transition">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <div id="searchPanel"
+                            class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
+                            <!-- Kuliner Terdekat -->
+                            <div onclick="klikKulinerTerdekat(event)"
+                                class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
+                                Kuliner Terdekat
+                            </div>
+
+                            <!-- Advanced Search -->
+                            <div id="advancedBtn" class="flex gap-4 items-center p-3 rounded-xl cursor-pointer">
+                                <span>Pencarian dengan Pengaturan Kriteria</span>
+                                <span class="leading-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="3" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+
+                                </span>
+                            </div>
+                            <!-- Filter Advanced -->
+                            <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3 mr-3">
+
+                                <input type="hidden" name="lat" id="lat">
+                                <input type="hidden" name="lng" id="lng">
+
+                                <div class="container">
+                                    <label class="font-medium">Jarak</label>
+
+                                    <div class="range-slider-jarak-dua flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
+                                            <input type="number" name="jarak"
+                                                class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
+                                                value="{{ request('jarak', 10) }}" min="0" max="10" />
+                                        </div>
+
+                                        <!-- .range -->
+                                        <div class="range-jarak-dua">
+                                            <input type="range" class="input-jarak-dua"
+                                                value="{{ request('jarak', 10) }}" min="0" max="10" />
+
+                                            <div class="slider-jarak-dua">
+                                                <div class="progress-jarak-dua"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="font-medium">Kategori</label>
+                                    <select id="kategori" name="kategori[]" data-placeholder="Pilih Kategori..."
+                                        data-theme="light" multiple data-multi-select>
+                                        @foreach ($kategori as $item)
+                                            {{-- <option value="{{ $item->id_kategori }}">
+                                                {{ $item->nama }}
+                                            </option> --}}
+                                            <option value="{{ $item->id_kategori }}" {{-- {{ in_array($item->id_kategori, request('kategori', [])) ? 'selected' : '' }}> --}}
+                                                {{ in_array($item->id_kategori, (array) request('kategori', [])) ? 'selected' : '' }}>
+                                                {{ $item->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="container">
+                                    <label class="font-medium">Harga</label>
+
+                                    <!-- .range-slider -->
+                                    <div class="range-slider flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
+                                            <input type="number" name="minharga"
+                                                class="min-price w-[95px] p-2 outline-none border-0"
+                                                value="{{ request('minharga', 0) }}" min="0" max="500000"
+                                                step="25000" />
+                                        </div>
+
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
+                                            <input type="number" name="maxharga"
+                                                class="max-price w-[95px] p-2 outline-none border-0"
+                                                value="{{ request('maxharga', 500000) }}" min="0"
+                                                max="1000000" step="25000" />
+                                        </div>
+
+                                        <!-- .range -->
+                                        <div class="range">
+                                            <input type="range" class="min-input"
+                                                value="{{ request('minharga', 0) }}" min="0" max="500000"
+                                                step="25000" />
+                                            <input type="range" class="max-input"
+                                                value="{{ request('maxharga', 500000) }}" min="0"
+                                                max="500000" step="25000" />
+
+                                            <div class="slider">
+                                                <div class="progress"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="font-medium">Fasilitas</label>
+                                    <select id="fasilitas" name="fasilitas[]" data-placeholder="Pilih Fasilitas..."
+                                        data-theme="light" multiple data-multi-select>
+                                        @foreach ($fasilitas as $item)
+                                            {{-- <option value="{{ $item->id_fasilitas }}">
+                                                {{ $item->nama }}
+                                            </option> --}}
+                                            <option value="{{ $item->id_fasilitas }}" {{-- {{ in_array($item->id_fasilitas, request('fasilitas', [])) ? 'selected' : '' }}> --}}
+                                                {{ in_array($item->id_fasilitas, (array) request('fasilitas', [])) ? 'selected' : '' }}>
+                                                {{ $item->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="container">
+                                    <label class="font-medium">Nilai Kuliner</label>
+
+                                    <!-- .range-slider -->
+                                    <div class="range-slider-rating flex justify-between items-center">
+                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <input type="number" name="minrating"
+                                                class="min-rating w-[40px] p-2 outline-none border-0"
+                                                value="{{ request('minrating', 0) }}" min="0"
+                                                max="5" />
+                                        </div>
+
+                                        <div
+                                            class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
+                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <input type="number" name="maxrating"
+                                                class="max-rating w-[40px] p-2 outline-none border-0"
+                                                value="{{ request('maxrating', 5) }}" min="0"
+                                                max="5" />
+                                        </div>
+
+                                        <!-- .range -->
+                                        <div class="range">
+                                            <input type="range" class="min-input-rating"
+                                                value="{{ request('minrating', 0) }}" min="0"
+                                                max="5" />
+                                            <input type="range" class="max-input-rating"
+                                                value="{{ request('maxrating', 5) }}" min="0"
+                                                max="5" />
+
+                                            <div class="slider">
+                                                <div class="progress-rating"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-span-2 border-t pt-4 mt-4">
+                                    <label class="font-semibold block mb-3 text-center">
+                                        Pengaturan Bobot Pencarian
+                                    </label>
+                                    <div class="bg-gray-50 rounded-2xl border ">
+                                        <div class="grid grid-cols-5 gap-2 p-3 mb-3">
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Jarak</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_jarak"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="{{ request('bobot_jarak', 40) }}" min="0"
+                                                        max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Harga</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_harga"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="{{ request('bobot_harga', 20) }}" min="0"
+                                                        max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Nilai Kuliner</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_rating"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="{{ request('bobot_rating', 25) }}" min="0"
+                                                        max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Kategori</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_kategori"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="{{ request('bobot_kategori', 10) }}" min="0"
+                                                        max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Fasilitas</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_fasilitas"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="{{ request('bobot_fasilitas', 5) }}" min="0"
+                                                        max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        {{-- <div class="w-full  bg-white p-3 rounded-xl border shadow-sm"> --}}
+                                        <div class="flex justify-between items-center px-3 mt-1 mb-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-sm font-medium text-gray-700">
+                                                    Total Bobot:
+                                                </span>
+                                                <span id="labelTotalBobot" class="text-base font-bold">
+                                                    100%
+                                                </span>
+                                            </div>
+
+                                            <button type="submit" id="btnCariBobot"
+                                                class="px-6 py-2 bg-[#FFA319] hover:bg-[#F19305]
+                                                text-white font-semibold text-sm rounded-xl shadow-sm
+                                                transition-all duration-200
+                                                disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
+                                                Cari
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {{-- </div> --}}
+
+
+                                    {{-- <p id="pesanErrorBobot"
+                                        class="text-red-500 text-xs font-semibold mt-2 text-center hidden">
+                                        Total alokasi harus pas 100% sebelum mencari!
+                                    </p> --}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -851,6 +1126,117 @@
     <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = document.querySelectorAll(".input-bobot");
+            const labelTotal = document.getElementById("labelTotalBobot");
+            const pesanError = document.getElementById("pesanErrorBobot");
+            const btnCari = document.getElementById("btnCariBobot");
+            const formCari = document.getElementById("formCari");
+
+            function updateBobotLimits() {
+                let totalSekarang = 0;
+
+                // 1. Sanitasi input: Bersihkan format minus atau angka kosong
+                inputs.forEach(input => {
+                    // Cek jika user memasukkan angka nol beruntun (0000)
+                    if (input.value.length > 1 && input.value.startsWith('0')) {
+                        input.value = parseInt(input.value) || 0;
+                    }
+
+                    let val = parseInt(input.value);
+                    if (isNaN(val) || val < 0) {
+                        input.value = 0;
+                    }
+                });
+
+                // 2. Hitung total akumulasi bobot
+                inputs.forEach(input => {
+                    totalSekarang += parseInt(input.value) || 0;
+                });
+
+                // 3. Batasi jika total input melebihi angka 100% secara paksa
+                if (totalSekarang > 100) {
+                    const activeInput = document.activeElement;
+                    if (activeInput && activeInput.classList.contains('input-bobot')) {
+                        let totalLain = 0;
+                        inputs.forEach(input => {
+                            if (input !== activeInput) totalLain += parseInt(input.value) || 0;
+                        });
+                        activeInput.value = 100 - totalLain;
+                    }
+
+                    totalSekarang = 0;
+                    inputs.forEach(input => {
+                        totalSekarang += parseInt(input.value) || 0;
+                    });
+                }
+
+                // 4. Perbarui Teks Persentase di UI
+                labelTotal.textContent = totalSekarang + "%";
+
+                // 5. Logika Validasi Tombol & Tampilan Pesan Error Secara Real-Time
+                if (totalSekarang === 100) {
+                    // labelTotal.className = "text-base font-bold text-green-600";
+                    // pesanError.classList.add("hidden");
+
+                    // Aktifkan tombol kembali
+                    if (btnCari) btnCari.disabled = false;
+                } else {
+                    // labelTotal.className = "text-base font-bold text-red-500";
+
+                    // Kunci tombol agar tidak bisa diklik semenjak user mengetik data salah
+                    if (btnCari) btnCari.disabled = true;
+                }
+
+                // 6. Set dinamis batas maksimal input tersisa
+                inputs.forEach(input => {
+                    const nilaiInputIni = parseInt(input.value) || 0;
+                    let sisaKuota = 100 - (totalSekarang - nilaiInputIni);
+                    if (sisaKuota < 0) sisaKuota = 0;
+                    input.max = sisaKuota;
+                    if (totalSekarang >= 100 && nilaiInputIni === 0) {
+                        input.max = 0;
+                    }
+                });
+            }
+
+            // Pasang Event Listener ke seluruh kolom input bobot
+            inputs.forEach(input => {
+                input.addEventListener("input", updateBobotLimits);
+
+                // Mempermudah user mengubah angka saat kolom diklik (auto-select)
+                input.addEventListener("focus", function() {
+                    this.select();
+                });
+            });
+
+            // Validasi double-check saat form dikirimkan
+            if (formCari) {
+                formCari.addEventListener("submit", function(e) {
+                    let totalAkhir = 0;
+                    inputs.forEach(input => {
+                        totalAkhir += parseInt(input.value) || 0;
+                    });
+
+                    if (totalAkhir !== 100) {
+                        e.preventDefault(); // Gagalkan pengiriman data ke server Laravel
+
+                        pesanError.textContent =
+                            `Total bobot harus tepat 100%`;
+                        pesanError.classList.remove("hidden");
+
+                        pesanError.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }
+                });
+            }
+
+            // Jalankan fungsi saat pertama kali halaman dimuat
+            updateBobotLimits();
+        });
+
         const csrfToken = "{{ csrf_token() }}";
 
         // slider Jarak
@@ -1130,14 +1516,14 @@
         updateProgressRating();
 
         document.addEventListener('DOMContentLoaded', () => {
-            const hamburger = document.getElementById('hamburger');
-            const sidebar = document.querySelector('.sidebar');
+            // const hamburger = document.getElementById('hamburger');
+            // const sidebar = document.querySelector('.sidebar');
 
-            if (!hamburger || !sidebar) return;
+            // if (!hamburger || !sidebar) return;
 
-            hamburger.addEventListener('click', () => {
-                sidebar.classList.toggle('expanded');
-            });
+            // hamburger.addEventListener('click', () => {
+            //     sidebar.classList.toggle('expanded');
+            // });
 
             const params = new URLSearchParams(window.location.search);
             const detailId = params.get('detail');
@@ -1152,13 +1538,53 @@
             if (card) card.click();
         }
 
+        const btnSearchKeyword = document.getElementById("btnSearchKeyword");
         const searchBar = document.getElementById("searchBar");
         const searchPanel = document.getElementById("searchPanel");
+
+        function updateKeywordButton() {
+
+            const keyword = searchBar.value.trim();
+
+            if (keyword !== '') {
+
+                btnSearchKeyword.disabled = false;
+
+                btnSearchKeyword.classList.remove(
+                    'cursor-not-allowed'
+                );
+
+                btnSearchKeyword.classList.add(
+                    'cursor-pointer'
+                );
+
+            } else {
+
+                btnSearchKeyword.disabled = true;
+
+                btnSearchKeyword.classList.remove(
+                    'cursor-pointer'
+                );
+
+                btnSearchKeyword.classList.add(
+                    'cursor-not-allowed'
+                );
+            }
+        }
+
+        searchBar.addEventListener(
+            'input',
+            updateKeywordButton
+        );
+
+        updateKeywordButton();
+
+        const keyword =
+            searchBar.value.trim();
 
         searchBar.addEventListener("click", () => {
             searchPanel.classList.toggle("hidden");
         });
-
 
         const advancedBtn = document.getElementById("advancedBtn");
         const advancedFilter = document.getElementById("advancedFilter");
@@ -1167,12 +1593,12 @@
             advancedFilter.classList.toggle("hidden");
         });
 
-        const defaultText = 'Rekomendasi Kuliner';
-        searchBar.addEventListener('blur', function() {
-            if (this.value.trim() === '') {
-                this.value = defaultText;
-            }
-        });
+        // const defaultText = 'Rekomendasi Kuliner';
+        // searchBar.addEventListener('blur', function() {
+        //     if (this.value.trim() === '') {
+        //         this.value = defaultText;
+        //     }
+        // });
 
         document.addEventListener("click", function(e) {
 
@@ -1183,8 +1609,8 @@
         });
 
         // MAPS --------------------------------------------------------------------------------
-        let defaultLat = -6.984168497010843;
-        let defaultLng = 110.40926002563694;
+        let defaultLat = -6.969054045894555;
+        let defaultLng = 110.42432058292049;
 
         let map;
         let userMarker = null;
@@ -1202,8 +1628,8 @@
 
         async function initApp() {
             let defaultLocation = {
-                lat: -6.984168497010843,
-                lng: 110.40926002563694
+                lat: -6.969054045894555,
+                lng: 110.42432058292049
             };
 
             const markerLib = await google.maps.importLibrary("marker");
@@ -2120,76 +2546,74 @@
                 });
         }
 
-
-
         document.getElementById("formCari").addEventListener("submit", function(e) {
-            if (searchBar.value.trim() === '') {
-                searchBar.value = defaultText;
-            }
+            // if (searchBar.value.trim() === '') {
+            //     searchBar.value = defaultText;
+            // }
             e.preventDefault();
 
             const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
 
-            const isTerdekat =
-                keyword.includes("terdekat") ||
-                keyword.includes("dekat") ||
-                keyword.includes("near");
+            // const isTerdekat =
+            //     keyword.includes("terdekat") ||
+            //     keyword.includes("dekat") ||
+            //     keyword.includes("near");
 
-            if (isTerdekat) {
+            // if (isTerdekat) {
 
-                if (!navigator.geolocation) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "GPS tidak tersedia",
-                        text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    return;
-                }
+            //     if (!navigator.geolocation) {
+            //         Swal.fire({
+            //             icon: "error",
+            //             title: "GPS tidak tersedia",
+            //             text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
+            //             showConfirmButton: false,
+            //             timer: 2000
+            //         });
+            //         return;
+            //     }
 
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
+            //     navigator.geolocation.getCurrentPosition(
+            //         function(position) {
+            //             const lat = position.coords.latitude;
+            //             const lng = position.coords.longitude;
 
-                        inputJarakDua.value = 5;
-                        nilaiJarakDua.value = 5;
-                        updateProgressJarakDua();
+            //             inputJarakDua.value = 5;
+            //             nilaiJarakDua.value = 5;
+            //             updateProgressJarakDua();
 
-                        minInput.value = 0;
-                        maxInput.value = 500000;
-                        minPriceInput.value = 0;
-                        maxPriceInput.value = 500000;
-                        updateProgress();
+            //             minInput.value = 0;
+            //             maxInput.value = 500000;
+            //             minPriceInput.value = 0;
+            //             maxPriceInput.value = 500000;
+            //             updateProgress();
 
-                        const minRating = document.querySelector(".min-rating");
-                        const maxRating = document.querySelector(".max-rating");
+            //             const minRating = document.querySelector(".min-rating");
+            //             const maxRating = document.querySelector(".max-rating");
 
-                        if (minRating && maxRating) {
-                            minRating.value = 0;
-                            maxRating.value = 5;
-                        }
+            //             if (minRating && maxRating) {
+            //                 minRating.value = 0;
+            //                 maxRating.value = 5;
+            //             }
 
-                        document.getElementById("lat").value = lat;
-                        document.getElementById("lng").value = lng;
+            //             document.getElementById("lat").value = lat;
+            //             document.getElementById("lng").value = lng;
 
-                        e.target.submit();
-                    },
+            //             e.target.submit();
+            //         },
 
-                    function() {
-                        Swal.fire({
-                            icon: "warning",
-                            title: 'Lokasi Tidak Tersedia',
-                            text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                    }
-                );
+            //         function() {
+            //             Swal.fire({
+            //                 icon: "warning",
+            //                 title: 'Lokasi Tidak Tersedia',
+            //                 text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+            //                 showConfirmButton: false,
+            //                 timer: 2000
+            //             });
+            //         }
+            //     );
 
-                return;
-            }
+            //     return;
+            // }
 
             navigator.geolocation.getCurrentPosition(
                 function(position) {
@@ -2198,8 +2622,8 @@
                     e.target.submit();
                 },
                 function() {
-                    document.getElementById("lat").value = -6.984168497010843;
-                    document.getElementById("lng").value = 110.40926002563694;
+                    document.getElementById("lat").value = -6.969054045894555;
+                    document.getElementById("lng").value = 110.42432058292049;
                     e.target.submit();
                 }
             );

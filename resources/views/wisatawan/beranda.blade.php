@@ -501,22 +501,22 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="minharga"
                                                 class="min-price w-[95px] p-2 outline-none border-0" value="0"
-                                                min="0" max="1000000" step="25000" />
+                                                min="0" max="500000" step="25000" />
                                         </div>
 
                                         <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
                                             <input type="number" name="maxharga"
                                                 class="max-price w-[95px] p-2 outline-none border-0" value="1000000"
-                                                min="0" max="1000000" step="25000" />
+                                                min="0" max="500000" step="25000" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range">
                                             <input type="range" class="min-input" value="0" min="0"
-                                                max="1000000" step="25000" />
-                                            <input type="range" class="max-input" value="1000000" min="0"
-                                                max="1000000" step="25000" />
+                                                max="500000" step="25000" />
+                                            <input type="range" class="max-input" value="500000" min="0"
+                                                max="500000" step="25000" />
 
                                             <div class="slider">
                                                 <div class="progress"></div>
@@ -648,22 +648,24 @@
 
                                         </div>
                                         {{-- <div class="w-full  bg-white p-3 rounded-xl border shadow-sm"> --}}
-                                        <div
-                                            class="flex flex-col sm:flex-row items-center justify-between bg-white p-3 rounded-xl border border-gray-200 shadow-sm gap-3">
+                                        <div class="flex justify-between items-center px-3 mt-1 mb-3">
                                             <div class="flex items-center gap-2">
-                                                <span class="text-sm font-medium text-gray-700">Total Alokasi
-                                                    Bobot:</span>
-                                                <span id="labelTotalBobot"
-                                                    class="text-base font-bold text-green-600">100%</span>
+                                                <span class="text-sm font-medium text-gray-700">
+                                                    Total Bobot:
+                                                </span>
+                                                <span id="labelTotalBobot" class="text-base font-bold">
+                                                    100%
+                                                </span>
                                             </div>
 
-
+                                            <button type="submit" id="btnCariBobot"
+                                                class="px-6 py-2 bg-[#FFA319] hover:bg-[#F19305]
+                                                text-white font-semibold text-sm rounded-xl shadow-sm
+                                                transition-all duration-200
+                                                disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
+                                                Cari
+                                            </button>
                                         </div>
-
-                                        <button type="submit" id="btnCariBobot"
-                                            class="w-full sm:w-auto px-6 py-2 bg-[#FFA319] hover:bg-[#FFA319] text-white font-semibold text-sm rounded-xl shadow-sm transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
-                                            Cari
-                                        </button>
                                     </div>
                                     {{-- </div> --}}
 
@@ -689,43 +691,53 @@
             <p class="text-lg text-black font-bold mt-1 mb-4 text-center">
                 Event Semarang
             </p>
-            <div class="flex justify-center flex-wrap">
-                <a href="{{ route('dugderan') }}"
-                    class="relative inline-block group w-80 h-100 overflow-hidden group">
-                    <img src="{{ asset('dugderan.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+
+            <div class="flex w-full overflow-hidden rounded-xl">
+
+                <a href="{{ route('dugderan') }}" class="relative flex-1 overflow-hidden group rounded-l-xl">
+
+                    <img src="{{ asset('dugderan.jpg') }}" alt="dugderan" class="w-full h-full object-cover">
+
                     <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
+
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">
                             Dugderan
                         </span>
                     </div>
+
                 </a>
-                <a href="{{ route('kulinerkauman') }}"
-                    class="relative inline-block group w-80 h-100 overflow-hidden group">
+
+                <a href="{{ route('kulinerkauman') }}" class="relative flex-1 overflow-hidden group">
+
                     <img src="{{ asset('kulinerkauman.png') }}" alt="kulinerkauman"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
-                    </div>
+                        class="w-full h-full object-cover">
+
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
+
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">
                             Kuliner Kauman Johar
                         </span>
                     </div>
+
                 </a>
-                <a href="{{ route('semawis') }}"
-                    class="relative inline-block group w-80 h-100 overflow-hidden group">
-                    <img src="{{ asset('pasarimlek.jpg') }}" alt="semawis"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+
+                <a href="{{ route('semawis') }}" class="relative flex-1 overflow-hidden group rounded-r-xl">
+
+                    <img src="{{ asset('pasarimlek.jpg') }}" alt="semawis" class="w-full h-full object-cover">
+
                     <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
+
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">
                             Waroeng Semawis
                         </span>
                     </div>
-                </a>
-            </div>
 
+                </a>
+
+            </div>
         </div>
 
         {{-- <div class="mb-6">
@@ -839,9 +851,9 @@
 
                 {{-- Semua --}}
                 <a href="{{ route('beranda-Wisatawan') }}"
-                    class="border px-4 py-2 rounded-xl shadow whitespace-nowrap {{ !$kategoriDipilih ? 'bg-[#FFA319] text-white' : 'bg-white text-black' }}">
+                    class="inline-flex items-center gap-1.5 border px-3 py-1.5 rounded-lg shadow whitespace-nowrap {{ !$kategoriDipilih && !request('rekomendasi') ? 'bg-[#FFA319] text-white' : 'bg-white text-black' }}">
 
-                    Semua Kuliner
+                    Semua
 
                 </a>
 
@@ -849,12 +861,15 @@
                 <div class="relative">
 
                     <button onclick="klikKategori('tempatDropdown')"
-                        class="border px-4 py-2 rounded-xl shadow whitespace-nowrap {{ $kategoriTempat->pluck('id_kategori')->contains($kategoriDipilih)
+                        class="inline-flex items-center gap-1.5 border px-3 py-1.5 rounded-lg shadow whitespace-nowrap {{ $kategoriTempat->pluck('id_kategori')->contains($kategoriDipilih)
                             ? 'bg-[#FFA319] text-white'
                             : 'bg-white text-black' }}">
 
-                        Tempat ▼
-
+                        <span>Tempat</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg>
                     </button>
 
                     <div id="tempatDropdown"
@@ -881,11 +896,16 @@
                 <div class="relative">
 
                     <button onclick="klikKategori('jenisDropdown')"
-                        class="border px-4 py-2 rounded-xl shadow whitespace-nowrap {{ $jenisHidangan->pluck('id_kategori')->contains($kategoriDipilih)
+                        class="inline-flex items-center gap-1.5 border px-3 py-1.5 rounded-lg shadow whitespace-nowrap {{ $jenisHidangan->pluck('id_kategori')->contains($kategoriDipilih)
                             ? 'bg-[#FFA319] text-white'
                             : 'bg-white text-black' }}">
 
-                        Jenis Hidangan ▼
+                        <span>Jenis Hidangan</span>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg>
 
                     </button>
 
@@ -912,11 +932,15 @@
                 <div class="relative">
 
                     <button onclick="klikKategori('asalDropdown')"
-                        class="border px-4 py-2 rounded-xl shadow whitespace-nowrap {{ $asalKuliner->pluck('id_kategori')->contains($kategoriDipilih)
+                        class="inline-flex items-center gap-1.5 border px-3 py-1.5 rounded-lg shadow whitespace-nowrap {{ $asalKuliner->pluck('id_kategori')->contains($kategoriDipilih)
                             ? 'bg-[#FFA319] text-white'
                             : 'bg-white text-black' }}">
 
-                        Asal Kuliner ▼
+                        <span>Asal Kuliner </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg>
 
                     </button>
 
@@ -939,6 +963,14 @@
 
                 </div>
 
+                {{-- Rekomendasi untuk Anda --}}
+                <div class="relative">
+                    <a href="{{ route('beranda-Wisatawan', ['rekomendasi' => 1]) }}"
+                        class="inline-flex items-center gap-1.5 border px-3 py-1.5 rounded-lg shadow whitespace-nowrap {{ request('rekomendasi') == 1 ? 'bg-[#FFA319] text-white' : 'bg-white text-black' }}">
+                        <span>Rekomendasi untuk Anda</span>
+                    </a>
+                </div>
+
             </div>
 
         </div>
@@ -950,6 +982,9 @@
                 </h2>
             </div>
         @endif --}}
+        @php
+            $dataRekomendasi = $isHasilCosine ? $rekomendasiCosine : $wisataKuliner;
+        @endphp
         @if ($wisataKuliner->count() > 0)
             @if ($namaKategoriDipilih)
                 <div class="mb-4">
@@ -957,9 +992,18 @@
                         {{ $namaKategoriDipilih }}
                     </h2>
                 </div>
+            @elseif ($isHasilCosine && request('rekomendasi') == 1)
+                <div class="mb-4">
+                    <h2 class="text-xl text-center font-bold text-gray-800 flex items-center justify-center gap-2">
+                        Rekomendasi untuk Anda
+                    </h2>
+                    <p class="text-xs text-gray-500 text-center mt-1">
+                        Daftar wisata kuliner yang paling sesuai dengan karakteristik preferensi kuliner favorit Anda
+                    </p>
+                </div>
             @endif
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-                @foreach ($wisataKuliner as $item)
+                @foreach ($dataRekomendasi as $item)
                     <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition"
                         onclick="klikWisataKuliner({{ $item->id_wisata_kuliner }})">
                         {{-- <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
@@ -1004,7 +1048,16 @@
                             {{-- </p> --}}
 
                         </div>
-
+                        {{-- @if ($isHasilCosine && isset($item->score_cosine))
+                            <div
+                                class="px-3 pb-3 pt-2 border-t border-gray-100 flex justify-between items-center bg-amber-50/60">
+                                <span class="text-[11px] text-gray-500 font-medium">Tingkat Kemiripan:</span>
+                                <span
+                                    class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-bold shadow-sm">
+                                    {{ number_format($item->score_cosine * 100, 0) }}% Cocok
+                                </span>
+                            </div>
+                        @endif --}}
                         {{-- </a> --}}
                     </div>
                 @endforeach
@@ -1031,18 +1084,76 @@
                     Wisata Kuliner Belum Tersedia
                 </h3>
 
-                @if ($namaKategoriDipilih)
-                    <p class="text-gray-500 mt-2">
+                <p class="text-gray-500 mt-2">
+                    @if ($namaKategoriDipilih)
                         Belum tersedia wisata kuliner pada kategori ini
-                        {{-- <span class="font-medium">
-                            {{ $namaKategoriDipilih }}
-                        </span> --}}
-                    </p>
-                @endif
+                    @elseif (request('rekomendasi') == 1)
+                        Silakan tambahkan wisata kuliner ke kuliner favorit Anda terlebih dahulu
+                    @else
+                        Belum ada data wisata kuliner yang dapat ditampilkan.
+                    @endif
+                </p>
 
             </div>
 
         @endif
+
+        {{-- @if ($isHasilCosine && $rekomendasiCosine->isNotEmpty())
+            <div class="mt-4 mb-6">
+                <div
+                    class="bg-gradient-to-r from-orange-50 to-amber-50 border border-amber-200 rounded-2xl p-4 shadow-sm">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="bg-[#FFA319] p-1.5 rounded-lg text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.813 15.904 9 21l8.982-8.982M18 13.665V7.5A2.25 2.25 0 0 0 15.75 5.3h-7.5A2.25 2.25 0 0 0 6 7.5v11.25m12 0 .59-2.36M6 18.75c0-.621.504-1.125 1.125-1.125H18M10.25 9.75h4.5m-4.5 3h4.5" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-sm md:text-base">Rekomendasi Untuk Anda</h3>
+                            <p class="text-xs text-gray-500">Daftar kuliner di Semarang yang paling sesuai dengan
+                                karakteristik preferensi kuliner favorit Anda</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                        @foreach ($rekomendasiCosine as $item)
+                            <a href="/wisata-kuliner/{{ $item->id_wisata_kuliner }}"
+                                class="group bg-white border border-gray-100 rounded-xl p-2 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+                                <div>
+                                    <img src="{{ isset($item->foto) && $item->foto ? asset('storage/' . $item->foto) : asset('images/default-kuliner.jpg') }}"
+                                        alt="{{ $item->nama }}"
+                                        class="w-full h-24 object-cover rounded-lg mb-2 group-hover:scale-[1.02] transition-transform">
+
+                                    <h4
+                                        class="font-semibold text-xs text-gray-800 line-clamp-1 group-hover:text-[#FFA319]">
+                                        {{ $item->nama }}</h4>
+
+                                    <div class="flex items-center gap-1 mt-0.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                            fill="currentColor" class="w-3 h-3 text-amber-400">
+                                            <path fill-rule="evenodd"
+                                                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        <span
+                                            class="text-[10px] font-medium text-gray-500">{{ number_format($item->penilaian, 1) }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2 pt-1 border-t border-gray-50 flex justify-between items-center">
+                                    <span
+                                        class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">
+                                        {{ number_format($item->score_cosine * 100, 0) }}% Cocok
+                                    </span>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif --}}
 
         <div id="detailKuliner"
             class="fixed inset-0 bg-black/40 hidden z-[9999] overflow-y-auto bg-black bg-opacity-40">
@@ -1116,7 +1227,7 @@
                         </div>
                         <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
                             <div>:</div>
-                            <div class="text-justify"><span id="fasilitas"></span></div>
+                            <div class="text-justify"><span id="detail_fasilitas"></span></div>
                         </div>
 
                         <div class="flex justify-between w-32">
@@ -1124,7 +1235,7 @@
                         </div>
                         <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
                             <div>:</div>
-                            <div class="text-justify"><span id="kategori"></span></div>
+                            <div class="text-justify"><span id="detail_kategori"></span></div>
                         </div>
 
                         <div class="flex justify-between w-32">
@@ -1368,13 +1479,13 @@
 
                 // 5. Logika Validasi Tombol & Tampilan Pesan Error Secara Real-Time
                 if (totalSekarang === 100) {
-                    labelTotal.className = "text-base font-bold text-green-600";
+                    // labelTotal.className = "text-base font-bold text-green-600";
                     // pesanError.classList.add("hidden");
 
                     // Aktifkan tombol kembali
                     if (btnCari) btnCari.disabled = false;
                 } else {
-                    labelTotal.className = "text-base font-bold text-red-500";
+                    // labelTotal.className = "text-base font-bold text-red-500";
 
                     // Kunci tombol agar tidak bisa diklik semenjak user mengetik data salah
                     if (btnCari) btnCari.disabled = true;
@@ -1750,51 +1861,51 @@
 
         updateKeywordButton();
 
-        function adaKriteria() {
+        // function adaKriteria() {
 
-            const kategori =
-                document.getElementById('kategori')
-                .selectedOptions.length;
+        //     const kategori =
+        //         document.getElementById('kategori')
+        //         .selectedOptions.length;
 
-            const fasilitas =
-                document.getElementById('fasilitas')
-                .selectedOptions.length;
+        //     const fasilitas =
+        //         document.getElementById('fasilitas')
+        //         .selectedOptions.length;
 
-            const jarak =
-                parseInt(document.querySelector(
-                    '[name="jarak"]'
-                ).value);
+        //     const jarak =
+        //         parseInt(document.querySelector(
+        //             '[name="jarak"]'
+        //         ).value);
 
-            const minHarga =
-                parseInt(document.querySelector(
-                    '[name="minharga"]'
-                ).value);
+        //     const minHarga =
+        //         parseInt(document.querySelector(
+        //             '[name="minharga"]'
+        //         ).value);
 
-            const maxHarga =
-                parseInt(document.querySelector(
-                    '[name="maxharga"]'
-                ).value);
+        //     const maxHarga =
+        //         parseInt(document.querySelector(
+        //             '[name="maxharga"]'
+        //         ).value);
 
-            const minRating =
-                parseInt(document.querySelector(
-                    '[name="minrating"]'
-                ).value);
+        //     const minRating =
+        //         parseInt(document.querySelector(
+        //             '[name="minrating"]'
+        //         ).value);
 
-            const maxRating =
-                parseInt(document.querySelector(
-                    '[name="maxrating"]'
-                ).value);
+        //     const maxRating =
+        //         parseInt(document.querySelector(
+        //             '[name="maxrating"]'
+        //         ).value);
 
-            return (
-                kategori > 0 ||
-                fasilitas > 0 ||
-                jarak < 10 ||
-                minHarga > 0 ||
-                maxHarga < 1000000 ||
-                minRating > 0 ||
-                maxRating < 5
-            );
-        }
+        //     return (
+        //         kategori > 0 ||
+        //         fasilitas > 0 ||
+        //         jarak < 10 ||
+        //         minHarga > 0 ||
+        //         maxHarga < 500000 ||
+        //         minRating > 0 ||
+        //         maxRating < 5
+        //     );
+        // }
 
         // const btnCariBobot =
         //     document.getElementById("btnCariBobot");
@@ -2062,7 +2173,7 @@
         let marker = null;
 
         function klikWisataKuliner(id) {
-            fetch(`/wisatawan/favorit/detail/${id}`)
+            fetch(`/wisatawan/beranda/detail/${id}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('modalTitleKuliner').textContent = data.nama;
@@ -2105,7 +2216,7 @@
 
                     // Fasilitas
                     let fasilitas = data.fasilitas || [];
-                    let container = document.getElementById('fasilitas');
+                    let container = document.getElementById('detail_fasilitas');
 
                     container.innerHTML = '';
                     if (fasilitas.length > 0) {
@@ -2128,7 +2239,7 @@
 
                     // Kategori
                     let kategori = data.kategori || [];
-                    let containerKategori = document.getElementById('kategori');
+                    let containerKategori = document.getElementById('detail_kategori');
 
                     containerKategori.innerHTML = '';
                     if (kategori.length > 0) {

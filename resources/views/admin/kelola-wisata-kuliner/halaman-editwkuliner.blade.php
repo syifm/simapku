@@ -433,8 +433,7 @@
                                             Asal Kuliner<span class="text-red-500 font-bold">*</span>
                                         </label>
 
-                                        <select id="selectAsalKuliner" name="asal_kuliner"
-                                            class="w-full" required>
+                                        <select id="selectAsalKuliner" name="asal_kuliner" class="w-full" required>
 
                                             <option value=""></option>
 
@@ -726,8 +725,8 @@
         // Peta Latitude Longitude
         // function initMap() {
         //     const defaultPosition = {
-        //         lat: -6.984168497010843,
-        //         lng: 110.40926002563694
+        //         lat: -6.969054045894555,
+        //         lng: 110.42432058292049
         //     };
 
         //     map = new google.maps.Map(document.getElementById("map"), {
@@ -834,8 +833,8 @@
         //     }
         //     console.log(window.google);
         //     const defaultPosition = {
-        //         lat: -6.984168497010843,
-        //         lng: 110.40926002563694
+        //         lat: -6.969054045894555,
+        //         lng: 110.42432058292049
         //     };
 
         //     map = new google.maps.Map(document.getElementById("map"), {
