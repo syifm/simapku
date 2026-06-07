@@ -81,7 +81,7 @@
         <div class="ml-1 mr-1 -mt-4">
             <div class="flex w-full border-b mb-4">
                 <button id="tabKuliner"
-                    class="tab-btn flex-1 px-4 py-3 text-center border-b-2 border-[#094B3C] text-[#094B3C] font-semibold">
+                    class="tab-btn flex-1 px-4 py-3 text-center border-b-2 border-[#004440] text-[#004440] font-semibold">
                     Wisata Kuliner
                 </button>
 
@@ -106,23 +106,23 @@
                                     <thead>
                                         <tr>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 No
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Wisata Kuliner
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Status
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Update Terakhir
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Aksi
                                             </th>
                                         </tr>
@@ -150,23 +150,23 @@
                                     <thead>
                                         <tr>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 No
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Wisata Kuliner
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Status
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Update Terakhir
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Aksi
                                             </th>
                                         </tr>
@@ -194,7 +194,7 @@
                                                     class="px-4 py-3 text-sm border-b border-r border-black flex justify-center gap-2">
                                                     <button
                                                         onclick="tampilkanModalKuliner({{ $kuliner->id_wisata_kuliner }})"
-                                                        class="bg-[#094B3C] hover:bg-[#06362a] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
+                                                        class="bg-[#004440] hover:bg-[#06362a] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor"
                                                             class="size-5">
@@ -234,23 +234,23 @@
                                     <thead>
                                         <tr>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 No
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Wisata Kuliner
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Ulasan
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Status Verifikasi
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Aksi
                                             </th>
                                         </tr>
@@ -278,23 +278,23 @@
                                     <thead>
                                         <tr>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 No
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Wisata Kuliner
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Ulasan
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Status Verifikasi
                                             </th>
                                             <th
-                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#094B3C]">
+                                                class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                                                 Aksi
                                             </th>
                                         </tr>
@@ -322,7 +322,7 @@
                                                     class="px-4 py-3 text-sm border-b border-r border-black flex justify-center gap-2">
                                                     <button
                                                         onclick="tampilkanModalUlasan({{ $ulasan->id_penilaian_dan_ulasan }})"
-                                                        class="bg-[#094B3C] hover:bg-[#06362a] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
+                                                        class="bg-[#004440] hover:bg-[#06362a] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.7"
                                                             stroke="currentColor" class="size-5">
@@ -578,16 +578,16 @@
                 contentKuliner.classList.remove('hidden');
                 contentUlasan.classList.add('hidden');
 
-                tabKuliner.classList.add('border-b-2', 'border-[#094B3C]', 'text-[#094B3C]');
-                tabUlasan.classList.remove('border-b-2', 'border-[#094B3C]', 'text-[#094B3C]');
+                tabKuliner.classList.add('border-b-2', 'border-[#004440]', 'text-[#004440]');
+                tabUlasan.classList.remove('border-b-2', 'border-[#004440]', 'text-[#004440]');
             });
 
             tabUlasan.addEventListener('click', () => {
                 contentUlasan.classList.remove('hidden');
                 contentKuliner.classList.add('hidden');
 
-                tabUlasan.classList.add('border-b-2', 'border-[#094B3C]', 'text-[#094B3C]');
-                tabKuliner.classList.remove('border-b-2', 'border-[#094B3C]', 'text-[#094B3C]');
+                tabUlasan.classList.add('border-b-2', 'border-[#004440]', 'text-[#004440]');
+                tabKuliner.classList.remove('border-b-2', 'border-[#004440]', 'text-[#004440]');
             });
 
             let map = null;

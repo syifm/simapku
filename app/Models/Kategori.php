@@ -11,19 +11,11 @@ class Kategori extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_kategori',
         'nama',
+        'jenis_kategori',
+        'status'
     ];
 
-    // public function kategori()
-    // {
-    //     return $this->belongsToMany(
-    //         Kategori::class,
-    //         'kategori_wisata_kuliner',
-    //         'id_wisata_kuliner',
-    //         'id_kategori'
-    //     );
-    // }
     public function wisataKuliner()
     {
         return $this->belongsToMany(
@@ -31,6 +23,16 @@ class Kategori extends Model
             'kategori_wisata_kuliner',
             'id_kategori',
             'id_wisata_kuliner'
+        );
+    }
+
+    public function pengajuanwisataKuliner()
+    {
+        return $this->belongsToMany(
+            PengajuanWisataKuliner::class,
+            'pengajuan_kategori_wisata_kuliner',
+            'id_kategori',
+            'id_pengajuan'
         );
     }
 }

@@ -80,7 +80,7 @@
         :root {
             /* --blue-color: #357ded; */
             --yellow-color: #FFA319;
-            --green-color: #094B3C;
+            --green-color: #004440;
             --gray-color: #77889926;
         }
 
@@ -401,19 +401,32 @@
         </script>
     @endif
 
-    @include('layouts.header-wisatawan')
-    @include('layouts.sidebar-wisatawan')
+    @if (session('swal'))
+        <script>
+            Swal.fire({
+                icon: '{{ session('swal.icon') }}',
+                title: '{{ session('swal.title') }}',
+                text: '{{ session('swal.text') }}',
+                timer: 2000,
+                showConfirmButton: false,
+            });
+        </script>
+    @endif
 
-    <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
+    {{-- @include('layouts.header-wisatawan') --}}
+    @include('layouts.sidebar-wisatawan')
+    @include('wisatawan.pencarian.halaman-tambahulasan')
+
+    <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
         <div class="flex flex-col gap-2">
-            <div>
+            {{-- <div>
                 <p class="text-m text-black font-medium mt-2 mb-2 text-center">
                     Ingin memasukkan kuliner yang Anda ketahui?
-                    <a href="{{ route('tambahwisatakuliner') }}" class="text-[#FFA319]  hover:underline">
+                    <a href="{{ route('wisatakuliner.tambah') }}" class="text-[#FFA319]  hover:underline">
                         Tambah Kuliner
                     </a>
                 </p>
-            </div>
+            </div> --}}
 
             <!-- search bar -->
             <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
@@ -433,7 +446,7 @@
                         <div id="searchPanel"
                             class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
                             <!-- Kuliner Terdekat -->
-                            <div onclick="cariKulinerTerdekat()"
+                            <div onclick="klikKulinerTerdekat()"
                                 class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
                             </div>
@@ -484,7 +497,7 @@
                                         data-theme="light" multiple data-multi-select>
                                         @foreach ($kategori as $item)
                                             <option value="{{ $item->id_kategori }}"
-                                                {{ in_array($item->id_kategori, request('kategori', $kategoriUser)) ? 'selected' : '' }}>
+                                                {{ in_array($item->id_kategori, request('kategori', [])) ? 'selected' : '' }}>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach
@@ -611,7 +624,7 @@
 
         <!-- hasil-->
         {{-- <div class="grid grid-cols-12 gap-6"> --}}
-        <div class="grid grid-cols-12 gap-6 h-[calc(100vh-230px)] overflow-hidden">
+        <div class="grid grid-cols-12 gap-6 h-[calc(100vh-142px)] overflow-hidden">
 
             {{-- <div class="col-span-7">
                 @foreach ($data as $kuliner)
@@ -639,15 +652,18 @@
                     <div class="card-kuliner flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
                         data-id="{{ $kuliner->id_wisata_kuliner }}" data-nama="{{ $kuliner->nama }}"
                         data-alamat="{{ $kuliner->alamat }}" data-min="{{ $kuliner->harga_min }}"
-                        data-max="{{ $kuliner->harga_max }}" data-foto="{{ asset('storage/' . $kuliner->foto) }}"
+                        data-max="{{ $kuliner->harga_max }}"
+                        data-foto="{{ $kuliner->foto ? asset('storage/' . $kuliner->foto) : asset('storage/tidakadafoto.jpg') }}"
                         data-fasilitas='@json($kuliner->fasilitas)' data-kategori='@json($kuliner->kategori)'
                         data-lat="{{ $kuliner->latitude }}" data-lng="{{ $kuliner->longitude }}"
                         data-no_telp="{{ $kuliner->no_telp }}" data-email="{{ $kuliner->email }}"
-                        data-deskripsi="{{ $kuliner->deskripsi }}">
+                        data-deskripsi="{{ $kuliner->deskripsi }}"
+                        data-status_operasional="{{ $kuliner->status_operasional }}"
+                        data-sertifikat_halal="{{ $kuliner->sertifikat_halal }}">
 
                         <div class="flex gap-4 items-center flex-1">
 
-                            <img src="{{ asset('storage/' . $kuliner->foto) }}"
+                            <img src="{{ $kuliner->foto ? asset('storage/' . $kuliner->foto) : asset('storage/tidakadafoto.jpg') }}"
                                 class="w-32 h-24 object-cover rounded-xl">
 
                             <div>
@@ -767,145 +783,7 @@
             </div>
         </div>
 
-        <div id="modalUlasan"
-            class="fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto z-50 items-center justify-center">
-            <form id="formUlasan" action="{{ route('penilaianulasan.simpan') }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf
-
-                {{-- <div class="bg-white w-[500px] rounded-2xl p-6 relative"> --}}
-                <div
-                    class="relative left-[30px] top-[90px] mx-auto p-5 border w-[600px] shadow-lg rounded-xl bg-white">
-
-
-                    <button type="button" onclick="closeModal()" class="absolute right-4 top-3 text-xl">✕</button>
-
-                    <h2 class="text-xl font-bold mb-4 text-center">Tambah Ulasan</h2>
-
-                    <input type="hidden" id="id_wisata_kuliner" name="id_wisata_kuliner">
-                    <!-- Penilaian -->
-                    <label class="block text-sm font-medium text-gray-800 mb-2">
-                        Penilaian
-                        <span class="text-red-500 font-bold">*</span>
-                    </label>
-
-                    <div id="ratingStars" class="flex gap-1 cursor-pointer">
-
-                        <svg data-value="1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400 star">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                        </svg>
-
-                        <svg data-value="2" class="w-8 h-8 text-gray-400 star" fill="none" stroke="currentColor"
-                            stroke-width="1.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                        </svg>
-
-                        <svg data-value="3" class="w-8 h-8 text-gray-400 star" fill="none" stroke="currentColor"
-                            stroke-width="1.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                        </svg>
-
-                        <svg data-value="4" class="w-8 h-8 text-gray-400 star" fill="none" stroke="currentColor"
-                            stroke-width="1.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                        </svg>
-
-                        <svg data-value="5" class="w-8 h-8 text-gray-400 star" fill="none" stroke="currentColor"
-                            stroke-width="1.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                        </svg>
-                    </div>
-
-                    <input type="hidden" id="penilaian" name="penilaian" required>
-
-                    <!-- Ulasan -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-800 mb-1 mt-3"
-                            for="ulasan"><span>Ulasan</span>
-                            <span class="text-red-500 font-bold">*</span></label>
-                        <textarea id="ulasan" name="ulasan" rows="4"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>{{ old('deskripsiulasan') }}</textarea>
-                        @error('ulasan')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Harga per orang -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-800 mb-1" for="harga_per_orang"><span>Harga
-                                Per Orang</span></label>
-                        {{-- <input type="number" id="harga_per_orang" name="harga_per_orang" rows="6"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>{{ old('harga_per_orang') }}</input> --}}
-                        <select id="harga_per_orang" name="harga_per_orang"
-                            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="" disabled selected hidden>
-                                Pilih rentang harga untuk per orang
-                            </option>
-
-                            {{-- @for ($i = 0; $i < 300000; $i += 25000)
-                                <option value="{{ $i }}-{{ $i + 25000 }}">
-                                    Rp {{ number_format($i, 0, ',', '.') }} -
-                                    {{ number_format($i + 25000, 0, ',', '.') }}
-                                </option>
-                            @endfor --}}
-                            @for ($i = 0; $i <= 500000; $i += 25000)
-                                @if ($i == 500000)
-                                    <option value="500000+">
-                                        Rp 500.000+
-                                    </option>
-                                @else
-                                    <option value="{{ $i }}-{{ $i + 25000 }}">
-                                        Rp {{ number_format($i, 0, ',', '.') }} -
-                                        {{ number_format($i + 25000, 0, ',', '.') }}
-                                    </option>
-                                @endif
-                            @endfor
-                        </select>
-                        @error('harga_per_orang')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Foto Ulasan -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-800 mt-2 mb-1">
-                            <span>Foto</span>
-                        </label>
-                        <input type="file" name="foto_ulasan" id="foto_ulasan" accept="image/*"
-                            class="file-input-wrapper">
-
-
-                        <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
-
-                        <!-- PREVIEW -->
-                        <div id="previewWrapper" class="mt-3 hidden relative w-40">
-                            <img id="fotoPreview" class="rounded-md border w-full h-40 object-cover">
-                        </div>
-
-                        <p class="text-xs text-gray-600 mt-2">
-                            Format: JPG, JPEG, PNG | Max: 10MB
-                        </p>
-                    </div>
-
-                    <!-- Submit -->
-                    <div class="flex justify-end">
-                        <button type="submit"
-                            class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold">
-                            Simpan
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div id="modalFavorit"
+        {{-- <div id="modalFavorit"
             class="fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto z-50 items-center justify-center">
             <form id="formFavorit" action="{{ route('favorit.simpan') }}" enctype="multipart/form-data">
                 @csrf
@@ -937,7 +815,7 @@
                     </div>
                 </div>
             </form>
-        </div>
+        </div> --}}
 
         <!-- Modal: Belum Login -->
         <div id="modalLogin"
@@ -953,8 +831,7 @@
             </div>
         </div>
 
-        <!-- Modal: Komentar Opsional -->
-        <div id="modalKomentar"
+        {{-- <div id="modalKomentar"
             class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
             <div class="bg-white rounded-2xl p-6 w-80 shadow-xl">
                 <h3 class="text-lg font-bold mb-2">Tambah ke Favorit</h3>
@@ -968,7 +845,7 @@
                         class="flex-1 px-4 py-2 rounded-xl bg-blue-500 text-white">Simpan</button>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
@@ -1317,6 +1194,8 @@
 
         let directionsService;
         let directionsRenderer;
+        let routeVisible = false;
+        let routePolyline = null;
 
         let dataKuliner = @json($data);
         let activeInfoWindow = null;
@@ -1407,8 +1286,8 @@
 
                     const pin = new PinElement({
                         background: "#FB991A",
-                        borderColor: "#ffffff",
-                        glyphColor: "#ffffff"
+                        borderColor: "#FFFFFF",
+                        glyphColor: "#FFFFFF"
                     });
 
                     let marker = new google.maps.marker.AdvancedMarkerElement({
@@ -1445,9 +1324,7 @@
             });
         }
 
-        // Isi card
         let favoritIds = @json($favoritIds);
-
         document.querySelectorAll('.card-kuliner').forEach(card => {
 
             card.addEventListener('click', function() {
@@ -1458,6 +1335,8 @@
                 let email = this.dataset.email;
                 let penilaian = this.dataset.penilaian;
                 let deskripsi = this.dataset.deskripsi;
+                let status_operasional = this.dataset.status_operasional;
+                let sertifikat_halal = this.dataset.sertifikat_halal;
 
                 let foto = this.dataset.foto;
                 let lat = parseFloat(this.dataset.lat);
@@ -1507,9 +1386,6 @@
                 `;
                 }
 
-                console.log(email);
-                console.log(penilaian);
-
                 // Fasilitas
                 let fasilitasHTML = '';
 
@@ -1526,6 +1402,44 @@
                     `;
                 }
 
+                let statusHTML = '';
+
+                if (status_operasional === 'Tutup Sementara') {
+                    statusHTML = `
+                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm mt-2">
+                            <i class="fi fi-rs-triangle-warning"></i>
+                            <span>Tutup Sementara</span>
+                        </div>
+                    `;
+                } else if (status_operasional === 'Tutup Permanen') {
+                    statusHTML = `
+                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm mt-2">
+                            <i class="fi fi-rs-triangle-warning"></i>
+                            <span>Tutup Permanen</span>
+                        </div>
+                    `;
+                }
+
+                // let halalHTML = '';
+
+                // if (sertifikat_halal === 'Sudah') {
+                //     halalHTML = `
+            //         <div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm mt-2">
+            //             <i class="fi fi-rs-check-circle"></i>
+            //             <span>Bersertifikat Halal</span>
+            //         </div>
+            //     `;
+                // }
+                let halalHTML = '';
+
+                if (sertifikat_halal === 'Sudah') {
+                    halalHTML = `
+                        <div class="inline-flex items-center gap-1 px-2 py-1 border border-green-300 bg-white text-green-700 rounded-full text-xs">
+                            <i class="fi fi-rs-badge-check"></i>
+                            <span>Halal</span>
+                        </div>
+                    `;
+                }
                 // let kontakHTML = '';
 
 
@@ -1609,6 +1523,11 @@
 
                 <p class="flex gap-2 text-gray-700 justify-normal">${deskripsi}</p>
 
+                <p class="flex gap-2 text-gray-700 justify-normal">${halalHTML}</p>
+
+                <p class="flex gap-2 text-gray-700 justify-normal">${statusHTML}</p>
+
+
                 <div class="mt-5">  
                     <div class="flex items-center gap-2 text-sm text-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -1621,6 +1540,7 @@
                     ${hargaHTML}
                     ${notelpHTML}
                     ${emailHTML}
+                    ${halalHTML}
                 </div>  
                 <div class="mt-2">
                     ${kategoriHTML}
@@ -1642,7 +1562,7 @@
                         </svg>
                     </button>
 
-                    <button title="Rute" onclick="lihatRute(${lat}, ${lng})"
+                    <button title="Rute" onclick="lihatRute(${lat}, ${lng}, this)"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <i class="fi fi-rs-route text-md"></i>
                     </button>
@@ -1676,7 +1596,7 @@
                 <div id="ulasanArea"></div>
 
             </div>
-        `;
+            `;
 
                 loadUlasan(id);
 
@@ -1684,8 +1604,8 @@
 
                 const pin = new PinElement({
                     background: "#FB991A",
-                    borderColor: "#ffffff",
-                    glyphColor: "#ffffff"
+                    borderColor: "#FFFFFF",
+                    glyphColor: "#FFFFFF"
                 });
 
                 let posisi = {
@@ -1766,7 +1686,7 @@
         const previewWrapper = document.getElementById('previewWrapper');
         const fotoPreview = document.getElementById('fotoPreview');
 
-        const MAX_SIZE = 10 * 1024 * 1024;
+        const MAX_SIZE = 5 * 1024 * 1024;
         const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
 
         fotoInput.addEventListener('change', function() {
@@ -1810,7 +1730,7 @@
 
         function loadUlasan(idKuliner) {
 
-            fetch(`/wisatawan/ulasan/${idKuliner}`)
+            fetch(`/wisatawan/ulasan/detail/${idKuliner}`)
                 .then(res => res.json())
                 .then(data => {
 
@@ -1819,6 +1739,34 @@
                         html = `<p class="text-gray-500 mt-5 text-center">Ulasan belum tersedia</p>`
                     } else {
                         data.forEach(item => {
+
+                            let menuHapus = '';
+
+                            if (item.punya_sendiri) {
+                                menuHapus = `
+                                    <div class="relative">
+                                        <button onclick="toggleMenu(${item.id_ulasan})"
+                                            class="p-1 rounded-full hover:bg-gray-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-5 h-5 text-gray-500"
+                                                fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <circle cx="12" cy="5" r="1.8"/>
+                                                <circle cx="12" cy="12" r="1.8"/>
+                                                <circle cx="12" cy="19" r="1.8"/>
+                                            </svg>
+                                        </button>
+
+                                        <div id="menu-${item.id_ulasan}"
+                                            class="hidden absolute right-0 mt-1 bg-white border rounded-lg shadow-md z-50">
+                                            <button onclick="hapusUlasan(${item.id_ulasan})"
+                                                class="px-4 py-2 text-red-500 hover:bg-red-50 w-full text-left">
+                                                Hapus
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
+                            }
 
                             let namaUser = item.punya_sendiri ?
                                 'Anda' :
@@ -1863,12 +1811,8 @@
 
                                 <!-- Konten -->
                                 <div class="flex-1">
-
-                                    <!-- Nama + tanggal -->
-                                    <div class="flex items-center gap-2 text-sm">
-                                        <span class="font-semibold">${namaUser}</span>
-                                        <span class="text-gray-400">•</span>
-                                        <span class="text-gray-500">${formatTanggal(item.waktu_diubah)}</span>
+                                    <div class="flex justify-between items-start">
+                                     
                                     </div>
 
                                     <!-- Rating -->
@@ -1904,8 +1848,69 @@
 
         }
 
+        function toggleMenu(id) {
+            document.getElementById(`menu-${id}`).classList.toggle('hidden');
+        }
+
+        function hapusUlasan(id) {
+
+            Swal.fire({
+                title: 'Hapus Ulasan?',
+                // text: 'Ulasan yang dihapus tidak dapat dikembalikan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    fetch(`/wisatawan/ulasan/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]'
+                                ).content,
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: data.message
+                            });
+
+                            loadUlasan(idKulinerAktif);
+                        });
+
+                }
+
+            });
+
+        }
+
         // Lihat rute
-        function lihatRute(destLat, destLng) {
+        function lihatRute(destLat, destLng, btn) {
+            if (routeVisible) {
+
+                directionsRenderer.setDirections({
+                    routes: []
+                });
+
+                if (routePolyline) {
+                    routePolyline.setMap(null);
+                    routePolyline = null;
+                }
+
+                btn.classList.remove('bg-blue-100');
+
+                routeVisible = false;
+                return;
+            }
+
             if (!userLat || !userLng) {
                 alert("Lokasi user belum tersedia");
                 return;
@@ -1929,7 +1934,7 @@
 
                     const route = result.routes[0].overview_path;
                     const lastPoint = route[route.length - 1];
-                    new google.maps.Polyline({
+                    routePolyline = new google.maps.Polyline({
                         path: [
                             lastPoint,
                             {
@@ -1943,11 +1948,20 @@
                         strokeWeight: 4,
                         map: map
                     });
+                    routeVisible = true;
                 } else {
                     alert("Gagal menampilkan rute");
                 }
             });
         }
+
+        // const btnRute = document.getElementById('btnRute');
+
+        // if (routeVisible) {
+        //     btnRute.classList.add('bg-blue-100');
+        // } else {
+        //     btnRute.classList.remove('bg-blue-100');
+        // }
 
         function formatTanggal(tanggal) {
             if (!tanggal) return '';
@@ -2049,14 +2063,14 @@
         // });
 
         function simpanFavorit(id, btn) {
-            fetch("{{ route('favorit.simpan') }}", {
+            fetch(`/wisatawan/favorit/simpan`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': csrfToken
                     },
                     body: JSON.stringify({
-                        id_wisata_kuliner_favorit: id,
+                        id_wisata_kuliner: id,
                     })
                 })
                 .then(res => res.json())
@@ -2066,20 +2080,21 @@
                     svg.setAttribute('fill', 'black');
                     svg.setAttribute('stroke', 'none');
 
-                    favoritIds = favoritIds.filter(f => f !== parseInt(id));
+                    // favoritIds = favoritIds.filter(f => f !== parseInt(id));
+                    favoritIds.push(parseInt(id));
 
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Berhasil ditambahkan dari Kuliner Favorit',
+                        icon: data.status,
+                        title: data.title,
+                        text: data.text,
                         showConfirmButton: false,
-                        timer: 3000
+                        timer: 1500
                     });
                 });
         }
 
         function hapusFavorit(id, btn) {
-            fetch(`/favorit/${id}`, {
+            fetch(`/wisatawan/favorit/hapus/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken
@@ -2093,216 +2108,19 @@
                     svg.setAttribute('stroke', 'currentColor');
 
                     favoritIds = favoritIds.filter(f => f !== parseInt(id));
+                    // favoritIds.push(parseInt(id));
 
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Berhasil dihapus dari Kuliner Favorit',
+                        icon: data.status,
+                        title: data.title,
+                        text: data.text,
                         showConfirmButton: false,
-                        timer: 3000
+                        timer: 1500
                     });
                 });
         }
 
-        // Ulasan
-        document.getElementById('formUlasan').addEventListener('submit', function(e) {
-            e.preventDefault();
 
-            const penilaian = document.getElementById('penilaian').value
-            if (!penilaian || penilaian == 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Penilaian Belum Diisi",
-                    text: "Mohon pilih penilaian terlebih dahulu",
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-
-                return;
-            }
-
-            console.log(document.getElementById('penilaian').value);
-
-            let form = document.getElementById('formUlasan');
-            let formData = new FormData(form);
-
-            fetch("{{ route('penilaianulasan.simpan') }}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-
-                    if (data.status === 'success') {
-
-                        closeModal();
-                        form.reset();
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: 'Ulasan berhasil disimpan.',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-
-                    } else if (data.status === 'info') {
-
-                        closeModal();
-
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Info',
-                            text: data.message,
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-
-                    }
-
-
-                })
-                .catch(err => {
-                    console.error(err);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Ulasan Belum Lengkap',
-                        text: 'Gagal menyimpan ulasan',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    // Swal.fire({
-                    //     icon: 'info',
-                    //     title: 'Info',
-                    //     text: data.message,
-                    //     timer: 2000,
-                    //     showConfirmButton: false
-                    // });
-                    // document.querySelector('#modalUlasan form').addEventListener('submit', function(e) {
-                    //     const penilaian = document.getElementById('penilaian').value
-                    //     if (!penilaian || penilaian == 0) {
-                    //         e.preventDefault()
-                    //         Swal.fire({
-                    //             icon: "error",
-                    //             title: "Penilaian Belum Diisi",
-                    //             text: "Mohon pilih penilaian bintang terlebih dahulu",
-                    //             showConfirmButton: false,
-                    //             timer: 2000
-                    //         });
-                    //     }
-                    // })
-                });
-        });
-
-        function openModal(id) {
-            kulinerAktif = id
-            document.getElementById('id_wisata_kuliner').value = id
-            fetch(`/wisatawan/ulasan/modalulasan/${id}`)
-                .then(res => res.json())
-                .then(data => {
-
-                    if (data && data.id_penilaian_dan_ulasan) {
-                        document.getElementById('ulasan').value = data.ulasan;
-                        document.getElementById('penilaian').value = data.penilaian;
-
-                        document.getElementById('harga_per_orang').value =
-                            data.harga_min + "-" + data.harga_max;
-
-                        setRatingStars(data.penilaian);
-
-                        if (data.foto_ulasan) {
-                            document.getElementById('previewWrapper').classList.remove('hidden');
-                            document.getElementById('fotoPreview').src = `/storage/${data.foto_ulasan}`;
-                        }
-
-                        // document.querySelector('#formUlasan button[type="submit"]').textContent = 'Perbarui';
-
-                    } else {
-                        document.getElementById('formUlasan').reset();
-                        setRatingStars(0);
-
-                        // document.querySelector('#formUlasan button[type="submit"]').textContent = 'Simpan';
-                    }
-
-                })
-                .catch(err => {
-                    console.error('Error ambil ulasan:', err);
-                });
-            document.getElementById('modalUlasan').classList.remove('hidden')
-            document.body.style.overflow = 'hidden'
-        }
-
-        function setRatingStars(value) {
-            const stars = document.querySelectorAll('#ratingStars .star');
-
-            stars.forEach(star => {
-                let val = parseInt(star.dataset.value);
-
-                if (val <= value) {
-                    star.setAttribute('fill', 'gold');
-                    star.setAttribute('stroke', 'gold');
-                } else {
-                    star.setAttribute('fill', 'none');
-                    star.setAttribute('stroke', 'currentColor');
-                }
-            });
-
-            document.getElementById('penilaian').value = value;
-        }
-
-
-        function closeModal() {
-            document.getElementById('modalUlasan').classList.add('hidden')
-            document.body.style.overflow = ''
-        }
-
-        // Penilaian
-        document.addEventListener('DOMContentLoaded', function() {
-
-            let ratingValue = 0
-
-            let stars = document.querySelectorAll('#ratingStars .star')
-
-            stars.forEach(star => {
-
-                star.addEventListener('click', function() {
-
-                    ratingValue = parseInt(this.dataset.value)
-
-                    document.getElementById('penilaian').value = ratingValue
-
-                    renderStars(ratingValue)
-
-                })
-
-            })
-
-            function renderStars(val) {
-
-                stars.forEach((star, index) => {
-
-                    if (index + 1 <= val) {
-
-                        star.setAttribute("fill", "currentColor")
-                        star.classList.remove("text-gray-400")
-                        star.classList.add("text-yellow-400")
-
-                    } else {
-
-                        star.setAttribute("fill", "none")
-                        star.classList.remove("text-yellow-400")
-                        star.classList.add("text-gray-400")
-
-                    }
-
-                })
-
-            }
-
-        })
 
         document.getElementById("formCari").addEventListener("submit", function(e) {
             if (searchBar.value.trim() === '') {
@@ -2387,40 +2205,41 @@
             );
         });
 
-        function cariKulinerTerdekat() {
+        function klikKulinerTerdekat() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
 
-                    inputJarakDua.value = 5;
-                    nilaiJarakDua.value = 5;
-                    updateProgressJarakDua();
+                    // inputJarakDua.value = 5;
+                    // nilaiJarakDua.value = 5;
+                    // updateProgressJarakDua();
 
-                    minInput.value = 0;
-                    maxInput.value = 500000;
-                    minPriceInput.value = 0;
-                    maxPriceInput.value = 500000;
-                    updateProgress();
+                    // minInput.value = 0;
+                    // maxInput.value = 500000;
+                    // minPriceInput.value = 0;
+                    // maxPriceInput.value = 500000;
+                    // updateProgress();
 
-                    const minRating = document.querySelector(".min-rating");
-                    const maxRating = document.querySelector(".max-rating");
+                    // const minRating = document.querySelector(".min-rating");
+                    // const maxRating = document.querySelector(".max-rating");
 
-                    if (minRating && maxRating) {
-                        minRating.value = 0;
-                        maxRating.value = 5;
-                    }
+                    // if (minRating && maxRating) {
+                    //     minRating.value = 0;
+                    //     maxRating.value = 5;
+                    // }
 
                     const params = new URLSearchParams(window.location.search);
 
+                    params.set('terdekat', 1);
                     params.set("lat", lat);
                     params.set("lng", lng);
-                    params.set("jarak", 5);
-                    params.set("minharga", 0);
-                    params.set("maxharga", 500000);
-                    params.set("minrating", 0);
-                    params.set("maxrating", 5);
-                    params.set("keyword", "Kuliner Terdekat");
+                    // params.set("jarak", 5);
+                    // params.set("minharga", 0);
+                    // params.set("maxharga", 500000);
+                    // params.set("minrating", 0);
+                    // params.set("maxrating", 5);
+                    // params.set("keyword", "Kuliner Terdekat");
 
                     window.location.href =
                         window.location.pathname + "?" + params.toString();
@@ -2437,7 +2256,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Browser kamu tidak mendukung fitur lokasi 😢',
+                    text: 'Browser Anda tidak mendukung fitur lokasi',
                     confirmButtonText: 'OK'
                 });
             }
@@ -2533,7 +2352,7 @@
         //         formData.append('foto_ulasan', file)
         //     }
 
-        //     let response = await fetch("{{ route('penilaianulasan.simpan') }}", {
+        //     let response = await fetch("{{ route('ulasan.simpan') }}", {
         //         method: "POST",
         //         headers: {
         //             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content

@@ -73,44 +73,36 @@
         </script>
     @endif
 
-    @if ($user->peran == 'Wisatawan')
-        @include('layouts.header-wisatawan')
-    @endif
-
     @if ($user->peran == 'Admin')
         @include('layouts.sidebar-admin')
     @elseif ($user->peran == 'Wisatawan')
         @include('layouts.sidebar-wisatawan')
     @endif
 
-    @if ($user->peran === 'Admin')
-        <div class="pt-[38px] pl-[350px] pr-[50px] pb-[20px]">
-        @elseif($user->peran === 'Wisatawan')
-            <div class="pt-[20px] pl-28 pr-[30px] pb-[20px]">
-    @endif
+    <div class="pt-[38px] pl-[350px] pr-[50px] pb-[20px]">
+        <h1 class="font-bold text-xl">Profil</h1>
+        {{-- <div class="flex justify-center mb-6 mt-[50px]"> --}}
+            @if ($user->peran == 'Admin')
+                <div class="flex justify-center mt-[70px] mb-6">
+                @elseif ($user->peran == 'Wisatawan')
+                    <div class="flex justify-center mt-[50px] mb-6">
+            @endif
+            <img id="preview"
+                src="{{ Auth::user()->foto && file_exists(storage_path('app/public/' . Auth::user()->foto))
+                    ? asset('storage/' . Auth::user()->foto)
+                    : asset('profil.png') }}"
+                alt="fotoprofil" class="w-40 h-40 object-cover rounded-full">
+        </div>
 
-    <h1 class="text-2xl font-bold mb-8 text-center">Profil</h1>
-    @if ($user->peran === 'Admin')
-        <div class="flex justify-center mb-6 mt-[70px]">
-        @elseif($user->peran === 'Wisatawan')
-            <div class="flex justify-center mb-6 mt-10">
-    @endif
-    <img id="preview"
-        src="{{ Auth::user()->foto && file_exists(storage_path('app/public/' . Auth::user()->foto))
-            ? asset('storage/' . Auth::user()->foto)
-            : asset('profil.png') }}"
-        alt="fotoprofil" class="w-40 h-40 object-cover rounded-lg">
-    </div>
-
-    @if ($user->peran === 'Admin')
-        <div class="flex justify-end mt-[70px] mb-4">
-        @elseif($user->peran === 'Wisatawan')
-            <div class="flex justify-end mt-4 mb-4">
-    @endif
-    {{-- <a href="{{ route('profile.edit') }}"
-        class="py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white bg-[#FB991A] hover:bg-orange-600 transition duration-300">
-        Edit Profil
-    </a> --}}
+        @if ($user->peran == 'Admin')
+            <div class="flex justify-end mt-[70px] mb-4">
+            @elseif ($user->peran == 'Wisatawan')
+                <div class="flex justify-end mt-[50px] mb-4">
+        @endif
+        <a href="{{ route('profile.edit') }}"
+            class="py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white bg-[#FB991A] hover:bg-orange-600 transition duration-300">
+            Edit Profil
+        </a>
     </div>
 
     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -135,8 +127,15 @@
                     <div class="mt-1 ml-4 block w-full">{{ $user->email }}</div>
                 </div>
 
-                <!-- Preferensi -->
+                <!-- Asal Kota -->
                 @if ($wisatawan)
+                    <div class="flex items-center">
+                        <label class="w-60 text-sm font-medium text-gray-700">Asal Kota</label>
+                        <div class="mt-1 ml-4 block w-full">{{ $wisatawan->asal_kota }}</div>
+                    </div>
+                @endif
+
+                {{-- @if ($wisatawan)
                     <div class="flex items-start gap-2" id="preferensi-view">
                         <div class="w-[172px] flex flex-col">
                             <label class="text-sm font-medium text-gray-700">Preferensi</label>
@@ -161,10 +160,10 @@
                             @endif
                         </div>
                     </div>
-                @endif
+                @endif --}}
 
 
-                <div id="preferensi-edit" class="hidden flex items-start gap-2">
+                {{-- <div id="preferensi-edit" class="hidden flex items-start gap-2">
                     <div class="w-[172px] flex flex-col">
                         <label class="text-sm font-medium text-gray-700">Preferensi</label>
 
@@ -190,104 +189,10 @@
                         @endforeach
                     </div>
 
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
-
-
-    <script>
-        function toggleEditPreferensi() {
-            const view = document.getElementById('preferensi-view');
-            const edit = document.getElementById('preferensi-edit');
-
-            if (edit.classList.contains('hidden')) {
-                view.classList.add('hidden');
-                edit.classList.remove('hidden');
-            } else {
-                edit.classList.add('hidden');
-                view.classList.remove('hidden');
-            }
-        }
-
-        // function hapusPreferensi(id) {
-        //     Swal.fire({
-        //         title: 'Hapus preferensi?',
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonText: 'Ya',
-        //         cancelButtonText: 'Batal',
-        //         confirmButtonColor: '#dc2626',
-        //         cancelButtonColor: '#6b7280',
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             fetch(`/wisatawan/hapus-preferensi/${id}`, {
-        //                     method: 'DELETE',
-        //                     headers: {
-        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //                     }
-        //                 })
-        //                 .then(res => res.json())
-        //                 .then(res => {
-        //                     if (res.success) {
-        //                         location.reload();
-        //                     }
-        //                 });
-        //         }
-        //     });
-        // }
-
-        function hapusPreferensi(id_kategori) {
-            Swal.fire({
-                title: 'Hapus preferensi?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Batal',
-                confirmButtonColor: '#dc2626',
-                cancelButtonColor: '#6b7280',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch('/wisatawan/hapus-preferensi', {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                id_kategori: id_kategori
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(res => {
-                            if (res.success) {
-                                const el = document.getElementById('pref-' + id_kategori);
-                                if (el) el.remove();
-
-                                const container = document.querySelector('#preferensi-edit .flex.flex-wrap');
-
-                                if (container.children.length === 0) {
-                                    container.innerHTML = '<span>-</span>';
-
-                                    const btn = document.getElementById('btnEditPreferensi');
-                                    if (btn) btn.remove();
-
-                                    toggleEditPreferensi();
-                                }
-
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: 'Preferensi berhasil dihapus',
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                });
-                            }
-                        });
-                }
-            });
-        }
-    </script>
 
 </body>
 

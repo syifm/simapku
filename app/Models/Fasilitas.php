@@ -11,18 +11,10 @@ class Fasilitas extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_fasilitas',
         'nama',
+        'status'
     ];
 
-    // public function fasilitas()
-    // {
-    //     return $this->hasmany(FasilitasWisataKuliner::class);
-    // }
-    // public function wisataKuliner()
-    // {
-    //     return $this->belongsToMany(WisataKuliner::class, 'fasilitas_wisata_kuliner');
-    // }
     public function wisataKuliner()
     {
         return $this->belongsToMany(
@@ -30,6 +22,16 @@ class Fasilitas extends Model
             'fasilitas_wisata_kuliner',
             'id_fasilitas',
             'id_wisata_kuliner'
+        );
+    }
+
+    public function pengajuanwisataKuliner()
+    {
+        return $this->belongsToMany(
+            PengajuanWisataKuliner::class,
+            'pengajuan_fasilitas_wisata_kuliner',
+            'id_fasilitas',
+            'id_pengajuan'
         );
     }
 }

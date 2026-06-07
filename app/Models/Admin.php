@@ -11,7 +11,7 @@ class Admin extends Model
     protected $primaryKey = 'id_admin';
 
     protected $fillable = [
-        'id_admin',
+        // 'id_admin',
         'user_id',
     ];
 
@@ -25,8 +25,8 @@ class Admin extends Model
         return $this->hasMany(WisataKuliner::class, 'id_admin', 'id_admin');
     }
 
-    public function penilaianDanUlasan()
+    public function Ulasan()
     {
-        return $this->hasMany(PenilaianDanUlasan::class, 'id_admin', 'id_admin');
+        return $this->hasMany(Ulasan::class, 'id_admin', 'id_admin');
     }
 }

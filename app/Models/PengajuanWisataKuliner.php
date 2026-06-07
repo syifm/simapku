@@ -18,18 +18,15 @@ class PengajuanWisataKuliner extends Model
         'kelurahan',
         'alamat',
         'no_telp',
-        'email',
         'deskripsi',
         'foto',
         'longitude',
         'latitude',
-        'harga_min',
-        'harga_max',
-        'penilaian',
-        'email_pengaju',
+        'sertifikat_halal',
         'id_wisatawan',
         'id_admin',
         'status',
+        'status_operasional',
         'jenis_pengajuan',
         'waktu_dibuat',
         'waktu_diubah',
@@ -45,19 +42,14 @@ class PengajuanWisataKuliner extends Model
         );
     }
 
-    public function menu()
-    {
-        return $this->hasMany(Menu::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
-    }
-
-    // public function penilaianDanUlasan()
-    // {
-    //     return $this->hasMany(PenilaianDanUlasan::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
-    // }
-
-    public function pengaju()
+    public function wisatawan()
     {
         return $this->belongsTo(Wisatawan::class, 'id_wisatawan');
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, 'id_admin');
     }
 
     public function verifikasiadmin()

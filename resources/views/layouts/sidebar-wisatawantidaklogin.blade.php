@@ -25,7 +25,7 @@
             width: 90px;
             /* height: calc(100vh - 100px); */
             height: 100vh;
-            background-color: #094B3C;
+            background-color: #004440;
             color: white;
             padding: 1rem 0.5rem;
             overflow-y: auto;
@@ -140,7 +140,7 @@
 </head>
 
 <aside>
-    <div class="sidebar bg-[#094B3C]">
+    <div class="sidebar bg-[#004440]">
         <nav class="nav-menu">
             <a href="{{ route('beranda.tidaklogin') }}" title="Beranda"
                 class="menu-item flex items-center p-2 rounded

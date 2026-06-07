@@ -19,14 +19,13 @@
 <body class="bg-gray-100 text-gray-800">
     @include('layouts.sidebar-admin')
     <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
-        <h1 class="font-bold text-2xl">Beranda</h1>
+        <h1 class="font-bold text-xl -mt-2">Beranda</h1>
         <div class="mt-[50px] grid grid-cols-2 gap-6">
 
             <div class="bg-white p-6 rounded-lg shadow border border-gray-300">
                 <h3 class="text-lg font-semibold text-black mb-4 text-center">
-                    Verifikasi Kuliner
+                    Verifikasi Wisata Kuliner
                 </h3>
-                {{-- <canvas id="wkulinerDonutChart" class="w-[350px] h-[350px] mx-auto"></canvas> --}}
                 <div style="height:400px;">
                     <canvas id="wkulinerDonutChart"></canvas>
                 </div>
@@ -36,7 +35,6 @@
                 <h3 class="text-lg font-semibold text-black mb-4 text-center">
                     Verifikasi Ulasan
                 </h3>
-                {{-- <canvas id="ulasanDonutChart" class="w-[350px] h-[350px] mx-auto"></canvas> --}}
                 <div style="height:400px;">
                     <canvas id="ulasanDonutChart"></canvas>
                 </div>
@@ -54,36 +52,24 @@
         var wkulinerBelumDiverifikasi = {{ $wkulinerBelumDiverifikasi }};
         var wkulinerDisetujui = {{ $wkulinerDisetujui }};
         var wkulinerDitolak = {{ $wkulinerDitolak }};
-        var wkulinerDitampilkan = {{ $wkulinerDitampilkan }};
         var persentaseWkulinerBelumDiverifikasi = {{ $persentaseWkulinerBelumDiverifikasi }};
         var persentaseWkulinerDisetujui = {{ $persentaseWkulinerDisetujui }};
         var persentaseWkulinerDitolak = {{ $persentaseWkulinerDitolak }};
-        var persentaseWkulinerDitampilkan = {{ $persentaseWkulinerDitampilkan }};
         let dataAsli = [
             wkulinerBelumDiverifikasi,
             wkulinerDisetujui,
             wkulinerDitolak,
-            wkulinerDitampilkan
         ];
 
         let dataPersen = [
             persentaseWkulinerBelumDiverifikasi,
             persentaseWkulinerDisetujui,
             persentaseWkulinerDitolak,
-            persentaseWkulinerDitampilkan
         ];
 
-        let labels = ['Belum Diverifikasi', 'Disetujui', 'Ditolak', 'Ditampilkan'];
-        let backgroundColor = ['#FFA319', '#094B3C', '#F83513', '#0A4174'];
+        let labels = ['Belum Diverifikasi', 'Disetujui', 'Ditolak'];
+        let backgroundColor = ['#FFA319', '#004440', '#F83513'];
 
-        // const totalUlasan = dataPersen.reduce((a, b) => a + b, 0);
-
-        // if (totalUlasan === 0) {
-        //     dataPersenUlasan = [1];
-        //     dataAsliUlasan = [0];
-        //     labelsUlasan = ['Belum Tersedia Kuliner'];
-        //     backgroundColorUlasan = ['#D1D5DB'];
-        // }
         const total = dataAsli.reduce((a, b) => a + b, 0);
 
         if (total === 0) {
@@ -123,7 +109,7 @@
                                     },
                                     {
                                         text: 'Disetujui',
-                                        fillStyle: '#094B3C',
+                                        fillStyle: '#004440',
                                         strokeStyle: 'transparent',
                                         lineWidth: 0
                                     },
@@ -133,12 +119,6 @@
                                         strokeStyle: 'transparent',
                                         lineWidth: 0
                                     },
-                                    {
-                                        text: 'Ditampilkan',
-                                        fillStyle: '#0A4174',
-                                        strokeStyle: 'transparent',
-                                        lineWidth: 0
-                                    }
                                 ];
                                 const data = chart.data.datasets[0].data;
                                 const labels = chart.data.labels;
@@ -160,9 +140,6 @@
                                     return 'Belum Tersedia Kuliner';
                                 }
                                 const nilaiasli = nilai.dataset.dataasli[nilai.dataIndex];
-                                // if (nilaiasli === 0) {
-                                //     return 'Belum Tersedia Kuliner';
-                                // }
 
                                 return nilaiasli + ' Kuliner';
                             }
@@ -192,16 +169,8 @@
         ];
 
         let labelsUlasan = ['Belum Diverifikasi', 'Disetujui', 'Ditolak'];
-        let backgroundColorUlasan = ['#FFA319', '#094B3C', '#F83513'];
+        let backgroundColorUlasan = ['#FFA319', '#004440', '#F83513'];
 
-        // const total = dataPersenUlasan.reduce((a, b) => a + b, 0);
-
-        // if (total === 0) {
-        //     dataPersenUlasan = [1];
-        //     dataAsliUlasan = [0];
-        //     labelsUlasan = ['Belum Tersedia Ulasan'];
-        //     backgroundColorUlasan = ['#D1D5DB'];
-        // }
         const totalUlasan = dataAsliUlasan.reduce((a, b) => a + b, 0);
 
         if (totalUlasan === 0) {
@@ -241,7 +210,7 @@
                                     },
                                     {
                                         text: 'Disetujui',
-                                        fillStyle: '#094B3C',
+                                        fillStyle: '#004440',
                                         strokeStyle: 'transparent',
                                         lineWidth: 0
                                     },
@@ -272,10 +241,7 @@
                                     return 'Belum Tersedia Ulasan';
                                 }
                                 const nilaiasli = nilai.dataset.dataasli[nilai.dataIndex];
-                                // if (nilaiasli === 0) {
-                                //     return 'Belum Tersedia Ulasan';
-                                // }
-
+                                
                                 return nilaiasli + ' Ulasan';
                             }
                         }

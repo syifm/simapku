@@ -11,30 +11,34 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
      */
-    public function show()
+    public function tampilkanProfil()
     {
         $user = Auth::user();
         $wisatawan = Wisatawan::where('user_id', $user->id)->first();
-        if ($wisatawan) {
-            $wisatawan = Wisatawan::where('user_id', $user->id)->first();
+        // if ($wisatawan) {
+        //     $wisatawan = Wisatawan::where('user_id', $user->id)->first();
 
-            $preferensi = Preferensi::with('kategori')
-                ->where('id_wisatawan', $wisatawan->id_wisatawan)
-                ->orderByDesc('jumlah')
-                ->get();
-        } else {
-            $preferensi = collect();
-        }
-        return view('profile.show', compact('user', 'preferensi', 'wisatawan'));
+        //     $preferensi = Preferensi::with('kategori')
+        //         ->where('id_wisatawan', $wisatawan->id_wisatawan)
+        //         ->orderByDesc('jumlah')
+        //         ->get();
+        // } else {
+        //     $preferensi = collect();
+        // }
+        return view('profile.show', compact('user', 'wisatawan'));
     }
 
-    public function edit(Request $request): View
+    public function tampilkanEditProfil(Request $request): View
     {
         return view('profile.edit', [
             'user' => $request->user(),
@@ -57,73 +61,76 @@ class ProfileController extends Controller
     //     return Redirect::route('profile.edit')->with('status', 'profile-updated');
     // }
 
-    public function update(Request $request)
+    public function updateDetail(Request $request)
     {
         $user = Auth::user();
 
         $request->validate([
             'nama' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'email:rfc,dns', 'max:70', Rule::unique('users')->ignore($user->id)],
-            'password' => ['required', 'string', 'max:100'],
             'foto' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ], [
-            'nama.required' => 'Nama wajib diisi.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email ini sudah digunakan.',
-            'password.required' => 'Password wajib diisi.',
-            'foto.image' => 'File harus berupa gambar.',
-            'foto.mimes' => 'Format foto harus jpeg, png, jpg, atau gif.',
-            'foto.max' => 'Ukuran foto maksimal 2MB.',
+            'nama.required' => 'Nama wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.unique' => 'Email ini sudah digunakan',
+            'foto.image' => 'File harus berupa gambar',
+            'foto.mimes' => 'Format foto harus JPEG, PNG, JPG',
+            'foto.max' => 'Ukuran foto maksimal 2MB',
         ]);
 
-        // if ($request->hasFile('foto')) {
-        //     if ($user->peran === 'Pendaftar') {
-        //         if ($user->foto && file_exists(storage_path('app/public/' . $user->foto))) {
-        //             Storage::delete('public/' . $user->foto);
-        //         }
+        if ($request->hasFile('foto')) {
 
-        //         $fotoPath = $request->file('foto')->store('foto-profil', 'public');
-        //         $user->foto = $fotoPath;
-        //     } else {
-        //         if ($user->foto && file_exists(public_path('img/profil/' . $user->foto))) {
-        //             unlink(public_path('img/profil/' . $user->foto));
-        //         }
+            if ($user->foto && file_exists(storage_path('app/public/' . $user->foto))) {
+                Storage::delete('public/' . $user->foto);
+            }
 
-        //         $filename = time() . '.' . $request->foto->extension();
-        //         $request->foto->move(public_path('img/profil'), $filename);
-        //         $user->foto = $filename;
-        //     }
-        // }
+            $fotoPath = $request->file('foto')->store('foto-profil', 'public');
 
-        // $user->fill($request->only('nama', 'email', 'no_hp', 'alamat'));
+            $user->foto = $fotoPath;
+        }
 
-        // if ($user->isDirty('email')) {
-        //     $user->email_verified_at = null;
-        // }
+        $user->nama = $request->nama;
+        $user->email = $request->email;
 
-        // $user->save();
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user->save();
+
+        return Redirect::route('profile.edit')
+            ->with('status', 'profile-updated');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $validated = $request->validateWithBag('updatePassword', [
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('status', 'password-updated');
     }
 
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+    // public function destroy(Request $request): RedirectResponse
+    // {
+    //     $request->validateWithBag('userDeletion', [
+    //         'password' => ['required', 'current_password'],
+    //     ]);
 
-        $user = $request->user();
+    //     $user = $request->user();
 
-        Auth::logout();
+    //     Auth::logout();
 
-        $user->delete();
+    //     $user->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    //     $request->session()->invalidate();
+    //     $request->session()->regenerateToken();
 
-        return Redirect::to('/');
-    }
+    //     return Redirect::to('/');
+    // }
 }

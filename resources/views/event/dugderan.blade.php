@@ -132,7 +132,7 @@
                 kurang lebih 10 hari menjelang bulan Ramadhan di Alun-Alun Masjid Agung Kota Semarang yang terletak di
                 dekat Pasar Johar dan Masjid Kauman.</p>
             <h2 class="font-bold mt-1">Kirab Budaya dan Pengumuman Awal Puasa</h2>
-            <p class="text-justify">Kemudian akan dilakukan kirab budaya dimana ditampilkan tari-tarian termasuk tarian
+            <p class="text-justify">Kemudian akan dilakukan kirab budaya dimana disetujui tari-tarian termasuk tarian
                 Warak Ngendong. Kirab budaya ini dimulai dari Balaikota Semarang hingga berakhir di Masjid Agung Kota
                 Semarang. Kemudian akan dilakukan pengumuman awal bulan Ramadhan ditandai dengan pemukulan bedug dan
                 diakhiri dengan doa bersama.</p>

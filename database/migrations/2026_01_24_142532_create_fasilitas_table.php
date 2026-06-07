@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('fasilitas', function (Blueprint $table) {
             $table->increments('id_fasilitas');
-            $table->string('nama', 100);
+            $table->string('nama');
+            $table->enum('status', ['Aktif', 'Tidak Aktif']);
         });
     }
 

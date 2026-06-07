@@ -11,9 +11,9 @@ class Wisatawan extends Model
     protected $primaryKey = 'id_wisatawan';
 
     protected $fillable = [
-        'id_wisatawan',
+        // 'id_wisatawan',
         'user_id',
-        'preferensi',
+        'asal_kota',
     ];
 
     public function user()
@@ -26,18 +26,8 @@ class Wisatawan extends Model
         return $this->hasMany(WisataKuliner::class, 'id_wisatawan', 'id_wisatawan');
     }
 
-    public function penilaianDanUlasan()
+    public function ulasan()
     {
-        return $this->hasMany(PenilaiandanUlasan::class, 'id_wisatawan', 'id_wisatawan');
-    }
-
-    public function diarikuliner()
-    {
-        return $this->hasMany(DiariKuliner::class, 'id_wisatawan', 'id_wisatawan');
-    }
-
-    public function preferensi()
-    {
-        return $this->hasMany(Preferensi::class, 'id_wisatawan', 'id_wisatawan');
+        return $this->hasMany(Ulasan::class, 'id_wisatawan', 'id_wisatawan');
     }
 }

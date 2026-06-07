@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SIMAPKU | Kuliner Favorit</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -35,20 +37,21 @@
             display: none;
         }
 
-        #map {
+        /* #map {
             height: 400px;
             width: 1330px;
             border-radius: 7px;
-        }
+        } */
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 
 <body class="bg-gray-100 text-gray-800">
-    @include('layouts.header-wisatawan')
+    {{-- @include('layouts.header-wisatawan') --}}
     @include('layouts.sidebar-wisatawan')
-    <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
+    <div class="min-h-screen overflow-y-auto pt-6 md:pt-10 px-4 md:px-8 lg:px-12 ml-0 md:ml-[280px] lg:ml-[320px]">
+        {{-- <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen"> --}}
         @if (session('success'))
             <script>
                 Swal.fire({
@@ -76,30 +79,31 @@
         <!-- Konten -->
         <div class="flex-1 flex flex-col">
             <div class="flex-1">
-                <div class="mt-2 mb-6 grid grid-cols-3 items-center text-2xl">
-                    <div class="flex justify-start">
-                    </div>
+                <div class="mb-12 grid grid-cols-3 items-center text-2xl">
+                    {{-- <div class="flex justify-start">
+                    </div> --}}
 
                     @if ($kulinerFavorit->isNotEmpty())
-                        <div class="flex justify-center">
+                        <div class="flex justify-start">
                             <h1 class="font-bold">
-                                Kuliner Favorit
+                                <h1 class="font-bold text-xl -mt-2">Kuliner Favorit</h1>
                             </h1>
                         </div>
                     @endif
                 </div>
 
                 @if ($kulinerFavorit->isNotEmpty())
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                         @foreach ($kulinerFavorit as $favorit)
-                            <div class="bg-white shadow rounded-lg hover:shadow-2xl transition">
-                                <img src="{{ $favorit->kuliner->foto ? asset('storage/' . $favorit->kuliner->foto) : asset('profil.png') }}"
+                            <div class="bg-white shadow rounded-lg hover:shadow-2xl transition"
+                                onclick="tampilkanDetailKuliner({{ $favorit->id_wisata_kuliner }})">
+                                <img src="{{ $favorit->wisatakuliner->foto ? asset('storage/' . $favorit->wisatakuliner->foto) : asset('storage/tidakadafoto.jpg') }}"
                                     class="w-full h-48 object-cover rounded-t-lg">
 
                                 <div class="p-4">
                                     <div class="flex justify-between items-start">
                                         <h2 class="font-bold text-lg">
-                                            {{ $favorit->kuliner->nama }}
+                                            {{ $favorit->wisatakuliner->nama }}
                                         </h2>
 
                                         {{-- <form action="{{ route('favorit.hapusdarilist') }}" method="POST"
@@ -118,7 +122,7 @@
                                                 </svg>
                                             </button>
                                         </form> --}}
-                                        <form action="{{ route('favorit.hapusdarilist') }}" method="POST"
+                                        {{-- <form action="{{ route('favorit.hapusdarilist') }}" method="POST"
                                             class="form-hapus">
                                             @csrf
                                             @method('DELETE')
@@ -134,9 +138,19 @@
                                                         d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                 </svg>
                                             </button>
-                                        </form>
+                                        </form> --}}
+                                        <button type="button"
+                                            onclick="konfirmasiHapusKulinerFavorit({{ $favorit->id_wisata_kuliner }}, '{{ $favorit->wisatakuliner->nama }}')"
+                                            class="btn-hapus p-1 rounded-full hover:bg-red-100 text-red-500 mt-[3px]">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.7" stroke="currentColor" class="w-4 h-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                            </svg>
+                                        </button>
                                     </div>
                                     <p class="text-gray-500 text-xs mt-1">
+                                        Ditambahkan pada
                                         {{ \Carbon\Carbon::parse($favorit->waktu_dibuat)->format('d.m.Y') }}
                                     </p>
 
@@ -151,26 +165,28 @@
                         @endforeach
                     </div>
                 @else
-                    <div class="bg-white ml-[415px] mt-36 p-10 max-w-xl mx-auto rounded-lg shadow-lg text-center">
-                        <div class="flex flex-col items-center">
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-[#FFA319]">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                                </svg>
-                            </div>
+                    <div class="flex justify-center items-center min-h-[70vh]">
+                        <div class="bg-white p-6 md:p-10 max-w-xl rounded-lg shadow-lg text-center">
+                            <div class="flex flex-col items-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-[#FFA319]">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                                    </svg>
+                                </div>
 
-                            <h2 class="text-2xl font-bold text-[#FFA319] mt-4">Kuliner Favorit Belum Tersedia
-                            </h2>
-                            <p class="text-gray-700">Silakan cari kuliner terlebih dahulu dan masukkan kuliner ke
-                                favorit untuk mendapatkan rekomendasi kuliner selanjutnya sesuai kategori kuliner
-                                favorit Anda.</p>
+                                <h2 class="text-2xl font-bold text-[#FFA319] mt-4">Kuliner Favorit Belum Tersedia
+                                </h2>
+                                <p class="text-gray-700">Silakan cari wisata kuliner terlebih dahulu dan tambahkan ke
+                                    favorit untuk mendapatkan rekomendasi kuliner selanjutnya yang memiliki kesamaan
+                                    dengan wisata kuliner yang difavoritkan</p>
+                            </div>
                         </div>
                     </div>
                 @endif
 
-                <div id="detailModal"
+                {{-- <div id="detailModal"
                     class="fixed left-[90px] right-0 top-20 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto">
                     <div class="relative top-20 mx-auto p-5 border w-[450px] shadow-lg rounded-xl bg-white">
                         <div class="flex justify-between items-center">
@@ -186,7 +202,6 @@
                         </div>
 
                         <div class="mt-4">
-                            {{-- <div class="flex text-xs justify-center items-center"> --}}
                             <div class="grid grid-row-3">
                                 <div class="flex justify-center">
                                     <img id="foto" src="" alt="Foto Wisata Kuliner"
@@ -203,6 +218,137 @@
 
                                 <div class="flex text-sm mt-4">
                                     <div class="text-justify"><span id="deskripsi"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
+                <div id="detailKuliner"
+                    class="fixed inset-0 bg-black/40 hidden z-[9999] overflow-y-auto bg-black bg-opacity-40">
+                    <div class="relative top-5 bottom-5 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
+                        <div class="relative">
+                            <button onclick="tutupDetailKuliner()"
+                                class="absolute right-0 top-0 text-gray-400 hover:text-gray-500">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+
+                            <div class="text-center">
+                                <h3 class="text-lg font-semibold" id="modalTitleKuliner"></h3>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="flex justify-between w-32">
+                                    <strong>Status Operasional</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="status_operasional"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Deskripsi</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="deskripsi"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Alamat</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="alamat"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Kecamatan</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="kecamatan"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Kelurahan</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="kelurahan"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Nomor Telepon</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="nomor_telepon"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Fasilitas</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="fasilitas"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Kategori</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="kategori"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Sertifikat Halal</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="sertifikat_halal"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Foto</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div>
+                                        <img id="foto" src="" alt="Foto Wisata Kuliner"
+                                            class="w-full max-w-xs h-40 object-cover rounded-md border hidden">
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Latitude</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="latitude"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Longitude</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div class="text-justify"><span id="longitude"></span></div>
+                                </div>
+
+                                <div class="flex justify-between w-32">
+                                    <strong>Lokasi</strong>
+                                </div>
+                                <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                                    <div>:</div>
+                                    <div>
+                                        <div id="map" class="w-full h-48 rounded-md"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -285,73 +431,160 @@
             previewWrapper.classList.add('hidden');
         }
 
-        function showDetail(id) {
-            fetch(`/wisatawan/diarikuliner/detail/${id}`)
+        let map = null;
+        let marker = null;
+
+        function tampilkanDetailKuliner(id) {
+            fetch(`/wisatawan/favorit/detail/${id}`)
                 .then(response => response.json())
                 .then(data => {
-
-                    // let tanggal = new Date(data.waktu_diubah);
-
-                    // let formatted =
-                    //     String(tanggal.getDate()).padStart(2, '0') + '.' +
-                    //     String(tanggal.getMonth() + 1).padStart(2, '0') + '.' +
-                    //     tanggal.getFullYear();
-                    // document.getElementById('modalTitle').textContent = data.judul;
-                    document.getElementById('waktu_diubah').textContent = data.waktu_diubah;
-                    document.getElementById('judul').textContent = data.judul;
+                    document.getElementById('modalTitleKuliner').textContent = data.nama;
+                    document.getElementById('alamat').textContent = data.alamat;
+                    document.getElementById('kecamatan').textContent = data.kecamatan;
+                    document.getElementById('kelurahan').textContent = data.kelurahan;
+                    document.getElementById('nomor_telepon').textContent = data.no_telp ?? '-';
                     document.getElementById('deskripsi').textContent = data.deskripsi;
+                    document.getElementById('latitude').textContent = data.latitude;
+                    document.getElementById('longitude').textContent = data.longitude;
+                    document.getElementById('sertifikat_halal').textContent = data.sertifikat_halal;
+                    const status = document.getElementById('status_operasional');
+                    status.textContent = data.status_operasional;
+
+                    if (data.status_operasional === 'Aktif') {
+                        status.classList.add('text-green-600', 'font-semibold');
+                    } else if (data.status_operasional === 'Tutup Sementara') {
+                        status.classList.add('text-orange-500', 'font-semibold');
+                    } else if (data.status_operasional === 'Tutup Permanen') {
+                        status.classList.add('text-red-600', 'font-semibold');
+                    }
+
                     const foto = document.getElementById('foto');
 
                     if (data.foto) {
                         foto.src = `/storage/${data.foto}`;
-                        foto.classList.remove('hidden');
                     } else {
-                        foto.classList.add('hidden');
+                        foto.src = `/storage/tidakadafoto.jpg`;
                     }
 
-                    document.getElementById('detailModal').classList.remove('hidden');
-                });
-        }
+                    foto.classList.remove('hidden');
 
-        function closeModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-        }
+                    const lat = parseFloat(data.latitude);
+                    const lng = parseFloat(data.longitude);
 
-        function toggleMenu(id) {
-            let menu = document.getElementById('menu-' + id);
-            menu.classList.toggle('hidden');
-        }
+                    const position = {
+                        lat: lat,
+                        lng: lng
+                    };
 
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.relative')) {
-                document.querySelectorAll('[id^="menu-"]').forEach(menu => {
-                    menu.classList.add('hidden');
-                });
-            }
-        });
+                    // Fasilitas
+                    let fasilitas = data.fasilitas || [];
+                    let container = document.getElementById('fasilitas');
 
-        document.querySelectorAll('.btn-hapus').forEach(button => {
-            button.addEventListener('click', function() {
+                    container.innerHTML = '';
+                    if (fasilitas.length > 0) {
+                        fasilitas.forEach(f => {
+                            let span = document.createElement('span');
+                            span.textContent = f.nama;
 
-                const form = this.closest('form');
+                            span.style.display = 'inline-block';
+                            span.style.padding = '4px 4px';
+                            span.style.margin = '2px';
+                            span.style.backgroundColor = '#dddddd';
+                            span.style.borderRadius = '4px';
+                            span.style.fontSize = '12px';
 
-                Swal.fire({
-                    title: "Hapus Data Favorit?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#FFA319',
-                    // cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
+                            container.appendChild(span);
+                        });
+                    } else {
+                        container.textContent = '-';
+                    }
+
+                    // Kategori
+                    let kategori = data.kategori || [];
+                    let containerKategori = document.getElementById('kategori');
+
+                    containerKategori.innerHTML = '';
+                    if (kategori.length > 0) {
+                        kategori.forEach(k => {
+                            let span = document.createElement('span');
+                            span.textContent = k.nama;
+
+                            span.style.display = 'inline-block';
+                            span.style.padding = '4px 4px';
+                            span.style.margin = '2px';
+                            span.style.backgroundColor = '#dddddd';
+                            span.style.borderRadius = '4px';
+                            span.style.fontSize = '12px';
+
+                            containerKategori.appendChild(span);
+                        });
+                    } else {
+                        containerKategori.textContent = '-';
+                    }
+
+                    document.getElementById('detailKuliner').classList.remove('hidden');
+
+                    if (!map) {
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            center: position,
+                            zoom: 16,
+                            mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                            clickableIcons: false,
+                        });
+
+                        marker = new google.maps.marker.AdvancedMarkerElement({
+                            position: position,
+                            map: map,
+                        });
+                    } else {
+                        map.setCenter(position);
+                        marker.position = position;
                     }
                 });
+        }
 
+        function tutupDetailKuliner() {
+            document.getElementById('detailKuliner').classList.add('hidden');
+        }
+
+        function konfirmasiHapusKulinerFavorit(id, nama) {
+            Swal.fire({
+                title: "Hapus dari Kuliner Favorit?",
+                html: `<b>Wisata Kuliner:</b> ${nama}`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+
+                if (!result.isConfirmed) return;
+
+                fetch(`/wisatawan/favorit/hapus/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        Swal.fire({
+                            icon: data.status,
+                            title: data.title,
+                            text: data.text,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();
+                        });
+                    });
             });
-        });
+        }
     </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&language=in"
+        async defer></script>
 </body>
 
 </html>

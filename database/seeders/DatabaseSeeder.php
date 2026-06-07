@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Fasilitas;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,9 +24,17 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             AdminSeeder::class,
-            PengajuanWisataKulinerSeeder::class,
-            // PenilaianDanUlasanSeeder::class,
             WisatawanSeeder::class,
+            PengajuanWisataKulinerSeeder::class,
+            WisataKulinerSeeder::class,
+            KategoriSeeder::class,
+            FasilitasSeeder::class,
+            PengajuanKategoriWisataKulinerSeeder::class,
+            PengajuanFasilitasWisataKulinerSeeder::class,
+            KategoriWisataKulinerSeeder::class,
+            FasilitasWisataKulinerSeeder::class,
+            KulinerFavoritSeeder::class,
+            UlasanSeeder::class,
         ]);
     }
 }

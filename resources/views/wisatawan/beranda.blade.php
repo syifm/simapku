@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMAPKU | Beranda</title>
-    {{-- <link rel="icon" type="image/png" href="{{ asset('simapku.png') }}"> --}}
+    <link rel="icon" type="image/png" href="{{ asset('simapku.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,41 +21,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-multiselect@0.9.13/dist/css/bootstrap-multiselect.css"> --}}
-
-
-    {{-- <script src="https://refinedguides.com/assets/social.js?linkColor=%23fff&textColor=%23000" defer></script> --}}
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-
-        #donutChart {
-            width: 300px;
-            height: 300px;
-            margin: 0 auto;
-        }
-
-        .no-data-message {
-            background-color: #f9fafb;
-            border: 1px dashed #d1d5db;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            text-align: center;
-            color: #6b7280;
-        }
-
-        .no-data-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #9ca3af;
-        }
-
-
-
-        /* @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap"); */
 
         * {
             padding: 0;
@@ -66,17 +35,17 @@
         :root {
             /* --blue-color: #357ded; */
             --yellow-color: #FFA319;
-            --green-color: #094B3C;
+            --green-color: #004440;
             --gray-color: #77889926;
         }
 
-        body {
+        /* body {
             background: var(--yellow-color);
             display: flex;
             align-items: center;
             flex-direction: column;
             min-height: 100dvh;
-        }
+        } */
 
         .container {
             margin-block: auto;
@@ -367,9 +336,33 @@
             height: 100%;
             background: var(--yellow-color);
         }
+
+        .kategori-btn {
+            background: white;
+            border: 1px solid #e5e7eb;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .kategori-btn:hover {
+            background: #FFA319;
+            color: white;
+        }
     </style>
 
 </head>
+
+{{-- <script>
+    function toggleDropdown(id) {
+        document.querySelectorAll('[id^="dropdown"]').forEach(el => {
+            if (el.id !== id) {
+                el.classList.add('hidden');
+            }
+        });
+
+        document.getElementById(id).classList.toggle('hidden');
+    }
+</script> --}}
 
 <body class="bg-gray-100 text-gray-800">
     @if (session('success'))
@@ -397,62 +390,23 @@
             });
         </script>
     @endif
-    {{-- <div class="h-screen flex flex-col">
-        @include('layouts.header-wisatawan')
 
-        <div class="flex flex-1 overflow-hidden">
-             @include('layouts.sidebar-wisatawan') 
+    @if (session('swal'))
+        <script>
+            Swal.fire({
+                icon: '{{ session('swal.icon') }}',
+                title: '{{ session('swal.title') }}',
+                text: '{{ session('swal.text') }}',
+                timer: 2000,
+                showConfirmButton: false,
+            });
+        </script>
+    @endif
 
-            <div class="flex-1 p-6 overflow-y-auto">
-                <h2 class="text-2xl text-black font-bold mb-4">
-                    Selamat datang, Wisatawan!
-                </h2>
-
-                
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- <div class="h-screen flex flex-col">
-    @include('layouts.header-wisatawan')
-
-    <div class="flex flex-1">
-        @include('layouts.sidebar-wisatawan')
-
-        <div class="flex-1 p-6 overflow-y-auto">
-            <h2 class="text-2xl text-black font-bold mb-4">
-                Selamat datang, Wisatawan!
-            </h2>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                    {{ __('Log Out') }}
-                </x-dropdown-link>
-            </form>
-        </div>
-    </div>
-    </div> --}}
-
-    @include('layouts.header-wisatawan')
     @include('layouts.sidebar-wisatawan')
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
-    <div class="pt-[10px] pl-28 pr-[30px] pb-[5px]">
+    <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
         <div class="flex flex-col gap-2">
-            {{-- <h2 class="text-2xl text-black font-bold mb-4">
-                Selamat datang di SIMAPKU Semarang, temukan kuliner Semarang yang cocok untuk Anda disini!
-            </h2> --}}
-            <div>
-                <p class="text-m text-black font-medium mt-2 mb-2 text-center">
-                    Ingin memasukkan kuliner yang Anda ketahui?
-                    <a href="{{ route('tambahwisatakuliner') }}" class="text-[#FFA319]  hover:underline">
-                        Tambah Kuliner
-                    </a>
-                </p>
-            </div>
-
-
             <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
                 @csrf
                 <div class="relative w-full flex justify-center mb-6">
@@ -460,8 +414,9 @@
                         <div
                             class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
                             <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
-                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar" value="{{ $keyword }}">
-                            <button class="bg-[#FFA319] px-4 py-3 text-white hover:bg-[#F19305] transition">
+                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar">
+                            <button type="submit" id="btnSearchKeyword"
+                                class="bg-[#FFA319] px-4 py-3 text-white enabled:hover:bg-[#F19305] transition">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
@@ -469,19 +424,15 @@
                         <div id="searchPanel"
                             class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
                             <!-- Kuliner Terdekat -->
-                            {{-- <div class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
-                                Kuliner Terdekat
-                            </div> --}}
-                            <div onclick="cariKulinerTerdekat(event)"
+                            <div onclick="klikKulinerTerdekat(event)"
                                 class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
                                 Kuliner Terdekat
                             </div>
 
                             <!-- Advanced Search -->
                             <div id="advancedBtn" class="flex gap-4 items-center p-3 rounded-xl cursor-pointer">
-                                <span>Advanced Search</span>
+                                <span>Pencarian dengan Pengaturan Kriteria</span>
                                 <span class="leading-none">
-                                    {{-- <i class="fi fi-br-angle-small-down text-xl"></i> --}}
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="3" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -491,73 +442,7 @@
                                 </span>
                             </div>
                             <!-- Filter Advanced -->
-                            {{-- <div id="advancedFilter" class="hidden mt-3 space-y-3"> --}}
                             <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3 mr-3">
-
-                                {{-- <input type="hidden" name="lat" id="lat">
-                                <input type="hidden" name="lng" id="lng"> --}}
-                                {{-- <div>
-                                    <select class="w-full border rounded-lg p-2" name="rating">
-                                        <option>Rating Minimal</option>
-                                        <option>⭐ 3+</option>
-                                        <option>⭐ 4+</option>
-                                        <option>⭐ 4.5+</option>
-                                    </select>
-                                </div> --}}
-
-                                {{-- <label>Rating</label> --}}
-
-                                {{-- <input type="range" id="minRating" min="1" max="5" value="1">
-                                <input type="range" id="maxRating" min="1" max="5" value="5">
-
-                                <p>
-                                    Min: <span id="minVal">1</span> ⭐ -
-                                    Max: <span id="maxVal">5</span> ⭐
-                                </p> --}}
-
-                                {{-- <input type="hidden" name="min_rating" id="min_rating">
-                                <input type="hidden" name="max_rating" id="max_rating"> --}}
-
-
-
-
-
-
-
-                                {{-- <div class="container">
-                                    <label class="font-medium">Jarak</label>
-
-                                    <!-- .range-slider -->
-                                    <div class="range-slider-jarak flex justify-between items-center">
-                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
-                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
-                                            <input type="number" name="minjarak"
-                                                class="min-jarak w-[40px] p-2 outline-none border-0" value="1"
-                                                min="1" max="5" />
-                                        </div>
-
-                                        <div
-                                            class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
-                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
-                                            <input type="number" name="maxjarak"
-                                                class="max-jarak w-[40px] p-2 outline-none border-0" value="5"
-                                                min="1" max="5" />
-                                        </div>
-
-                                        <!-- .range -->
-                                        <div class="range">
-                                            <input type="range" class="min-input-jarak" value="1" min="1"
-                                                max="5" />
-                                            <input type="range" class="max-input-jarak" value="5" min="1"
-                                                max="5" />
-
-                                            <div class="slider">
-                                                <div class="progress-jarak"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
-
 
                                 <input type="hidden" name="lat" id="lat">
                                 <input type="hidden" name="lng" id="lng">
@@ -593,8 +478,8 @@
                                             {{-- <option value="{{ $item->id_kategori }}">
                                                 {{ $item->nama }}
                                             </option> --}}
-                                            <option value="{{ $item->id_kategori }}"
-                                                {{ in_array($item->id_kategori, request('kategori', $kategoriUser)) ? 'selected' : '' }}>
+                                            <option value="{{ $item->id_kategori }}" {{-- {{ in_array($item->id_kategori, request('kategori', [])) ? 'selected' : '' }}> --}}
+                                                {{ in_array($item->id_kategori, (array) request('kategori', [])) ? 'selected' : '' }}>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach
@@ -648,8 +533,8 @@
                                             {{-- <option value="{{ $item->id_fasilitas }}">
                                                 {{ $item->nama }}
                                             </option> --}}
-                                            <option value="{{ $item->id_fasilitas }}"
-                                                {{ in_array($item->id_fasilitas, request('fasilitas', [])) ? 'selected' : '' }}>
+                                            <option value="{{ $item->id_fasilitas }}" {{-- {{ in_array($item->id_fasilitas, request('fasilitas', [])) ? 'selected' : '' }}> --}}
+                                                {{ in_array($item->id_fasilitas, (array) request('fasilitas', [])) ? 'selected' : '' }}>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach
@@ -697,11 +582,106 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-span-2 border-t pt-4 mt-4">
+                                    <label class="font-semibold block mb-3 text-center">
+                                        Pengaturan Bobot Pencarian
+                                    </label>
+                                    <div class="bg-gray-50 rounded-2xl border ">
+                                        <div class="grid grid-cols-5 gap-2 p-3 mb-3">
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Jarak</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_jarak"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="40" min="0" max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Harga</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_harga"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="20" min="0" max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Nilai Kuliner</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_rating"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="25" min="0" max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Kategori</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_kategori"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="10" min="0" max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-sm font-medium mb-1">Fasilitas</span>
+                                                <div
+                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                    <input type="number" name="bobot_fasilitas"
+                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                        value="5" min="0" max="100">
+                                                    <span class="text-gray-400 text-xs pr-1">%</span>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        {{-- <div class="w-full  bg-white p-3 rounded-xl border shadow-sm"> --}}
+                                        <div
+                                            class="flex flex-col sm:flex-row items-center justify-between bg-white p-3 rounded-xl border border-gray-200 shadow-sm gap-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-sm font-medium text-gray-700">Total Alokasi
+                                                    Bobot:</span>
+                                                <span id="labelTotalBobot"
+                                                    class="text-base font-bold text-green-600">100%</span>
+                                            </div>
+
+
+                                        </div>
+
+                                        <button type="submit" id="btnCariBobot"
+                                            class="w-full sm:w-auto px-6 py-2 bg-[#FFA319] hover:bg-[#FFA319] text-white font-semibold text-sm rounded-xl shadow-sm transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
+                                            Cari
+                                        </button>
+                                    </div>
+                                    {{-- </div> --}}
+
+
+                                    {{-- <p id="pesanErrorBobot"
+                                        class="text-red-500 text-xs font-semibold mt-2 text-center hidden">
+                                        Total alokasi harus pas 100% sebelum mencari!
+                                    </p> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+
+            {{-- </div>
+            </div> --}}
+
 
         </div>
 
@@ -709,9 +689,9 @@
             <p class="text-lg text-black font-bold mt-1 mb-4 text-center">
                 Event Semarang
             </p>
-            <div class="flex justify-center gap-20 flex-wrap">
+            <div class="flex justify-center flex-wrap">
                 <a href="{{ route('dugderan') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
+                    class="relative inline-block group w-80 h-100 overflow-hidden group">
                     <img src="{{ asset('dugderan.jpg') }}" alt="dugderan"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
                     <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
@@ -721,19 +701,8 @@
                         </span>
                     </div>
                 </a>
-                {{-- <a href="{{ route('event') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('pasarsentiling.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">
-                            Festival Kota Lama
-                        </span>
-                    </div>
-                </a> --}}
                 <a href="{{ route('kulinerkauman') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
+                    class="relative inline-block group w-80 h-100 overflow-hidden group">
                     <img src="{{ asset('kulinerkauman.png') }}" alt="kulinerkauman"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
                     <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
@@ -745,7 +714,7 @@
                     </div>
                 </a>
                 <a href="{{ route('semawis') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
+                    class="relative inline-block group w-80 h-100 overflow-hidden group">
                     <img src="{{ asset('pasarimlek.jpg') }}" alt="semawis"
                         class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
                     <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
@@ -755,237 +724,711 @@
                         </span>
                     </div>
                 </a>
-                {{-- <a href="{{ route('dugderan') }}"
-                    class="relative inline-block group w-80 h-40 rounded-xl overflow-hidden group">
-                    <img src="{{ asset('chengho.jpg') }}" alt="dugderan"
-                        class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300">
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">
-                            Festival Arak-Arakan Cheng Ho
-                        </span>
-                    </div>
-                </a> --}}
+            </div>
+
+        </div>
+
+        {{-- <div class="mb-6">
+
+            <div class="flex gap-3 overflow-x-auto pb-2">
+
+                <button onclick="pilihKategori('semua')" class="kategori-btn px-5 py-3 rounded-xl whitespace-nowrap">
+
+                    Semua Kuliner
+                </button>
+
+                <button onclick="pilihKategori('rekomendasi')"
+                    class="kategori-btn px-5 py-3 rounded-xl whitespace-nowrap">
+
+                    Rekomendasi Untukmu
+                </button>
+
+                <button onclick="pilihKategori('baru')" class="kategori-btn px-5 py-3 rounded-xl whitespace-nowrap">
+
+                    Baru Ditambahkan
+                </button>
+
+                <button onclick="pilihKategori('favorit')"
+                    class="kategori-btn px-5 py-3 rounded-xl whitespace-nowrap">
+
+                    Banyak Disukai
+                </button>
+
+                <button onclick="pilihKategori('tempat')" class="kategori-btn px-5 py-3 rounded-xl whitespace-nowrap">
+
+                    Tempat
+                </button>
+
+                <button onclick="pilihKategori('hidangan')"
+                    class="kategori-btn px-5 py-3 rounded-xl whitespace-nowrap">
+
+                    Jenis Hidangan
+                </button>
+
+                <button onclick="pilihKategori('asal')" class="kategori-btn px-5 py-3 rounded-xl whitespace-nowrap">
+
+                    Asal Kuliner
+                </button>
 
             </div>
 
         </div>
+
+        <div id="subKategoriContainer" class="mb-6">
+
+        </div>
+
+        @if ($kategoriAktif == 'Tempat')
+
+            <div class="flex flex-wrap gap-2">
+
+                @foreach ($tempat as $item)
+                    <button onclick="pilihSubKategori('tempat', '{{ $item->id }}')"
+                        class="px-4 py-2 bg-white border rounded-full">
+
+                        {{ $item->nama }}
+
+                    </button>
+                @endforeach
+
+            </div>
+
+        @endif
+
+        @if ($kategoriAktif == 'Jenis Hidangan')
+
+            <div class="flex flex-wrap gap-2">
+
+                @foreach ($jenisHidangan as $item)
+                    <button onclick="pilihSubKategori('Jenis Hidangan', '{{ $item->id_kategori }}')"
+                        class="px-4 py-2 bg-white border rounded-full">
+
+                        {{ $item->nama }}
+
+                    </button>
+                @endforeach
+
+            </div>
+
+        @endif
+
+        @if ($kategoriAktif == 'Asal Kuliner')
+
+            <div class="flex flex-wrap gap-2">
+
+                @foreach ($asalKuliner as $item)
+                    <button onclick="pilihSubKategori('asal', '{{ $item->id }}')"
+                        class="px-4 py-2 bg-white border rounded-full">
+
+                        {{ $item->nama }}
+
+                    </button>
+                @endforeach
+
+            </div>
+
+        @endif
+
+        <div id="hasilKuliner" class="mt-6">
+
+        </div> --}}
 
         <div class="mb-2">
-            <p class="text-lg text-black font-bold mt-4 mb-4">
-                Kuliner Baru Ditambahkan
-            </p>
-            <div class="grid grid-cols-4 gap-8">
-                @foreach ($kulinerBaru as $item)
-                    <a href="#"
-                        class="pointer-events-none relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
-                        <img src="{{ asset('storage/' . $item->foto) }}"
-                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+            <div class="flex gap-3 pb-2 overflow-visible">
 
-                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+                {{-- Semua --}}
+                <a href="{{ route('beranda-Wisatawan') }}"
+                    class="border px-4 py-2 rounded-xl shadow whitespace-nowrap {{ !$kategoriDipilih ? 'bg-[#FFA319] text-white' : 'bg-white text-black' }}">
 
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-white font-semibold text-lg text-center px-2">
+                    Semua Kuliner
+
+                </a>
+
+                {{-- Tempat --}}
+                <div class="relative">
+
+                    <button onclick="klikKategori('tempatDropdown')"
+                        class="border px-4 py-2 rounded-xl shadow whitespace-nowrap {{ $kategoriTempat->pluck('id_kategori')->contains($kategoriDipilih)
+                            ? 'bg-[#FFA319] text-white'
+                            : 'bg-white text-black' }}">
+
+                        Tempat ▼
+
+                    </button>
+
+                    <div id="tempatDropdown"
+                        class="hidden absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg w-56 z-50">
+
+                        @foreach ($kategoriTempat as $item)
+                            <a href="{{ route('beranda-Wisatawan', [
+                                'kategori' => $item->id_kategori,
+                            ]) }}"
+                                class="block px-4 py-3 
+
+                                {{ $kategoriDipilih == $item->id_kategori ? 'bg-[#FFA319] text-white' : 'hover:bg-gray-100' }}">
+
                                 {{ $item->nama }}
-                            </span>
+
+                            </a>
+                        @endforeach
+
+                    </div>
+
+                </div>
+
+                {{-- Jenis Hidangan --}}
+                <div class="relative">
+
+                    <button onclick="klikKategori('jenisDropdown')"
+                        class="border px-4 py-2 rounded-xl shadow whitespace-nowrap {{ $jenisHidangan->pluck('id_kategori')->contains($kategoriDipilih)
+                            ? 'bg-[#FFA319] text-white'
+                            : 'bg-white text-black' }}">
+
+                        Jenis Hidangan ▼
+
+                    </button>
+
+                    <div id="jenisDropdown"
+                        class="hidden absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg w-56 z-50">
+
+                        @foreach ($jenisHidangan as $item)
+                            <a href="{{ route('beranda-Wisatawan', [
+                                'kategori' => $item->id_kategori,
+                            ]) }}"
+                                class="block px-4 py-3
+
+                                {{ $kategoriDipilih == $item->id_kategori ? 'bg-[#FFA319] text-white' : 'hover:bg-gray-100' }}">
+                                {{ $item->nama }}
+
+                            </a>
+                        @endforeach
+
+                    </div>
+
+                </div>
+
+                {{-- Asal --}}
+                <div class="relative">
+
+                    <button onclick="klikKategori('asalDropdown')"
+                        class="border px-4 py-2 rounded-xl shadow whitespace-nowrap {{ $asalKuliner->pluck('id_kategori')->contains($kategoriDipilih)
+                            ? 'bg-[#FFA319] text-white'
+                            : 'bg-white text-black' }}">
+
+                        Asal Kuliner ▼
+
+                    </button>
+
+                    <div id="asalDropdown"
+                        class="hidden absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg w-56 z-50">
+
+                        @foreach ($asalKuliner as $item)
+                            <a href="{{ route('beranda-Wisatawan', [
+                                'kategori' => $item->id_kategori,
+                            ]) }}"
+                                class="block px-4 py-3
+
+                                {{ $kategoriDipilih == $item->id_kategori ? 'bg-[#FFA319] text-white' : 'hover:bg-gray-100' }}">
+                                {{ $item->nama }}
+
+                            </a>
+                        @endforeach
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {{-- @if ($namaKategoriDipilih)
+            <div class="mb-4">
+                <h2 class="text-xl text-center font-bold text-gray-800">
+                    {{ $namaKategoriDipilih }}
+                </h2>
+            </div>
+        @endif --}}
+        @if ($wisataKuliner->count() > 0)
+            @if ($namaKategoriDipilih)
+                <div class="mb-4">
+                    <h2 class="text-xl text-center font-bold text-gray-800">
+                        {{ $namaKategoriDipilih }}
+                    </h2>
+                </div>
+            @endif
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+                @foreach ($wisataKuliner as $item)
+                    <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition"
+                        onclick="klikWisataKuliner({{ $item->id_wisata_kuliner }})">
+                        {{-- <a href="{{ route('detailkuliner', $item->id_wisata_kuliner) }}"
+                            class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition"> --}}
+
+                        <img src="{{ $item->foto ? asset('storage/' . $item->foto) : asset('storage/tidakadafoto.jpg') }}"
+                            class="w-full h-40 object-cover">
+
+                        <div class="p-3">
+
+                            <h3 class="font-semibold">
+
+                                {{ $item->nama }}
+
+                            </h3>
+
+
+                            {{-- <p class="text-sm text-gray-500 mt-1"> --}}
+
+                            {{-- <span class="text-orange-400"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    fill="currentColor" class="size-4">
+                                    <path fill-rule="evenodd"
+                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span> {{ number_format($item->penilaian, 1) }} --}}
+                            @if ($item->penilaian > 0)
+                                <div class="text-sm mt-1 flex items-center gap-1">
+                                    <span class="text-orange-400"><svg xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                                            <path fill-rule="evenodd"
+                                                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                    <span class="font-semibold">
+                                        {{ $item->penilaian }}
+                                    </span>
+                                </div>
+                            @endif
+
+                            {{-- </p> --}}
+
                         </div>
-                    </a>
+
+                        {{-- </a> --}}
+                    </div>
                 @endforeach
             </div>
-        </div>
+        @else
+            <div class="bg-white rounded-xl shadow p-10 text-center mb-10">
+                @if ($namaKategoriDipilih)
+                    <div class="mb-4">
+                        <h2 class="text-xl text-center font-bold text-gray-800">
+                            {{ $namaKategoriDipilih }}
+                        </h2>
+                    </div>
+                @endif
+                <div class="flex justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-16 h-16 text-[#FFA319]">
 
-        <div class="mb-8">
-            <p class="text-lg text-black font-bold mt-4 mb-4">
-                Kuliner Banyak Disukai
-            </p>
-            <div class="grid grid-cols-4 gap-8">
-                @foreach ($kulinerFavorit as $item)
-                    <a href="#"
-                        class="pointer-events-none relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
+                    </svg>
+                </div>
 
-                        <img src="{{ asset('storage/' . $item->foto) }}"
-                            class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
+                <h3 class="text-lg font-semibold text-gray-700">
+                    Wisata Kuliner Belum Tersedia
+                </h3>
 
-                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
+                @if ($namaKategoriDipilih)
+                    <p class="text-gray-500 mt-2">
+                        Belum tersedia wisata kuliner pada kategori ini
+                        {{-- <span class="font-medium">
+                            {{ $namaKategoriDipilih }}
+                        </span> --}}
+                    </p>
+                @endif
 
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-white font-semibold text-lg text-center px-2">
-                                {{ $item->nama }}
-                            </span>
+            </div>
+
+        @endif
+
+        <div id="detailKuliner"
+            class="fixed inset-0 bg-black/40 hidden z-[9999] overflow-y-auto bg-black bg-opacity-40">
+            <div class="relative top-5 bottom-5 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
+                <div class="relative">
+                    <button onclick="tutupDetailKuliner()"
+                        class="absolute right-0 top-0 text-gray-400 hover:text-gray-500">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold" id="modalTitleKuliner"></h3>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="flex justify-between w-32">
+                            <strong>Status Operasional</strong>
                         </div>
-                    </a>
-                @endforeach
-            </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="status_operasional"></span></div>
+                        </div>
 
+                        <div class="flex justify-between w-32">
+                            <strong>Deskripsi</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="deskripsi"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Alamat</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="alamat"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Kecamatan</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="kecamatan"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Kelurahan</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="kelurahan"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Nomor Telepon</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="nomor_telepon"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Fasilitas</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="fasilitas"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Kategori</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="kategori"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Sertifikat Halal</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="sertifikat_halal"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Foto</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div>
+                                <img id="foto" src="" alt="Foto Wisata Kuliner"
+                                    class="w-full max-w-xs h-40 object-cover rounded-md border hidden">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Latitude</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="latitude"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Longitude</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div class="text-justify"><span id="longitude"></span></div>
+                        </div>
+
+                        <div class="flex justify-between w-32">
+                            <strong>Lokasi</strong>
+                        </div>
+                        <div class="grid grid-cols-[8px_2fr] gap-1 -ml-10">
+                            <div>:</div>
+                            <div>
+                                <div id="map" class="w-full h-48 rounded-md"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
+    {{-- @if ($kulinerBaru)
+            <div class="mb-2">
+                <p class="text-lg text-black font-bold mt-4 mb-4">
+                    Kuliner Baru Ditambahkan
+                </p>
+                <div class="grid grid-cols-4 gap-8">
+                    @foreach ($kulinerBaru as $item)
+                        <a href="#"
+                            class="pointer-events-none relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
-        {{-- <div class="wrapper">
-            <button class="nav left" onclick="geser(-1)">❮</button>
+                            <img src="{{ asset('storage/' . $item->foto) }}"
+                                class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
 
-            <div class="slider" id="slider">
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
 
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://picsum.photos/120/90" />
-                    <div class="info">
-                        <h4>Pesta Keboen <span>⭐ 4.5</span></h4>
-                        <p>Jl. Veteran No.29</p>
-                        <p>Buka 08.00 WIB</p>
-                        <p>Sajian Indonesia • Wi-Fi</p>
-                        <strong>Rp50.000+</strong>
-                    </div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-white font-semibold text-lg text-center px-2">
+                                    {{ $item->nama }}
+                                </span>
+                            </div>
+                        </a>
+                    @endforeach
                 </div>
             </div>
+        @endif
 
-            <button class="nav right" onclick="geser(1)">❯</button>
-        </div> --}}
+        @if ($kulinerFavorit)
+            <div class="mb-8">
+                <p class="text-lg text-black font-bold mt-4 mb-4">
+                    Kuliner Banyak Disukai
+                </p>
+                <div class="grid grid-cols-4 gap-8">
+                    @foreach ($kulinerFavorit as $item)
+                        <a href="#"
+                            class="pointer-events-none relative inline-block group w-80 h-40 rounded-xl overflow-hidden">
 
+                            <img src="{{ asset('storage/' . $item->foto) }}"
+                                class="w-full h-full object-cover transition duration-300 group-hover:scale-100">
 
-        {{-- <div class="slider-container">
-            <div class="slider" id="slider">
-                <div class="card">CARD 1</div>
-                <div class="card">CARD 2</div>
-                <div class="card">CARD 3</div>
-                <div class="card">CARD 1</div>
-                <div class="card">CARD 2</div>
-                <div class="card">CARD 3</div>
-            </div>
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50"></div>
 
-            <div class="dots" id="dots"></div>
-        </div> --}}
-
-        {{-- <div class="slider-wrapper">
-            <button onclick="prev()">❮</button>
-
-            <div class="viewport gap-6">
-                <div class="slider" id="slider">
-                    <div class="card">
-                        <div>ISI CARD NANTI</div>
-                    </div>
-
-                    <div class="card">1</div>
-                    <div class="card">2</div>
-                    <div class="card">3</div>
-                    <div class="card">4</div>
-                    <div class="card">5</div>
-                    <div class="card">6</div>
-                    <div class="card">7</div>
-                    <div class="card">8</div>
-                    <div class="card">9</div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-white font-semibold text-lg text-center px-2">
+                                    {{ $item->nama }}
+                                </span>
+                            </div>
+                        </a>
+                    @endforeach
                 </div>
+
             </div>
+        @endif --}}
 
-            <button onclick="next()">❯</button>
-        </div>
-
-        <div class="dots" id="dots"></div> --}}
-
-
-
-
-
-
-
-
-
-        {{-- <div class="slider-wrapper">
-            <button class="arrow left" onclick="prev()"><i class="fas fa-chevron-left"
-                    style="color: #ffffff;"></i></button>
-
-            <div class="viewport">
-                <div class="slider" id="slider">
-                    <div class="card">1</div>
-                    <div class="card">2</div>
-                    <div class="card">3</div>
-                    <div class="card">4</div>
-                    <div class="card">5</div>
-                    <div class="card">6</div>
-                    <div class="card">7</div>
-                    <div class="card">8</div>
-                    <div class="card">9</div>
-                </div>
-            </div>
-
-            <button class="arrow right" onclick="next()"><i class="fas fa-chevron-right"
-                    style="color: #ffffff;"></i></button>
-        </div>
-
-        <div class="dots" id="dots"></div> --}}
-
-
-
-
-
-        {{-- <a href="{{ route('map-WisataKuliner') }}" class="text-[#FFA319]  hover:underline">
-            Map Wisata Kuliner
-        </a>
-
-        <a href="{{ route('map-WisataKuliner2') }}" class="text-[#FFA319]  hover:underline">
-            Map Wisata Kuliner 2
-        </a> --}}
-
-        {{-- <a href="{{ route('map-WisataKuliner3') }}" class="text-[#FFA319]  hover:underline">
-            Map Wisata Kuliner 3
-        </a> --}}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
 
     <script>
-        // const menuBtn = document.getElementById('menuBtn');
-        // const sidebar = document.getElementById('sidebar');
-        // const texts = document.querySelectorAll('.sidebar-text');
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     const inputs = document.querySelectorAll(".input-bobot");
+        //     const labelTotal = document.getElementById("labelTotalBobot");
+        //     const pesanError = document.getElementById("pesanErrorBobot");
+        //     const formCari = document.getElementById("formCari");
 
-        // if (menuBtn && sidebar) {
-        //     menuBtn.addEventListener('click', () => {
-        //         sidebar.classList.toggle('w-16');
-        //         sidebar.classList.toggle('w-64');
+        //     function updateBobotLimits() {
+        //         let totalSekarang = 0;
+        //         inputs.forEach(input => {
+        //             let val = parseInt(input.value);
+        //             if (isNaN(val) || val < 0) {
+        //                 input.value = 0;
+        //             }
+        //         });
 
-        //         texts.forEach(t => t.classList.toggle('hidden'));
+        //         inputs.forEach(input => {
+        //             totalSekarang += parseInt(input.value) || 0;
+        //         });
+
+        //         if (totalSekarang > 100) {
+        //             const activeInput = document.activeElement;
+        //             if (activeInput && activeInput.classList.contains('input-bobot')) {
+        //                 let nilaiActive = parseInt(activeInput.value) || 0;
+
+        //                 let totalLain = 0;
+        //                 inputs.forEach(input => {
+        //                     if (input !== activeInput) totalLain += parseInt(input.value) || 0;
+        //                 });
+
+        //                 activeInput.value = 100 - totalLain;
+        //             }
+
+        //             totalSekarang = 0;
+        //             inputs.forEach(input => {
+        //                 totalSekarang += parseInt(input.value) || 0;
+        //             });
+        //         }
+
+        //         labelTotal.textContent = totalSekarang + "%";
+
+        //         // if (totalSekarang === 100) {
+        //         //     labelTotal.className = "text-base font-bold text-green-600";
+        //         //     pesanError.classList.add("hidden");
+        //         // } else {
+        //         //     labelTotal.className = "text-base font-bold text-red-500";
+        //         // }
+
+        //         inputs.forEach(input => {
+        //             const nilaiInputIni = parseInt(input.value) || 0;
+        //             let sisaKuota = 100 - (totalSekarang - nilaiInputIni);
+        //             if (sisaKuota < 0) sisaKuota = 0;
+        //             input.max = sisaKuota;
+        //             if (totalSekarang >= 100 && nilaiInputIni === 0) {
+        //                 input.max = 0;
+        //             }
+        //         });
+        //     }
+
+        //     inputs.forEach(input => {
+        //         input.addEventListener("input", updateBobotLimits);
         //     });
-        // }
+
+        //     formCari.addEventListener("submit", function(e) {
+        //         let totalAkhir = 0;
+        //         inputs.forEach(input => {
+        //             totalAkhir += parseInt(input.value) || 0;
+        //         });
+
+        //         if (totalAkhir !== 100) {
+        //             e.preventDefault();
+        //             pesanError.textContent =
+        //                 `⚠️ Total bobot saat ini ${totalAkhir}%. Harus pas 100% agar perhitungan WSM valid!`;
+        //             pesanError.classList.remove("hidden");
+
+        //             pesanError.scrollIntoView({
+        //                 behavior: 'smooth',
+        //                 block: 'center'
+        //             });
+        //         }
+        //     });
+
+        //     updateBobotLimits();
+        // });
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = document.querySelectorAll(".input-bobot");
+            const labelTotal = document.getElementById("labelTotalBobot");
+            const pesanError = document.getElementById("pesanErrorBobot");
+            const btnCari = document.getElementById("btnCariBobot");
+            const formCari = document.getElementById("formCari");
+
+            function updateBobotLimits() {
+                let totalSekarang = 0;
+
+                // 1. Sanitasi input: Bersihkan format minus atau angka kosong
+                inputs.forEach(input => {
+                    // Cek jika user memasukkan angka nol beruntun (0000)
+                    if (input.value.length > 1 && input.value.startsWith('0')) {
+                        input.value = parseInt(input.value) || 0;
+                    }
+
+                    let val = parseInt(input.value);
+                    if (isNaN(val) || val < 0) {
+                        input.value = 0;
+                    }
+                });
+
+                // 2. Hitung total akumulasi bobot
+                inputs.forEach(input => {
+                    totalSekarang += parseInt(input.value) || 0;
+                });
+
+                // 3. Batasi jika total input melebihi angka 100% secara paksa
+                if (totalSekarang > 100) {
+                    const activeInput = document.activeElement;
+                    if (activeInput && activeInput.classList.contains('input-bobot')) {
+                        let totalLain = 0;
+                        inputs.forEach(input => {
+                            if (input !== activeInput) totalLain += parseInt(input.value) || 0;
+                        });
+                        activeInput.value = 100 - totalLain;
+                    }
+
+                    totalSekarang = 0;
+                    inputs.forEach(input => {
+                        totalSekarang += parseInt(input.value) || 0;
+                    });
+                }
+
+                // 4. Perbarui Teks Persentase di UI
+                labelTotal.textContent = totalSekarang + "%";
+
+                // 5. Logika Validasi Tombol & Tampilan Pesan Error Secara Real-Time
+                if (totalSekarang === 100) {
+                    labelTotal.className = "text-base font-bold text-green-600";
+                    // pesanError.classList.add("hidden");
+
+                    // Aktifkan tombol kembali
+                    if (btnCari) btnCari.disabled = false;
+                } else {
+                    labelTotal.className = "text-base font-bold text-red-500";
+
+                    // Kunci tombol agar tidak bisa diklik semenjak user mengetik data salah
+                    if (btnCari) btnCari.disabled = true;
+                }
+
+                // 6. Set dinamis batas maksimal input tersisa
+                inputs.forEach(input => {
+                    const nilaiInputIni = parseInt(input.value) || 0;
+                    let sisaKuota = 100 - (totalSekarang - nilaiInputIni);
+                    if (sisaKuota < 0) sisaKuota = 0;
+                    input.max = sisaKuota;
+                    if (totalSekarang >= 100 && nilaiInputIni === 0) {
+                        input.max = 0;
+                    }
+                });
+            }
+
+            // Pasang Event Listener ke seluruh kolom input bobot
+            inputs.forEach(input => {
+                input.addEventListener("input", updateBobotLimits);
+
+                // Mempermudah user mengubah angka saat kolom diklik (auto-select)
+                input.addEventListener("focus", function() {
+                    this.select();
+                });
+            });
+
+            // Validasi double-check saat form dikirimkan
+            if (formCari) {
+                formCari.addEventListener("submit", function(e) {
+                    let totalAkhir = 0;
+                    inputs.forEach(input => {
+                        totalAkhir += parseInt(input.value) || 0;
+                    });
+
+                    if (totalAkhir !== 100) {
+                        e.preventDefault(); // Gagalkan pengiriman data ke server Laravel
+
+                        pesanError.textContent =
+                            `Total bobot harus tepat 100%`;
+                        pesanError.classList.remove("hidden");
+
+                        pesanError.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }
+                });
+            }
+
+            // Jalankan fungsi saat pertama kali halaman dimuat
+            updateBobotLimits();
+        });
+
         // slider Jarak
         const sliderJarakDua = document.querySelector(".range-slider-jarak-dua");
         const progressJarakDua = sliderJarakDua.querySelector(".progress-jarak-dua");
@@ -1024,117 +1467,6 @@
         });
 
         updateProgressJarakDua();
-
-
-        // const sliderJarak = document.querySelector(".range-slider-jarak");
-        // const progressJarak = sliderJarak.querySelector(".progress-jarak");
-        // const minJarakInput = sliderJarak.querySelector(".min-jarak");
-        // const maxJarakInput = sliderJarak.querySelector(".max-jarak");
-        // const minInputJarak = sliderJarak.querySelector(".min-input-jarak");
-        // const maxInputJarak = sliderJarak.querySelector(".max-input-jarak");
-
-        // const updateProgressJarak = () => {
-        //     const minValueJarak = parseInt(minInputJarak.value);
-        //     const maxValueJarak = parseInt(maxInputJarak.value);
-
-        //     const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
-        //     const valueRangeJarak = maxValueJarak - minValueJarak;
-
-        //     const widthJarak = (valueRangeJarak / totalRangeJarak) * 100;
-        //     const minOffsetJarak = ((minValueJarak - minInputJarak.min) / totalRangeJarak) * 100;
-
-        //     progressJarak.style.width = widthJarak + "%";
-        //     progressJarak.style.left = minOffsetJarak + "%";
-
-        //     minJarakInput.value = minValueJarak;
-        //     maxJarakInput.value = maxValueJarak;
-        // };
-
-        // const updateRangeJarak = (event) => {
-        //     const inputJarak = event.target;
-
-        //     let minJarak = parseInt(minJarakInput.value);
-        //     let maxJarak = parseInt(maxJarakInput.value);
-
-        //     if (inputJarak === minJarakInput && minJarak > maxJarak) {
-        //         maxJarak = minJarak;
-        //         maxJarakInput.value = maxJarak;
-        //     } else if (inputJarak === maxJarakInput && maxJarak < minJarak) {
-        //         minJarak = maxJarak;
-        //         minJarakInput.value = minJarak;
-        //     }
-
-        //     minInputJarak.value = minJarak;
-        //     maxInputJarak.value = maxJarak;
-
-        //     updateProgressJarak();
-        // };
-
-        // minJarakInput.addEventListener("input", updateRangeJarak);
-        // maxJarakInput.addEventListener("input", updateRangeJarak);
-
-        // minInputJarak.addEventListener("input", () => {
-        //     if (parseInt(minInputJarak.value) >= parseInt(maxInputJarak.value)) {
-        //         maxInputJarak.value = minInputJarak.value;
-        //     }
-        //     updateProgressJarak();
-        // });
-
-        // maxInputJarak.addEventListener("input", () => {
-        //     if (parseInt(maxInputJarak.value) <= parseInt(minInputJarak.value)) {
-        //         minInputJarak.value = maxInputJarak.value;
-        //     }
-        //     updateProgressJarak();
-        // });
-
-        // let isDraggingJarak = false;
-        // let startOffsetXJarak;
-
-        // progressJarak.addEventListener("mousedown", (e) => {
-        //     e.preventDefault();
-
-        //     isDraggingJarak = true;
-        //     startOffsetXJarak = e.clientX - progressJarak.getBoundingClientRect().left;
-
-        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        // });
-
-        // document.addEventListener("mousemove", (e) => {
-        //     if (isDraggingJarak) {
-        //         const sliderRectJarak = sliderJarak.getBoundingClientRect();
-        //         const progressWidthJarak = parseFloat(progressJarak.style.width || 0);
-
-        //         let newLeftJarak =
-        //             ((e.clientX - sliderRectJarak.left - startOffsetXJarak) / sliderRectJarak.width) * 100;
-
-        //         newLeftJarak = Math.min(Math.max(newLeftJarak, 0), 100 - progressWidthJarak);
-
-        //         progressJarak.style.left = newLeftJarak + "%";
-
-        //         const totalRangeJarak = maxInputJarak.max - minInputJarak.min;
-        //         const newMinJarak = Math.round((newLeftJarak / 100) * totalRangeJarak) + parseInt(minInputJarak
-        //             .min);
-        //         const newMaxJarak = newMinJarak + parseInt(maxInputJarak.value) - parseInt(minInputJarak.value);
-
-        //         minInputJarak.value = newMinJarak;
-        //         maxInputJarak.value = newMaxJarak;
-
-        //         updateProgressJarak();
-        //     }
-
-        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        // });
-
-        // document.addEventListener("mouseup", () => {
-        //     if (isDraggingJarak) {
-        //         isDraggingJarak = false;
-        //     }
-        //     sliderJarak.classList.toggle("dragging", isDraggingJarak);
-        // });
-
-        // updateProgressJarak();
-
-
 
         // slider Harga
         const slider = document.querySelector(".range-slider");
@@ -1366,19 +1698,118 @@
 
         updateProgressRating();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const hamburger = document.getElementById('hamburger');
-            const sidebar = document.querySelector('.sidebar');
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const hamburger = document.getElementById('hamburger');
+        //     const sidebar = document.querySelector('.sidebar');
 
-            if (!hamburger || !sidebar) return;
+        //     if (!hamburger || !sidebar) return;
 
-            hamburger.addEventListener('click', () => {
-                sidebar.classList.toggle('expanded');
-            });
-        });
+        //     hamburger.addEventListener('click', () => {
+        //         sidebar.classList.toggle('expanded');
+        //     });
+        // });
 
+        const btnSearchKeyword = document.getElementById("btnSearchKeyword");
         const searchBar = document.getElementById("searchBar");
         const searchPanel = document.getElementById("searchPanel");
+
+        function updateKeywordButton() {
+
+            const keyword = searchBar.value.trim();
+
+            if (keyword !== '') {
+
+                btnSearchKeyword.disabled = false;
+
+                btnSearchKeyword.classList.remove(
+                    'cursor-not-allowed'
+                );
+
+                btnSearchKeyword.classList.add(
+                    'cursor-pointer'
+                );
+
+            } else {
+
+                btnSearchKeyword.disabled = true;
+
+                btnSearchKeyword.classList.remove(
+                    'cursor-pointer'
+                );
+
+                btnSearchKeyword.classList.add(
+                    'cursor-not-allowed'
+                );
+            }
+        }
+
+        searchBar.addEventListener(
+            'input',
+            updateKeywordButton
+        );
+
+        updateKeywordButton();
+
+        function adaKriteria() {
+
+            const kategori =
+                document.getElementById('kategori')
+                .selectedOptions.length;
+
+            const fasilitas =
+                document.getElementById('fasilitas')
+                .selectedOptions.length;
+
+            const jarak =
+                parseInt(document.querySelector(
+                    '[name="jarak"]'
+                ).value);
+
+            const minHarga =
+                parseInt(document.querySelector(
+                    '[name="minharga"]'
+                ).value);
+
+            const maxHarga =
+                parseInt(document.querySelector(
+                    '[name="maxharga"]'
+                ).value);
+
+            const minRating =
+                parseInt(document.querySelector(
+                    '[name="minrating"]'
+                ).value);
+
+            const maxRating =
+                parseInt(document.querySelector(
+                    '[name="maxrating"]'
+                ).value);
+
+            return (
+                kategori > 0 ||
+                fasilitas > 0 ||
+                jarak < 10 ||
+                minHarga > 0 ||
+                maxHarga < 1000000 ||
+                minRating > 0 ||
+                maxRating < 5
+            );
+        }
+
+        // const btnCariBobot =
+        //     document.getElementById("btnCariBobot");
+
+        const keyword =
+            searchBar.value.trim();
+
+        // const bolehCari =
+        //     totalSekarang === 100 &&
+        //     (
+        //         keyword !== '' ||
+        //         adaKriteria()
+        //     );
+
+        // btnCariBobot.disabled = !bolehCari;
 
         searchBar.addEventListener("click", () => {
             searchPanel.classList.toggle("hidden");
@@ -1391,14 +1822,9 @@
             advancedFilter.classList.toggle("hidden");
         });
 
-        const defaultText = 'Rekomendasi Kuliner';
-        searchBar.addEventListener('blur', function() {
-            if (this.value.trim() === '') {
-                this.value = defaultText;
-            }
-        });
-        // searchBar.addEventListener('input', function() {
-        //     if (this.value === '') {
+        // const defaultText = 'Rekomendasi Kuliner';
+        // searchBar.addEventListener('blur', function() {
+        //     if (this.value.trim() === '') {
         //         this.value = defaultText;
         //     }
         // });
@@ -1411,183 +1837,92 @@
 
         });
 
-        // document.getElementById("formCari").addEventListener("submit", function(e) {
-
-        //     e.preventDefault(); // tahan submit dulu
-
-        //     if (navigator.geolocation) {
-        //         navigator.geolocation.getCurrentPosition(function(position) {
-
-        //             document.getElementById("lat").value = position.coords.latitude;
-        //             document.getElementById("lng").value = position.coords.longitude;
-
-        //             // submit ulang setelah dapet lokasi
-        //             e.target.submit();
-
-        //         }, function(error) {
-        //             // alert("Gagal ambil lokasi, pakai pencarian biasa aja");
-        //             document.getElementById("lat").value = -6.99;
-        //             document.getElementById("lng").value = 110.42;
-        //             e.target.submit(); // tetap submit tanpa lokasi
-        //         });
-        //     } else {
-        //         alert("Browser tidak support lokasi");
-        //         e.target.submit();
-        //     }
-
-        // });
-
-        // document.getElementById("formCari").addEventListener("submit", function(e) {
-        //     e.preventDefault();
-
-        //     const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
-
-        //     const isTerdekat =
-        //         keyword.includes("terdekat") ||
-        //         keyword.includes("dekat") ||
-        //         keyword.includes("near");
-
-        //     if (isTerdekat) {
-
-        //         if (!navigator.geolocation) {
-        //             Swal.fire({
-        //                 icon: "error",
-        //                 title: "GPS tidak didukung",
-        //                 text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'"
-        //             });
-        //             return;
-        //         }
-
-        //         navigator.geolocation.getCurrentPosition(
-        //             function(position) {
-
-        //                 const lat = position.coords.latitude;
-        //                 const lng = position.coords.longitude;
-
-        //                 document.getElementById("lat").value = lat;
-        //                 document.getElementById("lng").value = lng;
-
-        //                 e.target.submit();
-        //                 cariKulinerTerdekat(e);
-        //             },
-
-        //             function() {
-        //                 Swal.fire({
-        //                     icon: "warning",
-        //                     title: 'Lokasi Tidak Tersedia',
-        //                     text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
-        //                     showConfirmButton: false,
-        //                     timer: 2000
-        //                 });
-        //                 return;
-        //             }
-        //         );
-
-        //         return;
-        //     }
-
-        //     if (navigator.geolocation) {
-        //         navigator.geolocation.getCurrentPosition(function(position) {
-
-        //             document.getElementById("lat").value = position.coords.latitude;
-        //             document.getElementById("lng").value = position.coords.longitude;
-
-        //             e.target.submit();
-
-        //         }, function() {
-        //             document.getElementById("lat").value = -6.99;
-        //             document.getElementById("lng").value = 110.42;
-
-        //             e.target.submit();
-        //         });
-        //     } else {
-        //         e.target.submit();
-        //     }
-        // });
         document.getElementById("formCari").addEventListener("submit", function(e) {
-            if (searchBar.value.trim() === '') {
-                searchBar.value = defaultText;
-            }
+            // if (searchBar.value.trim() === '') {
+            //     searchBar.value = defaultText;
+            // }
             e.preventDefault();
 
             const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
 
-            const isTerdekat =
-                keyword.includes("terdekat") ||
-                keyword.includes("dekat") ||
-                keyword.includes("near");
+            // const isTerdekat =
+            //     keyword.includes("terdekat") ||
+            //     keyword.includes("dekat") ||
+            //     keyword.includes("near");
 
-            if (isTerdekat) {
+            // if (isTerdekat) {
 
-                if (!navigator.geolocation) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "GPS tidak tersedia",
-                        text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    return;
-                }
+            //     if (!navigator.geolocation) {
+            //         Swal.fire({
+            //             icon: "error",
+            //             title: "GPS tidak tersedia",
+            //             text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
+            //             showConfirmButton: false,
+            //             timer: 2000
+            //         });
+            //         return;
+            //     }
 
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
+            //     navigator.geolocation.getCurrentPosition(
+            //         function(position) {
+            //             const lat = position.coords.latitude;
+            //             const lng = position.coords.longitude;
 
-                        inputJarakDua.value = 5;
-                        nilaiJarakDua.value = 5;
-                        updateProgressJarakDua();
+            //             inputJarakDua.value = 5;
+            //             nilaiJarakDua.value = 5;
+            //             updateProgressJarakDua();
 
-                        minInput.value = 0;
-                        maxInput.value = 500000;
-                        minPriceInput.value = 0;
-                        maxPriceInput.value = 500000;
-                        updateProgress();
+            //             minInput.value = 0;
+            //             maxInput.value = 500000;
+            //             minPriceInput.value = 0;
+            //             maxPriceInput.value = 500000;
+            //             updateProgress();
 
-                        const minRating = document.querySelector(".min-rating");
-                        const maxRating = document.querySelector(".max-rating");
+            //             const minRating = document.querySelector(".min-rating");
+            //             const maxRating = document.querySelector(".max-rating");
 
-                        if (minRating && maxRating) {
-                            minRating.value = 0;
-                            maxRating.value = 5;
-                        }
+            //             if (minRating && maxRating) {
+            //                 minRating.value = 0;
+            //                 maxRating.value = 5;
+            //             }
 
-                        document.getElementById("lat").value = lat;
-                        document.getElementById("lng").value = lng;
+            //             document.getElementById("lat").value = lat;
+            //             document.getElementById("lng").value = lng;
 
-                        e.target.submit();
-                    },
+            //             e.target.submit();
+            //         },
 
-                    function() {
-                        Swal.fire({
-                            icon: "warning",
-                            title: 'Lokasi Tidak Tersedia',
-                            text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                    }
-                );
+            //         function() {
+            //             Swal.fire({
+            //                 icon: "warning",
+            //                 title: 'Lokasi Tidak Tersedia',
+            //                 text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+            //                 showConfirmButton: false,
+            //                 timer: 2000
+            //             });
+            //         }
+            //     );
 
-                return;
-            }
+            //     return;
+            // }
 
             navigator.geolocation.getCurrentPosition(
                 function(position) {
                     document.getElementById("lat").value = position.coords.latitude;
                     document.getElementById("lng").value = position.coords.longitude;
+
                     e.target.submit();
                 },
                 function() {
-                    document.getElementById("lat").value = -6.99;
-                    document.getElementById("lng").value = 110.42;
+                    document.getElementById("lat").value = -6.969054045894555;
+                    document.getElementById("lng").value = 110.42432058292049;
+
                     e.target.submit();
                 }
             );
         });
 
-        function cariKulinerTerdekat(e) {
+        function klikKulinerTerdekat(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -1596,34 +1931,35 @@
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
 
-                        inputJarakDua.value = 5;
-                        nilaiJarakDua.value = 5;
-                        updateProgressJarakDua();
+                        // inputJarakDua.value = 5;
+                        // nilaiJarakDua.value = 5;
+                        // updateProgressJarakDua();
 
-                        minInput.value = 0;
-                        maxInput.value = 500000;
-                        minPriceInput.value = 0;
-                        maxPriceInput.value = 500000;
-                        updateProgress();
+                        // minInput.value = 0;
+                        // maxInput.value = 500000;
+                        // minPriceInput.value = 0;
+                        // maxPriceInput.value = 500000;
+                        // updateProgress();
 
-                        const minRating = document.querySelector(".min-rating");
-                        const maxRating = document.querySelector(".max-rating");
+                        // const minRating = document.querySelector(".min-rating");
+                        // const maxRating = document.querySelector(".max-rating");
 
-                        if (minRating && maxRating) {
-                            minRating.value = 0;
-                            maxRating.value = 5;
-                        }
+                        // if (minRating && maxRating) {
+                        //     minRating.value = 0;
+                        //     maxRating.value = 5;
+                        // }
 
                         const params = new URLSearchParams(window.location.search);
 
+                        params.set('terdekat', 1);
                         params.set("lat", lat);
                         params.set("lng", lng);
-                        params.set("jarak", 5);
-                        params.set("minharga", 0);
-                        params.set("maxharga", 500000);
-                        params.set("minrating", 0);
-                        params.set("maxrating", 5);
-                        params.set("keyword", "Kuliner Terdekat");
+                        // params.set("jarak", 5);
+                        // params.set("minharga", 0);
+                        // params.set("maxharga", 500000);
+                        // params.set("minrating", 0);
+                        // params.set("maxrating", 5);
+                        // params.set("keyword", "Kuliner Terdekat");
 
                         window.location.href = "/wisata-kuliner-cari?" + params.toString();
                     },
@@ -1639,222 +1975,220 @@
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: 'Browser kamu tidak mendukung fitur lokasi 😢',
+                    title: 'Mohon Maaf',
+                    text: 'Browser Anda tidak mendukung fitur untuk mengambil lokasi',
                     confirmButtonText: 'OK'
                 });
             }
         }
 
-        // document.getElementById("formCari").addEventListener("submit", function(e) {
-        //     e.preventDefault();
-        //     const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
+        function initApp() {
 
-        //     const isTerdekat =
-        //         keyword.includes("terdekat") ||
-        //         keyword.includes("dekat") ||
-        //         keyword.includes("near");
+            const semarang = {
+                lat: -6.9667,
+                lng: 110.4167
+            };
 
-        //     if (isTerdekat) {
-        //         // e.preventDefault();
-        //         handleTerdekatSearch();
-        //         cariKulinerTerdekat(e);
-        //     }
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: semarang,
+                zoom: 12,
 
-        //     this.submit();
-        // });
+                disableDefaultUI: true,
+                gestureHandling: "none",
 
-        // function handleTerdekatSearch() {
-        //     if (!navigator.geolocation) {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Browser tidak mendukung GPS',
-        //             text: 'Silakan cari dengan keyword biasa'
-        //         });
-        //         return;
-        //     }
+                styles: [{
+                        featureType: "all",
+                        elementType: "labels",
+                        stylers: [{
+                            visibility: "off"
+                        }]
+                    },
+                    {
+                        featureType: "poi",
+                        stylers: [{
+                            visibility: "off"
+                        }]
+                    }
+                ]
+            });
 
-        //     navigator.geolocation.getCurrentPosition(
-        //         function(position) {
-        //             const lat = position.coords.latitude;
-        //             const lng = position.coords.longitude;
+            new google.maps.Marker({
+                position: semarang,
+                map: map
+            });
+        }
 
-        //             const params = new URLSearchParams(window.location.search);
+        function klikKategori(id) {
+            const semuaDropdown = [
+                'tempatDropdown',
+                'jenisDropdown',
+                'asalDropdown'
+            ];
 
-        //             params.set("lat", lat);
-        //             params.set("lng", lng);
-        //             params.set("jarak", 5);
-        //             params.set("minharga", 0);
-        //             params.set("maxharga", 500000);
-        //             params.set("keyword", "Kuliner Terdekat");
+            semuaDropdown.forEach(dropdown => {
 
-        //             window.location.href = "/wisata-kuliner-cari?" + params.toString();
-        //         },
+                if (dropdown !== id) {
+                    document
+                        .getElementById(dropdown)
+                        .classList
+                        .add('hidden');
+                }
 
-        //         function(error) {
-        //             Swal.fire({
-        //                 icon: 'warning',
-        //                 title: 'Lokasi Tidak Tersedia',
-        //                 text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
-        //                 showConfirmButton: false,
-        //                 timer: 2000
-        //             });
+            });
 
-        //             // return;
-        //         }
-        //     );
-        // }
+            document
+                .getElementById(id)
+                .classList
+                .toggle('hidden');
+        }
 
-        // const range = document.getElementById("rangeJarak");
-        // const value = document.getElementById("valueJarak");
+        document.addEventListener('click', function(e) {
 
-        // range.addEventListener("input", function() {
-        // value.innerText = this.value;
-        // });
+            if (!e.target.closest('.relative')) {
+                ['tempatDropdown', 'jenisDropdown', 'asalDropdown']
+                .forEach(id => {
 
+                    document
+                        .getElementById(id)
+                        .classList
+                        .add('hidden');
 
+                });
+            }
 
-
-
-
-
-
-
-        // document.addEventListener("DOMContentLoaded", function() {
-        // const lat = localStorage.getItem('user_lat');
-        // const lng = localStorage.getItem('user_lng');
-
-        // if (lat && lng) {
-        // document.getElementById('lat').value = lat;
-        // document.getElementById('lng').value = lng;
-        // }
-        // });
-
-
-        // function geser(arah) {
-        // const slider = document.getElementById("slider");
-        // slider.scrollBy({
-        // left: arah * 360,
-        // behavior: "smooth"
-        // });
-        // }
-
-        // const slider = document.getElementById("slider");
-        // const dotsContainer = document.getElementById("dots");
-        // const cards = document.querySelectorAll(".card");
-
-        // // bikin dots
-        // cards.forEach((_, i) => {
-        // const dot = document.createElement("div");
-        // dot.classList.add("dot");
-        // if (i === 0) dot.classList.add("active");
-        // dotsContainer.appendChild(dot);
-        // });
-
-        // // update dot saat geser
-        // slider.addEventListener("scroll", () => {
-        // const index = Math.round(slider.scrollLeft / cards[0].offsetWidth);
-        // document.querySelectorAll(".dot").forEach((dot, i) => {
-        // dot.classList.toggle("active", i === index);
-        // });
-        // });
-
-        // ------
-        // const slider = document.getElementById("slider");
-        // const cards = document.querySelectorAll(".card");
-        // const dotsContainer = document.getElementById("dots");
-
-        // const perPage = 3;
-        // const totalPage = Math.ceil(cards.length / perPage);
-        // let page = 0;
-
-        // // bikin dots
-        // for (let i = 0; i < totalPage; i++) { // const dot=document.createElement("div"); // dot.className = "dot" +
-        // (i === 0 ? " active" : ""); // dot.onclick=()=> goToPage(i);
-        // dotsContainer.appendChild(dot);
-        // }
-
-        // function updateSlider() {
-        // slider.style.transform = `translateX(-${page * 100}%)`;
-        // document.querySelectorAll(".dot").forEach((d, i) => {
-        // d.classList.toggle("active", i === page);
-        // });
-        // }
-
-        // function next() {
-        // if (page < totalPage - 1) { // page++; // updateSlider(); // } // } // function prev() { // if (page> 0) {
-        // page--;
-        // updateSlider();
-        // }
-        // }
-
-        // function goToPage(i) {
-        // page = i;
-        // updateSlider();
-        // }
-        // ---------
-
-        // const slider = document.getElementById("slider");
-        // const card = document.querySelector(".card");
-        // let index = 0;
-
-        // function next() {
-        // const maxIndex = slider.children.length - 3;
-        // if (index < maxIndex) { // index++; // geser(); // } // } // function prev() { // if (index> 0) {
-        // index--;
-        // geser();
-        // }
-        // }
-
-        // function geser() {
-        // const cardWidth = card.offsetWidth + 20; // 20 = gap
-        // slider.style.transform = `translateX(-${index * cardWidth}px)`;
-        // }
-
-
-        // -----------
-        // $(document).ready(function() {
-
-        // const itemsPerPage = 3;
-
-        // const owl = $('.bidang-carousel').owlCarousel({
-        // loop: true,
-        // margin: 20,
-        // nav: true,
-        // dots: true,
-        // items: 3,
-        // slideBy: 1, // 👉 panah geser 1–1
-        // autoplay: true,
-        // autoplayTimeout: 3000,
-        // autoplayHoverPause: true
-        // });
-
-        // owl.on('changed.owl.carousel', function(event) {
-        // const totalItems = event.item.count;
-        // const currentIndex = event.item.index - event.relatedTarget._clones.length / 2;
-
-        // const realIndex = (currentIndex + totalItems) % totalItems;
-
-        // const pageIndex = Math.floor(realIndex / itemsPerPage);
-
-        // // reset semua dots
-        // $('.owl-dot').removeClass('active');
-
-        // // aktifkan dot sesuai halaman (1–3 / 4–6)
-        // $('.owl-dot').eq(pageIndex).addClass('active');
-        // });
-
-        // });
-    </script>
-    {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-multiselect@0.9.13/dist/js/bootstrap-multiselect.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#minimal-multiselect').multiselect();
         });
-    </script> --}}
 
+        let map = null;
+        let marker = null;
+
+        function klikWisataKuliner(id) {
+            fetch(`/wisatawan/favorit/detail/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('modalTitleKuliner').textContent = data.nama;
+                    document.getElementById('alamat').textContent = data.alamat;
+                    document.getElementById('kecamatan').textContent = data.kecamatan;
+                    document.getElementById('kelurahan').textContent = data.kelurahan;
+                    document.getElementById('nomor_telepon').textContent = data.no_telp ?? '-';
+                    document.getElementById('deskripsi').textContent = data.deskripsi;
+                    document.getElementById('latitude').textContent = data.latitude;
+                    document.getElementById('longitude').textContent = data.longitude;
+                    document.getElementById('sertifikat_halal').textContent = data.sertifikat_halal;
+                    const status = document.getElementById('status_operasional');
+                    status.textContent = data.status_operasional;
+
+                    if (data.status_operasional === 'Aktif') {
+                        status.classList.add('text-green-600', 'font-semibold');
+                    } else if (data.status_operasional === 'Tutup Sementara') {
+                        status.classList.add('text-orange-500', 'font-semibold');
+                    } else if (data.status_operasional === 'Tutup Permanen') {
+                        status.classList.add('text-red-600', 'font-semibold');
+                    }
+
+                    const foto = document.getElementById('foto');
+
+                    if (data.foto) {
+                        foto.src = `/storage/${data.foto}`;
+                    } else {
+                        foto.src = `/storage/tidakadafoto.jpg`;
+                    }
+
+                    foto.classList.remove('hidden');
+
+                    const lat = parseFloat(data.latitude);
+                    const lng = parseFloat(data.longitude);
+
+                    const position = {
+                        lat: lat,
+                        lng: lng
+                    };
+
+                    // Fasilitas
+                    let fasilitas = data.fasilitas || [];
+                    let container = document.getElementById('fasilitas');
+
+                    container.innerHTML = '';
+                    if (fasilitas.length > 0) {
+                        fasilitas.forEach(f => {
+                            let span = document.createElement('span');
+                            span.textContent = f.nama;
+
+                            span.style.display = 'inline-block';
+                            span.style.padding = '4px 4px';
+                            span.style.margin = '2px';
+                            span.style.backgroundColor = '#dddddd';
+                            span.style.borderRadius = '4px';
+                            span.style.fontSize = '12px';
+
+                            container.appendChild(span);
+                        });
+                    } else {
+                        container.textContent = '-';
+                    }
+
+                    // Kategori
+                    let kategori = data.kategori || [];
+                    let containerKategori = document.getElementById('kategori');
+
+                    containerKategori.innerHTML = '';
+                    if (kategori.length > 0) {
+                        kategori.forEach(k => {
+                            let span = document.createElement('span');
+                            span.textContent = k.nama;
+
+                            span.style.display = 'inline-block';
+                            span.style.padding = '4px 4px';
+                            span.style.margin = '2px';
+                            span.style.backgroundColor = '#dddddd';
+                            span.style.borderRadius = '4px';
+                            span.style.fontSize = '12px';
+
+                            containerKategori.appendChild(span);
+                        });
+                    } else {
+                        containerKategori.textContent = '-';
+                    }
+
+                    document.getElementById('detailKuliner').classList.remove('hidden');
+
+                    if (!map) {
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            center: position,
+                            zoom: 16,
+                            mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                            clickableIcons: false,
+                        });
+
+                        marker = new google.maps.marker.AdvancedMarkerElement({
+                            position: position,
+                            map: map,
+                        });
+                    } else {
+                        map.setCenter(position);
+                        marker.position = position;
+                    }
+                });
+            document.body.style.overflow = 'hidden';
+        }
+
+        function tutupDetailKuliner() {
+            document.getElementById('detailKuliner').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // function pilihKategori(kategori) {
+
+        //     const params = new URLSearchParams(window.location.search);
+
+        //     params.set('kategori_aktif', kategori);
+
+        //     window.location.href =
+        //         window.location.pathname + '?' + params.toString();
+        // }
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initApp&libraries=maps,marker&v=weekly&language=in"
+        async defer></script>
 </body>
 
 </html>

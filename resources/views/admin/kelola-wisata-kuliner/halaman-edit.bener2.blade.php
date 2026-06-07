@@ -1315,8 +1315,8 @@
 
                     const pin = new PinElement({
                         background: "#FB991A",
-                        borderColor: "#ffffff",
-                        glyphColor: "#ffffff"
+                        borderColor: "#FFFFFF",
+                        glyphColor: "#FFFFFF"
                     });
 
                     let marker = new google.maps.marker.AdvancedMarkerElement({

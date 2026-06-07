@@ -78,7 +78,7 @@
         :root {
             /* --blue-color: #357ded; */
             --yellow-color: #FFA319;
-            --green-color: #094B3C;
+            --green-color: #004440;
             --gray-color: #77889926;
         }
 
@@ -685,7 +685,7 @@
         {{-- <div id="modalUlasan" class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center"> --}}
         <div id="modalUlasan"
             class="fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto z-50 items-center justify-center">
-            <form action="{{ route('penilaianulasan.simpan') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('ulasan.simpan') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- <div class="bg-white w-[500px] rounded-2xl p-6 relative"> --}}
@@ -1269,8 +1269,8 @@
 
                     const pin = new PinElement({
                         background: "#FB991A",
-                        borderColor: "#ffffff",
-                        glyphColor: "#ffffff"
+                        borderColor: "#FFFFFF",
+                        glyphColor: "#FFFFFF"
                     });
 
                     let marker = new google.maps.marker.AdvancedMarkerElement({
@@ -1593,8 +1593,8 @@
 
                 const pin = new PinElement({
                     background: "#FB991A",
-                    borderColor: "#ffffff",
-                    glyphColor: "#ffffff"
+                    borderColor: "#FFFFFF",
+                    glyphColor: "#FFFFFF"
                 });
 
                 let posisi = {
@@ -1959,7 +1959,7 @@
         //         formData.append('foto_ulasan', file)
         //     }
 
-        //     let response = await fetch("{{ route('penilaianulasan.simpan') }}", {
+        //     let response = await fetch("{{ route('ulasan.simpan') }}", {
         //         method: "POST",
         //         headers: {
         //             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
@@ -2462,8 +2462,8 @@
 
                     const pin = new PinElement({
                         background: "#FB991A",
-                        borderColor: "#ffffff",
-                        glyphColor: "#ffffff"
+                        borderColor: "#FFFFFF",
+                        glyphColor: "#FFFFFF"
                     });
 
                     let marker = new google.maps.marker.AdvancedMarkerElement({
@@ -2645,8 +2645,8 @@
 
                 const pin = new PinElement({
                     background: "#FB991A",
-                    borderColor: "#ffffff",
-                    glyphColor: "#ffffff"
+                    borderColor: "#FFFFFF",
+                    glyphColor: "#FFFFFF"
                 });
 
                 let posisi = {

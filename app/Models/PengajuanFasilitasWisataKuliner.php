@@ -10,20 +10,16 @@ class PengajuanFasilitasWisataKuliner extends Model
     protected $primaryKey = 'id_fasilitas';
     public $timestamps = false;
 
-    protected $fillable = [
-        'id_pengajuan',
-        'id_fasilitas',
-    ];
+    // protected $fillable = [
+    //     'id_pengajuan',
+    //     'id_fasilitas',
+    // ];
 
     public function wisatakuliner()
     {
         return $this->belongsTo(WisataKuliner::class);
     }
 
-    // public function fasilitas()
-    // {
-    //     return $this->belongsTo(Fasilitas::class);
-    // }
     public function fasilitas()
     {
         return $this->belongsTo(Fasilitas::class, 'id_fasilitas');

@@ -17,7 +17,6 @@ class WisataKuliner extends Model
         'kelurahan',
         'alamat',
         'no_telp',
-        'email',
         'deskripsi',
         'foto',
         'longitude',
@@ -25,22 +24,15 @@ class WisataKuliner extends Model
         'harga_min',
         'harga_max',
         'penilaian',
-        'email_pengaju',
+        'sertifikat_halal',
         'id_wisatawan',
         'id_admin',
         'status',
+        'status_operasional',
         'waktu_dibuat',
         'waktu_diubah',
     ];
 
-    // public function fasilitaswisatakuliner()
-    // {
-    //     return $this->hasMany(FasilitasWisataKuliner::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
-    // }
-    // public function fasilitas()
-    // {
-    //     return $this->belongsToMany(Fasilitas::class, 'fasilitas_wisata_kuliner');
-    // }
     public function fasilitas()
     {
         return $this->belongsToMany(
@@ -51,19 +43,19 @@ class WisataKuliner extends Model
         );
     }
 
-    public function menu()
+    public function ulasan()
     {
-        return $this->hasMany(Menu::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
+        return $this->hasMany(Ulasan::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
     }
 
-    public function penilaianDanUlasan()
-    {
-        return $this->hasMany(PenilaianDanUlasan::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
-    }
-
-    public function pengaju()
+    public function wisatawan()
     {
         return $this->belongsTo(Wisatawan::class, 'id_wisatawan');
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, 'id_admin');
     }
 
     public function verifikasiadmin()

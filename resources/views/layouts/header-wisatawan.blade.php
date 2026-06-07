@@ -126,7 +126,7 @@
 </head>
 
 <body>
-    <header class="sticky top-0 left-0 w-full h-20 bg-[#094B3C] z-50">
+    <header class="sticky top-0 left-0 w-full h-20 bg-[#004440] z-50">
         {{-- <div class="grid grid-cols-[90px_1fr] items-center text-2xl relative h-full">
             <div class="flex justify-center items-center -ml-5">
                 <button id="hamburgerBtn" class="text-white text-lg ml-5">

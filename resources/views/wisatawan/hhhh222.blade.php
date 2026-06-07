@@ -36,7 +36,7 @@
         }
 
         .select-box {
-            background-color: #ffffff;
+            background-color: #FFFFFF;
             border: 1px solid #ced4da;
             display: flex;
             justify-content: space-between;
@@ -80,7 +80,7 @@
             display: none;
             position: absolute;
             width: 100%;
-            background-color: #ffffff;
+            background-color: #FFFFFF;
             border: 1px solid #ced4da;
             border-top: none;
             max-height: 225px;
@@ -94,7 +94,7 @@
         }
 
         .option-search-tags {
-            background-color: #ffffff;
+            background-color: #FFFFFF;
             border: 1px solid #ced4da;
             padding: 8px 0px;
             margin: 8px;
@@ -150,7 +150,7 @@
         .btn_submit {
             padding: 17px 24px;
             background-color: #4caf50;
-            color: #ffffff;
+            color: #FFFFFF;
             border: none;
             cursor: pointer;
             font-size: 16px;

@@ -10,10 +10,9 @@ class KategoriWisataKuliner extends Model
     protected $primaryKey = 'id_kategori';
     public $timestamps = false;
 
-    protected $fillable = [
-        'id_wisata_kuliner',
-        'id_kategori'
-    ];
+    // protected $fillable = [
+    //     'jenis_kategori'
+    // ];
 
     public function wisatakuliner()
     {

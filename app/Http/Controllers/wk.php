@@ -50,8 +50,8 @@ class WisatawanController extends Controller
         if ($keyword === '') {
             $keyword = 'Rekomendasi Kuliner';
         }
-        $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
-        $kulinerFavorit = WisataKuliner::where('status', 'Ditampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
+        $kulinerBaru = WisataKuliner::where('status', 'Disetujui')->orderBy('waktu_diubah', 'desc')->take(4)->get();
+        $kulinerFavorit = WisataKuliner::where('status', 'Disetujui')->orderBy('penilaian', 'desc')->take(4)->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
         $user = Auth::user();
@@ -96,7 +96,7 @@ class WisatawanController extends Controller
     public function halamantambah()
     {
         $fasilitas = Fasilitas::all();
-        $wkuliner = WisataKuliner::where('status', 'Ditampilkan')->get();
+        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
         return view('wisatawan.wisata-kuliner.tambah-kuliner', compact('fasilitas', 'wkuliner'));
     }
 
@@ -394,7 +394,7 @@ class WisatawanController extends Controller
     public function halamanedit($id)
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
-        $wkuliner = WisataKuliner::where('status', 'Ditampilkan')->get();
+        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
             // ->where('status', '!=', 'Belum Diverifikasi')
@@ -1053,13 +1053,13 @@ class WisatawanController extends Controller
         $keyword = trim($request->keyword ?? '');
 
         if ($keyword === '') {
-          
-        $kulinerBaru = WisataKuliner::where('status', 'Ditampilkan')->orderBy('waktu_diubah', 'desc')->take(4)->get();
-        $kulinerFavorit = WisataKuliner::where('status', 'Ditampilkan')->orderBy('penilaian', 'desc')->take(4)->get();
-        $fasilitas = Fasilitas::all();
-        $kategori = Kategori::all();
 
-          $keyword = 'Rekomendasi Kuliner';
+            $kulinerBaru = WisataKuliner::where('status', 'Disetujui')->orderBy('waktu_diubah', 'desc')->take(4)->get();
+            $kulinerFavorit = WisataKuliner::where('status', 'Disetujui')->orderBy('penilaian', 'desc')->take(4)->get();
+            $fasilitas = Fasilitas::all();
+            $kategori = Kategori::all();
+
+            $keyword = 'Rekomendasi Kuliner';
         }
         return view('wisatawan-tidak-login.beranda-wisatawantidaklogin', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
     }
@@ -1072,7 +1072,7 @@ class WisatawanController extends Controller
     public function halamantambahTidakLogin()
     {
         $fasilitas = Fasilitas::all();
-        $wkuliner = WisataKuliner::where('status', 'Ditampilkan')->get();
+        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
         return view('wisatawan-tidak-login.wisatakuliner.tambahkuliner-wisatawantidaklogin', compact('fasilitas', 'wkuliner'));
     }
 
@@ -1190,7 +1190,7 @@ class WisatawanController extends Controller
                 ->toArray();
         }
 
-        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Disetujui');
 
         $lat = $request->lat;
         $lng = $request->lng;
@@ -1248,7 +1248,7 @@ class WisatawanController extends Controller
             $isRekomendasi = true;
             $keyword = 'Rekomendasi Kuliner';
 
-            $query2 = WisataKuliner::with(['fasilitas', 'kategori'])->where('status', 'Ditampilkan');
+            $query2 = WisataKuliner::with(['fasilitas', 'kategori'])->where('status', 'Disetujui');
 
             if ($useRatingFilter) {
                 $query2->whereBetween('penilaian', [$request->minrating, $request->maxrating]);

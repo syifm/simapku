@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PenilaiandanUlasan;
+use App\Models\Ulasan;
 use App\Models\WisataKuliner;
 use App\Models\Wisatawan;
 use App\Models\Admin;
@@ -26,21 +26,20 @@ use Illuminate\Validation\Rule;
 
 class RiwayatController extends Controller
 {
-    public function riwayat()
+    public function tampilkanRiwayatPengajuan()
     {
         $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
         $id_wisatawan = $wisatawan->id_wisatawan;
-        $statuswisatakuliner = PengajuanWisataKuliner::where('id_wisatawan', $id_wisatawan)->exists();
         $wisataKuliner = PengajuanWisataKuliner::where('id_wisatawan', $id_wisatawan)
             ->orderByRaw("
                 CASE 
                     WHEN status = 'Belum Diverifikasi' THEN 1
                     WHEN status = 'Disetujui' THEN 2
-                    WHEN status = 'Ditolak' THEN 3
+                    ELSE 3
                 END
             ")
             ->orderBy('waktu_diubah', 'desc')
-            ->paginate(10)
+            ->paginate(10, ['*'], 'wisatakuliner')
             ->withQueryString();
 
         $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
@@ -48,44 +47,40 @@ class RiwayatController extends Controller
             return $item;
         });
 
-        $statusUlasan = PenilaiandanUlasan::where('id_wisatawan', $id_wisatawan)->exists();
-        // $penilaianDanUlasan = PenilaiandanUlasan::paginate(10)->withQueryString();
-        $penilaianDanUlasan = PenilaiandanUlasan::where('id_wisatawan', $id_wisatawan)
+        $ulasan = Ulasan::where('id_wisatawan', $id_wisatawan)
             ->orderByRaw("
                 CASE 
                     WHEN status = 'Belum Diverifikasi' THEN 1
                     WHEN status = 'Disetujui' THEN 2
-                    WHEN status = 'Ditolak' THEN 3
+                    ELSE 3
                 END
             ")
             ->orderBy('waktu_diubah', 'desc')
-            ->paginate(10)
+            ->paginate(10, ['*'], 'ulasan')
             ->withQueryString();
 
-        $penilaianDanUlasan->getCollection()->transform(function ($item, $key) use ($penilaianDanUlasan) {
-            $item->nomor = ($penilaianDanUlasan->currentPage() - 1) * $penilaianDanUlasan->perPage() + $key + 1;
+        $ulasan->getCollection()->transform(function ($item, $key) use ($ulasan) {
+            $item->nomor = ($ulasan->currentPage() - 1) * $ulasan->perPage() + $key + 1;
             return $item;
         });
 
-        return view('wisatawan.riwayat.riwayat', compact(
-            'statuswisatakuliner',
+        return view('wisatawan.riwayat.halaman-riwayatkuliner', compact(
             'wisataKuliner',
-            'statusUlasan',
-            'penilaianDanUlasan',
+            'ulasan',
         ));
     }
 
-    public function detailKuliner($id)
+    public function tampilkanDetailWKuliner($id)
     {
         $wisataKuliner = PengajuanWisataKuliner::with(['fasilitas', 'kategori'])->findOrFail($id);
 
         return response()->json($wisataKuliner);
     }
 
-    public function detailUlasan($id)
+    public function tampilkanDetailUlasan($id)
     {
-        $penilaianDanUlasan = PenilaiandanUlasan::with('wisataKuliner')->findOrFail($id);
+        $ulasan = Ulasan::with('wisataKuliner')->findOrFail($id);
 
-        return response()->json($penilaianDanUlasan);
+        return response()->json($ulasan);
     }
 }

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');
             $table->unsignedInteger('id_wisata_kuliner');
             $table->foreign('id_wisata_kuliner')->references('id_wisata_kuliner')->on('wisata_kuliner')->onDelete('cascade');
-            $table->text('komentar')->nullable();
             $table->timestamp('waktu_dibuat');
 
             $table->primary(['id_wisatawan', 'id_wisata_kuliner']);

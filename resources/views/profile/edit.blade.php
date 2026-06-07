@@ -37,32 +37,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
     @vite('resources/css/app.css')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-gray-100">
-    @if ($user->peran === 'Admin')
+    @if ($user->peran == 'Admin')
         @include('layouts.sidebar-admin')
-    @elseif($user->peran === 'Wisatawan')
+    @elseif ($user->peran == 'Wisatawan')
         @include('layouts.sidebar-wisatawan')
-        @include('layouts.header-wisatawan')
     @endif
-    <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
-        <h1 class="text-2xl font-bold mb-8">Profil</h1>
-        {{-- <div class="flex-1 p-6 flex flex-col items-center"> --}}
-        <h1 class="text-2xl font-bold mb-8 text-center">{{ __('Profil') }}</h1>
 
-        {{-- <div class="p-6 bg-white shadow-lg rounded-lg w-full max-w-4xl"> --}}
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+        <div class="pt-[38px] pl-[350px] pr-[50px] pb-[20px]">
 
-            @include('profile.partials.update-profile-information-form')
+    {{-- @if ($user->peran === 'Admin') --}}
+        <div class="text-sm flex justify-start gap-6 mb-10">
+            <a href="{{ route('profile.show') }}"
+                class="back-btn w-10 flex items-center justify-center group relative cursor-pointer">
+                <span
+                    class="absolute w-10 h-10 rounded-full bg-gray-200 
+               scale-0 group-hover:scale-100 
+               transition duration-50"></span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                    stroke="currentColor" class="size-5 relative z-10">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                </svg>
+            </a>
+            <div class="-mt-1">
+                <h1 class="font-bold text-xl">Edit Profil</h1>
+            </div>
         </div>
+    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+        @include('profile.partials.update-profile-information-form')
+    </div>
 
-        {{-- <div class="mt-6 p-6 bg-white shadow-lg rounded-lg w-full max-w-4xl"> --}}
-        <div class="mt-6 p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-
-            @include('profile.partials.update-password-form')
-        </div>
-        {{-- </div> --}}
+    <div class="mt-6 p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+        @include('profile.partials.update-password-form')
+    </div>
     </div>
 </body>
 

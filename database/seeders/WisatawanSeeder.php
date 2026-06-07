@@ -17,9 +17,22 @@ class WisatawanSeeder extends Seeder
     {
         $wisatawanData = [
             [
-                'nama' => 'Syifa Shabrina',
-                'email' => 'syifa@gmail.com',
-                'password' => 'SyifaWisatawan123',
+                'nama' => 'Syifa Munir',
+                'email' => 'syifamunir@gmail.com',
+                'password' => 'wisatawan123',
+                'asal_kota' => 'Semarang',
+            ],
+            [
+                'nama' => 'Asysyifa Shabrina',
+                'email' => 'shabrina@gmail.com',
+                'password' => 'shabrina123',
+                'asal_kota' => 'Surabaya',
+            ],
+            [
+                'nama' => 'Nabila Azzahra',
+                'email' => 'nabilaazzahra@gmail.com',
+                'password' => 'nabilaaz123',
+                'asal_kota' => 'Jakarta',
             ],
         ];
 
@@ -37,6 +50,7 @@ class WisatawanSeeder extends Seeder
 
                 Wisatawan::create([
                     'user_id' => $userWisatawan->id,
+                    'asal_kota' => $data['asal_kota']
                 ]);
             }
         }

@@ -13,7 +13,6 @@ class KulinerFavorit extends Model
     protected $fillable = [
         'id_wisatawan',
         'id_wisata_kuliner',
-        'komentar',
         'waktu_dibuat',
     ];
 
@@ -22,7 +21,7 @@ class KulinerFavorit extends Model
         return $this->belongsTo(Wisatawan::class, 'id_wisatawan', 'id_wisatawan');
     }
 
-    public function kuliner()
+    public function wisatakuliner()
     {
         return $this->belongsTo(WisataKuliner::class, 'id_wisata_kuliner');
     }

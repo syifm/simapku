@@ -18,9 +18,9 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function tampilkanDaftar(): View
     {
-        return view('auth.register');
+        return view('auth.daftar');
     }
 
     /**
@@ -28,7 +28,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function simpan(Request $request): RedirectResponse
     {
         $request->validate([
             'nama' => ['required', 'string', 'max:100'],
@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
 
         Wisatawan::create([
             'user_id' => $user->id,
-            'preferensi' => $request->preferensi,
+            'asal_kota' => $request->asal_kota,
         ]);
 
         event(new Registered($user));

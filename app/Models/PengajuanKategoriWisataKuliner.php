@@ -10,10 +10,10 @@ class PengajuanKategoriWisataKuliner extends Model
     protected $primaryKey = 'id_kategori';
     public $timestamps = false;
 
-    protected $fillable = [
-        'id_pengajuan',
-        'id_kategori'
-    ];
+    // protected $fillable = [
+    //     'id_pengajuan',
+    //     'id_kategori'
+    // ];
 
     public function wisatakuliner()
     {
