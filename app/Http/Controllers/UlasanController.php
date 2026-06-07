@@ -387,31 +387,25 @@ class UlasanController extends Controller
     {
         $ulasan = Ulasan::findOrFail($id);
 
-        // $userId = Auth::id();
+        $idWisatawan = $ulasan->id_wisatawan;
+        $idKuliner = $ulasan->id_wisata_kuliner;
 
-        // $id_wisatawan = Wisatawan::where(
-        //     'user_id',
-        //     $userId
-        // )->value('id_wisatawan');
+        $daftarUlasan = Ulasan::where('id_wisatawan', $idWisatawan)
+            ->where('id_wisata_kuliner', $idKuliner)
+            ->get();
 
-        // $bolehHapus =
-        //     ($id_wisatawan && $ulasan->id_wisatawan == $id_wisatawan) ||
-        //     ($emailUser && $ulasan->email_pengulas == $emailUser);
-
-        // if (!$bolehHapus) {
-        //     return response()->json([
-        //         'message' => 'Tidak memiliki akses'
-        //     ], 403);
-        // }
-
-        if ($ulasan->foto_ulasan) {
-            Storage::disk('public')->delete($ulasan->foto_ulasan);
+        foreach ($daftarUlasan as $item) {
+            if ($item->foto_ulasan) {
+                Storage::disk('public')->delete($item->foto_ulasan);
+            }
         }
 
-        $ulasan->delete();
+        Ulasan::where('id_wisatawan', $idWisatawan)
+            ->where('id_wisata_kuliner', $idKuliner)
+            ->delete();
 
         return response()->json([
-            'message' => 'Ulasan berhasil dihapus'
+            'message' => 'Ulasan Berhasil Dihapus'
         ]);
     }
 

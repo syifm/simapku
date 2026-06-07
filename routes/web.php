@@ -106,7 +106,7 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/beranda', [BerandaController::class, 'tampilkanBerandaWisatawan'])->name('beranda-Wisatawan');
     Route::get('/wisatawan/beranda/detail/{id}', [BerandaController::class, 'tampilkanDetailWKuliner'])->name('berandaWisatawan.detail');
 
-    Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'cari'])->name('wisatakulinerhalaman');
+    Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'cariWisataKuliner'])->name('wisatakulinerhalaman');
     Route::post('/wisatawan/ulasan/simpan', [UlasanController::class, 'simpan'])->name('ulasan.simpan');
     Route::get('/wisatawan/ulasan/detail/{id}', [UlasanController::class, 'detail'])->name('penilaianulasan.detail');
     Route::delete('/wisatawan/ulasan/{id}', [UlasanController::class, 'hapus'])->name('penilaianulasan.hapus');

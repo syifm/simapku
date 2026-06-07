@@ -726,7 +726,7 @@
         // function initMap() {
         //     const defaultPosition = {
         //         lat: -6.969054045894555,
-        //         lng: 110.42432058292049
+        //         lng: 110.40926002563694
         //     };
 
         //     map = new google.maps.Map(document.getElementById("map"), {
@@ -834,7 +834,7 @@
         //     console.log(window.google);
         //     const defaultPosition = {
         //         lat: -6.969054045894555,
-        //         lng: 110.42432058292049
+        //         lng: 110.40926002563694
         //     };
 
         //     map = new google.maps.Map(document.getElementById("map"), {

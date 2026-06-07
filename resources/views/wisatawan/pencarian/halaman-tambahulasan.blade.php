@@ -387,7 +387,7 @@
     //     document.getElementById('modalUlasan').classList.remove('hidden')
     //     document.body.style.overflow = 'hidden'
     // }
-    function openModal(id) {
+    function klikUlasan(id) {
         kulinerAktif = id
         document.getElementById('id_wisata_kuliner').value = id
         fetch(`/wisatawan/ulasan/modalulasan/${id}`)

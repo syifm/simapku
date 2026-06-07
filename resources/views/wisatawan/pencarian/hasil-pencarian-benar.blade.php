@@ -1571,7 +1571,7 @@
 
                 <hr class="my-4">
 
-                <button onclick="openModal(${id})"
+                <button onclick="klikUlasan(${id})"
                         class="bg-gray-100 w-full text-gray-500 border px-4 py-2 rounded-xl mt-4 flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"

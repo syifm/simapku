@@ -1230,7 +1230,7 @@ class WisataKulinerController extends Controller
         ]);
     }
 
-    public function cari(Request $request)
+    public function cariWisataKuliner(Request $request)
     {
         $keyword = trim($request->keyword ?? '');
         $keywordLower = strtolower($keyword);
@@ -1273,27 +1273,28 @@ class WisataKulinerController extends Controller
         $data = $query->get();
 
         if ($request->lat && $request->lng && $data->isNotEmpty()) {
-            $origin = $request->lat . ',' . $request->lng;
+            // $origin = $request->lat . ',' . $request->lng;
 
-            $destinations = $data->map(function ($item) {
-                return $item->latitude . ',' . $item->longitude;
-            })->join('|');
+            // $destinations = $data->map(function ($item) {
+            //     return $item->latitude . ',' . $item->longitude;
+            // })->join('|');
 
-            $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+            // $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
 
-            $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}&language=id";
+            // $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}&language=id";
 
-            $response = file_get_contents($url);
-            $response = json_decode($response, true);
+            // $response = file_get_contents($url);
+            // $response = json_decode($response, true);
 
-            foreach ($data as $index => $item) {
-                $distanceMeter = $response['rows'][0]['elements'][$index]['distance']['value'] ?? null;
-                $item->distance_km = $distanceMeter ? $distanceMeter / 1000 : null;
-            }
+            // foreach ($data as $index => $item) {
+            //     $distanceMeter = $response['rows'][0]['elements'][$index]['distance']['value'] ?? null;
+            //     $item->distance_km = $distanceMeter ? $distanceMeter / 1000 : null;
+            // }
 
-            if (!$isTerdekat && $useJarakFilter && $request->jarak < 10) {
-                $data = $data->filter(fn($item) => $item->distance_km <= $request->jarak)->values();
-            }
+            // if (!$isTerdekat && $useJarakFilter && $request->jarak < 10) {
+            //     $data = $data->filter(fn($item) => $item->distance_km <= $request->jarak)->values();
+            // }
+            $data = $this->cariJarakKeKuliner($request, $data, $isTerdekat, $useJarakFilter);
         }
 
         if (($request->minharga > 0) || ($request->maxharga < 500000)) {
@@ -1540,6 +1541,33 @@ class WisataKulinerController extends Controller
         //         $q->where('harga_min', '<=', $request->maxharga);
         //     }
         // });
+    }
+
+    public function cariJarakKeKuliner($request, $data, $isTerdekat, $useJarakFilter)
+    {
+        $origin = $request->lat . ',' . $request->lng;
+
+        $destinations = $data->map(function ($item) {
+            return $item->latitude . ',' . $item->longitude;
+        })->join('|');
+
+        $apiKey = $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}&language=id";
+
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+
+        foreach ($data as $index => $item) {
+            $distanceMeter = $response['rows'][0]['elements'][$index]['distance']['value'] ?? null;
+            $item->distance_km = $distanceMeter ? $distanceMeter / 1000 : null;
+        }
+
+        if (!$isTerdekat && $useJarakFilter && $request->jarak < 10) {
+            $data = $data->filter(fn($item) => $item->distance_km <= $request->jarak)->values();
+        }
+
+        return $data;
     }
 
     // public function tampilkanWisataKuliner(Request $request, int $id)

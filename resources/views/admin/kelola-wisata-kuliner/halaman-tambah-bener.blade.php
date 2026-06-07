@@ -550,7 +550,7 @@
 
         // Peta Latitude Longitude
         let mapOptions = {
-            center: [-6.969054045894555, 110.42432058292049],
+            center: [-6.969054045894555, 110.40926002563694],
             zoom: 10
         }
 

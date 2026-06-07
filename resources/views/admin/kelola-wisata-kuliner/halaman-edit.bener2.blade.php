@@ -917,7 +917,7 @@
         let lastAlamat = "";
         let lastValidPosition = {
             lat: -6.969054045894555,
-            lng: 110.42432058292049
+            lng: 110.40926002563694
         };
         const latInput = document.getElementById('latitude');
         const lngInput = document.getElementById('longitude');

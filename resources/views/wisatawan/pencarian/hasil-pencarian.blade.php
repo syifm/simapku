@@ -1609,8 +1609,8 @@
         });
 
         // MAPS --------------------------------------------------------------------------------
-        let defaultLat = -6.969054045894555;
-        let defaultLng = 110.42432058292049;
+        let defaultLat = -6.984168497010843;
+        let defaultLng = 110.40926002563694;
 
         let map;
         let userMarker = null;
@@ -1628,8 +1628,8 @@
 
         async function initApp() {
             let defaultLocation = {
-                lat: -6.969054045894555,
-                lng: 110.42432058292049
+                lat: -6.984168497010843,
+                lng: 110.40926002563694
             };
 
             const markerLib = await google.maps.importLibrary("marker");
@@ -1988,12 +1988,12 @@
                         </svg>
                     </button>
 
-                    <button title="Rute" onclick="lihatRute(${lat}, ${lng}, this)"
+                    <button title="Rute" onclick="klikRute(${lat}, ${lng}, this)"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <i class="fi fi-rs-route text-md"></i>
                     </button>
 
-                    <button title="Edit" onclick="editWisataKuliner(${id})"
+                    <button title="Edit" onclick="klikEdit(${id})"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -2008,7 +2008,7 @@
 
                 <hr class="my-4">
 
-                <button onclick="openModal(${id})"
+                <button onclick="klikUlasan(${id})"
                         class="bg-gray-100 w-full text-gray-500 border px-4 py-2 rounded-xl mt-4 flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -2159,7 +2159,6 @@
             fetch(`/wisatawan/ulasan/detail/${idKuliner}`)
                 .then(res => res.json())
                 .then(data => {
-
                     let html = ''
                     if (data.length === 0) {
                         html = `<p class="text-gray-500 mt-5 text-center">Ulasan belum tersedia</p>`
@@ -2167,7 +2166,8 @@
                         data.forEach(item => {
 
                             let menuHapus = '';
-
+                            console.log(item.punya_sendiri);
+                            console.log(typeof item.punya_sendiri);
                             if (item.punya_sendiri) {
                                 menuHapus = `
                                     <div class="relative">
@@ -2185,7 +2185,7 @@
 
                                         <div id="menu-${item.id_ulasan}"
                                             class="hidden absolute right-0 mt-1 bg-white border rounded-lg shadow-md z-50">
-                                            <button onclick="hapusUlasan(${item.id_ulasan})"
+                                            <button onclick="klikHapus(${item.id_ulasan})"
                                                 class="px-4 py-2 text-red-500 hover:bg-red-50 w-full text-left">
                                                 Hapus
                                             </button>
@@ -2237,12 +2237,17 @@
 
                                 <!-- Konten -->
                                 <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                     
+                                    <div class="flex justify-between items-start text-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-semibold">${namaUser}</span>
+                                            <span class="text-gray-400">•</span>
+                                            <span class="text-gray-500">${formatTanggal(item.waktu_dibuat)}</span>
+                                        </div>
+                                        ${menuHapus}
                                     </div>
 
                                     <!-- Rating -->
-                                    <div class="text-yellow-500 text-sm mt-1 flex items-center gap-1">
+                                    <div class="text-yellow-500 text-sm flex items-center gap-1">
                                         <span class="text-orange-400"><svg xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 24 24" fill="currentColor" class="size-4">
                                                 <path fill-rule="evenodd"
@@ -2278,15 +2283,16 @@
             document.getElementById(`menu-${id}`).classList.toggle('hidden');
         }
 
-        function hapusUlasan(id) {
+        function klikHapus(id) {
 
             Swal.fire({
                 title: 'Hapus Ulasan?',
-                // text: 'Ulasan yang dihapus tidak dapat dikembalikan.',
-                icon: 'warning',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya',
-                cancelButtonText: 'Batal'
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
             }).then((result) => {
 
                 if (result.isConfirmed) {
@@ -2306,12 +2312,15 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
-                                text: data.message
+                                text: data.message,
+                                timer: 2000,
+                                showConfirmButton: false,
                             });
 
-                            loadUlasan(idKulinerAktif);
+                        }).then(() => {
+                            // loadUlasan(idKulinerAktif);
+                            location.reload();
                         });
-
                 }
 
             });
@@ -2319,7 +2328,7 @@
         }
 
         // Lihat rute
-        function lihatRute(destLat, destLng, btn) {
+        function klikRute(destLat, destLng, btn) {
             if (routeVisible) {
 
                 directionsRenderer.setDirections({
@@ -2404,7 +2413,7 @@
         }
 
         // Edit Wisata Kuliner
-        function editWisataKuliner(id) {
+        function klikEdit(id) {
 
             // window.location.href = `/wisatawan/editwisatakuliner/${id}`;
             window.location.href =

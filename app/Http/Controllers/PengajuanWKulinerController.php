@@ -703,6 +703,133 @@ class PengajuanWKulinerController extends Controller
         ]);
     }
 
+    public function getngampu($id = null)
+    {
+        if (!$id || $id == "null") {
+            return '';
+        }
+
+        $mk = FasilitasWisataKuliner::with('fasilitas')
+            ->where('id_wisata_kuliner', $id)
+            ->get();
+
+        $data = '';
+
+        foreach ($mk as $row) {
+            if ($row->fasilitas) {
+                $data .= "<option value='{$row->id_fasilitas}' selected>
+                        {$row->fasilitas->nama}
+                      </option>";
+            }
+        }
+
+        return $data;
+    }
+
+    public function selectmhs()
+    {
+        $data = WisataKuliner::where('nama', 'LIKE', '%' . request('q') . '%')->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function selectmk($id)
+    {
+        $data = Fasilitas::where('nama', 'LIKE', '%' . request('q') . '%')
+            ->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function selectkategori($id)
+    {
+        $data = Kategori::where('nama', 'LIKE', '%' . request('q') . '%')
+            ->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function getKategori($id = null)
+    {
+        if (!$id || $id == "null") {
+            return '';
+        }
+
+        $kategori = KategoriWisataKuliner::with('kategori')
+            ->where('id_wisata_kuliner', $id)
+            ->get();
+
+        $data = '';
+
+        foreach ($kategori as $row) {
+            if ($row->kategori) {
+                $data .= "<option value='{$row->id_kategori}' selected>
+                        {$row->kategori->nama}
+                      </option>";
+            }
+        }
+
+        return $data;
+    }
+
+    public function tampilkanRiwayatPengajuan()
+    {
+        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
+        $id_wisatawan = $wisatawan->id_wisatawan;
+        $wisataKuliner = PengajuanWisataKuliner::where('id_wisatawan', $id_wisatawan)
+            ->orderByRaw("
+                CASE 
+                    WHEN status = 'Belum Diverifikasi' THEN 1
+                    WHEN status = 'Disetujui' THEN 2
+                    ELSE 3
+                END
+            ")
+            ->orderBy('waktu_diubah', 'desc')
+            ->paginate(10, ['*'], 'wisatakuliner')
+            ->withQueryString();
+
+        $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
+            $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
+            return $item;
+        });
+
+        $ulasan = Ulasan::where('id_wisatawan', $id_wisatawan)
+            ->orderByRaw("
+                CASE 
+                    WHEN status = 'Belum Diverifikasi' THEN 1
+                    WHEN status = 'Disetujui' THEN 2
+                    ELSE 3
+                END
+            ")
+            ->orderBy('waktu_diubah', 'desc')
+            ->paginate(10, ['*'], 'ulasan')
+            ->withQueryString();
+
+        $ulasan->getCollection()->transform(function ($item, $key) use ($ulasan) {
+            $item->nomor = ($ulasan->currentPage() - 1) * $ulasan->perPage() + $key + 1;
+            return $item;
+        });
+
+        return view('wisatawan.riwayat.halaman-riwayatkuliner', compact(
+            'wisataKuliner',
+            'ulasan',
+        ));
+    }
+
+    public function tampilkanDetailWKuliner($id)
+    {
+        $wisataKuliner = PengajuanWisataKuliner::with(['fasilitas', 'kategori'])->findOrFail($id);
+
+        return response()->json($wisataKuliner);
+    }
+
+    public function tampilkanDetailUlasan($id)
+    {
+        $ulasan = Ulasan::with('wisataKuliner')->findOrFail($id);
+
+        return response()->json($ulasan);
+    }
+
     // public function simpan(Request $request)
     // {
     //     $request->validate([
@@ -1029,130 +1156,5 @@ class PengajuanWKulinerController extends Controller
     //         ->get(['id_fasilitas as id', 'nama as name']);
     // }
 
-    public function getngampu($id = null)
-    {
-        if (!$id || $id == "null") {
-            return '';
-        }
 
-        $mk = FasilitasWisataKuliner::with('fasilitas')
-            ->where('id_wisata_kuliner', $id)
-            ->get();
-
-        $data = '';
-
-        foreach ($mk as $row) {
-            if ($row->fasilitas) {
-                $data .= "<option value='{$row->id_fasilitas}' selected>
-                        {$row->fasilitas->nama}
-                      </option>";
-            }
-        }
-
-        return $data;
-    }
-
-    public function selectmhs()
-    {
-        $data = WisataKuliner::where('nama', 'LIKE', '%' . request('q') . '%')->paginate(10);
-
-        return response()->json($data);
-    }
-
-    public function selectmk($id)
-    {
-        $data = Fasilitas::where('nama', 'LIKE', '%' . request('q') . '%')
-            ->paginate(10);
-
-        return response()->json($data);
-    }
-
-    public function selectkategori($id)
-    {
-        $data = Kategori::where('nama', 'LIKE', '%' . request('q') . '%')
-            ->paginate(10);
-
-        return response()->json($data);
-    }
-
-    public function getKategori($id = null)
-    {
-        if (!$id || $id == "null") {
-            return '';
-        }
-
-        $kategori = KategoriWisataKuliner::with('kategori')
-            ->where('id_wisata_kuliner', $id)
-            ->get();
-
-        $data = '';
-
-        foreach ($kategori as $row) {
-            if ($row->kategori) {
-                $data .= "<option value='{$row->id_kategori}' selected>
-                        {$row->kategori->nama}
-                      </option>";
-            }
-        }
-
-        return $data;
-    }
-
-    public function tampilkanRiwayatPengajuan()
-    {
-        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
-        $id_wisatawan = $wisatawan->id_wisatawan;
-        $wisataKuliner = PengajuanWisataKuliner::where('id_wisatawan', $id_wisatawan)
-            ->orderByRaw("
-                CASE 
-                    WHEN status = 'Belum Diverifikasi' THEN 1
-                    WHEN status = 'Disetujui' THEN 2
-                    ELSE 3
-                END
-            ")
-            ->orderBy('waktu_diubah', 'desc')
-            ->paginate(10, ['*'], 'wisatakuliner')
-            ->withQueryString();
-
-        $wisataKuliner->getCollection()->transform(function ($item, $key) use ($wisataKuliner) {
-            $item->nomor = ($wisataKuliner->currentPage() - 1) * $wisataKuliner->perPage() + $key + 1;
-            return $item;
-        });
-
-        $ulasan = Ulasan::where('id_wisatawan', $id_wisatawan)
-            ->orderByRaw("
-                CASE 
-                    WHEN status = 'Belum Diverifikasi' THEN 1
-                    WHEN status = 'Disetujui' THEN 2
-                    ELSE 3
-                END
-            ")
-            ->orderBy('waktu_diubah', 'desc')
-            ->paginate(10, ['*'], 'ulasan')
-            ->withQueryString();
-
-        $ulasan->getCollection()->transform(function ($item, $key) use ($ulasan) {
-            $item->nomor = ($ulasan->currentPage() - 1) * $ulasan->perPage() + $key + 1;
-            return $item;
-        });
-
-        return view('wisatawan.riwayat.halaman-riwayatkuliner', compact(
-            'wisataKuliner',
-            'ulasan',
-        ));
-    }
-
-    public function tampilkanDetailWKuliner($id)
-    {
-        $wisataKuliner = PengajuanWisataKuliner::with(['fasilitas', 'kategori'])->findOrFail($id);
-
-        return response()->json($wisataKuliner);
-    }
-
-    public function tampilkanDetailUlasan($id)
-    {
-        $ulasan = Ulasan::with('wisataKuliner')->findOrFail($id);
-
-        return response()->json($ulasan);
-    }
 }
