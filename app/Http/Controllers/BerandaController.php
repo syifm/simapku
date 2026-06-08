@@ -394,19 +394,77 @@ class BerandaController extends Controller
         return response()->json($wisataKuliner);
     }
 
-    public function tampilkanBerandaTamu()
+    public function tampilkanBerandaTamu(Request $request)
     {
         $keyword = trim($request->keyword ?? '');
 
         if ($keyword === '') {
-
-            $kulinerBaru = WisataKuliner::where('status', 'Disetujui')->orderBy('waktu_dibuat', 'desc')->take(4)->get();
-            $kulinerFavorit = WisataKuliner::where('status', 'Disetujui')->orderBy('penilaian', 'desc')->take(4)->get();
-            $fasilitas = Fasilitas::all();
-            $kategori = Kategori::all();
-
             $keyword = 'Rekomendasi Kuliner';
         }
-        return view('tamu.beranda', compact('fasilitas', 'kategori', 'keyword', 'kulinerBaru', 'kulinerFavorit'));
+        $kulinerBaru = WisataKuliner::where('status', 'Disetujui')->orderBy('waktu_dibuat', 'desc')->get();
+        $kulinerFavorit = WisataKuliner::where('status', 'Disetujui')->orderBy('penilaian', 'desc')->get();
+        $fasilitas = Fasilitas::all();
+        $kategori = Kategori::all();
+
+        $kategoriTempat = Kategori::where('jenis_kategori', 'Tempat')
+            ->where('status', 'Aktif')
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        $jenisHidangan = Kategori::where('jenis_kategori', 'Jenis Hidangan')
+            ->where('status', 'Aktif')
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        $asalKuliner = Kategori::where('jenis_kategori', 'Asal Kuliner')
+            ->where('status', 'Aktif')
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        $event = Kategori::where('jenis_kategori', 'Event')
+            ->where('status', 'Aktif')
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        $kategoriDipilih = $request->kategori;
+
+        $wisataKuliner = WisataKuliner::where('status', 'Disetujui');
+
+        if ($kategoriDipilih) {
+
+            $wisataKuliner->whereHas('kategori', function ($q) use ($kategoriDipilih) {
+
+                $q->where('kategori.id_kategori', $kategoriDipilih);
+            });
+        }
+
+        $wisataKuliner = $wisataKuliner
+            ->orderBy('waktu_dibuat', 'desc')
+            ->get();
+
+        $kategoriDipilih = $request->kategori;
+        $namaKategoriDipilih = null;
+
+        if ($kategoriDipilih) {
+            $namaKategoriDipilih = Kategori::where(
+                'id_kategori',
+                $kategoriDipilih
+            )->value('nama');
+        }
+
+        return view('tamu.beranda', compact(
+            'fasilitas',
+            'kategori',
+            'keyword',
+            'kulinerBaru',
+            'kulinerFavorit',
+            // 'kategoriAktif',
+            'kategoriTempat',
+            'jenisHidangan',
+            'asalKuliner',
+            'wisataKuliner',
+            'kategoriDipilih',
+            'namaKategoriDipilih',
+        ));
     }
 }

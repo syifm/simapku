@@ -1977,7 +1977,7 @@
                 </div>
 
                 <div class="flex justify-end gap-2 mt-6">
-                    <button title="Favorit" onclick="handleFavorit(${id}, this)"
+                    <button title="Favorit" onclick="klikFavorit(${id}, this)"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -2423,7 +2423,7 @@
         // Favorit
         let kulinerAktif = null
 
-        function handleFavorit(id, btn) {
+        function klikFavorit(id, btn) {
             let isFavorit = favoritIds.includes(parseInt(id));
 
             if (isFavorit) {

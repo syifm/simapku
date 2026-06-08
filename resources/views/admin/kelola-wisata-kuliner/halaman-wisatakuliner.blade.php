@@ -88,7 +88,7 @@
                 <div class="bg-white-100 pt-0">
                     <div id="contentKuliner" class="{{ $activeTab === 'wisatakuliner' ? '' : 'hidden' }}">
                         <div class="flex justify-end">
-                            <a href="#" onclick="bukaTambahWisata(event)"
+                            <a href="#" onclick="klikTambahWKuliner(event)"
                                 class="bg-[#FFA319] hover:bg-[#F19305]
                                 btn btn-primary text-white rounded-full px-4 py-2 mt-6 text-sm flex items-center gap-1 transition mb-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -202,7 +202,7 @@
                                                     class="px-4 py-3 text-sm border-b border-r border-black justify-center gap-2">
                                                     <div class="flex justify-center gap-2">
                                                         <button
-                                                            onclick="tampilkanDetailWKuliner({{ $kuliner->id_wisata_kuliner }})"
+                                                            onclick="klikDetailWKuliner({{ $kuliner->id_wisata_kuliner }})"
                                                             class="bg-[#004440] hover:bg-[#06362a] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                 viewBox="0 0 24 24" stroke-width="1.7"
@@ -213,7 +213,7 @@
                                                             <span class="ml-1">Detail</span>
                                                         </button>
                                                         <button type="button"
-                                                            onclick="bukaEditWisata({{ $kuliner->id_wisata_kuliner }})"
+                                                            onclick="klikEditWKuliner({{ $kuliner->id_wisata_kuliner }})"
                                                             class="bg-[#FFA319] hover:bg-[#F19305] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                 viewBox="0 0 24 24" stroke-width="2"
@@ -285,7 +285,7 @@
                                                             @endif
                                                         </button> --}}
                                                         <button
-                                                            onclick="ubahStatusOperasional(
+                                                            onclick="klikStatusWKuliner(
                                                                 {{ $kuliner->id_wisata_kuliner }},
                                                                 '{{ $kuliner->status_operasional }}'
                                                             )"
@@ -614,7 +614,7 @@
         let map = null;
         let marker = null;
 
-        function tampilkanDetailWKuliner(id) {
+        function klikTambahWKuliner(id) {
             fetch(`/admin/kelolawisatakuliner/detail/${id}`)
                 .then(response => response.json())
                 .then(data => {
@@ -759,7 +759,7 @@
             window.location.href = `${window.location.pathname}?${params.toString()}`;
         }
 
-        function bukaTambahWisata(e) {
+        function klikTambahWKuliner(e) {
             e.preventDefault();
 
             const redirect = encodeURIComponent(window.location.href);
@@ -768,14 +768,14 @@
                 `/admin/tambahwisatakuliner?redirect=${redirect}`;
         }
 
-        function bukaEditWisata(id) {
+        function klikEditWKuliner(id) {
             const redirect = encodeURIComponent(window.location.href);
 
             window.location.href =
                 `/admin/editwisatakuliner/edit/${id}?redirect=${redirect}`;
         }
 
-        function ubahStatusOperasional(id, status) {
+        function klikStatusWKuliner(id, status) {
             let confirmText = '';
             let denyText = '';
 

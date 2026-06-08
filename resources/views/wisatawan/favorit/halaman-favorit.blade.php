@@ -96,7 +96,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                         @foreach ($kulinerFavorit as $favorit)
                             <div class="bg-white shadow rounded-lg hover:shadow-2xl transition"
-                                onclick="tampilkanDetailKuliner({{ $favorit->id_wisata_kuliner }})">
+                                onclick="klikWisataKuliner({{ $favorit->id_wisata_kuliner }})">
                                 <img src="{{ $favorit->wisatakuliner->foto ? asset('storage/' . $favorit->wisatakuliner->foto) : asset('storage/tidakadafoto.jpg') }}"
                                     class="w-full h-48 object-cover rounded-t-lg">
 
@@ -140,7 +140,7 @@
                                             </button>
                                         </form> --}}
                                         <button type="button"
-                                            onclick="konfirmasiHapusKulinerFavorit({{ $favorit->id_wisata_kuliner }}, '{{ $favorit->wisatakuliner->nama }}')"
+                                            onclick="klikHapus(event, {{ $favorit->id_wisata_kuliner }}, '{{ $favorit->wisatakuliner->nama }}')"
                                             class="btn-hapus p-1 rounded-full hover:bg-red-100 text-red-500 mt-[3px]">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.7" stroke="currentColor" class="w-4 h-4">
@@ -154,11 +154,11 @@
                                         {{ \Carbon\Carbon::parse($favorit->waktu_dibuat)->format('d.m.Y') }}
                                     </p>
 
-                                    @if ($favorit->komentar)
+                                    {{-- @if ($favorit->komentar)
                                         <p class="text-sm mt-2 text-justify">
                                             {{ $favorit->komentar }}
                                         </p>
-                                    @endif
+                                    @endif --}}
 
                                 </div>
                             </div>
@@ -434,7 +434,7 @@
         let map = null;
         let marker = null;
 
-        function tampilkanDetailKuliner(id) {
+        function klikWisataKuliner(id) {
             fetch(`/wisatawan/favorit/detail/${id}`)
                 .then(response => response.json())
                 .then(data => {
@@ -547,7 +547,8 @@
             document.getElementById('detailKuliner').classList.add('hidden');
         }
 
-        function konfirmasiHapusKulinerFavorit(id, nama) {
+        function klikHapus(event, id, nama) {
+            event.stopPropagation();
             Swal.fire({
                 title: "Hapus dari Kuliner Favorit?",
                 html: `<b>Wisata Kuliner:</b> ${nama}`,

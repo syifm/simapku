@@ -113,7 +113,7 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     Route::get('/wisatawan/ulasan/modalulasan/{id}', [UlasanController::class, 'tampilkanFormUlasan']);
 
     // Icon Favorit
-    Route::get('/wisatawan/favorit', [KulinerFavoritController::class, 'tampilkanhalamanFavorit'])->name('favorit');
+    Route::get('/wisatawan/favorit', [KulinerFavoritController::class, 'tampilkanHalamanFavorit'])->name('favorit');
     Route::post('/wisatawan/favorit/simpan', [KulinerFavoritController::class, 'simpan'])->name('favorit.simpan');
     // Route::delete('/favorit/hapus', [KulinerFavoritController::class, 'hapusFavoritDariList'])->name('favorit.hapusdarilist');
     Route::delete('/wisatawan/favorit/hapus/{id}', [KulinerFavoritController::class, 'hapus'])->name('favorit.hapus');

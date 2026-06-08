@@ -94,7 +94,7 @@
                         </td>
                         <td class="px-4 py-3 text-sm border-b border-r border-black">
                             <div class="flex justify-center gap-2">
-                                <button onclick="tampilkanModalDetailUlasan({{ $ulasankuliner->id_ulasan }})"
+                                <button onclick="klikDetailUlasan({{ $ulasankuliner->id_ulasan }})"
                                     class="bg-[#004440] hover:bg-[#06362a] text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.7" stroke="currentColor" class="size-5">
@@ -170,7 +170,7 @@
 </div>
 
 <script>
-    function tampilkanModalDetailUlasan(id) {
+    function klikDetailUlasan(id) {
         fetch(`/wisatawan/riwayatpengajuan/detail/ulasan/${id}`)
             .then(response => response.json())
             .then(data => {

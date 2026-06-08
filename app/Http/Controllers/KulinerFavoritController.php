@@ -28,7 +28,7 @@ class KulinerFavoritController extends Controller
     //     ]);
     // }
 
-    public function tampilkanhalamanFavorit()
+    public function tampilkanHalamanFavorit()
     {
         $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
 
