@@ -408,7 +408,8 @@
     <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
         <div class="flex flex-col gap-2">
             <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
-                @csrf
+                {{-- @csrf --}}
+                <input type="hidden" name="terdekat" id="inputTerdekat" value="0">
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-2xl z-20">
                         <div
@@ -455,13 +456,13 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="jarak"
                                                 class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
-                                                value="10" min="0" max="10" />
+                                                value="20" min="0" max="20" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range-jarak-dua">
-                                            <input type="range" class="input-jarak-dua" value="10" min="0"
-                                                max="10" />
+                                            <input type="range" class="input-jarak-dua" value="20" min="0"
+                                                max="20" />
 
                                             <div class="slider-jarak-dua">
                                                 <div class="progress-jarak-dua"></div>
@@ -640,7 +641,7 @@
                                                     class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
                                                     <input type="number" name="bobot_fasilitas"
                                                         class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
-                                                        value="5" min="0" max="100">
+                                                        value="0" min="0" max="100">
                                                     <span class="text-gray-400 text-xs pr-1">%</span>
                                                 </div>
                                             </div>
@@ -1048,7 +1049,7 @@
                             {{-- </p> --}}
 
                         </div>
-                        {{-- @if ($isHasilCosine && isset($item->score_cosine))
+                        @if ($isHasilCosine && isset($item->score_cosine))
                             <div
                                 class="px-3 pb-3 pt-2 border-t border-gray-100 flex justify-between items-center bg-amber-50/60">
                                 <span class="text-[11px] text-gray-500 font-medium">Tingkat Kemiripan:</span>
@@ -1057,7 +1058,7 @@
                                     {{ number_format($item->score_cosine * 100, 0) }}% Cocok
                                 </span>
                             </div>
-                        @endif --}}
+                        @endif
                         {{-- </a> --}}
                     </div>
                 @endforeach
@@ -2060,11 +2061,22 @@
                         //     maxRating.value = 5;
                         // }
 
-                        const params = new URLSearchParams(window.location.search);
+                        document.getElementById('lat').value = lat;
+                        document.getElementById('lng').value = lng;
 
-                        params.set('terdekat', 1);
-                        params.set("lat", lat);
-                        params.set("lng", lng);
+                        // 2. Set input terdekat menjadi 1
+                        document.getElementById('inputTerdekat').value = 1;
+
+                        // 3. Submit form secara otomatis
+                       document.getElementById('formCari').submit();
+                        // document.getElementById('inputTerdekat').value = 1;
+                        // const params = new URLSearchParams(window.location.search);
+
+                        // params.set('terdekat', 1);
+
+                        // params.set("lat", lat);
+                        // params.set("lng", lng);
+
                         // params.set("jarak", 5);
                         // params.set("minharga", 0);
                         // params.set("maxharga", 500000);

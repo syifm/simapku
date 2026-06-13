@@ -614,7 +614,7 @@
         let map = null;
         let marker = null;
 
-        function klikTambahWKuliner(id) {
+        function klikDetailWKuliner(id) {
             fetch(`/admin/kelolawisatakuliner/detail/${id}`)
                 .then(response => response.json())
                 .then(data => {

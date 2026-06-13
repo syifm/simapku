@@ -310,14 +310,12 @@ class BerandaController extends Controller
             $myKategori = DB::table('kategori_wisata_kuliner')->where('id_wisata_kuliner', $favId)->pluck('id_kategori')->toArray();
             $myFasilitas = DB::table('fasilitas_wisata_kuliner')->where('id_wisata_kuliner', $favId)->pluck('id_fasilitas')->toArray();
 
-            // Min-Max Scaling (Mengubah angka kontinu ke skala 0-1)
             $ratingNorm = ($kuliner->penilaian ?? 0) / 5;
             $hargaMinNorm = min(($kuliner->harga_min ?? 0), $maxSliderHarga) / $maxSliderHarga;
             $hargaMaxNorm = min(($kuliner->harga_max ?? 0), $maxSliderHarga) / $maxSliderHarga;
 
             $tmpVector = [$ratingNorm, $hargaMinNorm, $hargaMaxNorm];
 
-            // One-Hot Biner Encoding
             foreach ($masterKategori as $idKat) {
                 $tmpVector[] = in_array($idKat, $myKategori) ? 1 : 0;
             }
@@ -328,15 +326,21 @@ class BerandaController extends Controller
             for ($i = 0; $i < $totalKolom; $i++) {
                 $userProfileVector[$i] += $tmpVector[$i];
             }
+
+            // dump("Urutan Kategori: " . json_encode($masterKategori));
+            // dump("Urutan Fasilitas: " . json_encode($masterFasilitas));
+            // dump("Vektor Profil User Final (Hasil Rata-rata):");
+            // dump($userProfileVector);
         }
 
         if ($countValidFavorit > 0) {
-            // Selesaikan hitungan rata-rata vektor profil user
             for ($i = 0; $i < $totalKolom; $i++) {
                 $userProfileVector[$i] /= $countValidFavorit;
             }
+            // dump("--- HASIL RATA-RATA PROFIL USER (CENTROID) ---");
+            // dump("Jumlah Favorit: " . $countValidFavorit);
+            // dump("Vektor Profil User: ", $userProfileVector);
 
-            // 3. Hitung Kedekatan Sudut Cosine dengan kuliner Semarang lainnya (yang belum difavoritkan)
             $calonKuliner = DB::table('wisata_kuliner')
                 ->where('status', 'Disetujui')
                 ->whereNotIn('id_wisata_kuliner', $favoritIds)
@@ -374,9 +378,16 @@ class BerandaController extends Controller
 
                 $item->score_cosine = $cosineScore;
                 $hasilMatriks[] = $item;
+
+                // dump("--- Detail Perhitungan ---");
+                // dump("Vektor User: ", $userProfileVector);
+                // dump("Vektor Item: ", $itemVector);
+                // dump("Dot Product: " . $dotProduct);
+                // dump("Panjang User (Magnitude): " . sqrt($v1Length));
+                // dump("Panjang Item (Magnitude): " . sqrt($v2Length));
+                // dump("Hasil Akhir Skor Cosine: " . $cosineScore);
             }
 
-            // SORTING MUTLAK: Urutkan dari nilai skor kemiripan tertinggi ke terendah, potong ambil 6 item
             $rekomendasiCosine = collect($hasilMatriks)->sortByDesc('score_cosine')->take(6)->values();
             $isHasilCosine = true;
         }

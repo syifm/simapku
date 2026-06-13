@@ -606,7 +606,8 @@
                 </div>
             </form> --}}
             <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
-                @csrf
+                {{-- @csrf --}}
+                <input type="hidden" name="terdekat" id="inputTerdekat" value="0">
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-2xl z-20">
                         <div
@@ -654,13 +655,13 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="jarak"
                                                 class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
-                                                value="{{ request('jarak', 10) }}" min="0" max="10" />
+                                                value="{{ request('jarak', 20) }}" min="0" max="20" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range-jarak-dua">
                                             <input type="range" class="input-jarak-dua"
-                                                value="{{ request('jarak', 10) }}" min="0" max="10" />
+                                                value="{{ request('jarak', 20) }}" min="0" max="20" />
 
                                             <div class="slider-jarak-dua">
                                                 <div class="progress-jarak-dua"></div>
@@ -845,7 +846,7 @@
                                                     class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
                                                     <input type="number" name="bobot_fasilitas"
                                                         class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
-                                                        value="{{ request('bobot_fasilitas', 5) }}" min="0"
+                                                        value="{{ request('bobot_fasilitas') }}" min="0"
                                                         max="100">
                                                     <span class="text-gray-400 text-xs pr-1">%</span>
                                                 </div>
@@ -954,6 +955,18 @@
 
                                 </p>
 
+                                <div>
+                                    @if (isset($kuliner->score) && $kuliner->score > 0)
+                                        <div
+                                            class="bg-blue-50 border border-blue-200 rounded-lg px-2 py-1 inline-block text-right">
+                                            <span
+                                                class="text-[11px] text-blue-600 block font-medium leading-none mb-0.5">Kesesuaian</span>
+                                            <span class="text-sm font-bold text-blue-700 leading-none">
+                                                {{ round($kuliner->score * 100, 2) }}%
+                                            </span>
+                                        </div>
+                                    @endif
+                                </div>
                                 <div class="mt-4 flex flex-wrap gap-2">
                                     @foreach ($kuliner->kategori as $k)
                                         <span class="inline-block px-2 py-1 bg-gray-200 text-black rounded-md text-sm">
@@ -2661,12 +2674,25 @@
                     //     minRating.value = 0;
                     //     maxRating.value = 5;
                     // }
+                    // document.getElementById('inputLat').value = lat;
+                    // document.getElementById('inputLng').value = lng;
+                    document.getElementById('lat').value = lat;
+                    document.getElementById('lng').value = lng;
 
-                    const params = new URLSearchParams(window.location.search);
+                    // 2. Set input terdekat menjadi 1
+                    document.getElementById('inputTerdekat').value = 1;
 
-                    params.set('terdekat', 1);
-                    params.set("lat", lat);
-                    params.set("lng", lng);
+                    // 3. Submit form secara otomatis
+                    document.getElementById('formCari').submit();
+                    // document.getElementById('inputTerdekat').value = 1;
+
+                    // const params = new URLSearchParams(window.location.search);
+
+                    // params.set('terdekat', 1);
+
+                    // params.set("lat", lat);
+                    // params.set("lng", lng);
+
                     // params.set("jarak", 5);
                     // params.set("minharga", 0);
                     // params.set("maxharga", 500000);

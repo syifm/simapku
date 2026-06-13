@@ -18,9 +18,9 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function tampilkanDaftar(): View
+    public function tampilkanRegistrasiAkun(): View
     {
-        return view('auth.daftar');
+        return view('auth.registrasiakun');
     }
 
     /**
@@ -38,7 +38,10 @@ class RegisteredUserController extends Controller
             'email.lowercase' => 'Email harus menggunakan huruf kecil',
             'email.unique' => 'Email sudah digunakan',
             'password.confirmed' => 'Password dan konfirmasi password tidak sama',
-            'password.min' => 'Password minimal 8 karakter'
+            'password.min' => 'Password minimal 8 karakter',
+            'password.mixed' => 'Password harus mengandung huruf besar dan kecil',
+            'password.numbers' => 'Password harus mengandung setidaknya satu angka',
+            'password.symbols' => 'Password harus mengandung setidaknya satu simbol',
         ]);
 
         $user = User::create([

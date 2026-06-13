@@ -537,8 +537,6 @@
         let isKecamatanLoaded = false;
 
         document.addEventListener('DOMContentLoaded', async function() {
-
-
             try {
                 const res = await fetch('/wisata/api/kecamatan');
                 const data = await res.json();
@@ -598,6 +596,7 @@
         });
 
         async function loadKelurahan(districtCode) {
+            console.log('LOAD', districtCode, Date.now());
             kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
 
             if (!districtCode) return [];
@@ -606,6 +605,7 @@
                 const res = await fetch(`/wisata/api/kelurahan/${districtCode}`);
                 const data = await res.json();
 
+                console.log('DATA', data);
                 data.forEach(item => {
                     kelurahanSelect.innerHTML += `
                     <option value="${item.code}">
@@ -932,7 +932,7 @@
 
         // GPS
         function initGPS() {
-            console.log("initGPS dipanggil");
+            // console.log("initGPS dipanggil");
             if (!navigator.geolocation) return;
 
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -1209,9 +1209,9 @@
                             alamatFinal = `${jalan}, ${wilayahBaru}`;
                         }
 
-                        console.log("alamatLama:", alamatLama);
-                        console.log("lastKelurahan:", lastKelurahan);
-                        console.log("includes?", alamatLama.includes(lastKelurahan));
+                        // console.log("alamatLama:", alamatLama);
+                        // console.log("lastKelurahan:", lastKelurahan);
+                        // console.log("includes?", alamatLama.includes(lastKelurahan));
 
                         isAutoUpdate = true;
                         alamatInput.value = alamatFinal;
@@ -1342,7 +1342,6 @@
             return kota.toLowerCase().includes("semarang");
         }
 
-
         function tampilkanSemuaKuliner() {
             clearMarkers();
 
@@ -1401,8 +1400,8 @@
 
             let current = lat + ',' + lng;
 
-            console.log(current);
-            console.log(lastCheckedLatLng);
+            // console.log(current);
+            // console.log(lastCheckedLatLng);
             if (current === lastCheckedLatLng) return;
             lastCheckedLatLng = current;
 
@@ -1705,11 +1704,11 @@
 
         $('#addForm').on('submit', async function(e) {
 
-            console.log(isLokasiValid);
+            // console.log(isLokasiValid);
 
             e.preventDefault();
             await cekLokasi();
-            console.log(isLokasiValid);
+            // console.log(isLokasiValid);
 
             if (!isLokasiValid) {
                 Swal.fire({
