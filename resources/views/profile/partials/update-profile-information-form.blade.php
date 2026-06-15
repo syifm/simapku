@@ -18,7 +18,7 @@
         @csrf
         @method('patch')
         <!-- Foto Profil -->
-        <div class="flex justify-center mb-6">
+        <div class="flex flex-col items-center mb-6">
             <div class="relative">
                 <img id="preview"
                     src="{{ Auth::user()->foto && file_exists(storage_path('app/public/' . Auth::user()->foto))
@@ -36,20 +36,22 @@
                     </svg>
                 </label>
             </div>
+            <p id="fotoError" class="text-red-500 text-sm mt-2 hidden text-center"></p>
         </div>
 
         <!-- Nama -->
         <div>
             <x-input-label for="nama" :value="__('Nama')" />
             <x-text-input id="nama" name="nama" type="text" class="mt-1 block w-full bg-white"
-                :value="old('nama', $user->nama)" />
+                :value="old('nama', $user->nama)" required />
             <x-input-error class="mt-2" :messages="$errors->get('nama')" />
         </div>
 
         <!-- Email -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)"
+                required />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             {{-- @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
@@ -97,23 +99,69 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+
+        const fotoInput = document.getElementById('foto');
+        const fotoError = document.getElementById('fotoError');
+        const preview = document.getElementById('preview');
+
+        const defaultPreview = preview.src;
+
+        function previewImage(input) {
+            const file = input.files[0];
+
+            fotoError.classList.add('hidden');
+            fotoError.textContent = '';
+
+            if (!file) return;
+
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                showError('Format dokumen tidak sesuai (JPG, JPEG, PNG)');
+                resetInput();
+                return;
+            }
+
+            if (file.size > MAX_SIZE) {
+                showError('Ukuran foto maksimal 2 MB');
+                resetInput();
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function showError(message) {
+            fotoError.textContent = message;
+            fotoError.classList.remove('hidden');
+        }
+
+        function resetInput() {
+            fotoInput.value = '';
+            preview.src = defaultPreview;
+        }
     </script>
 
     @if (session('status') === 'profile-updated')
         <script>
             window.onload = function() {
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Profil telah diperbarui',
-                        timer: 2000,
-                        showConfirmButton: false,
-                        timerProgressBar: true
-                    });
-                } else {
-                    alert('Profil telah diperbarui');
-                }
+                // if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Profil berhasil diperbarui',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                });
+                // } 
             };
         </script>
     @endif

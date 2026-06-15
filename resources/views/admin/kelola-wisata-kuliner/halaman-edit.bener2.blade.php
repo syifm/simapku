@@ -791,7 +791,7 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai.');
                 resetInput();
                 return;
             }

@@ -25,7 +25,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -888,7 +888,7 @@
         // }
 
 
-        
+
 
         // function konfirmasiHapusKategori(id, nama, totalWisata) {
         //     if (totalWisata > 0) {
@@ -1030,7 +1030,7 @@
         //     document.getElementById('detailFasilitas').classList.remove('hidden');
         // }
 
-        
+
 
         // function konfirmasiHapusFasilitas(id, nama, totalWisata) {
         //     if (totalWisata > 0) {
@@ -1077,7 +1077,7 @@
         //             });
         //     });
         // }
-        
+
         // function ubahStatusOperasional(id, statusSekarang) {
         //     let confirmText = '';
         //     let denyText = '';
@@ -1115,8 +1115,6 @@
         //         }
         //     });
         // }
-
-        
     </script>
 </body>
 

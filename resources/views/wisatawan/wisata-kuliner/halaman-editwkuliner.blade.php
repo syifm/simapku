@@ -223,7 +223,7 @@
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
-                            
+
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <!-- Latitude -->
@@ -347,7 +347,7 @@
                             <div>
                                 <label
                                     class="block text-sm font-medium text-gray-800 mb-1"><span>Fasilitas</span></label>
-                                <select id="selectmk" name="id_fasilitas[]"
+                                <select id="selectfasilitas" name="id_fasilitas[]"
                                     class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     aria-label="Default select example">
 
@@ -533,7 +533,7 @@
 
                                 <p class="text-xs
                                         text-gray-600 mt-2">
-                                    Format: JPG, JPEG, PNG | Max: 5MB
+                                    Format: JPG, JPEG, PNG | Max: 5 MB
                                 </p>
                             </div>
 
@@ -712,7 +712,7 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai.');
                 resetInput();
                 return;
             }
@@ -1492,8 +1492,8 @@
                 text: @json($wisataKuliner->nama)
             };
 
-            let option = new Option(selectedWisata.text, selectedWisata.id, true, true);
-            $('#selectmhs').append(option).trigger('change');
+            // let option = new Option(selectedWisata.text, selectedWisata.id, true, true);
+            // $('#selectmhs').append(option).trigger('change');
 
             $('#nama').val(selectedWisata.text);
 
@@ -1550,8 +1550,8 @@
             //     }
             // });
 
-            $("#selectmk").attr("multiple", "multiple");
-            $("#selectmk").select2({
+            $("#selectfasilitas").attr("multiple", "multiple");
+            $("#selectfasilitas").select2({
                 allowClear: true,
                 tags: true,
 
@@ -1581,7 +1581,7 @@
 
                 ajax: {
                     url: function() {
-                        return "{{ url('selectmk') }}/" + $("#selectmhs").val();
+                        return "{{ url('selectfasilitas') }}/" + $("#selectmhs").val();
                     },
                     data: function(params) {
                         return {
@@ -1606,7 +1606,7 @@
 
             selectedFasilitas.forEach(function(f) {
                 let option = new Option(f.text, f.id, true, true);
-                $('#selectmk').append(option).trigger('change');
+                $('#selectfasilitas').append(option).trigger('change');
             });
 
 
@@ -1671,12 +1671,12 @@
             // $("#selectmhs").change(function() {
             //     var idmhs = $("#selectmhs").val();
 
-            //     $('#selectmk').val(null).trigger("change");
+            //     $('#selectfasilitas').val(null).trigger("change");
             //     $('#selectkategori').val(null).trigger("change");
 
             //     if (idmhs) {
             //         $.get("{{ url('ngampumk') }}/" + idmhs, function(data) {
-            //             $('#selectmk').html(data).trigger('change');
+            //             $('#selectfasilitas').html(data).trigger('change');
             //         });
 
             //         $.get("{{ url('ngampukategori') }}/" + idmhs, function(data) {
@@ -1716,7 +1716,7 @@
             //     //         $("#saveBtn").html('SIMPAN').removeAttr('disabled');
             //     //         if (response.status) {
             //     //             $('#selectkategori').val(null).trigger("change")
-            //     //             $('#selectmk').val(null).trigger("change")
+            //     //             $('#selectfasilitas').val(null).trigger("change")
             //     //             $('#selectmhs').val(null).trigger("change")
             //     //             alert(response.message);
             //     //         }

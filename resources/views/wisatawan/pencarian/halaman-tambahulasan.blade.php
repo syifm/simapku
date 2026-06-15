@@ -194,7 +194,7 @@
                 </div>
             </div> --}}
             <div class="container">
-                <label class="font-medium">Harga</label>
+                <label class="text-sm">Harga</label>
 
                 <div class="range-slider-hargaulasan flex justify-between items-center">
                     <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
@@ -243,7 +243,7 @@
                 </div>
 
                 <p class="text-xs text-gray-600 mt-2">
-                    Format: JPG, JPEG, PNG | Max: 5MB
+                    Format: JPG, JPEG, PNG | Max: 5 MB
                 </p>
             </div>
 
@@ -296,8 +296,8 @@
 
                     Swal.fire({
                         icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Ulasan berhasil disimpan',
+                        title: 'Berhasil',
+                        text: 'Ulasan berhasil diajukan',
                         timer: 2000,
                         showConfirmButton: false
                     });
@@ -350,6 +350,54 @@
             });
     });
 
+    // Foto 
+    const fotoInput = document.getElementById('foto_ulasan');
+    const fotoError = document.getElementById('fotoError');
+    const previewWrapper = document.getElementById('previewWrapper');
+    const fotoPreview = document.getElementById('fotoPreview');
+
+    const MAX_SIZE = 5 * 1024 * 1024;
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    fotoInput.addEventListener('change', function() {
+        const file = this.files[0];
+
+        fotoError.classList.add('hidden');
+        fotoError.textContent = '';
+        previewWrapper.classList.add('hidden');
+
+        if (!file) return;
+
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            showError('Format dokumen tidak sesuai');
+            resetInput();
+            return;
+        }
+
+        if (file.size > MAX_SIZE) {
+            showError('Ukuran foto terlalu besar');
+            resetInput();
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            fotoPreview.src = e.target.result;
+            previewWrapper.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function showError(message) {
+        fotoError.textContent = message;
+        fotoError.classList.remove('hidden');
+    }
+
+    function resetInput() {
+        fotoInput.value = '';
+        fotoPreview.src = '';
+    }
+
     // function openModal(id) {
     //     kulinerAktif = id
     //     document.getElementById('id_wisata_kuliner').value = id
@@ -387,90 +435,7 @@
     //     document.getElementById('modalUlasan').classList.remove('hidden')
     //     document.body.style.overflow = 'hidden'
     // }
-    function klikUlasan(id) {
-        kulinerAktif = id
-        document.getElementById('id_wisata_kuliner').value = id
-        fetch(`/wisatawan/ulasan/modalulasan/${id}`)
-            .then(res => res.json())
-            .then(data => {
 
-                if (data && data.id_ulasan) {
-                    document.getElementById('ulasan').value = data.ulasan;
-                    document.getElementById('penilaian').value = data.penilaian;
-
-                    document.querySelector('.min-price-hargaulasan').value =
-                        data.harga_min ?? 0;
-
-                    document.querySelector('.max-price-hargaulasan').value =
-                        data.harga_max ?? 500000;
-
-                    document.querySelector('.min-input-hargaulasan').value =
-                        data.harga_min ?? 0;
-
-                    document.querySelector('.max-input-hargaulasan').value =
-                        data.harga_max ?? 500000;
-
-                    updateProgressHargaulasan();
-                    // document.getElementById('harga_per_orang').value =
-                    //     data.harga_min + "-" + data.harga_max;
-                    const statusBox = document.getElementById('statusUlasan');
-                    const submitBtn = document.querySelector(
-                        '#formUlasan button[type="submit"]'
-                    );
-
-                    // statusBox.classList.add('hidden');
-                    // document.getElementById('ulasan').readOnly = false;
-                    // submitBtn.classList.remove('hidden');
-                    statusBox.classList.add('hidden');
-                    setReadonlyUlasan(false);
-
-                    setRatingStars(data.penilaian);
-
-                    if (data.status === 'Belum Diverifikasi') {
-
-                        statusBox.classList.remove('hidden');
-                        statusBox.className =
-                            'mb-4 rounded-lg p-3 bg-yellow-100 text-yellow-700';
-
-                        statusBox.innerHTML =
-                            'Ulasan sedang menunggu verifikasi admin';
-
-                        // document.getElementById('ulasan').readOnly = true;
-                        setReadonlyUlasan(true);
-                    } else if (data.status === 'Ditolak') {
-
-                        statusBox.classList.remove('hidden');
-                        statusBox.className =
-                            'mb-4 rounded-lg p-3 bg-red-100 text-red-700';
-
-                        statusBox.innerHTML =
-                            'Ulasan ditolak. Silakan perbaiki dan kirim ulang.';
-                    } else if (data.status === 'Disetujui') {
-
-                        statusBox.classList.remove('hidden');
-                        statusBox.className =
-                            'mb-4 rounded-lg p-3 bg-green-100 text-green-700';
-
-                        statusBox.innerHTML =
-                            'Ulasan telah disetujui.';
-                    }
-
-                    if (data.foto_ulasan) {
-                        document.getElementById('previewWrapper').classList.remove('hidden');
-                        document.getElementById('fotoPreview').src = `/storage/${data.foto_ulasan}`;
-                    }
-                } else {
-                    document.getElementById('formUlasan').reset();
-                    setRatingStars(0);
-                }
-
-            })
-            .catch(err => {
-                console.error('Tidak dapat mengambil ulasan:', err);
-            });
-        document.getElementById('modalUlasan').classList.remove('hidden')
-        document.body.style.overflow = 'hidden'
-    }
 
     // function updateProgressHarga() {
 

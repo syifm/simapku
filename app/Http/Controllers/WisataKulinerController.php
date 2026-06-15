@@ -941,9 +941,7 @@ class WisataKulinerController extends Controller
         // return redirect()->route('kelolawisatakuliner')->with('success', 'Wisata Kuliner berhasil disimpan');
     }
 
-    public function ubahStatusOperasional(Request $request, int $id)
-
-
+    public function ubahStatusOperasional(int $id, Request $request)
     {
         $kuliner = WisataKuliner::findOrFail($id);
 
@@ -955,14 +953,18 @@ class WisataKulinerController extends Controller
 
         if (in_array($statusBaru, ['Aktif', 'Tutup Sementara', 'Tutup Permanen'])) {
 
-            $kuliner->status_operasional = $statusBaru;
+            // $kuliner->status_operasional = $statusBaru;
 
-            $kuliner->waktu_diubah = $waktu_diubah;
+            // $kuliner->waktu_diubah = $waktu_diubah;
 
-            $kuliner->save();
+            // $kuliner->save();
+            $kuliner->update([
+                'status_operasional' => $statusBaru,
+                'waktu_diubah' => $waktu_diubah,
+            ]);
         }
 
-        return back()->with('success', 'Status operasional wisata kuliner berhasil diubah');
+        return back()->with('success', 'Status operasional wisata kuliner berhasil diperbarui');
     }
 
     // public function hapus(int $id)
@@ -1813,7 +1815,7 @@ class WisataKulinerController extends Controller
         return view('wisatawan.pencarian.hasil-pencarian', compact('data', 'kategori', 'fasilitas', 'keyword', 'isFallback', 'favoritIds', 'rawJarak', 'rawHarga', 'rawRating', 'rawKategori', 'rawFasilitas'));
     }
 
-    private function hitungWSM($data, $request, $kategoriFilter, $fasilitasFilter, $kategoriMatchMap, $fasilitasMatchMap)
+    public function hitungWSM($data, $request, $kategoriFilter, $fasilitasFilter, $kategoriMatchMap, $fasilitasMatchMap)
     {
         $rawJarak     = $request->bobot_jarak;
         $rawHarga     = $request->bobot_harga;
@@ -1879,6 +1881,22 @@ class WisataKulinerController extends Controller
 
         return $data;
     }
+
+    public function dugderan()
+    {
+        return view('event.dugderan');
+    }
+
+    public function kulinerkauman()
+    {
+        return view('event.kulinerkauman');
+    }
+
+    public function semawis()
+    {
+        return view('event.semawis');
+    }
+
 
     // public function tampilkanWisataKuliner(Request $request, int $id)
     // {

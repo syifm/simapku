@@ -472,9 +472,10 @@
                                     <div>
                                         <label class="block text-xs font-semibold mb-1">
                                             Asal Kuliner
+                                            <span class="text-red-500 font-bold">*</span>
                                         </label>
 
-                                        <select id="selectAsalKuliner" name="asal_kuliner" class="w-full">
+                                        <select id="selectAsalKuliner" name="asal_kuliner" class="w-full" required>
 
                                             <option value=""></option>
 
@@ -539,7 +540,7 @@
                                 </div>
 
                                 <p class="text-xs text-gray-600 mt-2">
-                                    Format: JPG, JPEG, PNG | Max: 5MB
+                                    Format: JPG, JPEG, PNG | Max: 5 MB
                                 </p>
                             </div>
 
@@ -799,7 +800,7 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai');
                 resetInput();
                 return;
             }
@@ -846,8 +847,8 @@
         let lastKodepos = "";
         let isFirstLoad = true;
         let lastValidPosition = {
-            lat: -6.969054045894555,
-            lng: 110.40926002563694
+            lat: -6.969293174776291,
+            lng: 110.42436387257949
         };
         const latInput = document.getElementById('latitude');
         const lngInput = document.getElementById('longitude');
@@ -864,8 +865,8 @@
         }
 
         let defaultPosition = {
-            lat: -6.969054045894555,
-            lng: 110.40926002563694
+            lat: -6.969293174776291,
+            lng: 110.42436387257949
         };
 
         // if (navigator.geolocation) {

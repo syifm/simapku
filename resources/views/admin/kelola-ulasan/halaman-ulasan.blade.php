@@ -28,7 +28,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -165,7 +165,7 @@
                                                         <span class="ml-1">Detail</span>
                                                     </button>
                                                     <button
-                                                        onclick="klikTombolStatus(
+                                                        onclick="klikStatus(
                                                                 {{ $ulasan->id_ulasan }},
                                                                 '{{ $ulasan->status_penampilan }}'
                                                             )"
@@ -291,7 +291,7 @@
         @endpush
 
         <script>
-            function KlikTombolDetail(id) {
+            function klikDetail(id) {
                 fetch(`/admin/kelolaulasan/detail/${id}`)
                     .then(response => response.json())
                     .then(data => {
@@ -339,7 +339,7 @@
                 document.getElementById('detailUlasan').classList.add('hidden');
             }
 
-            function klikTombolStatus(id, status) {
+            function klikStatus(id, status) {
                 let statusBaru = '';
                 let pertanyaan = '';
 
@@ -375,7 +375,7 @@
                             .then(data => {
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Berhasil!',
+                                    title: 'Berhasil',
                                     text: data.message,
                                     timer: 1500,
                                     showConfirmButton: false

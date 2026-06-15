@@ -369,7 +369,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -406,9 +406,9 @@
     @include('layouts.sidebar-wisatawantidaklogin')
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
-        <div class="flex flex-col gap-2">
-            <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
-                @csrf
+        <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
+                {{-- @csrf --}}
+                <input type="hidden" name="terdekat" id="inputTerdekat" value="0">
                 <div class="relative w-full flex justify-center mb-6">
                     <div class="w-full max-w-2xl z-20">
                         <div
@@ -455,13 +455,13 @@
                                             <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
                                             <input type="number" name="jarak"
                                                 class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
-                                                value="10" min="0" max="10" />
+                                                value="20" min="0" max="20" />
                                         </div>
 
                                         <!-- .range -->
                                         <div class="range-jarak-dua">
-                                            <input type="range" class="input-jarak-dua" value="10" min="0"
-                                                max="10" />
+                                            <input type="range" class="input-jarak-dua" value="20" min="0"
+                                                max="20" />
 
                                             <div class="slider-jarak-dua">
                                                 <div class="progress-jarak-dua"></div>
@@ -640,7 +640,7 @@
                                                     class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
                                                     <input type="number" name="bobot_fasilitas"
                                                         class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
-                                                        value="5" min="0" max="100">
+                                                        value="0" min="0" max="100">
                                                     <span class="text-gray-400 text-xs pr-1">%</span>
                                                 </div>
                                             </div>
@@ -680,12 +680,6 @@
                     </div>
                 </div>
             </form>
-
-            {{-- </div>
-            </div> --}}
-
-
-        </div>
 
         <div class="mb-8">
             <p class="text-lg text-black font-bold mt-1 mb-4 text-center">
@@ -850,7 +844,7 @@
             <div class="flex gap-3 pb-2 overflow-visible">
 
                 {{-- Semua --}}
-                <a href="{{ route('beranda-Wisatawan') }}"
+                <a href="{{ route('beranda.tidaklogin') }}"
                     class="inline-flex items-center gap-1.5 border px-3 py-1.5 rounded-lg shadow whitespace-nowrap {{ !$kategoriDipilih ? 'bg-[#FFA319] text-white' : 'bg-white text-black' }}">
 
                     Semua
@@ -876,7 +870,7 @@
                         class="hidden absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg w-56 z-50">
 
                         @foreach ($kategoriTempat as $item)
-                            <a href="{{ route('beranda-Wisatawan', [
+                            <a href="{{ route('beranda.tidaklogin', [
                                 'kategori' => $item->id_kategori,
                             ]) }}"
                                 class="block px-4 py-3 
@@ -913,7 +907,7 @@
                         class="hidden absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg w-56 z-50">
 
                         @foreach ($jenisHidangan as $item)
-                            <a href="{{ route('beranda-Wisatawan', [
+                            <a href="{{ route('beranda.tidaklogin', [
                                 'kategori' => $item->id_kategori,
                             ]) }}"
                                 class="block px-4 py-3
@@ -948,7 +942,7 @@
                         class="hidden absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg w-56 z-50">
 
                         @foreach ($asalKuliner as $item)
-                            <a href="{{ route('beranda-Wisatawan', [
+                            <a href="{{ route('beranda.tidaklogin', [
                                 'kategori' => $item->id_kategori,
                             ]) }}"
                                 class="block px-4 py-3
@@ -962,14 +956,6 @@
                     </div>
 
                 </div>
-
-                {{-- Rekomendasi untuk Anda --}}
-                {{-- <div class="relative">
-                    <a href="{{ route('beranda-Wisatawan', ['rekomendasi' => 1]) }}"
-                        class="inline-flex items-center gap-1.5 border px-3 py-1.5 rounded-lg shadow whitespace-nowrap {{ request('rekomendasi') == 1 ? 'bg-[#FFA319] text-white' : 'bg-white text-black' }}">
-                        <span>Rekomendasi untuk Anda</span>
-                    </a>
-                </div> --}}
 
             </div>
 
@@ -1036,17 +1022,6 @@
                             {{-- </p> --}}
 
                         </div>
-                        {{-- @if ($isHasilCosine && isset($item->score_cosine))
-                            <div
-                                class="px-3 pb-3 pt-2 border-t border-gray-100 flex justify-between items-center bg-amber-50/60">
-                                <span class="text-[11px] text-gray-500 font-medium">Tingkat Kemiripan:</span>
-                                <span
-                                    class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-bold shadow-sm">
-                                    {{ number_format($item->score_cosine * 100, 0) }}% Cocok
-                                </span>
-                            </div>
-                        @endif --}}
-                        {{-- </a> --}}
                     </div>
                 @endforeach
             </div>
@@ -1331,7 +1306,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
 
-    <script>
+    {{-- <script>
         // document.addEventListener("DOMContentLoaded", function() {
         //     const inputs = document.querySelectorAll(".input-bobot");
         //     const labelTotal = document.getElementById("labelTotalBobot");
@@ -2011,8 +1986,8 @@
                     e.target.submit();
                 },
                 function() {
-                    document.getElementById("lat").value = -6.969054045894555;
-                    document.getElementById("lng").value = 110.42432058292049;
+                    document.getElementById("lat").value = -6.969293174776291,
+                        document.getElementById("lng").value = 110.42436387257949
 
                     e.target.submit();
                 }
@@ -2046,17 +2021,10 @@
                         //     maxRating.value = 5;
                         // }
 
-                        const params = new URLSearchParams(window.location.search);
-
-                        params.set('terdekat', 1);
-                        params.set("lat", lat);
-                        params.set("lng", lng);
-                        // params.set("jarak", 5);
-                        // params.set("minharga", 0);
-                        // params.set("maxharga", 500000);
-                        // params.set("minrating", 0);
-                        // params.set("maxrating", 5);
-                        // params.set("keyword", "Kuliner Terdekat");
+                        document.getElementById('lat').value = lat;
+                        document.getElementById('lng').value = lng;
+                        document.getElementById('inputTerdekat').value = 1;
+                        document.getElementById('formCari').submit();
 
                         window.location.href = "/wisata-kuliner-cari?" + params.toString();
                     },
@@ -2082,8 +2050,8 @@
         function initApp() {
 
             const semarang = {
-                lat: -6.9667,
-                lng: 110.4167
+                lat: -6.969293174776291,
+                lng: 110.42436387257949
             };
 
             const map = new google.maps.Map(document.getElementById("map"), {
@@ -2282,6 +2250,876 @@
         //     window.location.href =
         //         window.location.pathname + '?' + params.toString();
         // }
+    </script> --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = document.querySelectorAll(".input-bobot");
+            const labelTotal = document.getElementById("labelTotalBobot");
+            const pesanError = document.getElementById("pesanErrorBobot");
+            const btnCari = document.getElementById("btnCariBobot");
+            const formCari = document.getElementById("formCari");
+
+            function updateBobotLimits() {
+                let totalSekarang = 0;
+
+                // 1. Sanitasi input: Bersihkan format minus atau angka kosong
+                inputs.forEach(input => {
+                    // Cek jika user memasukkan angka nol beruntun (0000)
+                    if (input.value.length > 1 && input.value.startsWith('0')) {
+                        input.value = parseInt(input.value) || 0;
+                    }
+
+                    let val = parseInt(input.value);
+                    if (isNaN(val) || val < 0) {
+                        input.value = 0;
+                    }
+                });
+
+                // 2. Hitung total akumulasi bobot
+                inputs.forEach(input => {
+                    totalSekarang += parseInt(input.value) || 0;
+                });
+
+                // 3. Batasi jika total input melebihi angka 100% secara paksa
+                if (totalSekarang > 100) {
+                    const activeInput = document.activeElement;
+                    if (activeInput && activeInput.classList.contains('input-bobot')) {
+                        let totalLain = 0;
+                        inputs.forEach(input => {
+                            if (input !== activeInput) totalLain += parseInt(input.value) || 0;
+                        });
+                        activeInput.value = 100 - totalLain;
+                    }
+
+                    totalSekarang = 0;
+                    inputs.forEach(input => {
+                        totalSekarang += parseInt(input.value) || 0;
+                    });
+                }
+
+                // 4. Perbarui Teks Persentase di UI
+                labelTotal.textContent = totalSekarang + "%";
+
+                // 5. Logika Validasi Tombol & Tampilan Pesan Error Secara Real-Time
+                if (totalSekarang === 100) {
+                    // labelTotal.className = "text-base font-bold text-green-600";
+                    // pesanError.classList.add("hidden");
+
+                    // Aktifkan tombol kembali
+                    if (btnCari) btnCari.disabled = false;
+                } else {
+                    // labelTotal.className = "text-base font-bold text-red-500";
+
+                    // Kunci tombol agar tidak bisa diklik semenjak user mengetik data salah
+                    if (btnCari) btnCari.disabled = true;
+                }
+
+                // 6. Set dinamis batas maksimal input tersisa
+                inputs.forEach(input => {
+                    const nilaiInputIni = parseInt(input.value) || 0;
+                    let sisaKuota = 100 - (totalSekarang - nilaiInputIni);
+                    if (sisaKuota < 0) sisaKuota = 0;
+                    input.max = sisaKuota;
+                    if (totalSekarang >= 100 && nilaiInputIni === 0) {
+                        input.max = 0;
+                    }
+                });
+            }
+
+            // Pasang Event Listener ke seluruh kolom input bobot
+            inputs.forEach(input => {
+                input.addEventListener("input", updateBobotLimits);
+
+                // Mempermudah user mengubah angka saat kolom diklik (auto-select)
+                input.addEventListener("focus", function() {
+                    this.select();
+                });
+            });
+
+            // Validasi double-check saat form dikirimkan
+            if (formCari) {
+                formCari.addEventListener("submit", function(e) {
+                    let totalAkhir = 0;
+                    inputs.forEach(input => {
+                        totalAkhir += parseInt(input.value) || 0;
+                    });
+
+                    if (totalAkhir !== 100) {
+                        e.preventDefault(); // Gagalkan pengiriman data ke server Laravel
+
+                        pesanError.textContent =
+                            `Total bobot harus tepat 100%`;
+                        pesanError.classList.remove("hidden");
+
+                        pesanError.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }
+                });
+            }
+
+            // Jalankan fungsi saat pertama kali halaman dimuat
+            updateBobotLimits();
+        });
+
+        // slider Jarak
+        const sliderJarakDua = document.querySelector(".range-slider-jarak-dua");
+        const progressJarakDua = sliderJarakDua.querySelector(".progress-jarak-dua");
+        const nilaiJarakDua = sliderJarakDua.querySelector(".nilai-jarak-dua");
+        const inputJarakDua = sliderJarakDua.querySelector(".input-jarak-dua");
+
+        const updateProgressJarakDua = () => {
+            const valueJarakDua = parseInt(inputJarakDua.value);
+            const minJarakDua = parseInt(inputJarakDua.min);
+            const maxJarakDua = parseInt(inputJarakDua.max);
+
+            const totalRangeJarakDua = maxJarakDua - minJarakDua;
+            const widthJarakDua = ((valueJarakDua - minJarakDua) / totalRangeJarakDua) * 100;
+
+            progressJarakDua.style.width = widthJarakDua + "%";
+            progressJarakDua.style.left = "0%";
+
+            nilaiJarakDua.value = valueJarakDua;
+        };
+
+        inputJarakDua.addEventListener("input", () => {
+            updateProgressJarakDua();
+        });
+
+        nilaiJarakDua.addEventListener("input", () => {
+            let valJarakDua = parseInt(nilaiJarakDua.value);
+            const minJarakDua = parseInt(inputJarakDua.min);
+            const maxJarakDua = parseInt(inputJarakDua.max);
+
+            // Clamp value dalam batas min-max
+            if (valJarakDua < minJarakDua) valJarakDua = minJarakDua;
+            if (valJarakDua > maxJarakDua) valJarakDua = maxJarakDua;
+
+            inputJarakDua.value = valJarakDua;
+            updateProgressJarakDua();
+        });
+
+        updateProgressJarakDua();
+
+        // slider Harga
+        const slider = document.querySelector(".range-slider");
+        const progress = slider.querySelector(".progress");
+        const minPriceInput = slider.querySelector(".min-price");
+        const maxPriceInput = slider.querySelector(".max-price");
+        const minInput = slider.querySelector(".min-input");
+        const maxInput = slider.querySelector(".max-input");
+
+        const updateProgress = () => {
+            const minValue = parseInt(minInput.value);
+            const maxValue = parseInt(maxInput.value);
+
+            // get the total range of the slider
+            const range = maxInput.max - minInput.min;
+            // get the selected value range of the progress
+            const valueRange = maxValue - minValue;
+            // calculate the width percentage
+            const width = (valueRange / range) * 100;
+            // calculate the min thumb offset
+            const minOffset = ((minValue - minInput.min) / range) * 100;
+
+            // update the progress width
+            progress.style.width = width + "%";
+            // update the progress left position
+            progress.style.left = minOffset + "%";
+
+            // update the number inputs
+            minPriceInput.value = minValue;
+            maxPriceInput.value = maxValue;
+        };
+
+        const updateRange = (event) => {
+            const input = event.target;
+
+            let min = parseInt(minPriceInput.value);
+            let max = parseInt(maxPriceInput.value);
+
+            if (input === minPriceInput && min > max) {
+                max = min;
+                maxPriceInput.value = max;
+            } else if (input === maxPriceInput && max < min) {
+                min = max;
+                minPriceInput.value = min;
+            }
+
+            minInput.value = min;
+            maxInput.value = max;
+
+            updateProgress();
+        };
+
+        minPriceInput.addEventListener("input", updateRange);
+        maxPriceInput.addEventListener("input", updateRange);
+
+        minInput.addEventListener("input", () => {
+            if (parseInt(minInput.value) >= parseInt(maxInput.value)) {
+                maxInput.value = minInput.value;
+            }
+            updateProgress();
+        });
+
+        maxInput.addEventListener("input", () => {
+            if (parseInt(maxInput.value) <= parseInt(minInput.value)) {
+                minInput.value = maxInput.value;
+            }
+            updateProgress();
+        });
+
+        let isDragging = false;
+        let startOffsetX;
+
+        progress.addEventListener("mousedown", (e) => {
+            e.preventDefault(); // prevent text selection
+
+            isDragging = true;
+
+            startOffsetX = e.clientX - progress.getBoundingClientRect().left;
+
+            slider.classList.toggle("dragging", isDragging);
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                // get the size and position of the slider
+                const sliderRect = slider.getBoundingClientRect();
+                const progressWidth = parseFloat(progress.style.width || 0);
+
+                // calculate the new left position for the progress element
+                let newLeft =
+                    ((e.clientX - sliderRect.left - startOffsetX) / sliderRect.width) * 100;
+
+                // ensure the progress is not exceeding the slider boundaries
+                newLeft = Math.min(Math.max(newLeft, 0), 100 - progressWidth);
+
+                // update the progress position
+                progress.style.left = newLeft + "%";
+
+                // calculate the new min thumb position
+                const range = maxInput.max - minInput.min;
+                const newMin = Math.round((newLeft / 100) * range) + parseInt(minInput.min);
+                const newMax = newMin + parseInt(maxInput.value) - parseInt(minInput.value);
+
+                // update the min input
+                minInput.value = newMin;
+                maxInput.value = newMax;
+
+                // update the progress
+                updateProgress();
+            }
+            slider.classList.toggle("dragging", isDragging);
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (isDragging) {
+                isDragging = false;
+            }
+            slider.classList.toggle("dragging", isDragging);
+        });
+
+        updateProgress();
+
+        // slider Penilaian
+        const sliderRating = document.querySelector(".range-slider-rating");
+        const progressRating = sliderRating.querySelector(".progress-rating");
+        const minRatingInput = sliderRating.querySelector(".min-rating");
+        const maxRatingInput = sliderRating.querySelector(".max-rating");
+        const minInputRating = sliderRating.querySelector(".min-input-rating");
+        const maxInputRating = sliderRating.querySelector(".max-input-rating");
+
+        const updateProgressRating = () => {
+            const minValueRating = parseInt(minInputRating.value);
+            const maxValueRating = parseInt(maxInputRating.value);
+
+            const totalRangeRating = maxInputRating.max - minInputRating.min;
+            const valueRangeRating = maxValueRating - minValueRating;
+
+            const widthRating = (valueRangeRating / totalRangeRating) * 100;
+            const minOffsetRating = ((minValueRating - minInputRating.min) / totalRangeRating) * 100;
+
+            progressRating.style.width = widthRating + "%";
+            progressRating.style.left = minOffsetRating + "%";
+
+            minRatingInput.value = minValueRating;
+            maxRatingInput.value = maxValueRating;
+        };
+
+        const updateRangeRating = (event) => {
+            const inputRating = event.target;
+
+            let minRating = parseInt(minRatingInput.value);
+            let maxRating = parseInt(maxRatingInput.value);
+
+            if (inputRating === minRatingInput && minRating > maxRating) {
+                maxRating = minRating;
+                maxRatingInput.value = maxRating;
+            } else if (inputRating === maxRatingInput && maxRating < minRating) {
+                minRating = maxRating;
+                minRatingInput.value = minRating;
+            }
+
+            minInputRating.value = minRating;
+            maxInputRating.value = maxRating;
+
+            updateProgressRating();
+        };
+
+        minRatingInput.addEventListener("input", updateRangeRating);
+        maxRatingInput.addEventListener("input", updateRangeRating);
+
+        minInputRating.addEventListener("input", () => {
+            if (parseInt(minInputRating.value) >= parseInt(maxInputRating.value)) {
+                maxInputRating.value = minInputRating.value;
+            }
+            updateProgressRating();
+        });
+
+        maxInputRating.addEventListener("input", () => {
+            if (parseInt(maxInputRating.value) <= parseInt(minInputRating.value)) {
+                minInputRating.value = maxInputRating.value;
+            }
+            updateProgressRating();
+        });
+
+        let isDraggingRating = false;
+        let startOffsetXRating;
+
+        progressRating.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+
+            isDraggingRating = true;
+            startOffsetXRating = e.clientX - progressRating.getBoundingClientRect().left;
+
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (isDraggingRating) {
+                const sliderRectRating = sliderRating.getBoundingClientRect();
+                const progressWidthRating = parseFloat(progressRating.style.width || 0);
+
+                let newLeftRating =
+                    ((e.clientX - sliderRectRating.left - startOffsetXRating) / sliderRectRating.width) * 100;
+
+                newLeftRating = Math.min(Math.max(newLeftRating, 0), 100 - progressWidthRating);
+
+                progressRating.style.left = newLeftRating + "%";
+
+                const totalRangeRating = maxInputRating.max - minInputRating.min;
+                const newMinRating = Math.round((newLeftRating / 100) * totalRangeRating) + parseInt(minInputRating
+                    .min);
+                const newMaxRating = newMinRating + parseInt(maxInputRating.value) - parseInt(minInputRating.value);
+
+                minInputRating.value = newMinRating;
+                maxInputRating.value = newMaxRating;
+
+                updateProgressRating();
+            }
+
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (isDraggingRating) {
+                isDraggingRating = false;
+            }
+            sliderRating.classList.toggle("dragging", isDraggingRating);
+        });
+
+        updateProgressRating();
+
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const hamburger = document.getElementById('hamburger');
+        //     const sidebar = document.querySelector('.sidebar');
+
+        //     if (!hamburger || !sidebar) return;
+
+        //     hamburger.addEventListener('click', () => {
+        //         sidebar.classList.toggle('expanded');
+        //     });
+        // });
+
+        const btnSearchKeyword = document.getElementById("btnSearchKeyword");
+        const searchBar = document.getElementById("searchBar");
+        const searchPanel = document.getElementById("searchPanel");
+
+        function updateKeywordButton() {
+
+            const keyword = searchBar.value.trim();
+
+            if (keyword !== '') {
+
+                btnSearchKeyword.disabled = false;
+
+                btnSearchKeyword.classList.remove(
+                    'cursor-not-allowed'
+                );
+
+                btnSearchKeyword.classList.add(
+                    'cursor-pointer'
+                );
+
+            } else {
+
+                btnSearchKeyword.disabled = true;
+
+                btnSearchKeyword.classList.remove(
+                    'cursor-pointer'
+                );
+
+                btnSearchKeyword.classList.add(
+                    'cursor-not-allowed'
+                );
+            }
+        }
+
+        searchBar.addEventListener(
+            'input',
+            updateKeywordButton
+        );
+
+        updateKeywordButton();
+
+        // function adaKriteria() {
+
+        //     const kategori =
+        //         document.getElementById('kategori')
+        //         .selectedOptions.length;
+
+        //     const fasilitas =
+        //         document.getElementById('fasilitas')
+        //         .selectedOptions.length;
+
+        //     const jarak =
+        //         parseInt(document.querySelector(
+        //             '[name="jarak"]'
+        //         ).value);
+
+        //     const minHarga =
+        //         parseInt(document.querySelector(
+        //             '[name="minharga"]'
+        //         ).value);
+
+        //     const maxHarga =
+        //         parseInt(document.querySelector(
+        //             '[name="maxharga"]'
+        //         ).value);
+
+        //     const minRating =
+        //         parseInt(document.querySelector(
+        //             '[name="minrating"]'
+        //         ).value);
+
+        //     const maxRating =
+        //         parseInt(document.querySelector(
+        //             '[name="maxrating"]'
+        //         ).value);
+
+        //     return (
+        //         kategori > 0 ||
+        //         fasilitas > 0 ||
+        //         jarak < 10 ||
+        //         minHarga > 0 ||
+        //         maxHarga < 500000 ||
+        //         minRating > 0 ||
+        //         maxRating < 5
+        //     );
+        // }
+
+        // const btnCariBobot =
+        //     document.getElementById("btnCariBobot");
+
+        const keyword =
+            searchBar.value.trim();
+
+        // const bolehCari =
+        //     totalSekarang === 100 &&
+        //     (
+        //         keyword !== '' ||
+        //         adaKriteria()
+        //     );
+
+        // btnCariBobot.disabled = !bolehCari;
+
+        searchBar.addEventListener("click", () => {
+            searchPanel.classList.toggle("hidden");
+        });
+
+        const advancedBtn = document.getElementById("advancedBtn");
+        const advancedFilter = document.getElementById("advancedFilter");
+
+        advancedBtn.addEventListener("click", () => {
+            advancedFilter.classList.toggle("hidden");
+        });
+
+        // const defaultText = 'Rekomendasi Kuliner';
+        // searchBar.addEventListener('blur', function() {
+        //     if (this.value.trim() === '') {
+        //         this.value = defaultText;
+        //     }
+        // });
+
+        document.addEventListener("click", function(e) {
+
+            if (!searchBar.contains(e.target) && !searchPanel.contains(e.target)) {
+                searchPanel.classList.add("hidden");
+            }
+
+        });
+
+        document.getElementById("formCari").addEventListener("submit", function(e) {
+            // if (searchBar.value.trim() === '') {
+            //     searchBar.value = defaultText;
+            // }
+            e.preventDefault();
+
+            const keyword = document.querySelector("input[name='keyword']").value.toLowerCase();
+
+            // const isTerdekat =
+            //     keyword.includes("terdekat") ||
+            //     keyword.includes("dekat") ||
+            //     keyword.includes("near");
+
+            // if (isTerdekat) {
+
+            //     if (!navigator.geolocation) {
+            //         Swal.fire({
+            //             icon: "error",
+            //             title: "GPS tidak tersedia",
+            //             text: "Silakan lakukan pencarian dengan keyword selain 'dekat' dan 'terdekat'",
+            //             showConfirmButton: false,
+            //             timer: 2000
+            //         });
+            //         return;
+            //     }
+
+            //     navigator.geolocation.getCurrentPosition(
+            //         function(position) {
+            //             const lat = position.coords.latitude;
+            //             const lng = position.coords.longitude;
+
+            //             inputJarakDua.value = 5;
+            //             nilaiJarakDua.value = 5;
+            //             updateProgressJarakDua();
+
+            //             minInput.value = 0;
+            //             maxInput.value = 500000;
+            //             minPriceInput.value = 0;
+            //             maxPriceInput.value = 500000;
+            //             updateProgress();
+
+            //             const minRating = document.querySelector(".min-rating");
+            //             const maxRating = document.querySelector(".max-rating");
+
+            //             if (minRating && maxRating) {
+            //                 minRating.value = 0;
+            //                 maxRating.value = 5;
+            //             }
+
+            //             document.getElementById("lat").value = lat;
+            //             document.getElementById("lng").value = lng;
+
+            //             e.target.submit();
+            //         },
+
+            //         function() {
+            //             Swal.fire({
+            //                 icon: "warning",
+            //                 title: 'Lokasi Tidak Tersedia',
+            //                 text: 'Silakan nyalakan GPS untuk mencari kuliner terdekat atau cari kuliner dengan keyword yang berbeda',
+            //                 showConfirmButton: false,
+            //                 timer: 2000
+            //             });
+            //         }
+            //     );
+
+            //     return;
+            // }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById("lat").value = position.coords.latitude;
+                    document.getElementById("lng").value = position.coords.longitude;
+
+                    e.target.submit();
+                },
+                function() {
+                    document.getElementById("lat").value = -6.969293174776291;
+                    document.getElementById("lng").value = 110.42436387257949;
+
+                    e.target.submit();
+                }
+            );
+        });
+
+        function klikKulinerTerdekat(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        // inputJarakDua.value = 5;
+                        // nilaiJarakDua.value = 5;
+                        // updateProgressJarakDua();
+
+                        // minInput.value = 0;
+                        // maxInput.value = 500000;
+                        // minPriceInput.value = 0;
+                        // maxPriceInput.value = 500000;
+                        // updateProgress();
+
+                        // const minRating = document.querySelector(".min-rating");
+                        // const maxRating = document.querySelector(".max-rating");
+
+                        // if (minRating && maxRating) {
+                        //     minRating.value = 0;
+                        //     maxRating.value = 5;
+                        // }
+
+                        document.getElementById('lat').value = lat;
+                        document.getElementById('lng').value = lng;
+
+                        // 2. Set input terdekat menjadi 1
+                        document.getElementById('inputTerdekat').value = 1;
+
+                        // 3. Submit form secara otomatis
+                        document.getElementById('formCari').submit();
+                        // document.getElementById('inputTerdekat').value = 1;
+                        // const params = new URLSearchParams(window.location.search);
+
+                        // params.set('terdekat', 1);
+
+                        // params.set("lat", lat);
+                        // params.set("lng", lng);
+
+                        // params.set("jarak", 5);
+                        // params.set("minharga", 0);
+                        // params.set("maxharga", 500000);
+                        // params.set("minrating", 0);
+                        // params.set("maxrating", 5);
+                        // params.set("keyword", "Kuliner Terdekat");
+
+                        window.location.href = "/wisata-kuliner-cari?" + params.toString();
+                    },
+                    function(error) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Lokasi Tidak Tersedia',
+                            text: 'Silakan nyalakan GPS Anda untuk mencari kuliner terdekat',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Mohon Maaf',
+                    text: 'Browser Anda tidak mendukung fitur untuk mengambil lokasi',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
+
+        function initApp() {
+
+            const semarang = {
+                lat: -6.969293174776291,
+                lng: 110.42436387257949
+            };
+
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: semarang,
+                zoom: 12,
+
+                disableDefaultUI: true,
+                gestureHandling: "none",
+
+                styles: [{
+                        featureType: "all",
+                        elementType: "labels",
+                        stylers: [{
+                            visibility: "off"
+                        }]
+                    },
+                    {
+                        featureType: "poi",
+                        stylers: [{
+                            visibility: "off"
+                        }]
+                    }
+                ]
+            });
+
+            new google.maps.Marker({
+                position: semarang,
+                map: map
+            });
+        }
+
+        function klikKategori(id) {
+            const semuaDropdown = [
+                'tempatDropdown',
+                'jenisDropdown',
+                'asalDropdown'
+            ];
+
+            semuaDropdown.forEach(dropdown => {
+
+                if (dropdown !== id) {
+                    document
+                        .getElementById(dropdown)
+                        .classList
+                        .add('hidden');
+                }
+
+            });
+
+            document
+                .getElementById(id)
+                .classList
+                .toggle('hidden');
+        }
+
+        document.addEventListener('click', function(e) {
+
+            if (!e.target.closest('.relative')) {
+                ['tempatDropdown', 'jenisDropdown', 'asalDropdown']
+                .forEach(id => {
+
+                    document
+                        .getElementById(id)
+                        .classList
+                        .add('hidden');
+
+                });
+            }
+
+        });
+
+        let map = null;
+        let marker = null;
+
+        function klikWisataKuliner(id) {
+            fetch(`/wisatawan/beranda/detail/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('modalTitleKuliner').textContent = data.nama;
+                    document.getElementById('alamat').textContent = data.alamat;
+                    document.getElementById('kecamatan').textContent = data.kecamatan;
+                    document.getElementById('kelurahan').textContent = data.kelurahan;
+                    document.getElementById('nomor_telepon').textContent = data.no_telp ?? '-';
+                    document.getElementById('deskripsi').textContent = data.deskripsi;
+                    document.getElementById('latitude').textContent = data.latitude;
+                    document.getElementById('longitude').textContent = data.longitude;
+                    document.getElementById('sertifikat_halal').textContent = data.sertifikat_halal;
+                    const status = document.getElementById('status_operasional');
+                    status.textContent = data.status_operasional;
+
+                    if (data.status_operasional === 'Aktif') {
+                        status.classList.add('text-green-600', 'font-semibold');
+                    } else if (data.status_operasional === 'Tutup Sementara') {
+                        status.classList.add('text-orange-500', 'font-semibold');
+                    } else if (data.status_operasional === 'Tutup Permanen') {
+                        status.classList.add('text-red-600', 'font-semibold');
+                    }
+
+                    const foto = document.getElementById('foto');
+
+                    if (data.foto) {
+                        foto.src = `/storage/${data.foto}`;
+                    } else {
+                        foto.src = `/storage/tidakadafoto.jpg`;
+                    }
+
+                    foto.classList.remove('hidden');
+
+                    const lat = parseFloat(data.latitude);
+                    const lng = parseFloat(data.longitude);
+
+                    const position = {
+                        lat: lat,
+                        lng: lng
+                    };
+
+                    // Fasilitas
+                    let fasilitas = data.fasilitas || [];
+                    let container = document.getElementById('detail_fasilitas');
+
+                    container.innerHTML = '';
+                    if (fasilitas.length > 0) {
+                        fasilitas.forEach(f => {
+                            let span = document.createElement('span');
+                            span.textContent = f.nama;
+
+                            span.style.display = 'inline-block';
+                            span.style.padding = '4px 4px';
+                            span.style.margin = '2px';
+                            span.style.backgroundColor = '#dddddd';
+                            span.style.borderRadius = '4px';
+                            span.style.fontSize = '12px';
+
+                            container.appendChild(span);
+                        });
+                    } else {
+                        container.textContent = '-';
+                    }
+
+                    // Kategori
+                    let kategori = data.kategori || [];
+                    let containerKategori = document.getElementById('detail_kategori');
+
+                    containerKategori.innerHTML = '';
+                    if (kategori.length > 0) {
+                        kategori.forEach(k => {
+                            let span = document.createElement('span');
+                            span.textContent = k.nama;
+
+                            span.style.display = 'inline-block';
+                            span.style.padding = '4px 4px';
+                            span.style.margin = '2px';
+                            span.style.backgroundColor = '#dddddd';
+                            span.style.borderRadius = '4px';
+                            span.style.fontSize = '12px';
+
+                            containerKategori.appendChild(span);
+                        });
+                    } else {
+                        containerKategori.textContent = '-';
+                    }
+
+                    document.getElementById('detailKuliner').classList.remove('hidden');
+
+                    if (!map) {
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            center: position,
+                            zoom: 16,
+                            mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                            clickableIcons: false,
+                        });
+
+                        marker = new google.maps.marker.AdvancedMarkerElement({
+                            position: position,
+                            map: map,
+                        });
+                    } else {
+                        map.setCenter(position);
+                        marker.position = position;
+                    }
+                });
+            document.body.style.overflow = 'hidden';
+        }
+
+        function tutupDetailKuliner() {
+            document.getElementById('detailKuliner').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
     </script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initApp&libraries=maps,marker&v=weekly&language=in"

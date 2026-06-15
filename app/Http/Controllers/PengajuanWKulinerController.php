@@ -257,8 +257,8 @@ class PengajuanWKulinerController extends Controller
         $wisata->fasilitas()->sync($fasilitasIds);
 
         return redirect($request->redirect ?? route('beranda-Wisatawan'))->with('swal', [
-            'title' => 'Pengajuan Berhasil',
-            'text' => 'Wisata kuliner berhasil diajukan dan menunggu verifikasi admin',
+            'title' => 'Berhasil',
+            'text' => 'Wisata Kuliner Berhasil Diajukan',
             'icon' => 'success'
         ]);
     }
@@ -696,35 +696,40 @@ class PengajuanWKulinerController extends Controller
             dd($e->getMessage());
         }
 
-        return redirect($request->from . '&detail=' . $id)->with('swal', [
-            'title' => 'Pembaruan Berhasil Diajukan',
-            'text' => 'Pembaruan wisata kuliner berhasil diajukan dan menunggu verifikasi admin',
+        // dd([
+        //     'from' => $request->from,
+        //     'redirect' => $request->from
+        // ]);
+
+        return redirect($request->from)->with('swal', [
+            'title' => 'Berhasil',
+            'text' => 'Wisata Kuliner Berhasil Diajukan',
             'icon' => 'success'
         ]);
     }
 
-    public function getngampu($id = null)
-    {
-        if (!$id || $id == "null") {
-            return '';
-        }
+    // public function getngampu($id = null)
+    // {
+    //     if (!$id || $id == "null") {
+    //         return '';
+    //     }
 
-        $mk = FasilitasWisataKuliner::with('fasilitas')
-            ->where('id_wisata_kuliner', $id)
-            ->get();
+    //     $mk = FasilitasWisataKuliner::with('fasilitas')
+    //         ->where('id_wisata_kuliner', $id)
+    //         ->get();
 
-        $data = '';
+    //     $data = '';
 
-        foreach ($mk as $row) {
-            if ($row->fasilitas) {
-                $data .= "<option value='{$row->id_fasilitas}' selected>
-                        {$row->fasilitas->nama}
-                      </option>";
-            }
-        }
+    //     foreach ($mk as $row) {
+    //         if ($row->fasilitas) {
+    //             $data .= "<option value='{$row->id_fasilitas}' selected>
+    //                     {$row->fasilitas->nama}
+    //                   </option>";
+    //         }
+    //     }
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
     public function selectmhs()
     {
@@ -733,7 +738,7 @@ class PengajuanWKulinerController extends Controller
         return response()->json($data);
     }
 
-    public function selectmk($id)
+    public function selectfasilitas($id)
     {
         $data = Fasilitas::where('nama', 'LIKE', '%' . request('q') . '%')
             ->paginate(10);

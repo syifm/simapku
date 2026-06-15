@@ -158,8 +158,7 @@
                                 </button>
 
                                 @if ($k->status === 'Aktif')
-                                    <button
-                                        onclick="klikHapusKategori({{ $k->id_kategori }}, '{{ $k->nama }}')"
+                                    <button onclick="klikHapusKategori({{ $k->id_kategori }}, '{{ $k->nama }}')"
                                         class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1">
 
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -171,7 +170,8 @@
                                         <span class="ml-1">Hapus</span>
                                     </button>
                                 @else
-                                    <button onclick="klikAktifkanKategori({{ $k->id_kategori }}, '{{ $k->nama }}')"
+                                    <button
+                                        onclick="klikStatusKategori({{ $k->id_kategori }}, '{{ $k->nama }}')"
                                         class="bg-blue-800 hover:bg-blue-900 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -464,7 +464,7 @@
                     } else if (data.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Berhasil!',
+                            title: 'Berhasil',
                             text: data.success,
                             timer: 2000,
                             showConfirmButton: false,
@@ -579,7 +579,7 @@
             });
     }
 
-    function klikAktifkanKategori(id, nama) {
+    function klikStatusKategori(id, nama) {
         Swal.fire({
             title: `Aktifkan Kategori?`,
             html: `

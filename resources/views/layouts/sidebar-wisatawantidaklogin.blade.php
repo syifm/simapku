@@ -101,9 +101,9 @@
         </div>
 
         <nav class="nav-menu">
-            <a href="{{ route('beranda-Wisatawan') }}"
+            <a href="{{ route('beranda.tidaklogin') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda.tidaklogin') || request()->routeIs('carikuliner.tidaklogin') || request()->routeIs('simpanpenilaianulasan.tidaklogin') || request()->routeIs('detailpenilaianulasan.tidaklogin') || request()->routeIs('getUlasanTidakLogin') || request()->routeIs('editwisatakuliner.tidaklogin') || request()->routeIs('updatewisatakuliner.tidaklogin') || request()->routeIs('dugderan') || request()->routeIs('kulinerkauman') || request()->routeIs('semawis') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda.tidaklogin') || request()->routeIs('wisatakulinerhalaman') || request()->routeIs('penilaianulasan.detail') || request()->routeIs('dugderan') || request()->routeIs('kulinerkauman') || request()->routeIs('semawis') ? 'active' : 'text-white' }}">
                 <div class="-ml-1.2 mr-3 -mt-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                         stroke="currentColor" class="size-5">
@@ -115,8 +115,7 @@
             </a>
 
             <a onclick="handleLogin()"
-                class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('favorit') || request()->routeIs('favorit.simpan') || request()->routeIs('favorit.hapusdarilist') || request()->routeIs('favorit.hapus') ? 'active' : 'text-white' }}">
+                class="menu-item flex items-center p-2 rounded">
                 <div class="-ml-1.2 mr-3 -mt-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2.5" class="size-5">
@@ -128,8 +127,7 @@
             </a>
 
             <a onclick="handleLogin()"
-                class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('wisatakuliner.tambah') || request()->routeIs('wisatakuliner.simpan') ? 'active' : 'text-white' }}">
+                class="menu-item flex items-center p-2 rounded">
                 <i class="fas fa-plus"></i>
                 <div class="-ml-1.2 -mt-0.5">
                     <span class="font-bold">Tambah Wisata Kuliner</span>
@@ -137,8 +135,7 @@
             </a>
 
             <a onclick="handleLogin()"
-                class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('riwayatpengajuan') || request()->routeIs('riwayatpengajuan.detailkuliner') || request()->routeIs('riwayatpengajuan.detailulasan') ? 'active' : 'text-white' }}">
+                class="menu-item flex items-center p-2 rounded">
                 <i class="fi fi-br-time-past text-lg"></i>
                 <div class="-ml-1.2 mr-3 -mt-0.5">
                     <span class="font-bold">

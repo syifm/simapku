@@ -507,7 +507,7 @@
 
                                 <p class="text-xs
                                         text-gray-600 mt-2">
-                                    Format: JPG, JPEG, PNG | Max: 5MB
+                                    Format: JPG, JPEG, PNG | Max: 5 MB
                                 </p>
                             </div>
 
@@ -693,13 +693,13 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai.');
                 resetInput();
                 return;
             }
 
             if (file.size > MAX_SIZE) {
-                showError('Ukuran foto terlalu besar.');
+                showError('Ukuran foto terlalu besar');
                 resetInput();
                 return;
             }

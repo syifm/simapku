@@ -51,7 +51,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -82,27 +82,27 @@
     <div class="pt-[38px] pl-[350px] pr-[50px] pb-[20px]">
         <h1 class="font-bold text-xl">Profil</h1>
         {{-- <div class="flex justify-center mb-6 mt-[50px]"> --}}
-            @if ($user->peran == 'Admin')
-                <div class="flex justify-center mt-[70px] mb-6">
-                @elseif ($user->peran == 'Wisatawan')
-                    <div class="flex justify-center mt-[50px] mb-6">
-            @endif
-            <img id="preview"
-                src="{{ Auth::user()->foto && file_exists(storage_path('app/public/' . Auth::user()->foto))
-                    ? asset('storage/' . Auth::user()->foto)
-                    : asset('profil.png') }}"
-                alt="fotoprofil" class="w-40 h-40 object-cover rounded-full">
-        </div>
-
         @if ($user->peran == 'Admin')
-            <div class="flex justify-end mt-[70px] mb-4">
+            <div class="flex justify-center mt-[70px] mb-6">
             @elseif ($user->peran == 'Wisatawan')
-                <div class="flex justify-end mt-[50px] mb-4">
+                <div class="flex justify-center mt-[50px] mb-6">
         @endif
-        <a href="{{ route('profile.edit') }}"
-            class="py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white bg-[#FB991A] hover:bg-orange-600 transition duration-300">
-            Edit Profil
-        </a>
+        <img id="preview"
+            src="{{ Auth::user()->foto && file_exists(storage_path('app/public/' . Auth::user()->foto))
+                ? asset('storage/' . Auth::user()->foto)
+                : asset('profil.png') }}"
+            alt="fotoprofil" class="w-40 h-40 object-cover rounded-full">
+    </div>
+
+    @if ($user->peran == 'Admin')
+        <div class="flex justify-end mt-[70px] mb-4">
+        @elseif ($user->peran == 'Wisatawan')
+            <div class="flex justify-end mt-[50px] mb-4">
+    @endif
+    <a href="{{ route('profile.edit') }}"
+        class="py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white bg-[#FB991A] hover:bg-orange-600 transition duration-300">
+        Edit Profil
+    </a>
     </div>
 
     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

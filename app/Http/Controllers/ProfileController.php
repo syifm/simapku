@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Preferensi;
 use App\Models\Wisatawan;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,7 +64,8 @@ class ProfileController extends Controller
 
     public function updateDetail(Request $request)
     {
-        $user = Auth::user();
+        // $user = Auth::user();
+        $user = User::findOrFail(Auth::id());
 
         $request->validate([
             'nama' => ['required', 'string', 'max:100'],
@@ -76,7 +78,7 @@ class ProfileController extends Controller
             'email.unique' => 'Email ini sudah digunakan',
             'foto.image' => 'File harus berupa gambar',
             'foto.mimes' => 'Format foto harus JPEG, PNG, JPG',
-            'foto.max' => 'Ukuran foto maksimal 2MB',
+            'foto.max' => 'Ukuran foto maksimal 2 MB',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -93,6 +95,13 @@ class ProfileController extends Controller
         $user->nama = $request->nama;
         $user->email = $request->email;
 
+        if (!$user->isDirty()) {
+            return Redirect::route('profile.edit')->with('swal', [
+                'title' => 'Info',
+                'text' => 'Tidak terdapat perubahan',
+                'icon' => 'info',
+            ]);
+        }
         $user->save();
 
         return Redirect::route('profile.edit')
@@ -104,7 +113,24 @@ class ProfileController extends Controller
         $validated = $request->validateWithBag('updatePassword', [
             'current_password' => ['required', 'current_password'],
             'password' => ['required', Password::defaults(), 'confirmed'],
+        ], [
+            'current_password.required' => 'Password saat ini wajib diisi',
+            'current_password.current_password' => 'Password saat ini tidak sesuai',
+            'password.required' => 'Password baru wajib diisi',
+            'password.confirmed' => 'Konfirmasi password tidak sesuai',
+            'password.min' => 'Password minimal 8 karakter',
+            'password.mixed' => 'Password harus mengandung huruf besar dan kecil',
+            'password.numbers' => 'Password harus mengandung setidaknya satu angka',
+            'password.symbols' => 'Password harus mengandung setidaknya satu simbol',
         ]);
+
+        if (Hash::check($validated['password'], $request->user()->password)) {
+            return back()->with('swal', [
+                'title' => 'Info',
+                'text' => 'Password tidak terdapat perubahan',
+                'icon' => 'info',
+            ]);
+        }
 
         $request->user()->update([
             'password' => Hash::make($validated['password']),

@@ -16,8 +16,17 @@ class UlasanController extends Controller
 {
     public function tampilkanKelolaUlasan()
     {
-        $ulasankuliner = Ulasan::where('status_penampilan', 'Tampil')
-            ->orderBy('waktu_diubah', 'desc')
+        // $ulasankuliner = Ulasan::where('status_penampilan', 'Tampil')
+        //     ->orderBy('waktu_diubah', 'desc')
+        //     ->paginate(10)
+        //     ->withQueryString();
+        $terbaru = Ulasan::where('status', 'Disetujui')
+            ->selectRaw('MAX(id_ulasan) as id_ulasan')
+            ->groupBy('id_wisatawan', 'id_wisata_kuliner')
+            ->pluck('id_ulasan');
+
+        $ulasankuliner = Ulasan::whereIn('id_ulasan', $terbaru)
+            ->orderByDesc('waktu_diubah')
             ->paginate(10)
             ->withQueryString();
 
@@ -60,9 +69,22 @@ class UlasanController extends Controller
     {
         $ulasan = Ulasan::findOrFail($id);
 
-        $ulasan->status_penampilan = $request->status;
-        $ulasan->waktu_diubah = Carbon::now('Asia/Jakarta');
-        $ulasan->save();
+        $ulasan->update([
+            'status_penampilan' => $request->status,
+            'waktu_diubah' => Carbon::now('Asia/Jakarta'),
+        ]);
+
+        $ulasanKuliner = Ulasan::where('id_wisata_kuliner', $ulasan->id_wisata_kuliner)
+            ->where('status', 'Disetujui')
+            ->where('status_penampilan', 'Tampil');
+        $wisataKuliner = WisataKuliner::findOrFail($ulasan->id_wisata_kuliner);
+
+        $wisataKuliner->update([
+            'harga_min' => $ulasanKuliner->min('harga_min'),
+            'harga_max' => $ulasanKuliner->max('harga_max'),
+            'penilaian' => $ulasanKuliner->avg('penilaian'),
+            'waktu_diubah' => Carbon::now('Asia/Jakarta'),
+        ]);
 
         return response()->json([
             'message' => 'Status penampilan berhasil diperbarui',
@@ -120,19 +142,19 @@ class UlasanController extends Controller
                 'status_penampilan' => 'Tampil',
                 'waktu_diubah' => $waktu_diubah,
             ]);
+
+            $wisataKuliner->update([
+                'harga_min' => $ulasanKuliner->min('harga_min'),
+                'harga_max' => $ulasanKuliner->max('harga_max'),
+                'penilaian' => $ulasanKuliner->avg('penilaian'),
+                'waktu_diubah' => $waktu_diubah,
+            ]);
         } else {
             $ulasan->update([
                 'status' => 'Ditolak',
                 'waktu_diubah' => $waktu_diubah,
             ]);
         }
-
-        $wisataKuliner->update([
-            'harga_min' => $ulasanKuliner->min('harga_min'),
-            'harga_max' => $ulasanKuliner->max('harga_max'),
-            'penilaian' => $ulasanKuliner->avg('penilaian'),
-            'waktu_diubah' => $waktu_diubah,
-        ]);
 
         return response()->json([
             'success' => true,
@@ -355,7 +377,7 @@ class UlasanController extends Controller
                     'ulasan' => $item->ulasan,
                     'foto_ulasan' => $item->foto_ulasan,
                     'waktu_dibuat' => $item->waktu_dibuat,
-                    'nama' => $punyaSendiri ? 'Anda' : ($item->wisatawan->nama ?? null),
+                    'nama' => $punyaSendiri ? 'Anda' : ($item->wisatawan->user->nama ?? null),
                     'punya_sendiri' => $punyaSendiri
                 ];
             });

@@ -29,7 +29,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -1574,7 +1574,7 @@
                     .then(res => {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Berhasil!',
+                            title: 'Berhasil',
                             text: res.message,
                             timer: 2000,
                             timerProgressBar: true,

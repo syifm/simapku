@@ -472,8 +472,9 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::findOrFail($id);
 
-        $kategori->status = 'Aktif';
-        $kategori->save();
+        $kategori->update([
+            'status' => 'Aktif'
+        ]);
 
         return response()->json([
             'status' => 'success',

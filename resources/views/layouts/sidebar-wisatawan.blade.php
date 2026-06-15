@@ -103,7 +103,7 @@
         <nav class="nav-menu">
             <a href="{{ route('beranda-Wisatawan') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('beranda-Wisatawan') || request()->routeIs('wisatakulinerhalaman') || request()->routeIs('ulasan.simpan') || request()->routeIs('penilaianulasan.detail') || request()->routeIs('getUlasan') || request()->routeIs('wisatakuliner.edit') || request()->routeIs('wisatakuliner.update') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('beranda-Wisatawan') || request()->routeIs('berandaWisatawan.detail') || request()->routeIs('wisatakulinerhalaman') || request()->routeIs('ulasan.simpan') || request()->routeIs('penilaianulasan.detail') || request()->routeIs('penilaianulasan.hapus') || request()->routeIs('tampilkanFormUlasan') || request()->routeIs('favorit.simpan') || request()->routeIs('wisatakuliner.edit') || request()->routeIs('wisatakuliner.update') || request()->routeIs('dugderan') || request()->routeIs('kulinerkauman') || request()->routeIs('semawis') ? 'active' : 'text-white' }}">
                 <div class="-ml-1.2 mr-3 -mt-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                         stroke="currentColor" class="size-5">
@@ -116,7 +116,7 @@
 
             <a href="{{ route('favorit') }}"
                 class="menu-item flex items-center p-2 rounded
-                {{ request()->routeIs('favorit') || request()->routeIs('favorit.simpan') || request()->routeIs('favorit.hapusdarilist') || request()->routeIs('favorit.hapus') ? 'active' : 'text-white' }}">
+                {{ request()->routeIs('favorit') || request()->routeIs('favorit.simpan') || request()->routeIs('favorit.hapus') || request()->routeIs('favorit.detail') ? 'active' : 'text-white' }}">
                 <div class="-ml-1.2 mr-3 -mt-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2.5" class="size-5">

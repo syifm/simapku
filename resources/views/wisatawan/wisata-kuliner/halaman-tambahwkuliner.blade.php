@@ -334,7 +334,7 @@
                             <div>
                                 <label
                                     class="block text-sm font-medium text-gray-800 mb-1"><span>Fasilitas</span></label>
-                                <select id="selectmk" name="id_fasilitas[]"
+                                <select id="selectfasilitas" name="id_fasilitas[]"
                                     class="form-select w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     aria-label="Default select example">
 
@@ -487,7 +487,7 @@
                                 </div>
 
                                 <p class="text-xs text-gray-600 mt-2">
-                                    Format: JPG, JPEG, PNG | Max: 5MB
+                                    Format: JPG, JPEG, PNG | Max: 5 MB
                                 </p>
                             </div>
 
@@ -555,12 +555,22 @@
 
                 isKecamatanLoaded = true;
 
-                if (!isGPSActive) {
-                    updateAlamatDariKoordinat(
-                        lastValidPosition.lat,
-                        lastValidPosition.lng
-                    );
-                }
+                // if (!isGPSActive) {
+                //     updateAlamatDariKoordinat(
+                //         lastValidPosition.lat,
+                //         lastValidPosition.lng
+                //     );
+                // }
+                // initGPS();
+                // if (isGPSActive) {
+                //     initGPS();
+                // } else {
+                //     console.log("kepanggil");
+                //     updateAlamatDariKoordinat(
+                //         lastValidPosition.lat,
+                //         lastValidPosition.lng
+                //     );
+                // }
                 initGPS();
 
             } catch {
@@ -580,7 +590,7 @@
             }
 
             kecamatanSelect.addEventListener('change', async function() {
-
+                // console.log('CHANGE KECAMATAN');
                 const selectedOption = this.options[this.selectedIndex];
                 kecamatanNama.value = selectedOption.text;
 
@@ -596,7 +606,6 @@
         });
 
         async function loadKelurahan(districtCode) {
-            console.log('LOAD', districtCode, Date.now());
             kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
 
             if (!districtCode) return [];
@@ -653,7 +662,7 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai');
                 resetInput();
                 return;
             }
@@ -700,8 +709,8 @@
         let lastKodepos = "";
         let isFirstLoad = true;
         let lastValidPosition = {
-            lat: -6.969054045894555,
-            lng: 110.40926002563694
+            lat: -6.969293174776291,
+            lng: 110.42436387257949
         };
         const latInput = document.getElementById('latitude');
         const lngInput = document.getElementById('longitude');
@@ -718,12 +727,34 @@
         }
 
         let defaultPosition = {
-            lat: -6.969054045894555,
-            lng: 110.40926002563694
+            lat: -6.969293174776291,
+            lng: 110.42436387257949
         };
 
-        if (navigator.geolocation) {
+        // if (navigator.geolocation) {
 
+        //     navigator.geolocation.getCurrentPosition(function(position) {
+
+        //         defaultPosition = {
+        //             lat: position.coords.latitude,
+        //             lng: position.coords.longitude
+        //         };
+
+        //         lastValidPosition = defaultPosition;
+
+        //         initMap();
+
+        //     }, function() {
+
+        //         initMap();
+        //     });
+
+        // } else {
+
+        //     initMap();
+        // }
+
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
 
                 defaultPosition = {
@@ -733,20 +764,12 @@
 
                 lastValidPosition = defaultPosition;
 
-                initMap();
-
-            }, function() {
-
-                initMap();
             });
-
-        } else {
-
-            initMap();
         }
 
         // Awal
         async function initMap() {
+            console.log("INIT MAP");
             const markerLib = await google.maps.importLibrary("marker");
             AdvancedMarkerElement = markerLib.AdvancedMarkerElement;
             PinElement = markerLib.PinElement;
@@ -933,9 +956,11 @@
         // GPS
         function initGPS() {
             // console.log("initGPS dipanggil");
-            if (!navigator.geolocation) return;
+            // if (!navigator.geolocation) return;
+            console.log(isGPSActive);
 
             navigator.geolocation.getCurrentPosition(function(position) {
+                console.log(isGPSActive);
 
                 isGPSActive = true;
                 const lat = position.coords.latitude;
@@ -986,7 +1011,22 @@
                         updateAlamatDariKoordinat(lat, lng);
                     }
                 });
+            }, function(error) {
+
+                updateAlamatDariKoordinat(
+                    lastValidPosition.lat,
+                    lastValidPosition.lng
+                );
             });
+            console.log(isGPSActive);
+
+            // if (!isGPSActive) {
+            //     updateAlamatDariKoordinat(
+            //         lastValidPosition.lat,
+            //         lastValidPosition.lng
+            //     );
+            //     return;
+            // }
         }
 
         // Update Alamat Dari Koordinat
@@ -1492,8 +1532,8 @@
             //     }
             // });
 
-            $("#selectmk").attr("multiple", "multiple");
-            $("#selectmk").select2({
+            $("#selectfasilitas").attr("multiple", "multiple");
+            $("#selectfasilitas").select2({
                 allowClear: true,
                 tags: true,
 
@@ -1523,7 +1563,7 @@
 
                 ajax: {
                     url: function() {
-                        return "{{ url('selectmk') }}/" + $("#selectmhs").val();
+                        return "{{ url('selectfasilitas') }}/" + $("#selectmhs").val();
                     },
                     data: function(params) {
                         return {

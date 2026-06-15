@@ -119,8 +119,7 @@
                                     <span class="ml-1">Edit</span>
                                 </button>
                                 @if ($f->status === 'Aktif')
-                                    <button
-                                        onclick="klikHapusFasilitas({{ $f->id_fasilitas }}, '{{ $f->nama }}')"
+                                    <button onclick="klikHapusFasilitas({{ $f->id_fasilitas }}, '{{ $f->nama }}')"
                                         class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1">
 
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -132,7 +131,8 @@
                                         <span class="ml-1">Hapus</span>
                                     </button>
                                 @else
-                                    <button onclick="klikAktifkanFasilitas({{ $f->id_fasilitas }}, '{{ $f->nama }}')"
+                                    <button
+                                        onclick="klikAktifkanFasilitas({{ $f->id_fasilitas }}, '{{ $f->nama }}')"
                                         class="bg-blue-800 hover:bg-blue-900 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -397,7 +397,7 @@
                     } else if (data.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Berhasil!',
+                            title: 'Berhasil',
                             text: data.success,
                             timer: 2000,
                             showConfirmButton: false,

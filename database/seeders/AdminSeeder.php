@@ -18,8 +18,8 @@ class AdminSeeder extends Seeder
         $adminData = [
             [
                 'nama' => 'Syifa Shabrina',
-                'email' => 'shabrinaAdmin@gmail.com',
-                'password' => 'admin123',
+                'email' => 'shabrinadmin@gmail.com',
+                'password' => 'Admin123*',
             ],
         ];
 

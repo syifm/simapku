@@ -29,7 +29,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -174,7 +174,7 @@
                                                 <td class="px-4 py-3 text-sm border-b border-r border-black">
                                                     <div class="flex justify-center items-center h-full gap-2">
                                                         <button
-                                                            onclick="tampilkanModalWKuliner({{ $kuliner->id_pengajuan }})"
+                                                            onclick="klikVerifikasiWKuliner({{ $kuliner->id_pengajuan }})"
                                                             class="{{ $kuliner->status == 'Belum Diverifikasi'
                                                                 ? 'bg-[#FFA319] hover:bg-[#F19305]'
                                                                 : 'bg-[#004440] hover:bg-[#06362a]' }}
@@ -680,7 +680,7 @@
             let marker_lama = null;
             let marker_baru = null;
 
-            function tampilkanModalWKuliner(id) {
+            function klikVerifikasiWKuliner(id) {
                 fetch(`/admin/verifikasiwisatakuliner/detail/${id}`)
                     .then(response => response.json())
                     .then(data => {
@@ -1125,7 +1125,7 @@
                                 .then(res => {
                                     Swal.fire({
                                         icon: 'success',
-                                        title: 'Berhasil!',
+                                        title: 'Berhasil',
                                         text: res.message,
                                         timer: 2000,
                                         showConfirmButton: false
@@ -1159,7 +1159,7 @@
                                 .then(res => {
                                     Swal.fire({
                                         icon: 'success',
-                                        title: 'Berhasil!',
+                                        title: 'Berhasil',
                                         text: res.message,
                                         timer: 2000,
                                         showConfirmButton: false

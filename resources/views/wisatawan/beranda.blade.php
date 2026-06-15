@@ -369,7 +369,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -999,7 +999,7 @@
                         Rekomendasi untuk Anda
                     </h2>
                     <p class="text-xs text-gray-500 text-center mt-1">
-                        Daftar wisata kuliner yang paling sesuai dengan karakteristik preferensi kuliner favorit Anda
+                        Daftar wisata kuliner yang serupa dengan preferensi kuliner favorit Anda
                     </p>
                 </div>
             @endif
@@ -1049,7 +1049,7 @@
                             {{-- </p> --}}
 
                         </div>
-                        @if ($isHasilCosine && isset($item->score_cosine))
+                        {{-- @if ($isHasilCosine && isset($item->score_cosine))
                             <div
                                 class="px-3 pb-3 pt-2 border-t border-gray-100 flex justify-between items-center bg-amber-50/60">
                                 <span class="text-[11px] text-gray-500 font-medium">Tingkat Kemiripan:</span>
@@ -1058,7 +1058,7 @@
                                     {{ number_format($item->score_cosine * 100, 0) }}% Cocok
                                 </span>
                             </div>
-                        @endif
+                        @endif --}}
                         {{-- </a> --}}
                     </div>
                 @endforeach
@@ -1342,7 +1342,7 @@
             </div>
         @endif --}}
 
-    </div>
+    {{-- </div> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
 
@@ -2026,8 +2026,8 @@
                     e.target.submit();
                 },
                 function() {
-                    document.getElementById("lat").value = -6.969054045894555;
-                    document.getElementById("lng").value = 110.42432058292049;
+                    document.getElementById("lat").value = -6.969293174776291;
+                    document.getElementById("lng").value = 110.42436387257949;
 
                     e.target.submit();
                 }
@@ -2068,7 +2068,7 @@
                         document.getElementById('inputTerdekat').value = 1;
 
                         // 3. Submit form secara otomatis
-                       document.getElementById('formCari').submit();
+                        document.getElementById('formCari').submit();
                         // document.getElementById('inputTerdekat').value = 1;
                         // const params = new URLSearchParams(window.location.search);
 
@@ -2108,8 +2108,8 @@
         function initApp() {
 
             const semarang = {
-                lat: -6.9667,
-                lng: 110.4167
+                lat: -6.969293174776291,
+                lng: 110.42436387257949
             };
 
             const map = new google.maps.Map(document.getElementById("map"), {

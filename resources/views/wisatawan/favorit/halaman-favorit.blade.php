@@ -56,7 +56,7 @@
             <script>
                 Swal.fire({
                     icon: 'success',
-                    title: 'Berhasil!',
+                    title: 'Berhasil',
                     text: '{{ session('success') }}',
                     showConfirmButton: false,
                     timer: 2000,
@@ -396,7 +396,7 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai.');
                 resetInput();
                 return;
             }

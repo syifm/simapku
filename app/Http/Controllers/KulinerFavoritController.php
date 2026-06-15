@@ -39,19 +39,19 @@ class KulinerFavoritController extends Controller
         return view('wisatawan.favorit.halaman-favorit', compact('kulinerFavorit'));
     }
 
-    public function simpan(Request $request)
+    public function simpan(int $id)
     {
         $waktu_dibuat = Carbon::now('Asia/Jakarta');
         $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
         KulinerFavorit::create([
             'id_wisatawan' => $wisatawan->id_wisatawan,
-            'id_wisata_kuliner' => $request->id_wisata_kuliner,
+            'id_wisata_kuliner' => $id,
             'waktu_dibuat' => $waktu_dibuat,
         ]);
 
         return response()->json([
             'status' => 'success',
-            'title' => 'Berhasil!',
+            'title' => 'Berhasil',
             'text' => 'Wisata kuliner berhasil ditambahkan ke kuliner favorit',
         ]);
     }
@@ -88,7 +88,7 @@ class KulinerFavoritController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'title' => 'Berhasil!',
+            'title' => 'Berhasil',
             'text' => 'Wisata kuliner berhasil dihapus dari kuliner favorit',
         ]);
     }

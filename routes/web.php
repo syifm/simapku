@@ -104,17 +104,15 @@ Route::middleware(['auth', 'Admin'])->group(function () {
 Route::middleware(['auth', 'Wisatawan'])->group(function () {
     // Icon Beranda
     Route::get('/wisatawan/beranda', [BerandaController::class, 'tampilkanBerandaWisatawan'])->name('beranda-Wisatawan');
-    Route::get('/wisatawan/beranda/detail/{id}', [BerandaController::class, 'tampilkanDetailWKuliner'])->name('berandaWisatawan.detail');
+    // Route::get('/kuliner/detail/{id}', [WisataKulinerController::class, 'getDetail'])->name('getDetail');
 
-    Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'cariWisataKuliner'])->name('wisatakulinerhalaman');
     Route::post('/wisatawan/ulasan/simpan', [UlasanController::class, 'simpan'])->name('ulasan.simpan');
-    Route::get('/wisatawan/ulasan/detail/{id}', [UlasanController::class, 'detail'])->name('penilaianulasan.detail');
     Route::delete('/wisatawan/ulasan/{id}', [UlasanController::class, 'hapus'])->name('penilaianulasan.hapus');
     Route::get('/wisatawan/ulasan/modalulasan/{id}', [UlasanController::class, 'tampilkanFormUlasan']);
 
     // Icon Favorit
     Route::get('/wisatawan/favorit', [KulinerFavoritController::class, 'tampilkanHalamanFavorit'])->name('favorit');
-    Route::post('/wisatawan/favorit/simpan', [KulinerFavoritController::class, 'simpan'])->name('favorit.simpan');
+    Route::post('/wisatawan/favorit/simpan/{id}', [KulinerFavoritController::class, 'simpan'])->name('favorit.simpan');
     // Route::delete('/favorit/hapus', [KulinerFavoritController::class, 'hapusFavoritDariList'])->name('favorit.hapusdarilist');
     Route::delete('/wisatawan/favorit/hapus/{id}', [KulinerFavoritController::class, 'hapus'])->name('favorit.hapus');
     Route::get('/wisatawan/favorit/detail/{id}', [KulinerFavoritController::class, 'tampilkanDetailWKuliner'])->name('favorit.detail');
@@ -129,13 +127,13 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     // Route::get('/wisatawan/wisata/api/kecamatan', [WisatawanController::class, 'getKecamatan']);
     // Route::get('/wisatawan/wisata/api/kelurahan/{districtCode}', [WisatawanController::class, 'getKelurahan']);
     Route::get('/selectmhs', [WisatawanController::class, 'selectmhs'])->name('select.mhs');
-    Route::get('/selectmk/{id}', [WisatawanController::class, 'selectmk'])->name('select.mk');
-    Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
+    Route::get('/selectfasilitas/{id}', [PengajuanWKulinerController::class, 'selectfasilitas'])->name('select.fasilitas');
+    // Route::get('/ngampumk/{id}', [WisatawanController::class, 'getngampu'])->name('getngampumk');
     Route::get('/selectkategori/{id}', [WisatawanController::class, 'selectkategori'])->name('select.kategori');
     Route::get('/ngampukategori/{id}', [WisatawanController::class, 'getKategori'])->name('getngampukategori');
     // Route::put('/wisatawan/editwisatakuliner/update/{id}', [WisatawanController::class, 'update'])->name('updatewisatakuliner');
 
-    Route::get('/detailkuliner/{id}', [KulinerFavoritController::class, 'detail'])->name('detailkuliner');
+    // Route::get('/detailkuliner/{id}', [KulinerFavoritController::class, 'detail'])->name('detailkuliner');
     // Route::get('/adatag', [WisatawanController::class, 'adatags']);
     // Route::post('/wisatawan/category', [WisatawanController::class, 'getCategory'])->name('get-category');
     // Route::get('/wisatawan/mapwisatakuliner', [WisatawanController::class, 'mapWisataKuliner'])->name('map-WisataKuliner');
@@ -164,20 +162,25 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
 
 
 Route::get('/', [BerandaController::class, 'tampilkanBerandaTamu'])->name('beranda.tidaklogin');
-Route::get('/favorit', [WisatawanController::class, 'halamanFavoritTidakLogin'])->name('favorit.tidaklogin');
-Route::get('/tambahwisatakuliner', [WisatawanController::class, 'halamantambahTidakLogin'])->name('tambahwisatakuliner.tidaklogin');
-Route::post('/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpankulinerTidakLogin'])->name('simpanwisatakuliner.tidaklogin');
-Route::get('/editwisatakuliner/{id}', [WisatawanController::class, 'halamaneditTidakLogin'])->name('editwisatakuliner.tidaklogin');
-Route::put('/editwisatakuliner/update/{id}', [WisatawanController::class, 'updateTidakLogin'])->name('updatewisatakuliner.tidaklogin');
-Route::get('/carikuliner', [WisatawanController::class, 'search'])->name('carikuliner.tidaklogin');
-Route::post('/ulasan/simpan', [UlasanController::class, 'simpanTidakLogin'])->name('simpanpenilaianulasan.tidaklogin');
-Route::get('/ulasan/{id}', [UlasanController::class, 'detailTidakLogin'])->name('detailpenilaianulasan.tidaklogin');
-Route::get('/ulasan/modalulasan/{id}', [UlasanController::class, 'getUlasanTidakLogin']);
+Route::get('/wisatawan/beranda/detail/{id}', [BerandaController::class, 'tampilkanDetailWKuliner'])->name('berandaWisatawan.detail');
+// Route::get('/favorit', [WisatawanController::class, 'halamanFavoritTidakLogin'])->name('favorit.tidaklogin');
+// Route::get('/tambahwisatakuliner', [WisatawanController::class, 'halamantambahTidakLogin'])->name('tambahwisatakuliner.tidaklogin');
+// Route::post('/tambahwisatakuliner/simpan', [WisatawanController::class, 'simpankulinerTidakLogin'])->name('simpanwisatakuliner.tidaklogin');
+// Route::get('/editwisatakuliner/{id}', [WisatawanController::class, 'halamaneditTidakLogin'])->name('editwisatakuliner.tidaklogin');
+// Route::put('/editwisatakuliner/update/{id}', [WisatawanController::class, 'updateTidakLogin'])->name('updatewisatakuliner.tidaklogin');
+// Route::get('/carikuliner', [WisatawanController::class, 'search'])->name('carikuliner.tidaklogin');
+Route::get('/wisatawan/ulasan/detail/{id}', [UlasanController::class, 'detail'])->name('penilaianulasan.detail');
+// Route::post('/ulasan/simpan', [UlasanController::class, 'simpanTidakLogin'])->name('simpanpenilaianulasan.tidaklogin');
+// Route::get('/ulasan/{id}', [UlasanController::class, 'detailTidakLogin'])->name('detailpenilaianulasan.tidaklogin');
+// Route::get('/ulasan/modalulasan/{id}', [UlasanController::class, 'getUlasanTidakLogin']);
 
 // Event
-Route::get('/wisatawan/eventsemarang/dugderan', [WisatawanController::class, 'dugderan'])->name('dugderan');
-Route::get('/wisatawan/eventsemarang/kulinerkauman', [WisatawanController::class, 'kulinerkauman'])->name('kulinerkauman');
-Route::get('/wisatawan/eventsemarang/semawis', [WisatawanController::class, 'semawis'])->name('semawis');
+Route::get('/wisatawan/eventsemarang/dugderan', [WisataKulinerController::class, 'dugderan'])->name('dugderan');
+Route::get('/wisatawan/eventsemarang/kulinerkauman', [WisataKulinerController::class, 'kulinerkauman'])->name('kulinerkauman');
+Route::get('/wisatawan/eventsemarang/semawis', [WisataKulinerController::class, 'semawis'])->name('semawis');
+
+Route::get('/wisata-kuliner-cari', [WisataKulinerController::class, 'cariWisataKuliner'])->name('wisatakulinerhalaman');
+
 
 // Kecamatan, Kelurahan, Dropdown nama kategori fasilitas
 // Route::post('/wisatawan/cek-lokasi', [WisatawanController::class, 'cekLokasi']);

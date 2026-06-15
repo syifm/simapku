@@ -19,19 +19,19 @@ class WisatawanSeeder extends Seeder
             [
                 'nama' => 'Syifa Munir',
                 'email' => 'syifamunir@gmail.com',
-                'password' => 'wisatawan123',
+                'password' => 'Wisatawan123*',
                 'asal_kota' => 'Semarang',
             ],
             [
                 'nama' => 'Asysyifa Shabrina',
                 'email' => 'shabrina@gmail.com',
-                'password' => 'shabrina123',
+                'password' => 'Shabrina123*',
                 'asal_kota' => 'Surabaya',
             ],
             [
                 'nama' => 'Nabila Azzahra',
                 'email' => 'nabilaazzahra@gmail.com',
-                'password' => 'nabilaaz123',
+                'password' => 'Nabilaaz123*',
                 'asal_kota' => 'Jakarta',
             ],
         ];

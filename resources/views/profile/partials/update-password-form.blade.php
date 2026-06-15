@@ -66,21 +66,26 @@
         <div>
             <x-input-label for="update_password_current_password" :value="__('Password Saat Ini')" />
             <x-text-input id="update_password_current_password" name="current_password" type="password"
-                class="mt-1 block w-full" autocomplete="current-password" />
+                class="mt-1 block w-full" autocomplete="current-password" required />
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
         </div>
 
         <div>
             <x-input-label for="update_password_password" :value="__('Password Baru')" />
             <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full"
-                autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+                autocomplete="new-password" required />
+            {{-- <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" /> --}}
+            @if ($errors->updatePassword->has('password'))
+                <p class="mt-2 text-sm text-red-600">
+                    {{ $errors->updatePassword->first('password') }}
+                </p>
+            @endif
         </div>
 
         <div>
             <x-input-label for="update_password_password_confirmation" :value="__('Konfirmasi Password Baru')" />
             <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password"
-                class="mt-1 block w-full" autocomplete="new-password" />
+                class="mt-1 block w-full" autocomplete="new-password" required />
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
         </div>
 
@@ -110,7 +115,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil',
-                            text: 'Password Telah Diperbarui',
+                            text: 'Password berhasil diperbarui',
                             timer: 2000,
                             showConfirmButton: false
                         });

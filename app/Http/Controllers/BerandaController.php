@@ -469,7 +469,6 @@ class BerandaController extends Controller
             'keyword',
             'kulinerBaru',
             'kulinerFavorit',
-            // 'kategoriAktif',
             'kategoriTempat',
             'jenisHidangan',
             'asalKuliner',

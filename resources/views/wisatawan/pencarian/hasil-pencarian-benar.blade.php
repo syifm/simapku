@@ -365,7 +365,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -1698,7 +1698,7 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai.');
                 resetInput();
                 return;
             }
@@ -2740,7 +2740,7 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai.');
                 resetInput();
                 return;
             }
@@ -2897,7 +2897,7 @@
 
                     Swal.fire({
                         icon: 'success',
-                        title: 'Berhasil!',
+                        title: 'Berhasil',
                         text: 'Berhasil ditambahkan ke Kuliner Favorit',
                         timer: 1500,
                         showConfirmButton: false
@@ -2933,7 +2933,7 @@
 
                     Swal.fire({
                         icon: 'success',
-                        title: 'Berhasil!',
+                        title: 'Berhasil',
                         text: 'Berhasil dihapus dari Kuliner Favorit',
                         showConfirmButton: false,
                         timer: 3000

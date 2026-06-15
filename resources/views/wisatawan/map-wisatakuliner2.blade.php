@@ -120,7 +120,7 @@
                                 </div>
                                 <div id="fotoError" class="text-red-500 text-sm mt-1 hidden"></div>
                                 <div class="mt-2">
-                                    <p class="text-xs text-gray-600">Format: JPG, JPEG, PNG | Max: 5MB</p>
+                                    <p class="text-xs text-gray-600">Format: JPG, JPEG, PNG | Max: 5 MB</p>
                                 </div>
                             </div> --}}
 

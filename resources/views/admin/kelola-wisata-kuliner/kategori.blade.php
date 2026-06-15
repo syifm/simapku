@@ -26,7 +26,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -677,7 +677,7 @@
                         } else if (data.success) {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Berhasil!',
+                                title: 'Berhasil',
                                 text: data.success,
                                 timer: 2000,
                                 showConfirmButton: false,

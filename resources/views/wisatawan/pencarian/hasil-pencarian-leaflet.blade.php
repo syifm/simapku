@@ -71,7 +71,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -413,6 +413,103 @@
 
                 </div>
             </form>
+
+            {{-- <div id="modalFavorit"
+            class="fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto z-50 items-center justify-center">
+            <form id="formFavorit" action="{{ route('favorit.simpan') }}" enctype="multipart/form-data">
+                @csrf
+
+                <div
+                    class="relative left-[30px] top-[90px] mx-auto p-5 border w-[600px] shadow-lg rounded-xl bg-white">
+                    <button type="button" onclick="closeModalFavorit()"
+                        class="absolute right-4 top-3 text-xl">✕</button>
+
+                    <h2 class="text-xl font-bold mb-4 text-center">Tambah Favorit</h2>
+                    <input type="hidden" id="id_wisata_kuliner_favorit" name="id_wisata_kuliner_favorit">
+
+                    <!-- Komentar -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-800 mb-1"
+                            for="komentar"><span>Komentar</span>
+                            <textarea id="komentar" name="komentar" rows="4"
+                                class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('komentar') }}</textarea>
+                            @error('komentar')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit"
+                            class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold">
+                            Simpan
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div> --}}
+
+            {{-- // function openModalFavorit(id) {
+        //     kulinerAktif = id
+        //     document.getElementById('id_wisata_kuliner_favorit').value = id
+        //     document.getElementById('modalFavorit').classList.remove('hidden')
+        //     document.body.style.overflow = 'hidden'
+        // }
+
+        // function closeModalFavorit() {
+        //     document.getElementById('modalFavorit').classList.add('hidden')
+        //     document.body.style.overflow = ''
+        // }
+
+        // document.getElementById('formFavorit').addEventListener('submit', function(e) {
+        //     e.preventDefault();
+
+        //     let id = document.getElementById('id_wisata_kuliner_favorit').value;
+        //     let komentar = document.getElementById('komentar').value;
+
+        //     fetch("{{ route('favorit.simpan') }}", {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': csrfToken
+        //             },
+        //             body: JSON.stringify({
+        //                 id_wisata_kuliner_favorit: id,
+        //                 komentar: komentar
+        //             })
+        //         })
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             let btn = document.querySelector(`button[onclick="handleFavorit(${id}, this)"]`);
+        //             if (btn) {
+        //                 let svg = btn.querySelector('svg');
+        //                 svg.setAttribute('fill', 'black');
+        //                 svg.setAttribute('stroke', 'none');
+        //             }
+
+        //             favoritIds.push(parseInt(id));
+
+        //             closeModalFavorit();
+
+        //             document.getElementById('formFavorit').reset();
+
+        //             Swal.fire({
+        //                 icon: 'success',
+        //                 title: 'Berhasil',
+        //                 text: 'Berhasil ditambahkan ke Kuliner Favorit',
+        //                 timer: 1500,
+        //                 showConfirmButton: false
+        //             });
+
+        //         })
+        //         .catch(err => {
+        //             console.error(err);
+
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Gagal menyimpan favorit',
+        //             });
+        //         });
+        // }); --}}
         </div>
     </div>
 
@@ -693,7 +790,7 @@
             if (!file) return;
 
             if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
+                showError('Format dokumen tidak sesuai.');
                 resetInput();
                 return;
             }

@@ -127,7 +127,7 @@
                                                     @endif
                                                 </div> --}}
                             <div class="flex justify-center items-center h-full gap-2">
-                                <button onclick="tampilkanModalUlasan({{ $ulasan->id_ulasan }})"
+                                <button onclick="klikVerifikasiUlasan({{ $ulasan->id_ulasan }})"
                                     class="{{ $ulasan->status == 'Belum Diverifikasi'
                                         ? 'bg-[#FFA319] hover:bg-[#F19305]'
                                         : 'bg-[#004440] hover:bg-[#06362a]' }}
@@ -246,7 +246,7 @@
 
 <script>
     // Ulasan
-    function tampilkanModalUlasan(id) {
+    function klikVerifikasiUlasan(id) {
         fetch(`/admin/verifikasiulasan/detail/${id}`)
             .then(response => response.json())
             .then(data => {
@@ -339,7 +339,7 @@
                         .then(res => {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Berhasil!',
+                                title: 'Berhasil',
                                 text: res.message,
                                 timer: 2000,
                                 showConfirmButton: false
@@ -373,7 +373,7 @@
                         .then(res => {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Berhasil!',
+                                title: 'Berhasil',
                                 text: res.message,
                                 timer: 2000,
                                 showConfirmButton: false

@@ -47,9 +47,21 @@
         @include('layouts.sidebar-wisatawan')
     @endif
 
-        <div class="pt-[38px] pl-[350px] pr-[50px] pb-[20px]">
+    @if (session('swal'))
+        <script>
+            Swal.fire({
+                icon: '{{ session('swal.icon') }}',
+                title: '{{ session('swal.title') }}',
+                text: '{{ session('swal.text') }}',
+                timer: 2000,
+                showConfirmButton: false,
+            });
+        </script>
+    @endif
 
-    {{-- @if ($user->peran === 'Admin') --}}
+    <div class="pt-[38px] pl-[350px] pr-[50px] pb-[20px]">
+
+        {{-- @if ($user->peran === 'Admin') --}}
         <div class="text-sm flex justify-start gap-6 mb-10">
             <a href="{{ route('profile.show') }}"
                 class="back-btn w-10 flex items-center justify-center group relative cursor-pointer">
@@ -66,13 +78,13 @@
                 <h1 class="font-bold text-xl">Edit Profil</h1>
             </div>
         </div>
-    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-        @include('profile.partials.update-profile-information-form')
-    </div>
+        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            @include('profile.partials.update-profile-information-form')
+        </div>
 
-    <div class="mt-6 p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-        @include('profile.partials.update-password-form')
-    </div>
+        <div class="mt-6 p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            @include('profile.partials.update-password-form')
+        </div>
     </div>
 </body>
 

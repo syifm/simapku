@@ -367,7 +367,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -414,7 +414,11 @@
     @endif
 
     {{-- @include('layouts.header-wisatawan') --}}
-    @include('layouts.sidebar-wisatawan')
+    @if (Auth::check())
+        @include('layouts.sidebar-wisatawan')
+    @else
+        @include('layouts.sidebar-wisatawantidaklogin')
+    @endif
     @include('wisatawan.pencarian.halaman-tambahulasan')
 
     <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
@@ -955,7 +959,7 @@
 
                                 </p>
 
-                                <div>
+                                {{-- <div>
                                     @if (isset($kuliner->score) && $kuliner->score > 0)
                                         <div
                                             class="bg-blue-50 border border-blue-200 rounded-lg px-2 py-1 inline-block text-right">
@@ -966,7 +970,7 @@
                                             </span>
                                         </div>
                                     @endif
-                                </div>
+                                </div> --}}
                                 <div class="mt-4 flex flex-wrap gap-2">
                                     @foreach ($kuliner->kategori as $k)
                                         <span class="inline-block px-2 py-1 bg-gray-200 text-black rounded-md text-sm">
@@ -1071,41 +1075,8 @@
             </div>
         </div>
 
-        {{-- <div id="modalFavorit"
-            class="fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto z-50 items-center justify-center">
-            <form id="formFavorit" action="{{ route('favorit.simpan') }}" enctype="multipart/form-data">
-                @csrf
 
-                <div
-                    class="relative left-[30px] top-[90px] mx-auto p-5 border w-[600px] shadow-lg rounded-xl bg-white">
-                    <button type="button" onclick="closeModalFavorit()"
-                        class="absolute right-4 top-3 text-xl">✕</button>
 
-                    <h2 class="text-xl font-bold mb-4 text-center">Tambah Favorit</h2>
-                    <input type="hidden" id="id_wisata_kuliner_favorit" name="id_wisata_kuliner_favorit">
-
-                    <!-- Komentar -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-800 mb-1"
-                            for="komentar"><span>Komentar</span>
-                            <textarea id="komentar" name="komentar" rows="4"
-                                class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('komentar') }}</textarea>
-                            @error('komentar')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit"
-                            class="bg-[#FB991A] text-white px-12 py-2 rounded-md hover:bg-orange-600 transition duration-300 font-bold">
-                            Simpan
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div> --}}
-
-        <!-- Modal: Belum Login -->
         <div id="modalLogin"
             class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
             <div class="bg-white rounded-2xl p-6 w-80 shadow-xl text-center">
@@ -1139,6 +1110,28 @@
     <script src="https://cdn.jsdelivr.net/npm/multi-select-dropdown-js/MultiSelect.min.js"></script>
 
     <script>
+        const isUserLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+        function handleLogin() {
+            if (!isUserLoggedIn) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak Dapat Diakses',
+                    text: 'Mohon maaf tidak dapat mengakses fitur ini. Silakan login terlebih dahulu',
+                    showCancelButton: true,
+                    confirmButtonColor: '#fb991a',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Login',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login';
+                    }
+                });
+                return false;
+            }
+            return true;
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             const inputs = document.querySelectorAll(".input-bobot");
             const labelTotal = document.getElementById("labelTotalBobot");
@@ -1149,9 +1142,7 @@
             function updateBobotLimits() {
                 let totalSekarang = 0;
 
-                // 1. Sanitasi input: Bersihkan format minus atau angka kosong
                 inputs.forEach(input => {
-                    // Cek jika user memasukkan angka nol beruntun (0000)
                     if (input.value.length > 1 && input.value.startsWith('0')) {
                         input.value = parseInt(input.value) || 0;
                     }
@@ -1162,12 +1153,10 @@
                     }
                 });
 
-                // 2. Hitung total akumulasi bobot
                 inputs.forEach(input => {
                     totalSekarang += parseInt(input.value) || 0;
                 });
 
-                // 3. Batasi jika total input melebihi angka 100% secara paksa
                 if (totalSekarang > 100) {
                     const activeInput = document.activeElement;
                     if (activeInput && activeInput.classList.contains('input-bobot')) {
@@ -1184,24 +1173,19 @@
                     });
                 }
 
-                // 4. Perbarui Teks Persentase di UI
                 labelTotal.textContent = totalSekarang + "%";
 
-                // 5. Logika Validasi Tombol & Tampilan Pesan Error Secara Real-Time
                 if (totalSekarang === 100) {
                     // labelTotal.className = "text-base font-bold text-green-600";
                     // pesanError.classList.add("hidden");
 
-                    // Aktifkan tombol kembali
                     if (btnCari) btnCari.disabled = false;
                 } else {
                     // labelTotal.className = "text-base font-bold text-red-500";
 
-                    // Kunci tombol agar tidak bisa diklik semenjak user mengetik data salah
                     if (btnCari) btnCari.disabled = true;
                 }
 
-                // 6. Set dinamis batas maksimal input tersisa
                 inputs.forEach(input => {
                     const nilaiInputIni = parseInt(input.value) || 0;
                     let sisaKuota = 100 - (totalSekarang - nilaiInputIni);
@@ -1213,17 +1197,14 @@
                 });
             }
 
-            // Pasang Event Listener ke seluruh kolom input bobot
             inputs.forEach(input => {
                 input.addEventListener("input", updateBobotLimits);
 
-                // Mempermudah user mengubah angka saat kolom diklik (auto-select)
                 input.addEventListener("focus", function() {
                     this.select();
                 });
             });
 
-            // Validasi double-check saat form dikirimkan
             if (formCari) {
                 formCari.addEventListener("submit", function(e) {
                     let totalAkhir = 0;
@@ -1232,7 +1213,7 @@
                     });
 
                     if (totalAkhir !== 100) {
-                        e.preventDefault(); // Gagalkan pengiriman data ke server Laravel
+                        e.preventDefault();
 
                         pesanError.textContent =
                             `Total bobot harus tepat 100%`;
@@ -1246,7 +1227,6 @@
                 });
             }
 
-            // Jalankan fungsi saat pertama kali halaman dimuat
             updateBobotLimits();
         });
 
@@ -1288,7 +1268,6 @@
             const minJarakDua = parseInt(inputJarakDua.min);
             const maxJarakDua = parseInt(inputJarakDua.max);
 
-            // Clamp value dalam batas min-max
             if (valJarakDua < minJarakDua) valJarakDua = minJarakDua;
             if (valJarakDua > maxJarakDua) valJarakDua = maxJarakDua;
 
@@ -1310,21 +1289,13 @@
             const minValue = parseInt(minInput.value);
             const maxValue = parseInt(maxInput.value);
 
-            // get the total range of the slider
             const range = maxInput.max - minInput.min;
-            // get the selected value range of the progress
             const valueRange = maxValue - minValue;
-            // calculate the width percentage
             const width = (valueRange / range) * 100;
-            // calculate the min thumb offset
             const minOffset = ((minValue - minInput.min) / range) * 100;
 
-            // update the progress width
             progress.style.width = width + "%";
-            // update the progress left position
             progress.style.left = minOffset + "%";
-
-            // update the number inputs
             minPriceInput.value = minValue;
             maxPriceInput.value = maxValue;
         };
@@ -1370,8 +1341,7 @@
         let startOffsetX;
 
         progress.addEventListener("mousedown", (e) => {
-            e.preventDefault(); // prevent text selection
-
+            e.preventDefault();
             isDragging = true;
 
             startOffsetX = e.clientX - progress.getBoundingClientRect().left;
@@ -1381,30 +1351,23 @@
 
         document.addEventListener("mousemove", (e) => {
             if (isDragging) {
-                // get the size and position of the slider
                 const sliderRect = slider.getBoundingClientRect();
                 const progressWidth = parseFloat(progress.style.width || 0);
 
-                // calculate the new left position for the progress element
                 let newLeft =
                     ((e.clientX - sliderRect.left - startOffsetX) / sliderRect.width) * 100;
 
-                // ensure the progress is not exceeding the slider boundaries
                 newLeft = Math.min(Math.max(newLeft, 0), 100 - progressWidth);
 
-                // update the progress position
                 progress.style.left = newLeft + "%";
 
-                // calculate the new min thumb position
                 const range = maxInput.max - minInput.min;
                 const newMin = Math.round((newLeft / 100) * range) + parseInt(minInput.min);
                 const newMax = newMin + parseInt(maxInput.value) - parseInt(minInput.value);
 
-                // update the min input
                 minInput.value = newMin;
                 maxInput.value = newMax;
 
-                // update the progress
                 updateProgress();
             }
             slider.classList.toggle("dragging", isDragging);
@@ -1542,12 +1505,15 @@
             const detailId = params.get('detail');
 
             if (detailId) {
-                openDetailFromId(detailId);
+                klikDetail(detailId);
             }
         });
 
-        function openDetailFromId(id) {
+        function klikDetail(id) {
             let card = document.querySelector(`.card-kuliner[data-id="${id}"]`);
+
+            console.log("DETAIL", id);
+            console.log("CARD", card);
             if (card) card.click();
         }
 
@@ -1622,8 +1588,8 @@
         });
 
         // MAPS --------------------------------------------------------------------------------
-        let defaultLat = -6.984168497010843;
-        let defaultLng = 110.40926002563694;
+        let defaultLat = -6.969293174776291;
+        let defaultLng = 110.42436387257949;
 
         let map;
         let userMarker = null;
@@ -1641,8 +1607,8 @@
 
         async function initApp() {
             let defaultLocation = {
-                lat: -6.984168497010843,
-                lng: 110.40926002563694
+                lat: -6.969293174776291,
+                lng: 110.42436387257949
             };
 
             const markerLib = await google.maps.importLibrary("marker");
@@ -1990,7 +1956,7 @@
                 </div>
 
                 <div class="flex justify-end gap-2 mt-6">
-                    <button title="Favorit" onclick="klikFavorit(${id}, this)"
+                    <button title="Favorit" onclick="${isUserLoggedIn ? `klikFavorit(${id}, this)` : 'handleLogin()'}"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -2006,7 +1972,7 @@
                         <i class="fi fi-rs-route text-md"></i>
                     </button>
 
-                    <button title="Edit" onclick="klikEdit(${id})"
+                    <button title="Edit" onclick="${isUserLoggedIn ? `klikEdit(${id})` : 'handleLogin()'}"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -2021,7 +1987,7 @@
 
                 <hr class="my-4">
 
-                <button onclick="klikUlasan(${id})"
+                <button onclick="${isUserLoggedIn ? `klikUlasan(${id})` : 'handleLogin()'}"
                         class="bg-gray-100 w-full text-gray-500 border px-4 py-2 rounded-xl mt-4 flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -2117,54 +2083,6 @@
                 return `≤ Rp ${max.toLocaleString('id-ID')}`;
             }
             return '';
-        }
-
-        // Foto 
-        const fotoInput = document.getElementById('foto_ulasan');
-        const fotoError = document.getElementById('fotoError');
-        const previewWrapper = document.getElementById('previewWrapper');
-        const fotoPreview = document.getElementById('fotoPreview');
-
-        const MAX_SIZE = 5 * 1024 * 1024;
-        const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
-
-        fotoInput.addEventListener('change', function() {
-            const file = this.files[0];
-
-            fotoError.classList.add('hidden');
-            fotoError.textContent = '';
-            previewWrapper.classList.add('hidden');
-
-            if (!file) return;
-
-            if (!ALLOWED_TYPES.includes(file.type)) {
-                showError('Format file tidak sesuai.');
-                resetInput();
-                return;
-            }
-
-            if (file.size > MAX_SIZE) {
-                showError('Ukuran foto terlalu besar.');
-                resetInput();
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                fotoPreview.src = e.target.result;
-                previewWrapper.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        });
-
-        function showError(message) {
-            fotoError.textContent = message;
-            fotoError.classList.remove('hidden');
-        }
-
-        function resetInput() {
-            fotoInput.value = '';
-            fotoPreview.src = '';
         }
 
         function loadUlasan(idKuliner) {
@@ -2341,7 +2259,8 @@
         }
 
         // Lihat rute
-        function klikRute(destLat, destLng, btn) {
+        function klikRute(latwk, lngwk, btn) {
+            const icon = btn.querySelector('i');
             if (routeVisible) {
 
                 directionsRenderer.setDirections({
@@ -2354,6 +2273,8 @@
                 }
 
                 btn.classList.remove('bg-blue-100');
+                icon.className = 'fi fi-rs-route text-md';
+                // icon.style.color = '#6b7280';
 
                 routeVisible = false;
                 return;
@@ -2370,8 +2291,8 @@
                     lng: userLng
                 },
                 destination: {
-                    lat: destLat,
-                    lng: destLng
+                    lat: latwk,
+                    lng: lngwk
                 },
                 travelMode: 'DRIVING'
             };
@@ -2386,8 +2307,8 @@
                         path: [
                             lastPoint,
                             {
-                                lat: destLat,
-                                lng: destLng
+                                lat: latwk,
+                                lng: lngwk
                             }
                         ],
                         geodesic: true,
@@ -2396,6 +2317,9 @@
                         strokeWeight: 4,
                         map: map
                     });
+
+                    icon.className = 'fi fi-bs-route text-md';
+                    // icon.style.color = '#fb991a';
                     routeVisible = true;
                 } else {
                     alert("Gagal menampilkan rute");
@@ -2433,6 +2357,91 @@
                 `/wisatawan/editwisatakuliner/${id}?from=` + encodeURIComponent(window.location.href);
         }
 
+        function klikUlasan(id) {
+            kulinerAktif = id
+            document.getElementById('id_wisata_kuliner').value = id
+            fetch(`/wisatawan/ulasan/modalulasan/${id}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    if (data && data.id_ulasan) {
+                        document.getElementById('ulasan').value = data.ulasan;
+                        document.getElementById('penilaian').value = data.penilaian;
+
+                        document.querySelector('.min-price-hargaulasan').value =
+                            data.harga_min ?? 0;
+
+                        document.querySelector('.max-price-hargaulasan').value =
+                            data.harga_max ?? 500000;
+
+                        document.querySelector('.min-input-hargaulasan').value =
+                            data.harga_min ?? 0;
+
+                        document.querySelector('.max-input-hargaulasan').value =
+                            data.harga_max ?? 500000;
+
+                        updateProgressHargaulasan();
+                        // document.getElementById('harga_per_orang').value =
+                        //     data.harga_min + "-" + data.harga_max;
+                        const statusBox = document.getElementById('statusUlasan');
+                        const submitBtn = document.querySelector(
+                            '#formUlasan button[type="submit"]'
+                        );
+
+                        // statusBox.classList.add('hidden');
+                        // document.getElementById('ulasan').readOnly = false;
+                        // submitBtn.classList.remove('hidden');
+                        statusBox.classList.add('hidden');
+                        setReadonlyUlasan(false);
+
+                        setRatingStars(data.penilaian);
+
+                        if (data.status === 'Belum Diverifikasi') {
+
+                            statusBox.classList.remove('hidden');
+                            statusBox.className =
+                                'mb-4 rounded-lg p-3 bg-yellow-100 text-yellow-700';
+
+                            statusBox.innerHTML =
+                                'Ulasan sedang menunggu verifikasi admin';
+
+                            // document.getElementById('ulasan').readOnly = true;
+                            setReadonlyUlasan(true);
+                        } else if (data.status === 'Ditolak') {
+
+                            statusBox.classList.remove('hidden');
+                            statusBox.className =
+                                'mb-4 rounded-lg p-3 bg-red-100 text-red-700';
+
+                            statusBox.innerHTML =
+                                'Ulasan ditolak. Silakan perbaiki dan kirim ulang.';
+                        } else if (data.status === 'Disetujui') {
+
+                            statusBox.classList.remove('hidden');
+                            statusBox.className =
+                                'mb-4 rounded-lg p-3 bg-green-100 text-green-700';
+
+                            statusBox.innerHTML =
+                                'Ulasan telah disetujui.';
+                        }
+
+                        if (data.foto_ulasan) {
+                            document.getElementById('previewWrapper').classList.remove('hidden');
+                            document.getElementById('fotoPreview').src = `/storage/${data.foto_ulasan}`;
+                        }
+                    } else {
+                        document.getElementById('formUlasan').reset();
+                        setRatingStars(0);
+                    }
+
+                })
+                .catch(err => {
+                    console.error('Tidak dapat mengambil ulasan:', err);
+                });
+            document.getElementById('modalUlasan').classList.remove('hidden')
+            document.body.style.overflow = 'hidden'
+        }
+
         // Favorit
         let kulinerAktif = null
 
@@ -2447,71 +2456,8 @@
             }
         }
 
-        // function openModalFavorit(id) {
-        //     kulinerAktif = id
-        //     document.getElementById('id_wisata_kuliner_favorit').value = id
-        //     document.getElementById('modalFavorit').classList.remove('hidden')
-        //     document.body.style.overflow = 'hidden'
-        // }
-
-        // function closeModalFavorit() {
-        //     document.getElementById('modalFavorit').classList.add('hidden')
-        //     document.body.style.overflow = ''
-        // }
-
-        // document.getElementById('formFavorit').addEventListener('submit', function(e) {
-        //     e.preventDefault();
-
-        //     let id = document.getElementById('id_wisata_kuliner_favorit').value;
-        //     let komentar = document.getElementById('komentar').value;
-
-        //     fetch("{{ route('favorit.simpan') }}", {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': csrfToken
-        //             },
-        //             body: JSON.stringify({
-        //                 id_wisata_kuliner_favorit: id,
-        //                 komentar: komentar
-        //             })
-        //         })
-        //         .then(res => res.json())
-        //         .then(data => {
-        //             let btn = document.querySelector(`button[onclick="handleFavorit(${id}, this)"]`);
-        //             if (btn) {
-        //                 let svg = btn.querySelector('svg');
-        //                 svg.setAttribute('fill', 'black');
-        //                 svg.setAttribute('stroke', 'none');
-        //             }
-
-        //             favoritIds.push(parseInt(id));
-
-        //             closeModalFavorit();
-
-        //             document.getElementById('formFavorit').reset();
-
-        //             Swal.fire({
-        //                 icon: 'success',
-        //                 title: 'Berhasil!',
-        //                 text: 'Berhasil ditambahkan ke Kuliner Favorit',
-        //                 timer: 1500,
-        //                 showConfirmButton: false
-        //             });
-
-        //         })
-        //         .catch(err => {
-        //             console.error(err);
-
-        //             Swal.fire({
-        //                 icon: 'error',
-        //                 title: 'Gagal menyimpan favorit',
-        //             });
-        //         });
-        // });
-
         function simpanFavorit(id, btn) {
-            fetch(`/wisatawan/favorit/simpan`, {
+            fetch(`/wisatawan/favorit/simpan/${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2644,8 +2590,8 @@
                     e.target.submit();
                 },
                 function() {
-                    document.getElementById("lat").value = -6.969054045894555;
-                    document.getElementById("lng").value = 110.42432058292049;
+                    document.getElementById("lat").value = -6.969293174776291;
+                    document.getElementById("lng").value = 110.42436387257949;
                     e.target.submit();
                 }
             );
@@ -2720,6 +2666,8 @@
                 });
             }
         }
+
+
 
         // async function cariKulinerTerdekat() {
 

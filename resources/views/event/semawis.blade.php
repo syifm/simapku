@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css'>
 
     <style>
         body {
@@ -46,7 +47,7 @@
 
         #map {
             height: 400px;
-            width: 1330px;
+            width: 100%;
             border-radius: 7px;
         }
     </style>
@@ -57,7 +58,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -80,25 +81,22 @@
     @endif
 
     @if (Auth::check())
-        @include('layouts.header-wisatawan')
         @include('layouts.sidebar-wisatawan')
     @else
-        @include('layouts.header-wisatawan')
         @include('layouts.sidebar-wisatawantidaklogin')
     @endif
 
     {{-- <div class="pt-[100px] p-28 overflow-y-auto min-h-screen"> --}}
-    <div class="pt-[10px] pl-28 pr-[30px] pb-[30px]">
+    <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
         <div class="mb-8 mt-[10px]">
-            <div class="mt-4 relative text-2xl">
+            <div class="mt-3 text-sm flex justify-start gap-6">
                 <a onclick="history.back()"
-                    class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 
-          flex items-center justify-center group cursor-pointer">
+                    class="back-btn w-10 flex items-center justify-center group relative cursor-pointer">
 
                     <span
-                        class="absolute inset-0 rounded-full bg-gray-200 
-                 scale-0 group-hover:scale-100 
-                 duration-50"></span>
+                        class="absolute w-10 h-10 rounded-full bg-gray-200 
+                            scale-0 group-hover:scale-100 
+                            duration-50"></span>
 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
                         stroke="currentColor" class="size-5 relative z-10">
@@ -106,14 +104,14 @@
                     </svg>
                 </a>
 
-                <h1 class="font-bold text-center">
-                    Waroeng Semawis
-                </h1>
+                <div class="-mt-1.5">
+                    <h1 class="font-bold text-xl">Waroeng Semawis</h1>
+                </div>
 
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-            <img src="{{ asset('pasarimlek.jpg') }}" alt="pasarimlek"
+            <img src="{{ asset('pasarimlek.jpg') }}" alt="waroengsemawis"
                 class="w-80 h-60 object-cover transition duration-300 group-hover:scale-100 mx-auto rounded-md">
             <h1 class="text-lg font-bold mt-4">Tentang Waroeng Semawis</h1>
             <p class="text-justify">Waroeng Semawis yang berlokasi tepatnya di Gang Warung ini beroperasi mulai dari
@@ -124,10 +122,12 @@
                 hari. Ketika dilaksanakan Pasar Imlek ini tidak hanya kuliner saja, tetapi terdapat kegiatan lainnya
                 seperti performa barongsai.</p>
 
-            <p class="text-justify font-semibold mt-6">Informasi lebih lanjut: <a
-                    href="https://www.instagram.com/waroengsemawissemarang/" target="_blank"
-                    class="text-blue-400">Instagram
-                    Waroeng Semawis</a>
+            <p class="text-justify font-semibold mt-6 flex items-center gap-2">
+                Informasi lebih lanjut:
+                <a href="https://www.instagram.com/waroengsemawissemarang/" target="_blank"
+                    class="text-blue-500 text-2xl flex items-center">
+                    <i class="fi fi-brands-instagram"></i>
+                </a>
             </p>
             <div id="map" class="mt-4">
             </div>

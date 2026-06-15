@@ -29,7 +29,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
+                title: 'Berhasil',
                 text: "{{ session('success') }}",
                 timer: 2000,
                 showConfirmButton: false,
@@ -230,8 +230,7 @@
                         </div>
                     @endif
 
-                    <div id="detailBaru"
-                        {{-- class="fixed left-[300px] right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto"> --}}
+                    <div id="detailBaru" {{-- class="fixed left-[300px] right-0 top-0 bottom-0 bg-black bg-opacity-40 hidden overflow-y-auto"> --}}
                         class="fixed inset-0 bg-black/40 hidden z-[9999] overflow-y-auto bg-black bg-opacity-40">
                         <div class="relative top-5 mx-auto p-5 border w-[500px] shadow-lg rounded-xl bg-white">
                             <div class="col-span-7 flex justify-between items-center mb-4">
@@ -1285,7 +1284,7 @@
                                 .then(res => {
                                     Swal.fire({
                                         icon: 'success',
-                                        title: 'Berhasil!',
+                                        title: 'Berhasil',
                                         text: res.message,
                                         timer: 2000,
                                         showConfirmButton: false
@@ -1319,7 +1318,7 @@
                                 .then(res => {
                                     Swal.fire({
                                         icon: 'success',
-                                        title: 'Berhasil!',
+                                        title: 'Berhasil',
                                         text: res.message,
                                         timer: 2000,
                                         showConfirmButton: false
