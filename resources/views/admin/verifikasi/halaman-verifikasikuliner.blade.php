@@ -75,15 +75,15 @@
                     <div id="contentKuliner" class="{{ $activeTab === 'wisatakuliner' ? '' : 'hidden' }}">
                         {{-- <div class="mt-14"> --}}
                         @if ($wisataKuliner->isEmpty())
-                            <div class="bg-white rounded-lg mt-4">
-                                <table class="table-fixed w-full border-collapse border border-black">
-                                    <colgroup>
+                            <div class="bg-white mt-4 overflow-x-auto">
+                                <table class="w-full table-auto border-collapse border border-black">
+                                    {{-- <colgroup>
                                         <col style="width: 30px">
                                         <col style="width: 280px">
                                         <col style="width: 90px">
                                         <col style="width: 90px">
                                         <col style="width: 80px">
-                                    </colgroup>
+                                    </colgroup> --}}
 
                                     <thead>
                                         <tr>
@@ -119,15 +119,15 @@
                                 </table>
                             </div>
                         @else
-                            <div class="bg-white rounded-lg mt-4">
-                                <table class="table-fixed w-full border-collapse border-b-0 border-black">
-                                    <colgroup>
+                            <div class="bg-white mt-4 overflow-x-auto">
+                                <table class="w-full table-auto border-collapse border-b-0 border-black">
+                                    {{-- <colgroup>
                                         <col style="width: 30px">
                                         <col style="width: 280px">
                                         <col style="width: 90px">
                                         <col style="width: 90px">
                                         <col style="width: 80px">
-                                    </colgroup>
+                                    </colgroup> --}}
 
                                     <thead>
                                         <tr>

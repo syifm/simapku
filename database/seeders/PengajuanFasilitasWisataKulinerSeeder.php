@@ -16,47 +16,11 @@ class PengajuanFasilitasWisataKulinerSeeder extends Seeder
         $pfwkulinerData = [
             [
                 'id_pengajuan' => 1,
-                'id_fasilitas' => 1,
-            ],
-            [
-                'id_pengajuan' => 2,
-                'id_fasilitas' => 1,
-            ],
-            [
-                'id_pengajuan' => 3,
-                'id_fasilitas' => 1,
-            ],
-            [
-                'id_pengajuan' => 4,
-                'id_fasilitas' => 1,
-            ],
-            [
-                'id_pengajuan' => 5,
-                'id_fasilitas' => 1,
-            ],
-            [
-                'id_pengajuan' => 1,
                 'id_fasilitas' => 2,
             ],
             [
                 'id_pengajuan' => 2,
                 'id_fasilitas' => 2,
-            ],
-            [
-                'id_pengajuan' => 3,
-                'id_fasilitas' => 2,
-            ],
-            [
-                'id_pengajuan' => 2,
-                'id_fasilitas' => 3,
-            ],
-            [
-                'id_pengajuan' => 1,
-                'id_fasilitas' => 5,
-            ],
-            [
-                'id_pengajuan' => 2,
-                'id_fasilitas' => 7,
             ],
         ];
 

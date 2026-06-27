@@ -19,6 +19,16 @@ class KulinerFavoritSeeder extends Seeder
                 'id_wisata_kuliner' => 1,
                 'waktu_dibuat' => now(),
             ],
+            [
+                'id_wisatawan' => 1,
+                'id_wisata_kuliner' => 3,
+                'waktu_dibuat' => now(),
+            ],
+            [
+                'id_wisatawan' => 1,
+                'id_wisata_kuliner' => 4,
+                'waktu_dibuat' => now(),
+            ],
         ];
 
         foreach ($kulinerfavoritData as $data) {

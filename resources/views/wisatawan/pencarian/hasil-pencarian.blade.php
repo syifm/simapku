@@ -1111,6 +1111,7 @@
 
     <script>
         const isUserLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+
         function handleLogin() {
             if (!isUserLoggedIn) {
                 Swal.fire({
@@ -2076,13 +2077,39 @@
         // Format Harga
         function formatHarga(min, max) {
             if (min && max) {
-                return `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
-            } else if (min && !max) {
-                return `Rp ${min.toLocaleString('id-ID')}+`;
-            } else if (!min && max) {
-                return `≤ Rp ${max.toLocaleString('id-ID')}`;
+                if (min == 0) {
+                    if (max == 0) {
+                        return '';
+                    } else {
+                        return `≤ Rp ${max.toLocaleString('id-ID')}`;
+                    }
+                } else {
+                    if (min == 500000) {
+                        return `Rp ${min.toLocaleString('id-ID')}+`;
+                    } else {
+                        return `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
+                    }
+                }
             }
-            return '';
+
+            // let min = data.harga_min ?? 0;
+            // let max = data.harga_max ?? 0;
+
+            // let text = '';
+
+            // if (((min && max) != 0) && ((min && max) != 500000)) {
+            //     text = `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
+            // } else {
+            //     if (min == 0) {
+            //         if (max != 0) {
+            //             text = `≤ Rp ${max.toLocaleString('id-ID')}`;
+            //         } else {
+            //             text = '-';
+            //         }
+            //     } else {
+            //         text = `Rp ${min.toLocaleString('id-ID')}+`;
+            //     }
+            // }
         }
 
         function loadUlasan(idKuliner) {

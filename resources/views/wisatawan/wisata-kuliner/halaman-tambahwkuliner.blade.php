@@ -754,18 +754,45 @@
         //     initMap();
         // }
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
+        // if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(function(position) {
 
-                defaultPosition = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
+        //         defaultPosition = {
+        //             lat: position.coords.latitude,
+        //             lng: position.coords.longitude
+        //         };
 
-                lastValidPosition = defaultPosition;
+        //         lastValidPosition = defaultPosition;
 
-            });
-        }
+        //     });
+        // }
+        // if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(function(position) {
+
+        //         const posisiUser = {
+        //             lat: position.coords.latitude,
+        //             lng: position.coords.longitude
+        //         };
+
+        //         const tempGeocoder = new google.maps.Geocoder();
+
+        //         tempGeocoder.geocode({
+        //             location: posisiUser,
+        //             language: "id"
+        //         }, function(results, status) {
+
+        //             if (
+        //                 status === "OK" &&
+        //                 results[0] &&
+        //                 isDalamSemarang(results[0].address_components)
+        //             ) {
+        //                 defaultPosition = posisiUser;
+        //                 lastValidPosition = posisiUser;
+        //             }
+        //         });
+
+        //     });
+        // }
 
         // Awal
         async function initMap() {

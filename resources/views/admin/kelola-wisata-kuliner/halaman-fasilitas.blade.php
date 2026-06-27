@@ -13,15 +13,15 @@
 
 
 @if ($fasilitas->isEmpty())
-    <div class="bg-white rounded-lg mt-4">
-        <table class="table-fixed w-full border-collapse border border-black" id="tabelFasilitas">
-            <colgroup>
+    <div class="bg-white mt-4 overflow-x-auto">
+        <table class="w-full table-auto border-collapse border border-black" id="tabelFasilitas">
+            {{-- <colgroup>
                 <col style="width: 30px">
                 <col style="width: 140px">
                 <col style="width: 60px">
                 <col style="width: 60px">
                 <col style="width: 160px">
-            </colgroup>
+            </colgroup> --}}
 
             <thead>
                 <tr>
@@ -51,15 +51,15 @@
         </table>
     </div>
 @else
-    <div class="bg-white rounded-lg mt-4">
-        <table class="table-fixed w-full border-collapse border-b-0 border-black" id="tabelFasilitas">
-            <colgroup>
+    <div class="bg-white mt-4 overflow-x-auto">
+        <table class="w-full table-auto border-collapse border-b-0 border-black" id="tabelFasilitas">
+            {{-- <colgroup>
                 <col style="width: 30px">
                 <col style="width: 140px">
                 <col style="width: 60px">
                 <col style="width: 60px">
                 <col style="width: 160px">
-            </colgroup>
+            </colgroup> --}}
 
             <thead>
                 <tr>

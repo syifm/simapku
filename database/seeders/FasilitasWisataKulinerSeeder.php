@@ -19,6 +19,18 @@ class FasilitasWisataKulinerSeeder extends Seeder
                 'id_fasilitas' => 1,
             ],
             [
+                'id_wisata_kuliner' => 1,
+                'id_fasilitas' => 2,
+            ],
+            [
+                'id_wisata_kuliner' => 1,
+                'id_fasilitas' => 3,
+            ],
+            [
+                'id_wisata_kuliner' => 1,
+                'id_fasilitas' => 4,
+            ],
+            [
                 'id_wisata_kuliner' => 2,
                 'id_fasilitas' => 1,
             ],
@@ -28,7 +40,47 @@ class FasilitasWisataKulinerSeeder extends Seeder
             ],
             [
                 'id_wisata_kuliner' => 2,
+                'id_fasilitas' => 4,
+            ],
+            [
+                'id_wisata_kuliner' => 3,
+                'id_fasilitas' => 1,
+            ],
+            [
+                'id_wisata_kuliner' => 3,
+                'id_fasilitas' => 2,
+            ],
+            [
+                'id_wisata_kuliner' => 3,
                 'id_fasilitas' => 3,
+            ],
+            [
+                'id_wisata_kuliner' => 3,
+                'id_fasilitas' => 5,
+            ],
+            [
+                'id_wisata_kuliner' => 4,
+                'id_fasilitas' => 1,
+            ],
+            [
+                'id_wisata_kuliner' => 4,
+                'id_fasilitas' => 2,
+            ],
+            [
+                'id_wisata_kuliner' => 4,
+                'id_fasilitas' => 3,
+            ],
+            [
+                'id_wisata_kuliner' => 4,
+                'id_fasilitas' => 5,
+            ],
+            [
+                'id_wisata_kuliner' => 5,
+                'id_fasilitas' => 1,
+            ],
+            [
+                'id_wisata_kuliner' => 5,
+                'id_fasilitas' => 2,
             ],
         ];
 

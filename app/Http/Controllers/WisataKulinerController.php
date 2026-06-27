@@ -1114,7 +1114,7 @@ class WisataKulinerController extends Controller
                     'kelurahan'  => $pengajuan->kelurahan,
                     'alamat'  => $pengajuan->alamat,
                     'no_telp'  => $pengajuan->no_telp  ?? null,
-                    'fo to'  => $fotoPath,
+                    'foto'  => $fotoPath,
                     'deskripsi'  => $pengajuan->deskripsi,
                     'latitude'  => $pengajuan->latitude,
                     'longitude'  => $pengajuan->longitude,
@@ -1646,8 +1646,17 @@ class WisataKulinerController extends Controller
         $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Disetujui')->where('status_operasional', 'Aktif');
 
         if ($hasKeyword) {
-            $query->where(function ($q) use ($keywordLower) {
-                $q->where('nama', 'like', '%' . $keywordLower . '%')
+            $keywordNormalized = str_replace(['-', ' '], '', $keywordLower);
+
+            $query->where(function ($q) use ($keywordLower, $keywordNormalized) {
+                $q->where('nama', 'like', "%{$keywordLower}%")
+
+                    ->orWhereRaw("
+                REPLACE(REPLACE(LOWER(nama), '-', ''), ' ', '')
+                LIKE ?
+            ", ["%{$keywordNormalized}%"])
+            // $query->where(function ($q) use ($keywordLower) {
+            //     $q->where('nama', 'like', '%' . $keywordLower . '%')
                     ->orWhere('kecamatan', 'like', '%' . $keywordLower . '%')
                     ->orWhere('kelurahan', 'like', '%' . $keywordLower . '%')
                     ->orWhere('alamat', 'like', '%' . $keywordLower . '%')

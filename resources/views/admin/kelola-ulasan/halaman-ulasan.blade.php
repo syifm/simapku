@@ -58,15 +58,15 @@
             <div class="bg-white-100 pt-0">
                 <div class="mt-14">
                     @if ($ulasankuliner->isEmpty())
-                        <div class="bg-white rounded-lg mt-4">
-                            <table class="table-fixed w-full border-collapse border border-black">
-                                <colgroup>
+                        <div class="bg-white mt-4 overflow-x-auto">
+                            <table class="w-full table-auto border-collapse border border-black">
+                                {{-- <colgroup>
                                     <col style="width: 30px">
                                     <col style="width: 90px">
                                     <col style="width: 90px">
                                     <col style="width: 40px">
                                     <col style="width: 80px">
-                                </colgroup>
+                                </colgroup> --}}
 
                                 <thead>
                                     <tr>
@@ -102,15 +102,15 @@
                             </table>
                         </div>
                     @else
-                        <div class="bg-white rounded-lg mt-4">
-                            <table class="table-fixed w-full border-collapse border-b-0 border-black">
-                                <colgroup>
+                        <div class="bg-white mt-4 overflow-x-auto">
+                            <table class="w-full table-auto border-collapse border-b-0 border-black">
+                                {{-- <colgroup>
                                     <col style="width: 30px">
                                     <col style="width: 90px">
                                     <col style="width: 90px">
                                     <col style="width: 40px">
                                     <col style="width: 80px">
-                                </colgroup>
+                                </colgroup> --}}
 
                                 <thead>
                                     <tr>
@@ -302,21 +302,25 @@
                         document.getElementById('ulasan').textContent = data.ulasan;
 
                         // Harga
-                        let min = data.harga_min;
-                        let max = data.harga_max;
+                        let min = data.harga_min ?? 0;
+                        let max = data.harga_max ?? 0;
 
                         let text = '';
 
-                        if (min && max) {
-                            text = `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
-                        } else if (min && !max) {
-                            text = `Rp ${min.toLocaleString('id-ID')}+`;
-                        } else if (!min && max) {
-                            text = `≤ Rp ${max.toLocaleString('id-ID')}`;
+                        if (min == 0) {
+                            if (max == 0) {
+                                text = '-';
+                            } else {
+                                text = `≤ Rp ${max.toLocaleString('id-ID')}`;
+                            }
                         } else {
-                            text = '-';
+                            if (min == 500000) {
+                                text = `Rp ${min.toLocaleString('id-ID')}+`;
+                            } else {
+                                text = `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
+                            }
                         }
-
+                        
                         document.getElementById('harga').textContent = text;
 
                         // Foto

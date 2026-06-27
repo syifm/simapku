@@ -19,7 +19,7 @@ class KategoriSeeder extends Seeder
                 'jenis_kategori' => 'Asal Kuliner',
             ],
             [
-                'nama' => 'Asia',
+                'nama' => 'Sunda',
                 'jenis_kategori' => 'Asal Kuliner',
             ],
             [
@@ -28,6 +28,10 @@ class KategoriSeeder extends Seeder
             ],
             [
                 'nama' => 'Padang',
+                'jenis_kategori' => 'Asal Kuliner',
+            ],
+            [
+                'nama' => 'Jawa',
                 'jenis_kategori' => 'Asal Kuliner',
             ],
             [

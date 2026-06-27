@@ -20,11 +20,11 @@ class PengajuanKategoriWisataKulinerSeeder extends Seeder
             ],
             [
                 'id_pengajuan' => 1,
-                'id_kategori' => 11,
+                'id_kategori' => 6,
             ],
             [
                 'id_pengajuan' => 1,
-                'id_kategori' => 1,
+                'id_kategori' => 12,
             ],
             [
                 'id_pengajuan' => 2,
@@ -32,39 +32,11 @@ class PengajuanKategoriWisataKulinerSeeder extends Seeder
             ],
             [
                 'id_pengajuan' => 2,
-                'id_kategori' => 11,
+                'id_kategori' => 6,
             ],
             [
                 'id_pengajuan' => 2,
-                'id_kategori' => 8,
-            ],
-            [
-                'id_pengajuan' => 2,
-                'id_kategori' => 1,
-            ],
-            [
-                'id_pengajuan' => 3,
-                'id_kategori' => 5,
-            ],
-            [
-                'id_pengajuan' => 3,
-                'id_kategori' => 11,
-            ],
-            [
-                'id_pengajuan' => 4,
-                'id_kategori' => 5,
-            ],
-            [
-                'id_pengajuan' => 4,
-                'id_kategori' => 11,
-            ],
-            [
-                'id_pengajuan' => 5,
-                'id_kategori' => 1,
-            ],
-            [
-                'id_pengajuan' => 5,
-                'id_kategori' => 11,
+                'id_kategori' => 12,
             ],
         ];
 

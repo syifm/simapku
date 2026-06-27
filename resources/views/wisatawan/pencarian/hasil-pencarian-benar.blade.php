@@ -1647,8 +1647,8 @@
         }
 
         document.querySelectorAll('.card-kuliner').forEach(card => {
-            let min = parseInt(card.dataset.min) || null;
-            let max = parseInt(card.dataset.max) || null;
+            let min = parseInt(card.dataset.min) || 0;
+            let max = parseInt(card.dataset.max) || 0;
 
             // let text = '';
 
@@ -1669,12 +1669,18 @@
         });
 
         function formatHarga(min, max) {
-            if (min && max) {
-                return `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
-            } else if (min && !max) {
-                return `Rp ${min.toLocaleString('id-ID')}+`;
-            } else if (!min && max) {
-                return `≤ Rp ${max.toLocaleString('id-ID')}`;
+            if (((min && max) != 0) && ((min && max) != 500000)) {
+               return `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
+            } else {
+                if (min == 0) {
+                    if (max != 0) {
+                        return `≤ Rp ${max.toLocaleString('id-ID')}`;
+                    } else {
+                        return '-';
+                    }
+                } else {
+                    return `Rp ${min.toLocaleString('id-ID')}+`;
+                }
             }
             return '';
         }

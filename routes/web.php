@@ -140,9 +140,9 @@ Route::middleware(['auth', 'Wisatawan'])->group(function () {
     // Route::get('/wisatawan/mapwisatakuliner2', [WisatawanController::class, 'mapWisataKuliner2'])->name('map-WisataKuliner2');
     // Route::get('/cobaya', [WisataKulinerController::class, 'coba'])->name('cobacoba');
 
-    Route::get('/wisatawan/riwayatpengajuan', [PengajuanWKulinerController::class, 'tampilkanRiwayatPengajuan'])->name('riwayatpengajuan');
-    Route::get('/wisatawan/riwayatpengajuan/detail/kuliner/{id}', [PengajuanWKulinerController::class, 'tampilkanDetailWKuliner'])->name('riwayatpengajuan.detailkuliner');
-    Route::get('/wisatawan/riwayatpengajuan/detail/ulasan/{id}', [PengajuanWKulinerController::class, 'tampilkanDetailUlasan'])->name('riwayatpengajuan.detailulasan');
+    Route::get('/wisatawan/riwayatpengajuan', [RiwayatController::class, 'tampilkanRiwayatPengajuan'])->name('riwayatpengajuan');
+    Route::get('/wisatawan/riwayatpengajuan/detail/kuliner/{id}', [RiwayatController::class, 'tampilkanDetailWKuliner'])->name('riwayatpengajuan.detailkuliner');
+    Route::get('/wisatawan/riwayatpengajuan/detail/ulasan/{id}', [RiwayatController::class, 'tampilkanDetailUlasan'])->name('riwayatpengajuan.detailulasan');
 
 
     // Route::post('/store', [WisatawanController::class, 'store'])->name('store');

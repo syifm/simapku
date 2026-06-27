@@ -670,21 +670,25 @@
                         document.getElementById('email_pengaju').textContent = data.email_pengaju;
 
                         // Harga
-                        let min = data.harga_min;
-                        let max = data.harga_max;
+                        let min = data.harga_min ?? 0;
+                        let max = data.harga_max ?? 0;
 
                         let text = '';
 
-                        if (min && max) {
-                            text = `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
-                        } else if (min && !max) {
-                            text = `Rp ${min.toLocaleString('id-ID')}+`;
-                        } else if (!min && max) {
-                            text = `≤ Rp ${max.toLocaleString('id-ID')}`;
+                        if (min == 0) {
+                            if (max == 0) {
+                                text = '-';
+                            } else {
+                                text = `≤ Rp ${max.toLocaleString('id-ID')}`;
+                            }
                         } else {
-                            text = '-';
+                            if (min == 500000) {
+                                text = `Rp ${min.toLocaleString('id-ID')}+`;
+                            } else {
+                                text = `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
+                            }
                         }
-
+                        
                         document.getElementById('harga').textContent = text;
 
                         // Rating

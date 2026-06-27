@@ -2089,12 +2089,18 @@
 
         // Format Harga
         function formatHarga(min, max) {
-            if (min && max) {
+            if (((min && max) != 0) && ((min && max) != 500000)) {
                 return `Rp ${min.toLocaleString('id-ID')} - ${max.toLocaleString('id-ID')}`;
-            } else if (min && !max) {
-                return `Rp ${min.toLocaleString('id-ID')}+`;
-            } else if (!min && max) {
-                return `≤ Rp ${max.toLocaleString('id-ID')}`;
+            } else {
+                if (min == 0) {
+                    if (max != 0) {
+                        return `≤ Rp ${max.toLocaleString('id-ID')}`;
+                    } else {
+                        return '-';
+                    }
+                } else {
+                    return `Rp ${min.toLocaleString('id-ID')}+`;
+                }
             }
             return '';
         }
@@ -2870,6 +2876,21 @@
         //         })
 
         // }
+
+        // <a
+        //                             href="https://www.google.com/maps/search/?api=1&query=${lat},${lng}"
+        //                             target="_blank"
+        //                             style="
+        //                                 display:inline-block;
+        //                                 padding:8px 12px;
+        //                                 background:#004440;
+        //                                 color:white;
+        //                                 text-decoration:none;
+        //                                 border-radius:6px;
+        //                                 cursor: pointer;
+        //                             ">
+        //                             Buka di Google Maps
+        //                         </a>
     </script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initApp&libraries=maps,marker&v=weekly&language=in"

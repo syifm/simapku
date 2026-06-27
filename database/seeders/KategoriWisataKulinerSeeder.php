@@ -16,24 +16,65 @@ class KategoriWisataKulinerSeeder extends Seeder
         $kwkulinerData = [
             [
                 'id_wisata_kuliner' => 1,
-                'id_kategori' => 5,
+                'id_kategori' => 1,
             ],
             [
                 'id_wisata_kuliner' => 1,
-                'id_kategori' => 11,
+                'id_kategori' => 6,
+            ],
+            [
+                'id_wisata_kuliner' => 1,
+                'id_kategori' => 12,
             ],
             [
                 'id_wisata_kuliner' => 2,
-                'id_kategori' => 5,
+                'id_kategori' => 2,
             ],
             [
                 'id_wisata_kuliner' => 2,
-                'id_kategori' => 11,
+                'id_kategori' => 6,
             ],
             [
                 'id_wisata_kuliner' => 2,
+                'id_kategori' => 12,
+            ],
+            [
+                'id_wisata_kuliner' => 3,
                 'id_kategori' => 1,
             ],
+            [
+                'id_wisata_kuliner' => 3,
+                'id_kategori' => 6,
+            ],
+            [
+                'id_wisata_kuliner' => 3,
+                'id_kategori' => 9,
+            ],
+            [
+                'id_wisata_kuliner' => 4,
+                'id_kategori' => 3,
+            ],
+            [
+                'id_wisata_kuliner' => 4,
+                'id_kategori' => 6,
+            ],
+            [
+                'id_wisata_kuliner' => 4,
+                'id_kategori' => 12,
+            ],
+            [
+                'id_wisata_kuliner' => 5,
+                'id_kategori' => 1,
+            ],
+            [
+                'id_wisata_kuliner' => 5,
+                'id_kategori' => 6,
+            ],
+            [
+                'id_wisata_kuliner' => 5,
+                'id_kategori' => 12,
+            ],
+            
         ];
 
         foreach ($kwkulinerData as $data) {
