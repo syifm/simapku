@@ -336,7 +336,7 @@
     @endpush
 
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&language=in"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU&libraries=maps,marker&v=weekly&language=in"
         async defer></script>
     <script>
         const allKategori = @json($kategori->items());;

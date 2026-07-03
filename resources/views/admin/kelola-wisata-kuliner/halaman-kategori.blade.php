@@ -129,7 +129,20 @@
                             {{ $k->total_wisata }} Wisata Kuliner
                         </td> --}}
                         <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
-                            {{ $k->status }}
+                            {{-- {{ $k->status }} --}}
+                            <span
+                                class="inline-flex items-center gap-2
+                                {{ $k->status == 'Aktif' ? 'text-[#004440]' : 'text-red-700' }}">
+
+                                <span
+                                    class="w-2.5 h-2.5 rounded-full
+                                    {{ $k->status == 'Aktif' ? 'bg-[#004440]' : 'bg-red-700' }}">
+                                </span>
+
+                                <span>
+                                    {{ $k->status }}
+                                </span>
+                            </span>
                         </td>
                         <td class="px-4 py-3 text-sm border-b border-r border-black">
                             <div class="flex justify-center gap-2 flex-wrap">
@@ -168,8 +181,7 @@
                                         <span class="ml-1">Hapus</span>
                                     </button>
                                 @else
-                                    <button
-                                        onclick="klikStatusKategori({{ $k->id_kategori }}, '{{ $k->nama }}')"
+                                    <button onclick="klikStatusKategori({{ $k->id_kategori }}, '{{ $k->nama }}')"
                                         class="bg-blue-800 hover:bg-blue-900 text-white px-6 py-2 rounded-full text-sm flex items-center gap-1 btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -264,9 +276,6 @@
             @csrf
             <input type="hidden" name="_method" id="methodField">
 
-            <input type="text" name="nama" id="namaKategoriTambahEdit"
-                class="w-full border rounded-lg px-3 py-2 mb-4" placeholder="Nama kategori" required>
-
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-1">
                     Jenis Kategori
@@ -282,6 +291,15 @@
 
                     <option value="Asal Kuliner">Asal Kuliner</option>
                 </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">
+                    Nama Kategori
+                </label>
+
+                <input type="text" name="nama" id="namaKategoriTambahEdit"
+                    class="w-full border rounded-lg px-3 py-2 mb-4" required>
             </div>
 
             <div class="flex justify-end gap-2">

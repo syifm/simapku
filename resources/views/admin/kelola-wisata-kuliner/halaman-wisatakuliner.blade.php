@@ -192,8 +192,39 @@
                                                 </td>
                                                 <td
                                                     class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
-                                                    {{ $kuliner->status_operasional }}
+                                                    {{-- {{ $kuliner->status_operasional }} --}}
+                                                    <span
+                                                        class="inline-flex items-center gap-2
+                                                        @if ($kuliner->status_operasional == 'Aktif') text-[#004440]
+                                                        @elseif ($kuliner->status_operasional == 'Tutup Sementara')
+                                                            text-[#FFA319]
+                                                        @elseif ($kuliner->status_operasional == 'Tutup Permanen')
+                                                            text-red-600
+                                                        @endif">
+
+                                                        <span
+                                                            class="w-2.5 h-2.5 rounded-full
+                                                            @if ($kuliner->status_operasional == 'Aktif') bg-[#004440]
+                                                            @elseif ($kuliner->status_operasional == 'Tutup Sementara')
+                                                                bg-[#FFA319]
+                                                            @elseif ($kuliner->status_operasional == 'Tutup Permanen')
+                                                                bg-red-600
+                                                            @endif">
+                                                        </span>
+
+                                                        <span>
+                                                            {{ $kuliner->status_operasional }}
+                                                        </span>
+                                                    </span>
                                                 </td>
+                                                {{-- <td
+                                                    class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
+                                                    <span
+                                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+    {{ $kuliner->status_operasional == 'Aktif' ? 'bg-emerald-800 text-white' : 'bg-red-700 text-white' }}">
+                                                        {{ $kuliner->status_operasional }}
+                                                    </span>
+                                                </td> --}}
                                                 <td
                                                     class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
                                                     {{ \Carbon\Carbon::parse($kuliner->waktu_diubah)->format('d/m/Y H:i') }}
@@ -510,7 +541,7 @@
     @endpush
 
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&language=in"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU&libraries=maps,marker&v=weekly&language=in"
         async defer></script>
     <script>
         const tabKuliner = document.getElementById('tabKuliner');
@@ -727,7 +758,7 @@
                         map = new google.maps.Map(document.getElementById("map"), {
                             center: position,
                             zoom: 16,
-                            mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                            mapId: "b434fd3b6bf402cdbbb8f248",
                             clickableIcons: false,
                         });
 

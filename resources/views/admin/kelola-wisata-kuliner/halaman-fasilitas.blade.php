@@ -32,9 +32,6 @@
                         Fasilitas
                     </th>
                     <th class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
-                        Dimiliki Oleh
-                    </th>
-                    <th class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                         Status
                     </th>
                     <th class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
@@ -70,9 +67,6 @@
                         Fasilitas
                     </th>
                     <th class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
-                        Dimiliki Oleh
-                    </th>
-                    <th class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
                         Status
                     </th>
                     <th class="px-4 py-3 text-sm font-bold text-white border border-black text-center bg-[#004440]">
@@ -90,10 +84,21 @@
                             {{ $f->nama }}
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
-                            {{ $f->total_wisata }} Wisata Kuliner
+                            {{-- {{ $f->status }} --}}
+                            <span
+                                class="inline-flex items-center gap-2
+                                {{ $f->status == 'Aktif' ? 'text-[#004440]' : 'text-red-700' }}">
+
+                                <span
+                                    class="w-2.5 h-2.5 rounded-full
+                                    {{ $f->status == 'Aktif' ? 'bg-[#004440]' : 'bg-red-700' }}">
+                                </span>
+
+                                <span>
+                                    {{ $f->status }}
+                                </span>
+                            </span>
                         </td>
-                        <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
-                            {{ $f->status }}
                         </td>
                         <td class="px-4 py-3 text-sm border-b border-r border-black">
                             <div class="flex justify-center gap-2 flex-wrap">
@@ -235,8 +240,14 @@
             @csrf
             <input type="hidden" name="_method" id="methodFieldF">
 
-            <input type="text" name="nama" id="namaFasilitasTambahEdit"
-                class="w-full border rounded-lg px-3 py-2 mb-4" placeholder="Nama fasilitas" required>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">
+                    Nama Fasilitas
+                </label>
+
+                <input type="text" name="nama" id="namaFasilitasTambahEdit"
+                    class="w-full border rounded-lg px-3 py-2 mb-4" required>
+            </div>
 
             <div class="flex justify-end gap-2">
                 <button type="submit" class="bg-[#FB991A] hover:bg-orange-600  text-white px-4 py-2 rounded-lg">

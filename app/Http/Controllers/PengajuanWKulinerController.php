@@ -393,7 +393,7 @@ class PengajuanWKulinerController extends Controller
             // $penilaian = $wisataKuliner->penilaian;
 
             $wisataKuliner->fill([
-                'nama' => $request->nama,
+                'nama' => $request->nama_wisata_kuliner,
                 'kecamatan' => $request->kecamatan,
                 'kelurahan' => $request->kelurahan,
                 'alamat' => $request->alamat,
@@ -437,8 +437,18 @@ class PengajuanWKulinerController extends Controller
 
             $dataUtamaBerubah = $wisataKuliner->isDirty();
 
+            // dd([
+            //     'dataUtamaBerubah' => $dataUtamaBerubah,
+            //     'kategoriBerubah' => $kategoriBerubah,
+            //     'fasilitasBerubah' => $fasilitasBerubah,
+            // ]);
+
             if (!$dataUtamaBerubah && !$kategoriBerubah && !$fasilitasBerubah) {
-                return redirect($request->redirect ?? route('kelolawisatakuliner'))->with('info', 'Tidak Terdapat Perubahan');
+                return redirect($request->from)->with('swal', [
+                    'title' => 'Info',
+                    'text' => 'Tidak terdapat perubahan',
+                    'icon' => 'info',
+                ]);
             }
 
             $idWisata = $request->nama_wisata_kuliner;

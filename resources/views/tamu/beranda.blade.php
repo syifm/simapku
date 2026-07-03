@@ -407,279 +407,279 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <div class="pt-[38px] pl-[350px] pr-[50px] pb-[30px] overflow-y-auto min-h-screen">
         <form id="formCari" action="{{ route('wisatakulinerhalaman') }}" method="GET">
-                {{-- @csrf --}}
-                <input type="hidden" name="terdekat" id="inputTerdekat" value="0">
-                <div class="relative w-full flex justify-center mb-6">
-                    <div class="w-full max-w-2xl z-20">
-                        <div
-                            class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
-                            <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
-                                class="flex-1 px-5 py-3 focus:outline-none" id="searchBar">
-                            <button type="submit" id="btnSearchKeyword"
-                                class="bg-[#FFA319] px-4 py-3 text-white enabled:hover:bg-[#F19305] transition">
-                                <i class="fa fa-search"></i>
-                            </button>
+            {{-- @csrf --}}
+            <input type="hidden" name="terdekat" id="inputTerdekat" value="0">
+            <div class="relative w-full flex justify-center mb-6">
+                <div class="w-full max-w-2xl z-20">
+                    <div
+                        class="flex items-center w-full max-w-2xl border rounded-full overflow-hidden shadow-sm font-medium bg-white">
+                        <input type="text" name="keyword" placeholder="Cari Kuliner Disini..." autocomplete="off"
+                            class="flex-1 px-5 py-3 focus:outline-none" id="searchBar">
+                        <button type="submit" id="btnSearchKeyword"
+                            class="bg-[#FFA319] px-4 py-3 text-white enabled:hover:bg-[#F19305] transition">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <div id="searchPanel"
+                        class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
+                        <!-- Kuliner Terdekat -->
+                        <div onclick="klikKulinerTerdekat(event)"
+                            class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
+                            Kuliner Terdekat
                         </div>
 
-                        <div id="searchPanel"
-                            class="hidden absolute w-full max-w-2xl mt-2 bg-white rounded-2xl shadow-lg p-4 z-50">
-                            <!-- Kuliner Terdekat -->
-                            <div onclick="klikKulinerTerdekat(event)"
-                                class="p-3 rounded-xl bg-white shadow-md hover:bg-gray-100 cursor-pointer">
-                                Kuliner Terdekat
-                            </div>
+                        <!-- Advanced Search -->
+                        <div id="advancedBtn" class="flex gap-4 items-center p-3 rounded-xl cursor-pointer">
+                            <span>Pencarian dengan Pengaturan Kriteria</span>
+                            <span class="leading-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="3" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
 
-                            <!-- Advanced Search -->
-                            <div id="advancedBtn" class="flex gap-4 items-center p-3 rounded-xl cursor-pointer">
-                                <span>Pencarian dengan Pengaturan Kriteria</span>
-                                <span class="leading-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="3" stroke="currentColor" class="size-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                    </svg>
+                            </span>
+                        </div>
+                        <!-- Filter Advanced -->
+                        <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3 mr-3">
 
-                                </span>
-                            </div>
-                            <!-- Filter Advanced -->
-                            <div id="advancedFilter" class="hidden mt-3 grid grid-cols-2 gap-3 ml-3 mr-3">
+                            <input type="hidden" name="lat" id="lat">
+                            <input type="hidden" name="lng" id="lng">
 
-                                <input type="hidden" name="lat" id="lat">
-                                <input type="hidden" name="lng" id="lng">
+                            <div class="container">
+                                <label class="font-medium">Jarak</label>
 
-                                <div class="container">
-                                    <label class="font-medium">Jarak</label>
+                                <div class="range-slider-jarak-dua flex justify-between items-center">
+                                    <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                        <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
+                                        <input type="number" name="jarak"
+                                            class="nilai-jarak-dua w-[60px] p-2 outline-none border-0" value="20"
+                                            min="0" max="20" />
+                                    </div>
 
-                                    <div class="range-slider-jarak-dua flex justify-between items-center">
-                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
-                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Km</span>
-                                            <input type="number" name="jarak"
-                                                class="nilai-jarak-dua w-[60px] p-2 outline-none border-0"
-                                                value="20" min="0" max="20" />
-                                        </div>
+                                    <!-- .range -->
+                                    <div class="range-jarak-dua">
+                                        <input type="range" class="input-jarak-dua" value="20" min="0"
+                                            max="20" />
 
-                                        <!-- .range -->
-                                        <div class="range-jarak-dua">
-                                            <input type="range" class="input-jarak-dua" value="20" min="0"
-                                                max="20" />
-
-                                            <div class="slider-jarak-dua">
-                                                <div class="progress-jarak-dua"></div>
-                                            </div>
+                                        <div class="slider-jarak-dua">
+                                            <div class="progress-jarak-dua"></div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="space-y-2">
-                                    <label class="font-medium">Kategori</label>
-                                    <select id="kategori" name="kategori[]" data-placeholder="Pilih Kategori..."
-                                        data-theme="light" multiple data-multi-select>
-                                        @foreach ($kategori as $item)
-                                            {{-- <option value="{{ $item->id_kategori }}">
+                            <div class="space-y-2">
+                                <label class="font-medium">Kategori</label>
+                                <select id="kategori" name="kategori[]" data-placeholder="Pilih Kategori..."
+                                    data-theme="light" multiple data-multi-select>
+                                    @foreach ($kategori as $item)
+                                        {{-- <option value="{{ $item->id_kategori }}">
                                                 {{ $item->nama }}
                                             </option> --}}
-                                            <option value="{{ $item->id_kategori }}" {{-- {{ in_array($item->id_kategori, request('kategori', [])) ? 'selected' : '' }}> --}}
-                                                {{ in_array($item->id_kategori, (array) request('kategori', [])) ? 'selected' : '' }}>
-                                                {{ $item->nama }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                        <option value="{{ $item->id_kategori }}" {{-- {{ in_array($item->id_kategori, request('kategori', [])) ? 'selected' : '' }}> --}}
+                                            {{ in_array($item->id_kategori, (array) request('kategori', [])) ? 'selected' : '' }}>
+                                            {{ $item->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                                <div class="container">
-                                    {{-- <h3>Filter by Price</h3> --}}
-                                    <label class="font-medium">Harga</label>
+                            <div class="container">
+                                {{-- <h3>Filter by Price</h3> --}}
+                                <label class="font-medium">Harga</label>
 
-                                    <!-- .range-slider -->
-                                    <div class="range-slider flex justify-between items-center">
-                                        {{-- <input type="number" class="min-price" value="100000" min="500"
+                                <!-- .range-slider -->
+                                <div class="range-slider flex justify-between items-center">
+                                    {{-- <input type="number" class="min-price" value="100000" min="500"
                                             max="1000000" />
                                         <input type="number" class="max-price" value="500000" min="500"
                                             max="1000000" /> --}}
 
-                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
-                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
-                                            <input type="number" name="minharga"
-                                                class="min-price w-[95px] p-2 outline-none border-0" value="0"
-                                                min="0" max="500000" step="25000" />
-                                        </div>
+                                    <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                        <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
+                                        <input type="number" name="minharga"
+                                            class="min-price w-[95px] p-2 outline-none border-0" value="0"
+                                            min="0" max="500000" step="25000" />
+                                    </div>
 
-                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
-                                            <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
-                                            <input type="number" name="maxharga"
-                                                class="max-price w-[95px] p-2 outline-none border-0" value="1000000"
-                                                min="0" max="500000" step="25000" />
-                                        </div>
+                                    <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                        <span class="bg-gray-200 px-3 py-2 text-gray-800">Rp</span>
+                                        <input type="number" name="maxharga"
+                                            class="max-price w-[95px] p-2 outline-none border-0" value="1000000"
+                                            min="0" max="500000" step="25000" />
+                                    </div>
 
-                                        <!-- .range -->
-                                        <div class="range">
-                                            <input type="range" class="min-input" value="0" min="0"
-                                                max="500000" step="25000" />
-                                            <input type="range" class="max-input" value="500000" min="0"
-                                                max="500000" step="25000" />
+                                    <!-- .range -->
+                                    <div class="range">
+                                        <input type="range" class="min-input" value="0" min="0"
+                                            max="500000" step="25000" />
+                                        <input type="range" class="max-input" value="500000" min="0"
+                                            max="500000" step="25000" />
 
-                                            <div class="slider">
-                                                <div class="progress"></div>
-                                            </div>
+                                        <div class="slider">
+                                            <div class="progress"></div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="space-y-2">
-                                    <label class="font-medium">Fasilitas</label>
-                                    <select id="fasilitas" name="fasilitas[]" data-placeholder="Pilih Fasilitas..."
-                                        data-theme="light" multiple data-multi-select>
-                                        @foreach ($fasilitas as $item)
-                                            {{-- <option value="{{ $item->id_fasilitas }}">
+                            <div class="space-y-2">
+                                <label class="font-medium">Fasilitas</label>
+                                <select id="fasilitas" name="fasilitas[]" data-placeholder="Pilih Fasilitas..."
+                                    data-theme="light" multiple data-multi-select>
+                                    @foreach ($fasilitas as $item)
+                                        {{-- <option value="{{ $item->id_fasilitas }}">
                                                 {{ $item->nama }}
                                             </option> --}}
-                                            <option value="{{ $item->id_fasilitas }}" {{-- {{ in_array($item->id_fasilitas, request('fasilitas', [])) ? 'selected' : '' }}> --}}
-                                                {{ in_array($item->id_fasilitas, (array) request('fasilitas', [])) ? 'selected' : '' }}>
-                                                {{ $item->nama }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                        <option value="{{ $item->id_fasilitas }}" {{-- {{ in_array($item->id_fasilitas, request('fasilitas', [])) ? 'selected' : '' }}> --}}
+                                            {{ in_array($item->id_fasilitas, (array) request('fasilitas', [])) ? 'selected' : '' }}>
+                                            {{ $item->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                                <div class="container">
-                                    <label class="font-medium">Nilai Kuliner</label>
+                            <div class="container">
+                                <label class="font-medium">Nilai Kuliner</label>
 
-                                    <!-- .range-slider -->
-                                    <div class="range-slider-rating flex justify-between items-center">
-                                        <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
-                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
-                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                                            </svg>
-                                            <input type="number" name="minrating"
-                                                class="min-rating w-[40px] p-2 outline-none border-0" value="0"
-                                                min="0" max="5" />
-                                        </div>
+                                <!-- .range-slider -->
+                                <div class="range-slider-rating flex justify-between items-center">
+                                    <div class="flex items-center border rounded-lg overflow-hidden text-[15px]">
+                                        <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                            stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                        </svg>
+                                        <input type="number" name="minrating"
+                                            class="min-rating w-[40px] p-2 outline-none border-0" value="0"
+                                            min="0" max="5" />
+                                    </div>
 
-                                        <div
-                                            class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
-                                            <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
-                                                stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                                            </svg>
-                                            <input type="number" name="maxrating"
-                                                class="max-rating w-[40px] p-2 outline-none border-0" value="5"
-                                                min="0" max="5" />
-                                        </div>
+                                    <div
+                                        class="flex items-center text-center border rounded-lg overflow-hidden text-[15px]">
+                                        <svg class="w-5 h-5 text-[#FFA319] star ml-2" fill="#FFA319"
+                                            stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                        </svg>
+                                        <input type="number" name="maxrating"
+                                            class="max-rating w-[40px] p-2 outline-none border-0" value="5"
+                                            min="0" max="5" />
+                                    </div>
 
-                                        <!-- .range -->
-                                        <div class="range">
-                                            <input type="range" class="min-input-rating" value="0"
-                                                min="0" max="5" />
-                                            <input type="range" class="max-input-rating" value="5"
-                                                min="0" max="5" />
+                                    <!-- .range -->
+                                    <div class="range">
+                                        <input type="range" class="min-input-rating" value="0" min="0"
+                                            max="5" />
+                                        <input type="range" class="max-input-rating" value="5" min="0"
+                                            max="5" />
 
-                                            <div class="slider">
-                                                <div class="progress-rating"></div>
-                                            </div>
+                                        <div class="slider">
+                                            <div class="progress-rating"></div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-span-2 border-t pt-4 mt-4">
-                                    <label class="font-semibold block mb-3 text-center">
-                                        Pengaturan Bobot Pencarian
-                                    </label>
-                                    <div class="bg-gray-50 rounded-2xl border ">
-                                        <div class="grid grid-cols-5 gap-2 p-3 mb-3">
+                            <div class="col-span-2 border-t pt-4 mt-4">
+                                <label class="font-semibold block mb-3 text-center">
+                                    Pengaturan Bobot Pencarian
+                                </label>
+                                <div class="bg-gray-50 rounded-2xl border ">
+                                    <div class="grid grid-cols-5 gap-2 p-3 mb-3">
 
-                                            <div class="flex flex-col items-center">
-                                                <span class="text-sm font-medium mb-1">Jarak</span>
-                                                <div
-                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
-                                                    <input type="number" name="bobot_jarak"
-                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
-                                                        value="40" min="0" max="100">
-                                                    <span class="text-gray-400 text-xs pr-1">%</span>
-                                                </div>
+                                        <div class="flex flex-col items-center">
+                                            <span class="text-sm font-medium mb-1">Jarak</span>
+                                            <div
+                                                class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                <input type="number" name="bobot_jarak"
+                                                    class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                    value="40" min="0" max="100">
+                                                <span class="text-gray-400 text-xs pr-1">%</span>
                                             </div>
-
-                                            <div class="flex flex-col items-center">
-                                                <span class="text-sm font-medium mb-1">Harga</span>
-                                                <div
-                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
-                                                    <input type="number" name="bobot_harga"
-                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
-                                                        value="20" min="0" max="100">
-                                                    <span class="text-gray-400 text-xs pr-1">%</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="flex flex-col items-center">
-                                                <span class="text-sm font-medium mb-1">Nilai Kuliner</span>
-                                                <div
-                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
-                                                    <input type="number" name="bobot_rating"
-                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
-                                                        value="25" min="0" max="100">
-                                                    <span class="text-gray-400 text-xs pr-1">%</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="flex flex-col items-center">
-                                                <span class="text-sm font-medium mb-1">Kategori</span>
-                                                <div
-                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
-                                                    <input type="number" name="bobot_kategori"
-                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
-                                                        value="10" min="0" max="100">
-                                                    <span class="text-gray-400 text-xs pr-1">%</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="flex flex-col items-center">
-                                                <span class="text-sm font-medium mb-1">Fasilitas</span>
-                                                <div
-                                                    class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
-                                                    <input type="number" name="bobot_fasilitas"
-                                                        class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
-                                                        value="0" min="0" max="100">
-                                                    <span class="text-gray-400 text-xs pr-1">%</span>
-                                                </div>
-                                            </div>
-
-
                                         </div>
-                                        {{-- <div class="w-full  bg-white p-3 rounded-xl border shadow-sm"> --}}
-                                        <div class="flex justify-between items-center px-3 mt-1 mb-3">
-                                            <div class="flex items-center gap-2">
-                                                <span class="text-sm font-medium text-gray-700">
-                                                    Total Bobot:
-                                                </span>
-                                                <span id="labelTotalBobot" class="text-base font-bold">
-                                                    100%
-                                                </span>
-                                            </div>
 
-                                            <button type="submit" id="btnCariBobot"
-                                                class="px-6 py-2 bg-[#FFA319] hover:bg-[#F19305]
+                                        <div class="flex flex-col items-center">
+                                            <span class="text-sm font-medium mb-1">Harga</span>
+                                            <div
+                                                class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                <input type="number" name="bobot_harga"
+                                                    class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                    value="20" min="0" max="100">
+                                                <span class="text-gray-400 text-xs pr-1">%</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col items-center">
+                                            <span class="text-sm font-medium mb-1">Nilai Kuliner</span>
+                                            <div
+                                                class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                <input type="number" name="bobot_rating"
+                                                    class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                    value="25" min="0" max="100">
+                                                <span class="text-gray-400 text-xs pr-1">%</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col items-center">
+                                            <span class="text-sm font-medium mb-1">Kategori</span>
+                                            <div
+                                                class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                <input type="number" name="bobot_kategori"
+                                                    class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                    value="10" min="0" max="100">
+                                                <span class="text-gray-400 text-xs pr-1">%</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col items-center">
+                                            <span class="text-sm font-medium mb-1">Fasilitas</span>
+                                            <div
+                                                class="flex items-center border bg-white rounded-lg overflow-hidden shadow-sm w-full">
+                                                <input type="number" name="bobot_fasilitas"
+                                                    class="input-bobot w-full p-2 text-center text-sm font-semibold outline-none"
+                                                    value="0" min="0" max="100">
+                                                <span class="text-gray-400 text-xs pr-1">%</span>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    {{-- <div class="w-full  bg-white p-3 rounded-xl border shadow-sm"> --}}
+                                    <div class="flex justify-between items-center px-3 mt-1 mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm font-medium text-gray-700">
+                                                Total Bobot:
+                                            </span>
+                                            <span id="labelTotalBobot" class="text-base font-bold">
+                                                100%
+                                            </span>
+                                        </div>
+
+                                        <button type="submit" id="btnCariBobot"
+                                            class="px-6 py-2 bg-[#FFA319] hover:bg-[#F19305]
                                                 text-white font-semibold text-sm rounded-xl shadow-sm
                                                 transition-all duration-200
                                                 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
-                                                Cari
-                                            </button>
-                                        </div>
+                                            Cari
+                                        </button>
                                     </div>
-                                    {{-- </div> --}}
+                                </div>
+                                {{-- </div> --}}
 
 
-                                    {{-- <p id="pesanErrorBobot"
+                                {{-- <p id="pesanErrorBobot"
                                         class="text-red-500 text-xs font-semibold mt-2 text-center hidden">
                                         Total alokasi harus pas 100% sebelum mencari!
                                     </p> --}}
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
+        </form>
 
         <div class="mb-8">
             <p class="text-lg text-black font-bold mt-1 mb-4 text-center">
@@ -2220,7 +2220,7 @@
                         map = new google.maps.Map(document.getElementById("map"), {
                             center: position,
                             zoom: 16,
-                            mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                            mapId: "b434fd3b6bf402cdbbb8f248",
                             clickableIcons: false,
                         });
 
@@ -3100,7 +3100,7 @@
                         map = new google.maps.Map(document.getElementById("map"), {
                             center: position,
                             zoom: 16,
-                            mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                            mapId: "b434fd3b6bf402cdbbb8f248",
                             clickableIcons: false,
                         });
 
@@ -3122,7 +3122,7 @@
         }
     </script>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initApp&libraries=maps,marker&v=weekly&language=in"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU&callback=initApp&libraries=maps,marker&v=weekly&language=in"
         async defer></script>
 </body>
 

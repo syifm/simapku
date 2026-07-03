@@ -728,7 +728,7 @@
         @endpush
 
         <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=maps,marker&v=weekly&language=in"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU&libraries=maps,marker&v=weekly&language=in"
             async defer></script>
         <script>
             let map = null;
@@ -854,7 +854,7 @@
                             map = new google.maps.Map(document.getElementById("map"), {
                                 center: position,
                                 zoom: 16,
-                                mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                                mapId: "b434fd3b6bf402cdbbb8f248",
                                 clickableIcons: false,
                             });
 
@@ -975,7 +975,7 @@
                             map = new google.maps.Map(document.getElementById("map"), {
                                 center: position,
                                 zoom: 16,
-                                mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                                mapId: "b434fd3b6bf402cdbbb8f248",
                                 clickableIcons: false,
                             });
 

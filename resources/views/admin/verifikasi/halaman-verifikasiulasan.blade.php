@@ -79,7 +79,27 @@
                             {{ \Illuminate\Support\Str::limit($ulasan->ulasan, 50) }}
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
-                            {{ $ulasan->status }}
+                            {{-- {{ $ulasan->status }} --}}
+                            <span
+                                class="inline-flex items-center gap-2
+                                    @if ($ulasan->status == 'Disetujui') text-[#004440]
+                                    @elseif ($ulasan->status == 'Belum Diverifikasi')
+                                        text-[#FFA319]
+                                    @elseif ($ulasan->status == 'Ditolak')
+                                        text-red-600 @endif">
+                                <span
+                                    class="w-2.5 h-2.5 rounded-full
+                                    @if ($ulasan->status == 'Disetujui') bg-[#004440]
+                                    @elseif ($ulasan->status == 'Belum Diverifikasi')
+                                        bg-[#FFA319]
+                                    @elseif ($ulasan->status == 'Ditolak')
+                                        bg-red-600 @endif">
+                                </span>
+
+                                <span>
+                                    {{ $ulasan->status }}
+                                </span>
+                            </span>
                         </td>
                         <td class="px-4 py-3 text-sm border-b border-r border-black">
                             {{-- <div class="flex justify-center items-center h-full gap-2">

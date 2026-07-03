@@ -579,7 +579,7 @@
     {{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> --}}
     {{-- <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&callback=initMap&libraries=maps,marker&v=weekly"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU&callback=initMap&libraries=maps,marker&v=weekly"
         async defer></script> --}}
 
     <script>
@@ -930,7 +930,7 @@
             map = new google.maps.Map(document.getElementById("map"), {
                 center: defaultPosition,
                 zoom: 16,
-                mapId: "5ee8a1d5bfc6676ac1b5f32c",
+                mapId: "b434fd3b6bf402cdbbb8f248",
                 clickableIcons: false,
             });
 
@@ -1990,7 +1990,7 @@
         // });
     </script>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI&libraries=marker&callback=initMap&language=in"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU&libraries=marker&callback=initMap&language=in"
         async defer></script>
 </body>
 

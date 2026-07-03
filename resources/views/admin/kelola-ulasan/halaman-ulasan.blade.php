@@ -150,7 +150,20 @@
                                                 {{ \Illuminate\Support\Str::limit($ulasan->ulasan, 50) }}
                                             </td>
                                             <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
-                                                {{ $ulasan->status_penampilan }}
+                                                {{-- {{ $ulasan->status_penampilan }} --}}
+                                                <span
+                                                    class="inline-flex items-center gap-2
+                                                    {{ $ulasan->status_penampilan == 'Tampil' ? 'text-[#004440]' : 'text-red-700' }}">
+
+                                                    <span
+                                                        class="w-2.5 h-2.5 rounded-full
+                                                        {{ $ulasan->status_penampilan == 'Tampil' ? 'bg-[#004440]' : 'bg-red-700' }}">
+                                                    </span>
+
+                                                    <span>
+                                                        {{ $ulasan->status_penampilan }}
+                                                    </span>
+                                                </span>
                                             </td>
                                             <td class="px-4 py-3 text-sm border-b border-r border-black">
                                                 <div class="flex justify-center items-center h-full gap-2">

@@ -1301,7 +1301,7 @@ class WisatawanController extends Controller
                 return $item->latitude . ',' . $item->longitude;
             })->join('|');
 
-            $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+            $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
             $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}&language=in";
 

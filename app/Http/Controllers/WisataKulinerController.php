@@ -823,7 +823,7 @@ class WisataKulinerController extends Controller
 
             $dataUtamaBerubah = $wisataKuliner->isDirty();
             if (!$dataUtamaBerubah  && !$kategoriBerubah  && !$fasilitasBerubah) {
-                return redirect($request->redirect  ?? route('kelolawisatakuliner'))->with('info', 'Tidak Terdapat Perubahan');
+                return redirect($request->redirect ?? route('kelolawisatakuliner'))->with('info', 'Tidak Terdapat Perubahan');
             }
             // if (!$wisataKuliner->isDirty()) {
             //     return redirect()->route('kelolawisatakuliner')
@@ -1281,7 +1281,7 @@ class WisataKulinerController extends Controller
     //         //     return $item->latitude . ',' . $item->longitude;
     //         // })->join('|');
 
-    //         // $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //         // $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
     //         // $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}&language=id";
 
@@ -1643,7 +1643,11 @@ class WisataKulinerController extends Controller
                 ->pluck('id_wisata_kuliner')->toArray();
         }
 
-        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Disetujui')->where('status_operasional', 'Aktif');
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Disetujui');
+
+        if (!$hasKeyword || $hasBobot || $isTerdekat) {
+            $query->where('status_operasional', 'Aktif');
+        }
 
         if ($hasKeyword) {
             $keywordNormalized = str_replace(['-', ' '], '', $keywordLower);
@@ -1655,8 +1659,8 @@ class WisataKulinerController extends Controller
                 REPLACE(REPLACE(LOWER(nama), '-', ''), ' ', '')
                 LIKE ?
             ", ["%{$keywordNormalized}%"])
-            // $query->where(function ($q) use ($keywordLower) {
-            //     $q->where('nama', 'like', '%' . $keywordLower . '%')
+                    // $query->where(function ($q) use ($keywordLower) {
+                    //     $q->where('nama', 'like', '%' . $keywordLower . '%')
                     ->orWhere('kecamatan', 'like', '%' . $keywordLower . '%')
                     ->orWhere('kelurahan', 'like', '%' . $keywordLower . '%')
                     ->orWhere('alamat', 'like', '%' . $keywordLower . '%')
@@ -1872,7 +1876,7 @@ class WisataKulinerController extends Controller
             return $item->latitude . ',' . $item->longitude;
         })->join('|');
 
-        $apiKey = $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+        $apiKey = $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}&language=id";
 
@@ -2313,7 +2317,7 @@ class WisataKulinerController extends Controller
     //             return $item->latitude . ',' . $item->longitude;
     //         })->join('|');
 
-    //         $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //         $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
     //         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
 
@@ -2480,7 +2484,7 @@ class WisataKulinerController extends Controller
     //             return $item->latitude . ',' . $item->longitude;
     //         })->join('|');
 
-    //         $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //         $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
     //         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
 
@@ -2667,7 +2671,7 @@ class WisataKulinerController extends Controller
     //             return $item->latitude . ',' . $item->longitude;
     //         })->join('|');
 
-    //         $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //         $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
     //         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
 
@@ -2997,7 +3001,7 @@ class WisataKulinerController extends Controller
     //             return $item->latitude . ',' . $item->longitude;
     //         })->join('|');
 
-    //         $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //         $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
     //         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
 
@@ -3184,7 +3188,7 @@ class WisataKulinerController extends Controller
     //             return $item->latitude . ',' . $item->longitude;
     //         })->join('|');
 
-    //         $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //         $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
     //         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
 
@@ -3379,7 +3383,7 @@ class WisataKulinerController extends Controller
     //             return $item->latitude . ',' . $item->longitude;
     //         })->join('|');
 
-    //         $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //         $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
     //         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
 
@@ -3583,7 +3587,7 @@ class WisataKulinerController extends Controller
     //             return $item->latitude . ',' . $item->longitude;
     //         })->join('|');
 
-    //         $apiKey = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //         $apiKey = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
 
     //         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={$origin}&destinations={$destinations}&key={$apiKey}";
 
@@ -3740,7 +3744,7 @@ class WisataKulinerController extends Controller
     //         try {
     //             $origin       = "{$lat},{$lng}";
     //             $destinations = $data->map(fn($i) => "{$i->latitude},{$i->longitude}")->join('|');
-    //             $apiKey       = 'AIzaSyD-gBdR_gqZTd8B6jz3mVJWI-pqC_jPlAI';
+    //             $apiKey       = 'AIzaSyC1G3FTNQXli1ZHjZNQNIpzOl_AcGNHctU';
     //             $url          = "https://maps.googleapis.com/maps/api/distancematrix/json"
     //                 . "?origins={$origin}&destinations={$destinations}&key={$apiKey}";
 

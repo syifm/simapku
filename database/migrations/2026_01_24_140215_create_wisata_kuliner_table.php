@@ -29,7 +29,7 @@ return new class extends Migration
             $table->unsignedInteger('id_wisatawan')->nullable();
             $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');
             $table->unsignedInteger('id_admin');
-            $table->foreign('id_admin')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');
+            $table->foreign('id_admin')->references('id_admin')->on('admin')->onDelete('cascade');
             $table->enum('status', ['Belum Diverifikasi', 'Disetujui', 'Ditolak'])->default('Belum Diverifikasi');
             $table->enum('status_operasional', ['Aktif', 'Tutup Sementara', 'Tutup Permanen'])->default('Aktif');
             $table->timestamp('waktu_dibuat');
