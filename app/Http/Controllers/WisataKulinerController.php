@@ -1642,10 +1642,17 @@ class WisataKulinerController extends Controller
             $favoritIds = KulinerFavorit::where('id_wisatawan', $wisatawan->id_wisatawan)
                 ->pluck('id_wisata_kuliner')->toArray();
         }
+        $hasKriteria = (
+            ($request->input('bobot_jarak') +
+                $request->input('bobot_harga') +
+                $request->input('bobot_rating') +
+                $request->input('bobot_kategori') +
+                $request->input('bobot_fasilitas')) === 100
+        );
 
         $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Disetujui');
 
-        if (!$hasKeyword || $hasBobot || $isTerdekat) {
+        if ($hasKriteria || $isTerdekat) {
             $query->where('status_operasional', 'Aktif');
         }
 
@@ -1715,14 +1722,6 @@ class WisataKulinerController extends Controller
                 ->pluck('match_count', 'id_wisata_kuliner')
                 ->toArray();
         }
-
-        $hasKriteria = (
-            ($request->input('bobot_jarak') +
-                $request->input('bobot_harga') +
-                $request->input('bobot_rating') +
-                $request->input('bobot_kategori') +
-                $request->input('bobot_fasilitas')) === 100
-        );
 
         $isFallback = false;
 

@@ -280,7 +280,14 @@ class BerandaController extends Controller
         $rekomendasiCosine = collect();
         $isHasilCosine = false;
 
-        $maxSliderHarga = 500000;
+        // $maxSliderHarga = 500000;
+        // $minHarga = WisataKuliner::where('status_operasional', 'Aktif')->min('harga_min') ?? 0;
+        // $maxHarga = WisataKuliner::where('status_operasional', 'Aktif')->max('harga_max') ?? 500000;
+        $minHargaMin = WisataKuliner::where('status_operasional', 'Aktif')->min('harga_min');
+        $maxHargaMin = WisataKuliner::where('status_operasional', 'Aktif')->max('harga_min');
+
+        $minHargaMax = WisataKuliner::where('status_operasional', 'Aktif')->min('harga_max');
+        $maxHargaMax = WisataKuliner::where('status_operasional', 'Aktif')->max('harga_max');
 
         $favoritIds = DB::table('kuliner_favorit')
             ->where('id_wisatawan', $idWisatawan)
@@ -294,8 +301,16 @@ class BerandaController extends Controller
             ];
         }
 
-        $masterKategori = DB::table('kategori')->pluck('id_kategori')->toArray();
-        $masterFasilitas = DB::table('fasilitas')->pluck('id_fasilitas')->toArray();
+        // $masterKategori = DB::table('kategori')->pluck('id_kategori')->toArray();
+        // $masterFasilitas = DB::table('fasilitas')->pluck('id_fasilitas')->toArray();
+        $masterKategori = DB::table('kategori_wisata_kuliner')
+            ->distinct()
+            ->pluck('id_kategori')
+            ->toArray();
+        $masterFasilitas = DB::table('fasilitas_wisata_kuliner')
+            ->distinct()
+            ->pluck('id_fasilitas')
+            ->toArray();
 
         $totalKolom = 3 + count($masterKategori) + count($masterFasilitas);
 
@@ -311,8 +326,13 @@ class BerandaController extends Controller
             $myFasilitas = DB::table('fasilitas_wisata_kuliner')->where('id_wisata_kuliner', $favId)->pluck('id_fasilitas')->toArray();
 
             $ratingNorm = ($kuliner->penilaian ?? 0) / 5;
-            $hargaMinNorm = min(($kuliner->harga_min ?? 0), $maxSliderHarga) / $maxSliderHarga;
-            $hargaMaxNorm = min(($kuliner->harga_max ?? 0), $maxSliderHarga) / $maxSliderHarga;
+            // $hargaMinNorm = min(($kuliner->harga_min ?? 0), $maxSliderHarga) / $maxSliderHarga;
+            // $hargaMaxNorm = min(($kuliner->harga_max ?? 0), $maxSliderHarga) / $maxSliderHarga;
+            // $rangeHarga = $maxHarga - $minHarga;
+            // $hargaMinNorm = ($rangeHarga > 0) ? ($kuliner->harga_min - $minHarga) / $rangeHarga : 0;
+            // $hargaMaxNorm = ($rangeHarga > 0) ? ($kuliner->harga_max - $minHarga) / $rangeHarga : 0;
+            $hargaMinNorm = ($maxHargaMin - $minHargaMin != 0) ? ($kuliner->harga_min - $minHargaMin) / ($maxHargaMin - $minHargaMin) : 0;
+            $hargaMaxNorm = ($maxHargaMax - $minHargaMax != 0) ? ($kuliner->harga_max - $minHargaMax) / ($maxHargaMax - $minHargaMax) : 0;
 
             $tmpVector = [$ratingNorm, $hargaMinNorm, $hargaMaxNorm];
 
@@ -337,12 +357,12 @@ class BerandaController extends Controller
             for ($i = 0; $i < $totalKolom; $i++) {
                 $userProfileVector[$i] /= $countValidFavorit;
             }
-            // dump("--- HASIL RATA-RATA PROFIL USER (CENTROID) ---");
-            // dump("Jumlah Favorit: " . $countValidFavorit);
-            // dump("Vektor Profil User: ", $userProfileVector);
+            dump("--- HASIL RATA-RATA PROFIL USER (CENTROID) ---");
+            dump("Jumlah Favorit: " . $countValidFavorit);
+            dump("Vektor Profil User: ", $userProfileVector);
 
             $calonKuliner = DB::table('wisata_kuliner')
-                ->where('status', 'Disetujui')
+                ->where('status_operasional', 'Aktif')
                 ->whereNotIn('id_wisata_kuliner', $favoritIds)
                 ->get();
 
@@ -353,8 +373,13 @@ class BerandaController extends Controller
                 $itemFasilitas = DB::table('fasilitas_wisata_kuliner')->where('id_wisata_kuliner', $item->id_wisata_kuliner)->pluck('id_fasilitas')->toArray();
 
                 $itemRatingNorm = ($item->penilaian ?? 0) / 5;
-                $itemHargaMinNorm = min(($item->harga_min ?? 0), $maxSliderHarga) / $maxSliderHarga;
-                $itemHargaMaxNorm = min(($item->harga_max ?? 0), $maxSliderHarga) / $maxSliderHarga;
+                // $itemHargaMinNorm = min(($item->harga_min ?? 0), $maxSliderHarga) / $maxSliderHarga;
+                // $itemHargaMaxNorm = min(($item->harga_max ?? 0), $maxSliderHarga) / $maxSliderHarga;
+                // $rangeHarga = $maxHarga - $minHarga;
+                // $itemHargaMinNorm = ($rangeHarga > 0) ? ($item->harga_min - $minHarga) / $rangeHarga : 0;
+                // $itemHargaMaxNorm = ($rangeHarga > 0) ? ($item->harga_max - $minHarga) / $rangeHarga : 0;
+                $itemHargaMinNorm = ($maxHargaMin - $minHargaMin != 0) ? ($item->harga_min - $minHargaMin) / ($maxHargaMin - $minHargaMin) : 0;
+                $itemHargaMaxNorm = ($maxHargaMax - $minHargaMax != 0) ? ($item->harga_max - $minHargaMax) / ($maxHargaMax - $minHargaMax) : 0;
 
                 $itemVector = [$itemRatingNorm, $itemHargaMinNorm, $itemHargaMaxNorm];
                 foreach ($masterKategori as $idKat) {
@@ -379,13 +404,13 @@ class BerandaController extends Controller
                 $item->score_cosine = $cosineScore;
                 $hasilMatriks[] = $item;
 
-                // dump("--- Detail Perhitungan ---");
-                // dump("Vektor User: ", $userProfileVector);
-                // dump("Vektor Item: ", $itemVector);
-                // dump("Dot Product: " . $dotProduct);
-                // dump("Panjang User (Magnitude): " . sqrt($v1Length));
-                // dump("Panjang Item (Magnitude): " . sqrt($v2Length));
-                // dump("Hasil Akhir Skor Cosine: " . $cosineScore);
+                dump("--- Detail Perhitungan ---");
+                dump("Vektor User: ", $userProfileVector);
+                dump("Vektor Item: ", $itemVector);
+                dump("Dot Product: " . $dotProduct);
+                dump("Panjang User (Magnitude): " . sqrt($v1Length));
+                dump("Panjang Item (Magnitude): " . sqrt($v2Length));
+                dump("Hasil Akhir Skor Cosine: " . $cosineScore);
             }
 
             $rekomendasiCosine = collect($hasilMatriks)->sortByDesc('score_cosine')->take(6)->values();
