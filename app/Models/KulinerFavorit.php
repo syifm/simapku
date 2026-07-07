@@ -11,14 +11,14 @@ class KulinerFavorit extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_wisatawan',
+        'id_user',
         'id_wisata_kuliner',
         'waktu_dibuat',
     ];
 
     public function favorit()
     {
-        return $this->belongsTo(Wisatawan::class, 'id_wisatawan', 'id_wisatawan');
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
     public function wisatakuliner()

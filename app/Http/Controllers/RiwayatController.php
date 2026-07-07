@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Ulasan;
 use App\Models\WisataKuliner;
-use App\Models\Wisatawan;
-use App\Models\Admin;
 use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
 use App\Models\Kategori;
 use App\Models\KategoriWisataKuliner;
 use App\Models\PengajuanWisataKuliner;
 use App\Models\KulinerFavorit;
-use App\Models\Preferensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -28,9 +25,7 @@ class RiwayatController extends Controller
 {
     public function tampilkanRiwayatPengajuan()
     {
-        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
-        $id_wisatawan = $wisatawan->id_wisatawan;
-        $wisataKuliner = PengajuanWisataKuliner::where('id_wisatawan', $id_wisatawan)
+        $wisataKuliner = PengajuanWisataKuliner::where('id_user', Auth::id())
             ->orderByRaw("
                 CASE 
                     WHEN status = 'Belum Diverifikasi' THEN 1
@@ -47,7 +42,7 @@ class RiwayatController extends Controller
             return $item;
         });
 
-        $ulasan = Ulasan::where('id_wisatawan', $id_wisatawan)
+        $ulasan = Ulasan::where('id_user', Auth::id())
             ->orderByRaw("
                 CASE 
                     WHEN status = 'Belum Diverifikasi' THEN 1

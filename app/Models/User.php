@@ -49,13 +49,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function admin()
+    public function wisatakuliner()
     {
-        return $this->hasOne(Admin::class, 'user_id');
+        return $this->hasMany(WisataKuliner::class, 'id_user', 'id_user');
     }
 
-    public function wisatawan()
+    public function ulasan()
     {
-        return $this->hasOne(Wisatawan::class, 'user_id');
+        return $this->hasMany(Ulasan::class, 'id_user', 'id_user');
     }
 }

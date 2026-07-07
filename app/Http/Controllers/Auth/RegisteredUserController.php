@@ -51,10 +51,10 @@ class RegisteredUserController extends Controller
             'peran' => 'Wisatawan',
         ]);
 
-        Wisatawan::create([
-            'user_id' => $user->id,
-            'asal_kota' => $request->asal_kota,
-        ]);
+        // Wisatawan::create([
+        //     'user_id' => $user->id,
+        //     'asal_kota' => $request->asal_kota,
+        // ]);
 
         event(new Registered($user));
 

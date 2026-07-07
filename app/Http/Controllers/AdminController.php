@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Ulasan;
 use App\Models\WisataKuliner;
-use App\Models\Wisatawan;
-use App\Models\Admin;
 use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
 use App\Models\Kategori;

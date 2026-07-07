@@ -82,60 +82,52 @@
     <div class="pt-[38px] pl-[350px] pr-[50px] pb-[20px]">
         <h1 class="font-bold text-xl">Profil</h1>
         {{-- <div class="flex justify-center mb-6 mt-[50px]"> --}}
-        @if ($user->peran == 'Admin')
-            <div class="flex justify-center mt-[70px] mb-6">
-            @elseif ($user->peran == 'Wisatawan')
-                <div class="flex justify-center mt-[50px] mb-6">
-        @endif
-        <img id="preview"
-            src="{{ Auth::user()->foto && file_exists(storage_path('app/public/' . Auth::user()->foto))
-                ? asset('storage/' . Auth::user()->foto)
-                : asset('profil.png') }}"
-            alt="fotoprofil" class="w-40 h-40 object-cover rounded-full">
-    </div>
+        <div class="flex justify-center mt-[70px] mb-6">
+            <img id="preview"
+                src="{{ Auth::user()->foto && file_exists(storage_path('app/public/' . Auth::user()->foto))
+                    ? asset('storage/' . Auth::user()->foto)
+                    : asset('profil.png') }}"
+                alt="fotoprofil" class="w-40 h-40 object-cover rounded-full">
+        </div>
 
-    @if ($user->peran == 'Admin')
         <div class="flex justify-end mt-[70px] mb-4">
-        @elseif ($user->peran == 'Wisatawan')
-            <div class="flex justify-end mt-[50px] mb-4">
-    @endif
-    <a href="{{ route('profile.edit') }}"
-        class="py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white bg-[#FB991A] hover:bg-orange-600 transition duration-300">
-        Edit Profil
-    </a>
-    </div>
+            <a href="{{ route('profile.edit') }}"
+                class="py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white bg-[#FB991A] hover:bg-orange-600 transition duration-300">
+                Edit Profil
+            </a>
+        </div>
 
-    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-        <div class="max-w-xl">
-            <h3 class="text-lg font-semibold mb-4">Data Akun</h3>
-            <div class="grid grid-cols-1 gap-6">
-                <!-- Nama -->
-                <div class="flex items-center">
-                    <label class="w-60 text-sm font-medium text-gray-700">Nama</label>
-                    <div class="mt-1 ml-4 block w-full">{{ $user->nama }}</div>
-                </div>
+        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class="max-w-xl">
+                <h3 class="text-lg font-semibold mb-4">Data Akun</h3>
+                <div class="grid grid-cols-1 gap-6">
+                    <!-- Nama -->
+                    <div class="flex items-center">
+                        <label class="w-60 text-sm font-medium text-gray-700">Nama</label>
+                        <div class="mt-1 ml-4 block w-full">{{ $user->nama }}</div>
+                    </div>
 
-                <!-- Peran -->
-                <div class="flex items-center">
-                    <label class="w-60 text-sm font-medium text-gray-700">Peran</label>
-                    <div class="mt-1 ml-4 block w-full">{{ $user->peran }}</div>
-                </div>
+                    <!-- Peran -->
+                    <div class="flex items-center">
+                        <label class="w-60 text-sm font-medium text-gray-700">Peran</label>
+                        <div class="mt-1 ml-4 block w-full">{{ $user->peran }}</div>
+                    </div>
 
-                <!-- Email -->
-                <div class="flex items-center">
-                    <label class="w-60 text-sm font-medium text-gray-700">Email</label>
-                    <div class="mt-1 ml-4 block w-full">{{ $user->email }}</div>
-                </div>
+                    <!-- Email -->
+                    <div class="flex items-center">
+                        <label class="w-60 text-sm font-medium text-gray-700">Email</label>
+                        <div class="mt-1 ml-4 block w-full">{{ $user->email }}</div>
+                    </div>
 
-                <!-- Asal Kota -->
-                @if ($wisatawan)
+                    <!-- Asal Kota -->
+                    {{-- @if ($wisatawan)
                     <div class="flex items-center">
                         <label class="w-60 text-sm font-medium text-gray-700">Asal Kota</label>
                         <div class="mt-1 ml-4 block w-full">{{ $wisatawan->asal_kota }}</div>
                     </div>
-                @endif
+                @endif --}}
 
-                {{-- @if ($wisatawan)
+                    {{-- @if ($wisatawan)
                     <div class="flex items-start gap-2" id="preferensi-view">
                         <div class="w-[172px] flex flex-col">
                             <label class="text-sm font-medium text-gray-700">Preferensi</label>
@@ -163,7 +155,7 @@
                 @endif --}}
 
 
-                {{-- <div id="preferensi-edit" class="hidden flex items-start gap-2">
+                    {{-- <div id="preferensi-edit" class="hidden flex items-start gap-2">
                     <div class="w-[172px] flex flex-col">
                         <label class="text-sm font-medium text-gray-700">Preferensi</label>
 
@@ -190,9 +182,9 @@
                     </div>
 
                 </div> --}}
+                </div>
             </div>
         </div>
-    </div>
 
 </body>
 

@@ -17,7 +17,7 @@ public function search(Request $request)
         //     ? $user->wisatawan->preferensi()->pluck('id_kategori')->toArray()
         //     : [];
 
-        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Disetujui');
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori']);
 
         $lat = $request->lat;
         $lng = $request->lng;

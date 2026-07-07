@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('kelurahan', 50);
             $table->string('alamat');
             $table->string('no_telp', 15)->nullable();
-            $table->string('deskripsi');
+            $table->text('deskripsi');
             $table->string('foto')->nullable();
             $table->double('latitude')->unique();
             $table->double('longitude')->unique();
@@ -26,11 +26,8 @@ return new class extends Migration
             $table->integer('harga_max')->nullable();
             $table->double('penilaian')->nullable();
             $table->enum('sertifikat_halal', ['Sudah', 'Belum']);
-            $table->unsignedInteger('id_wisatawan')->nullable();
-            $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');
-            $table->unsignedInteger('id_admin');
-            $table->foreign('id_admin')->references('id_admin')->on('admin')->onDelete('cascade');
-            $table->enum('status', ['Belum Diverifikasi', 'Disetujui', 'Ditolak'])->default('Belum Diverifikasi');
+            $table->unsignedInteger('id_user')->nullable();
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->enum('status_operasional', ['Aktif', 'Tutup Sementara', 'Tutup Permanen'])->default('Aktif');
             $table->timestamp('waktu_dibuat');
             $table->timestamp('waktu_diubah');

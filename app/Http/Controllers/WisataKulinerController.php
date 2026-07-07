@@ -6,12 +6,10 @@ use App\Models\WisataKuliner;
 use App\Models\Kategori;
 use App\Models\Fasilitas;
 use App\Models\KulinerFavorit;
-use App\Models\Wisatawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ulasan;
-use App\Models\Admin;
 use App\Models\FasilitasWisataKuliner;
 use App\Models\KategoriWisataKuliner;
 use App\Models\PengajuanWisataKuliner;
@@ -379,7 +377,7 @@ class WisataKulinerController extends Controller
 
     public function tampilkanTambahWK()
     {
-        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
+        $wkuliner = WisataKuliner::get();
 
         $oldKategori = \App\Models\Kategori::whereIn(
             'id_kategori',
@@ -446,7 +444,6 @@ class WisataKulinerController extends Controller
             );
         }
 
-        $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
         $waktu_dibuat = Carbon::now('Asia/Jakarta');
         $waktu_diubah = Carbon::now('Asia/Jakarta');
 
@@ -484,9 +481,7 @@ class WisataKulinerController extends Controller
                 'harga_max'  => null,
                 'penilaian'  => null,
                 'sertifikat_halal'  => $request->sertifikat_halal,
-                'id_wisatawan'  => null,
-                'id_admin'  => $id_admin,
-                'status'  => 'Disetujui',
+                'id_user'  => Auth::id(),
                 'status_operasional'  => 'Aktif',
                 'waktu_dibuat'  => $waktu_dibuat,
                 'waktu_diubah'  => $waktu_diubah,
@@ -572,44 +567,75 @@ class WisataKulinerController extends Controller
         // return redirect()->route('kelolawisatakuliner')->with('success', 'Wisata Kuliner berhasil disimpan');
     }
 
+    // public function tampilkanDetailWK(int $id)
+    // {
+    //     $wisataKuliner = WisataKuliner::with([
+    //         'wisatawan.user',
+    //         'admin.user',
+    //         'fasilitas',
+    //         'kategori'
+    //     ])->findOrFail($id);
+
+
+    //     if ($wisataKuliner->id_wisatawan) {
+
+    //         $pengaju = $wisataKuliner->wisatawan->user;
+    //     } else {
+
+    //         $pengaju = $wisataKuliner->admin->user;
+    //     }
+
+    //     return response()->json([
+    //         'nama'  => $wisataKuliner->nama,
+    //         'nama_pengaju'  => $pengaju->nama,
+    //         'email'  => $pengaju->email,
+    //         'peran'  => $pengaju->peran,
+
+    //         'alamat'  => $wisataKuliner->alamat,
+    //         'kecamatan'  => $wisataKuliner->kecamatan,
+    //         'kelurahan'  => $wisataKuliner->kelurahan,
+    //         'deskripsi'  => $wisataKuliner->deskripsi,
+    //         'latitude'  => $wisataKuliner->latitude,
+    //         'longitude'  => $wisataKuliner->longitude,
+    //         'no_telp'  => $wisataKuliner->no_telp,
+    //         'foto'  => $wisataKuliner->foto,
+    //         'sertifikat_halal'  => $wisataKuliner->sertifikat_halal,
+    //         'status_operasional'  => $wisataKuliner->status_operasional,
+
+    //         'fasilitas'  => $wisataKuliner->fasilitas,
+    //         'kategori'  => $wisataKuliner->kategori,
+
+    //     ]);
+    // }
     public function tampilkanDetailWK(int $id)
     {
         $wisataKuliner = WisataKuliner::with([
-            'wisatawan.user',
-            'admin.user',
+            'user',
             'fasilitas',
             'kategori'
         ])->findOrFail($id);
 
-
-        if ($wisataKuliner->id_wisatawan) {
-
-            $pengaju = $wisataKuliner->wisatawan->user;
-        } else {
-
-            $pengaju = $wisataKuliner->admin->user;
-        }
+        $pengaju = $wisataKuliner->user;
 
         return response()->json([
-            'nama'  => $wisataKuliner->nama,
-            'nama_pengaju'  => $pengaju->nama,
-            'email'  => $pengaju->email,
-            'peran'  => $pengaju->peran,
+            'nama' => $wisataKuliner->nama,
+            'nama_pengaju' => $pengaju->nama,
+            'email' => $pengaju->email,
+            'peran' => $pengaju->peran,
 
-            'alamat'  => $wisataKuliner->alamat,
-            'kecamatan'  => $wisataKuliner->kecamatan,
-            'kelurahan'  => $wisataKuliner->kelurahan,
-            'deskripsi'  => $wisataKuliner->deskripsi,
-            'latitude'  => $wisataKuliner->latitude,
-            'longitude'  => $wisataKuliner->longitude,
-            'no_telp'  => $wisataKuliner->no_telp,
-            'foto'  => $wisataKuliner->foto,
-            'sertifikat_halal'  => $wisataKuliner->sertifikat_halal,
-            'status_operasional'  => $wisataKuliner->status_operasional,
+            'alamat' => $wisataKuliner->alamat,
+            'kecamatan' => $wisataKuliner->kecamatan,
+            'kelurahan' => $wisataKuliner->kelurahan,
+            'deskripsi' => $wisataKuliner->deskripsi,
+            'latitude' => $wisataKuliner->latitude,
+            'longitude' => $wisataKuliner->longitude,
+            'no_telp' => $wisataKuliner->no_telp,
+            'foto' => $wisataKuliner->foto,
+            'sertifikat_halal' => $wisataKuliner->sertifikat_halal,
+            'status_operasional' => $wisataKuliner->status_operasional,
 
-            'fasilitas'  => $wisataKuliner->fasilitas,
-            'kategori'  => $wisataKuliner->kategori,
-
+            'fasilitas' => $wisataKuliner->fasilitas,
+            'kategori' => $wisataKuliner->kategori,
         ]);
     }
 
@@ -617,7 +643,7 @@ class WisataKulinerController extends Controller
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
 
-        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
+        $wkuliner = WisataKuliner::get();
 
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
@@ -722,21 +748,38 @@ class WisataKulinerController extends Controller
             ],);
 
 
-            $fotoPath = $wisataKuliner->foto ?? null;
-            if ($request->hasFile('foto ')) {
-                if ($wisataKuliner->foto  && Storage::exists('public/ ' . $wisataKuliner->foto)) {
+            // $fotoPath = $wisataKuliner->foto ?? null;
+            // if ($request->hasFile('foto ')) {
+            //     if ($wisataKuliner->foto  && Storage::exists('public/ ' . $wisataKuliner->foto)) {
 
-                    Storage::delete('public/ ' . $wisataKuliner->foto);
+            //         Storage::delete('public/ ' . $wisataKuliner->foto);
+            //     }
+
+            //     $fotoPath = $request->file('foto')->storeAs(
+            //         'uploads',
+            //         'foto_ ' . '_ ' . time() . '. ' . $request->file('foto')->extension(),
+            //         'public'
+            //     );
+            // }
+            $fotoPath = $wisataKuliner->foto;
+
+            if ($request->hasFile('foto')) {
+
+                if (
+                    $wisataKuliner->foto &&
+                    Storage::exists('public/' . $wisataKuliner->foto)
+                ) {
+
+                    Storage::delete('public/' . $wisataKuliner->foto);
                 }
 
                 $fotoPath = $request->file('foto')->storeAs(
                     'uploads',
-                    'foto_ ' . '_ ' . time() . '. ' . $request->file('foto')->extension(),
+                    'foto_' . time() . '.' . $request->file('foto')->extension(),
                     'public'
                 );
             }
 
-            $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
             $waktu_diubah = Carbon::now('Asia/Jakarta');
 
             $fasilitas = $request->id_fasilitas ?? [];
@@ -842,9 +885,7 @@ class WisataKulinerController extends Controller
                 'deskripsi'  => $request->deskripsi,
                 'latitude'  => $request->latitude,
                 'longitude'  => $request->longitude,
-                'id_wisatawan'  => null,
-                'id_admin'  => $id_admin,
-                'status'  => 'Disetujui',
+                'id_user'  => Auth::id(),
                 'status_operasional'  => $wisataKuliner->status_operasional,
                 'waktu_diubah'  => $waktu_diubah,
             ]);
@@ -1028,49 +1069,85 @@ class WisataKulinerController extends Controller
         ));
     }
 
+    // public function tampilkanDetailVerifWK(int $id)
+    // {
+    //     $pengajuan = PengajuanWisataKuliner::with([
+    //         'wisatawan.user',
+    //         'admin.user',
+    //         'fasilitas',
+    //         'kategori'
+    //     ])->findOrFail($id);
+
+    //     $wisataKuliner = null;
+
+    //     if ($pengajuan->id_wisatawan) {
+    //         $pengaju_baru = $pengajuan->wisatawan->user;
+    //     } else {
+    //         $pengaju_baru = $pengajuan->admin->user;
+    //     }
+
+    //     $pengaju_lama = null;
+
+    //     if ($pengajuan->id_wisata_kuliner) {
+
+    //         $wisataKuliner = WisataKuliner::with([
+    //             'fasilitas',
+    //             'kategori',
+    //             'wisatawan.user',
+    //             'admin.user',
+    //         ])
+    //             ->where('id_wisata_kuliner', $pengajuan->id_wisata_kuliner)
+    //             ->first();
+
+    //         if ($wisataKuliner->id_user) {
+    //             $pengaju_lama = $wisataKuliner->wisatawan->user;
+    //         } else {
+    //             $pengaju_lama = $wisataKuliner->admin->user;
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'pengaju_lama'  => $pengaju_lama,
+    //         'pengaju_baru'  => $pengaju_baru,
+    //         'jenis_pengajuan'  => $pengajuan->jenis_pengajuan,
+    //         'lama'  => $wisataKuliner,
+    //         'baru'  => $pengajuan,
+    //     ]);
+    // }
     public function tampilkanDetailVerifWK(int $id)
     {
         $pengajuan = PengajuanWisataKuliner::with([
-            'wisatawan.user',
-            'admin.user',
+            'user',
             'fasilitas',
             'kategori'
         ])->findOrFail($id);
 
         $wisataKuliner = null;
 
-        if ($pengajuan->id_wisatawan) {
-            $pengaju_baru = $pengajuan->wisatawan->user;
-        } else {
-            $pengaju_baru = $pengajuan->admin->user;
-        }
+        $pengaju_baru = $pengajuan->user;
 
         $pengaju_lama = null;
 
         if ($pengajuan->id_wisata_kuliner) {
 
             $wisataKuliner = WisataKuliner::with([
+                'user',
                 'fasilitas',
                 'kategori',
-                'wisatawan.user',
-                'admin.user',
             ])
-                ->where('id_wisata_kuliner', $pengajuan->id_wisata_kuliner)
-                ->first();
+                ->find($pengajuan->id_wisata_kuliner);
 
-            if ($wisataKuliner->id_wisatawan) {
-                $pengaju_lama = $wisataKuliner->wisatawan->user;
-            } else {
-                $pengaju_lama = $wisataKuliner->admin->user;
+            if ($wisataKuliner) {
+                $pengaju_lama = $wisataKuliner->user;
             }
         }
 
         return response()->json([
-            'pengaju_lama'  => $pengaju_lama,
-            'pengaju_baru'  => $pengaju_baru,
-            'jenis_pengajuan'  => $pengajuan->jenis_pengajuan,
-            'lama'  => $wisataKuliner,
-            'baru'  => $pengajuan,
+            'pengaju_lama' => $pengaju_lama,
+            'pengaju_baru' => $pengaju_baru,
+            'jenis_pengajuan' => $pengajuan->jenis_pengajuan,
+            'lama' => $wisataKuliner,
+            'baru' => $pengajuan,
         ]);
     }
 
@@ -1079,7 +1156,6 @@ class WisataKulinerController extends Controller
         $pengajuan = PengajuanWisataKuliner::findOrFail($id);
         // $waktu_dibuat = Carbon::now('Asia/Jakarta');
         $waktu_diubah = Carbon::now('Asia/Jakarta');
-        $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
 
         $fotoPath = $pengajuan->foto  ?? null;
         if ($request->hasFile('foto ')) {
@@ -1122,9 +1198,7 @@ class WisataKulinerController extends Controller
                     'harga_max'  => null,
                     'penilaian'  => null,
                     'sertifikat_halal'  => $pengajuan->sertifikat_halal,
-                    'id_wisatawan'  => $pengajuan->id_wisatawan,
-                    'id_admin'  => $id_admin,
-                    'status'  => 'Disetujui',
+                    'id_user'  => $pengajuan->id_user,
                     'status_operasional'  => 'Aktif',
                     'waktu_dibuat'  => $pengajuan->waktu_dibuat,
                     'waktu_diubah'  => $waktu_diubah,
@@ -1188,9 +1262,7 @@ class WisataKulinerController extends Controller
                     'harga_max' =>  $wisata->harga_max,
                     'penilaian' =>  $wisata->penilaian,
                     'sertifikat_halal' =>  $pengajuan->sertifikat_halal,
-                    'id_wisatawan' => $pengajuan->id_wisatawan,
-                    'id_admin' => $id_admin,
-                    'status' => 'Disetujui',
+                    'id_user' => $pengajuan->id_user,
                     'status_operasional' => $pengajuan->status_operasional,
                     'waktu_dibuat' => $pengajuan->waktu_dibuat,
                     'waktu_diubah'  => $waktu_diubah,
@@ -1636,10 +1708,9 @@ class WisataKulinerController extends Controller
 
         $kategori = Kategori::all();
         $fasilitas = Fasilitas::all();
-        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
         $favoritIds = [];
-        if ($wisatawan) {
-            $favoritIds = KulinerFavorit::where('id_wisatawan', $wisatawan->id_wisatawan)
+        if (Auth::check() && Auth::user()->peran == 'Wisatawan') {
+            $favoritIds = KulinerFavorit::where('id_user', Auth::id())
                 ->pluck('id_wisata_kuliner')->toArray();
         }
         $hasKriteria = (
@@ -1650,7 +1721,7 @@ class WisataKulinerController extends Controller
                 $request->input('bobot_fasilitas')) === 100
         );
 
-        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Disetujui');
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori']);
 
         if ($hasKriteria || $isTerdekat) {
             $query->where('status_operasional', 'Aktif');

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Ulasan;
 use App\Models\WisataKuliner;
-use App\Models\Wisatawan;
 use App\Models\Admin;
 use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
@@ -82,8 +81,8 @@ class BerandaController extends Controller
         if ($keyword === '') {
             $keyword = 'Rekomendasi Kuliner';
         }
-        $kulinerBaru = WisataKuliner::where('status', 'Disetujui')->orderBy('waktu_dibuat', 'desc')->get();
-        $kulinerFavorit = WisataKuliner::where('status', 'Disetujui')->orderBy('penilaian', 'desc')->get();
+        $kulinerBaru = WisataKuliner::orderBy('waktu_dibuat', 'desc')->get();
+        $kulinerFavorit = WisataKuliner::orderBy('penilaian', 'desc')->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
 
@@ -109,7 +108,7 @@ class BerandaController extends Controller
 
         $kategoriDipilih = $request->kategori;
 
-        $wisataKuliner = WisataKuliner::where('status', 'Disetujui');
+        $wisataKuliner = WisataKuliner::query();
 
         if ($kategoriDipilih) {
 
@@ -141,13 +140,14 @@ class BerandaController extends Controller
         $isHasilCosine = false;
 
         // Ambil data wisatawan berdasarkan user yang sedang login
-        $wisatawan = DB::table('wisatawan')->where('user_id', Auth::id())->first();
+        // $wisatawan = DB::table('wisatawan')->where('user_id', Auth::id())->first();
 
         $maxSliderHarga = 500000; // Batas atas normalisasi harga
 
         $favoritIds = [];
         $favoritIds = DB::table('kuliner_favorit')
-            ->where('id_wisatawan', $wisatawan->id_wisatawan)
+            // ->where('id_wisatawan', $wisatawan->id_wisatawan)
+            ->where('id_user', Auth::id())
             ->pluck('id_wisata_kuliner')
             ->toArray();
 
@@ -242,15 +242,24 @@ class BerandaController extends Controller
             //         $isHasilCosine = true;
             //     }
             // }
-            $wisatawan = DB::table('wisatawan')
-                ->where('user_id', Auth::id())
-                ->first();
+            // $wisatawan = DB::table('wisatawan')
+            //     ->where('user_id', Auth::id())
+            //     ->first();
 
-            if ($wisatawan) {
+            // if ($wisatawan) {
 
-                $hasilRekomendasi = $this->cariKulinerSerupa(
-                    $wisatawan->id_wisatawan
-                );
+            //     $hasilRekomendasi = $this->cariKulinerSerupa(
+            //         // $wisatawan->id_wisatawan
+            //         $wisatawan
+            //     );
+
+            //     $rekomendasiCosine = $hasilRekomendasi['rekomendasiCosine'];
+            //     $isHasilCosine = $hasilRekomendasi['isHasilCosine'];
+            // }
+
+            if (Auth::check()) {
+
+                $hasilRekomendasi = $this->cariKulinerSerupa(Auth::id());
 
                 $rekomendasiCosine = $hasilRekomendasi['rekomendasiCosine'];
                 $isHasilCosine = $hasilRekomendasi['isHasilCosine'];
@@ -290,7 +299,8 @@ class BerandaController extends Controller
         $maxHargaMax = WisataKuliner::where('status_operasional', 'Aktif')->max('harga_max');
 
         $favoritIds = DB::table('kuliner_favorit')
-            ->where('id_wisatawan', $idWisatawan)
+            // ->where('id_wisatawan',  $idWisatawan->id_wisatawan)
+            ->where('id_user', $idWisatawan)
             ->pluck('id_wisata_kuliner')
             ->toArray();
 
@@ -357,9 +367,9 @@ class BerandaController extends Controller
             for ($i = 0; $i < $totalKolom; $i++) {
                 $userProfileVector[$i] /= $countValidFavorit;
             }
-            dump("--- HASIL RATA-RATA PROFIL USER (CENTROID) ---");
-            dump("Jumlah Favorit: " . $countValidFavorit);
-            dump("Vektor Profil User: ", $userProfileVector);
+            // dump("--- HASIL RATA-RATA PROFIL USER (CENTROID) ---");
+            // dump("Jumlah Favorit: " . $countValidFavorit);
+            // dump("Vektor Profil User: ", $userProfileVector);
 
             $calonKuliner = DB::table('wisata_kuliner')
                 ->where('status_operasional', 'Aktif')
@@ -404,13 +414,13 @@ class BerandaController extends Controller
                 $item->score_cosine = $cosineScore;
                 $hasilMatriks[] = $item;
 
-                dump("--- Detail Perhitungan ---");
-                dump("Vektor User: ", $userProfileVector);
-                dump("Vektor Item: ", $itemVector);
-                dump("Dot Product: " . $dotProduct);
-                dump("Panjang User (Magnitude): " . sqrt($v1Length));
-                dump("Panjang Item (Magnitude): " . sqrt($v2Length));
-                dump("Hasil Akhir Skor Cosine: " . $cosineScore);
+                // dump("--- Detail Perhitungan ---");
+                // dump("Vektor User: ", $userProfileVector);
+                // dump("Vektor Item: ", $itemVector);
+                // dump("Dot Product: " . $dotProduct);
+                // dump("Panjang User (Magnitude): " . sqrt($v1Length));
+                // dump("Panjang Item (Magnitude): " . sqrt($v2Length));
+                // dump("Hasil Akhir Skor Cosine: " . $cosineScore);
             }
 
             $rekomendasiCosine = collect($hasilMatriks)->sortByDesc('score_cosine')->take(6)->values();
@@ -437,8 +447,8 @@ class BerandaController extends Controller
         if ($keyword === '') {
             $keyword = 'Rekomendasi Kuliner';
         }
-        $kulinerBaru = WisataKuliner::where('status', 'Disetujui')->orderBy('waktu_dibuat', 'desc')->get();
-        $kulinerFavorit = WisataKuliner::where('status', 'Disetujui')->orderBy('penilaian', 'desc')->get();
+        $kulinerBaru = WisataKuliner::orderBy('waktu_dibuat', 'desc')->get();
+        $kulinerFavorit = WisataKuliner::orderBy('penilaian', 'desc')->get();
         $fasilitas = Fasilitas::all();
         $kategori = Kategori::all();
 
@@ -464,7 +474,7 @@ class BerandaController extends Controller
 
         $kategoriDipilih = $request->kategori;
 
-        $wisataKuliner = WisataKuliner::where('status', 'Disetujui');
+        $wisataKuliner = WisataKuliner::query();
 
         if ($kategoriDipilih) {
 

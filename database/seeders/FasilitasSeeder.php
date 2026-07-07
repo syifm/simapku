@@ -24,9 +24,6 @@ class FasilitasSeeder extends Seeder
                 'nama' => 'Mushola',
             ],
             [
-                'nama' => 'Wi-Fi',
-            ],
-            [
                 'nama' => 'Area Bermain Anak',
             ],
         ];

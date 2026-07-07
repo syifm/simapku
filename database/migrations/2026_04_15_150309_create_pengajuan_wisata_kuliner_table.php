@@ -20,15 +20,13 @@ return new class extends Migration
             $table->string('kelurahan', 50);
             $table->string('alamat');
             $table->string('no_telp', 15)->nullable();
-            $table->string('deskripsi');
+            $table->text('deskripsi');
             $table->string('foto')->nullable();
             $table->double('latitude');
             $table->double('longitude');
             $table->enum('sertifikat_halal', ['Sudah', 'Belum'])->default('Belum');
-            $table->unsignedInteger('id_wisatawan');
-            $table->foreign('id_wisatawan')->references('id_wisatawan')->on('wisatawan')->onDelete('cascade');
-            $table->unsignedInteger('id_admin')->nullable();
-            $table->foreign('id_admin')->references('id_admin')->on('admin')->onDelete('cascade');
+            $table->unsignedInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->enum('status', ['Belum Diverifikasi', 'Disetujui', 'Ditolak'])->default('Belum Diverifikasi');
             $table->enum('status_operasional', ['Aktif', 'Tutup Sementara', 'Tutup Permanen'])->default('Aktif');
             $table->enum('jenis_pengajuan', ['Baru', 'Perubahan']);

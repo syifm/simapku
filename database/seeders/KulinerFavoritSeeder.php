@@ -15,17 +15,17 @@ class KulinerFavoritSeeder extends Seeder
     {
         $kulinerfavoritData = [
             [
-                'id_wisatawan' => 1,
+                'id_user' => 1,
                 'id_wisata_kuliner' => 1,
                 'waktu_dibuat' => now(),
             ],
             [
-                'id_wisatawan' => 1,
+                'id_user' => 1,
                 'id_wisata_kuliner' => 3,
                 'waktu_dibuat' => now(),
             ],
             [
-                'id_wisatawan' => 1,
+                'id_user' => 1,
                 'id_wisata_kuliner' => 4,
                 'waktu_dibuat' => now(),
             ],
@@ -33,7 +33,7 @@ class KulinerFavoritSeeder extends Seeder
 
         foreach ($kulinerfavoritData as $data) {
             KulinerFavorit::create([
-                'id_wisatawan' => $data['id_wisatawan'],
+                'id_user' => $data['id_user'],
                 'id_wisata_kuliner' => $data['id_wisata_kuliner'],
                 'waktu_dibuat' => $data['waktu_dibuat'],
             ]);

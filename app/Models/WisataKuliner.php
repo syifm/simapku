@@ -19,15 +19,13 @@ class WisataKuliner extends Model
         'no_telp',
         'deskripsi',
         'foto',
-        'longitude',
         'latitude',
+        'longitude',
         'harga_min',
         'harga_max',
         'penilaian',
         'sertifikat_halal',
-        'id_wisatawan',
-        'id_admin',
-        'status',
+        'id_user',
         'status_operasional',
         'waktu_dibuat',
         'waktu_diubah',
@@ -48,19 +46,9 @@ class WisataKuliner extends Model
         return $this->hasMany(Ulasan::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
     }
 
-    public function wisatawan()
-    {
-        return $this->belongsTo(Wisatawan::class, 'id_wisatawan');
-    }
-
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class, 'id_admin');
-    }
-
     public function verifikasiadmin()
     {
-        return $this->belongsTo(Admin::class, 'id_admin');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function kategori()
@@ -71,5 +59,10 @@ class WisataKuliner extends Model
             'id_wisata_kuliner',
             'id_kategori'
         );
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

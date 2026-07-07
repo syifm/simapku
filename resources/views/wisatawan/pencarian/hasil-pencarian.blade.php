@@ -1517,6 +1517,71 @@
             console.log("CARD", card);
             if (card) card.click();
         }
+        // function klikDetail(id) {
+        //     let card = document.querySelector(`.card-kuliner[data-id="${id}"]`);
+
+        //     // if (!card) return;
+
+        //     if (card) card.click();
+
+        //     const latwk = parseFloat(card.dataset.lat);
+        //     const lngwk = parseFloat(card.dataset.lng);
+
+        //     if (!userLat || !userLng) {
+        //         alert("Lokasi Wisatawan Belum Tersedia");
+        //         return;
+        //     }
+
+        //     directionsRenderer.setDirections({
+        //         routes: []
+        //     });
+
+        //     if (routePolyline) {
+        //         routePolyline.setMap(null);
+        //         routePolyline = null;
+        //     }
+
+        //     let request = {
+        //         origin: {
+        //             lat: userLat,
+        //             lng: userLng
+        //         },
+        //         destination: {
+        //             lat: latwk,
+        //             lng: lngwk
+        //         },
+        //         travelMode: 'DRIVING'
+        //     };
+
+        //     directionsService.route(request, function(result, status) {
+        //         if (status === 'OK') {
+
+        //             directionsRenderer.setDirections(result);
+
+        //             const route = result.routes[0].overview_path;
+        //             const lastPoint = route[route.length - 1];
+
+        //             routePolyline = new google.maps.Polyline({
+        //                 path: [
+        //                     lastPoint,
+        //                     {
+        //                         lat: latwk,
+        //                         lng: lngwk
+        //                     }
+        //                 ],
+        //                 geodesic: true,
+        //                 strokeColor: "#4285F4",
+        //                 strokeOpacity: 1.0,
+        //                 strokeWeight: 4,
+        //                 map: map
+        //             });
+
+        //             routeVisible = true;
+        //         } else {
+        //             alert("Gagal Menampilkan Rute");
+        //         }
+        //     });
+        // }
 
         const btnSearchKeyword = document.getElementById("btnSearchKeyword");
         const searchBar = document.getElementById("searchBar");
@@ -1839,9 +1904,9 @@
                 let halalHTML = '';
 
                 if (sertifikat_halal === 'Sudah') {
-                    halalHTML = 
+                    halalHTML =
 
-                    `<div class="flex items-center gap-2 text-sm text-green-700 mt-2">
+                        `<div class="flex items-center gap-2 text-sm text-green-700 mt-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
@@ -1968,11 +2033,6 @@
                         </svg>
                     </button>
 
-                    <button title="Rute" onclick="klikRute(${lat}, ${lng}, this)"
-                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
-                        <i class="fi fi-rs-route text-md"></i>
-                    </button>
-
                     <button title="Edit" onclick="${isUserLoggedIn ? `klikEdit(${id})` : 'handleLogin()'}"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -2030,6 +2090,52 @@
 
                 map.setCenter(posisi);
                 map.setZoom(16);
+
+                if (userLat && userLng) {
+
+                    directionsRenderer.setDirections({
+                        routes: []
+                    });
+
+                    if (routePolyline) {
+                        routePolyline.setMap(null);
+                        routePolyline = null;
+                    }
+
+                    directionsService.route({
+                        origin: {
+                            lat: userLat,
+                            lng: userLng
+                        },
+                        destination: posisi,
+                        travelMode: google.maps.TravelMode.DRIVING
+                    }, function(result, status) {
+
+                        if (status === "OK") {
+
+                            directionsRenderer.setDirections(result);
+
+                            const route = result.routes[0].overview_path;
+                            const lastPoint = route[route.length - 1];
+
+                            routePolyline = new google.maps.Polyline({
+                                path: [
+                                    lastPoint,
+                                    posisi
+                                ],
+                                geodesic: true,
+                                strokeColor: "#4285F4",
+                                strokeOpacity: 1,
+                                strokeWeight: 4,
+                                map: map
+                            });
+
+                            routeVisible = true;
+                        } else {
+                            console.log(status);
+                        }
+                    });
+                }
 
                 let infoWindow = new google.maps.InfoWindow({
                     content: `
@@ -2274,74 +2380,73 @@
 
         }
 
-        // Lihat rute
-        function klikRute(latwk, lngwk, btn) {
-            const icon = btn.querySelector('i');
-            if (routeVisible) {
+        // function tampilkanRute(latwk, lngwk) {
+        //     const icon = btn.querySelector('i');
+        //     if (routeVisible) {
 
-                directionsRenderer.setDirections({
-                    routes: []
-                });
+        //         directionsRenderer.setDirections({
+        //             routes: []
+        //         });
 
-                if (routePolyline) {
-                    routePolyline.setMap(null);
-                    routePolyline = null;
-                }
+        //         if (routePolyline) {
+        //             routePolyline.setMap(null);
+        //             routePolyline = null;
+        //         }
 
-                btn.classList.remove('bg-blue-100');
-                icon.className = 'fi fi-rs-route text-md';
-                // icon.style.color = '#6b7280';
+        //         btn.classList.remove('bg-blue-100');
+        //         icon.className = 'fi fi-rs-route text-md';
+        //         // icon.style.color = '#6b7280';
 
-                routeVisible = false;
-                return;
-            }
+        //         routeVisible = false;
+        //         return;
+        //     }
 
-            if (!userLat || !userLng) {
-                alert("Lokasi user belum tersedia");
-                return;
-            }
+        //     if (!userLat || !userLng) {
+        //         alert("Lokasi user belum tersedia");
+        //         return;
+        //     }
 
-            let request = {
-                origin: {
-                    lat: userLat,
-                    lng: userLng
-                },
-                destination: {
-                    lat: latwk,
-                    lng: lngwk
-                },
-                travelMode: 'DRIVING'
-            };
+        //     let request = {
+        //         origin: {
+        //             lat: userLat,
+        //             lng: userLng
+        //         },
+        //         destination: {
+        //             lat: latwk,
+        //             lng: lngwk
+        //         },
+        //         travelMode: 'DRIVING'
+        //     };
 
-            directionsService.route(request, function(result, status) {
-                if (status === 'OK') {
-                    directionsRenderer.setDirections(result);
+        //     directionsService.route(request, function(result, status) {
+        //         if (status === 'OK') {
+        //             directionsRenderer.setDirections(result);
 
-                    const route = result.routes[0].overview_path;
-                    const lastPoint = route[route.length - 1];
-                    routePolyline = new google.maps.Polyline({
-                        path: [
-                            lastPoint,
-                            {
-                                lat: latwk,
-                                lng: lngwk
-                            }
-                        ],
-                        geodesic: true,
-                        strokeColor: "#4285F4",
-                        strokeOpacity: 1.0,
-                        strokeWeight: 4,
-                        map: map
-                    });
+        //             const route = result.routes[0].overview_path;
+        //             const lastPoint = route[route.length - 1];
+        //             routePolyline = new google.maps.Polyline({
+        //                 path: [
+        //                     lastPoint,
+        //                     {
+        //                         lat: latwk,
+        //                         lng: lngwk
+        //                     }
+        //                 ],
+        //                 geodesic: true,
+        //                 strokeColor: "#4285F4",
+        //                 strokeOpacity: 1.0,
+        //                 strokeWeight: 4,
+        //                 map: map
+        //             });
 
-                    icon.className = 'fi fi-bs-route text-md';
-                    // icon.style.color = '#fb991a';
-                    routeVisible = true;
-                } else {
-                    alert("Gagal menampilkan rute");
-                }
-            });
-        }
+        //             icon.className = 'fi fi-bs-route text-md';
+        //             // icon.style.color = '#fb991a';
+        //             routeVisible = true;
+        //         } else {
+        //             alert("Gagal menampilkan rute");
+        //         }
+        //     });
+        // }
 
         // const btnRute = document.getElementById('btnRute');
 

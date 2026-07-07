@@ -18,8 +18,7 @@ class Ulasan extends Model
         'foto_ulasan',
         'harga_min',
         'harga_max',
-        'id_wisatawan',
-        'id_admin',
+        'id_user',
         'status',
         'status_penampilan',
         'waktu_dibuat',
@@ -31,13 +30,13 @@ class Ulasan extends Model
         return $this->belongsTo(WisataKuliner::class, 'id_wisata_kuliner', 'id_wisata_kuliner');
     }
 
-    public function wisatawan()
-    {
-        return $this->belongsTo(Wisatawan::class, 'id_wisatawan', 'id_wisatawan');
-    }
-
     public function verifikasiulasan()
     {
-        return $this->belongsTo(Admin::class, 'id_admin', 'id_admin');
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

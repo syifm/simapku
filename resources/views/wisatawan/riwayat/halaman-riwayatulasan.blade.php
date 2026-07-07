@@ -87,7 +87,28 @@
                             {{ \Illuminate\Support\Str::limit($ulasankuliner->ulasan, 50) }}
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
-                            {{ $ulasankuliner->status }}
+                            {{-- {{ $ulasankuliner->status }} --}}
+                            <span
+                                class="inline-flex items-center gap-2
+                                    @if ($ulasankuliner->status == 'Disetujui') text-[#004440]
+                                    @elseif ($ulasankuliner->status == 'Belum Diverifikasi')
+                                        text-[#FFA319]
+                                    @elseif ($ulasankuliner->status == 'Ditolak')
+                                        text-red-600 @endif">
+
+                                <span
+                                    class="w-2.5 h-2.5 rounded-full
+                                    @if ($ulasankuliner->status == 'Disetujui') bg-[#004440]
+                                    @elseif ($ulasankuliner->status == 'Belum Diverifikasi')
+                                        bg-[#FFA319]
+                                    @elseif ($ulasankuliner->status == 'Ditolak')
+                                        bg-red-600 @endif">
+                                </span>
+
+                                <span>
+                                    {{ $ulasankuliner->status }}
+                                </span>
+                            </span>
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-900 border border-black text-center">
                             {{ \Carbon\Carbon::parse($ulasankuliner->waktu_diubah)->format('d/m/Y H:i') }}

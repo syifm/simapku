@@ -1346,12 +1346,7 @@
         const isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
         const favoritIds =
             {{ Auth::check()
-                ? json_encode(
-                    \App\Models\KulinerFavorit::where(
-                        'id_wisatawan',
-                        \App\Models\Wisatawan::where('user_id', Auth::id())->value('id_wisatawan'),
-                    )->pluck('id_wisata_kuliner'),
-                )
+                ? json_encode(\App\Models\KulinerFavorit::where('id_user', Auth::id())->pluck('id_wisata_kuliner'))
                 : '[]' }};
 
         function simpanFavorit(id, el) {

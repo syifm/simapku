@@ -4,16 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\WisataKuliner;
 use Illuminate\Http\Request;
-use App\Models\Wisatawan;
-use App\Models\Admin;
-use App\Models\DiariKuliner;
 use App\Models\Fasilitas;
 use App\Models\FasilitasWisataKuliner;
 use App\Models\Kategori;
 use App\Models\KategoriWisataKuliner;
 use App\Models\KulinerFavorit;
 use App\Models\PengajuanWisataKuliner;
-use App\Models\Preferensi;
 use App\Models\Ulasan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -61,7 +57,7 @@ class PengajuanWKulinerController extends Controller
 
     public function tampilkanTambahWK()
     {
-        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
+        $wkuliner = WisataKuliner::get();
         $oldKategori = \App\Models\Kategori::whereIn(
             'id_kategori',
             old('id_kategori', [])
@@ -125,8 +121,6 @@ class PengajuanWKulinerController extends Controller
             );
         }
 
-        $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
-
         $waktu_dibuat = Carbon::now('Asia/Jakarta');
         $waktu_diubah = Carbon::now('Asia/Jakarta');
 
@@ -161,9 +155,7 @@ class PengajuanWKulinerController extends Controller
                 'latitude'  => $request->latitude,
                 'longitude' => $request->longitude,
                 'sertifikat_halal' => $request->sertifikat_halal,
-                'id_wisatawan' => $id_wisatawan,
-                'id_admin' => null,
-                'status' => 'Belum Diverifikasi',
+                'id_user' => Auth::id(),
                 'status_operasional' => 'Aktif',
                 'jenis_pengajuan' => 'Baru',
                 'waktu_dibuat' => $waktu_dibuat,
@@ -266,7 +258,7 @@ class PengajuanWKulinerController extends Controller
     public function tampilkanEditWK(int $id)
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
-        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
+        $wkuliner = WisataKuliner::get();
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
             ->get();
@@ -361,8 +353,6 @@ class PengajuanWKulinerController extends Controller
                     'public'
                 );
             }
-
-            $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
 
             $waktu_dibuat = Carbon::now('Asia/Jakarta');
             $waktu_diubah = Carbon::now('Asia/Jakarta');
@@ -466,9 +456,7 @@ class PengajuanWKulinerController extends Controller
                     'latitude'  => $request->latitude,
                     'longitude' => $request->longitude,
                     'sertifikat_halal' => $request->sertifikat_halal,
-                    'id_wisatawan' => $id_wisatawan,
-                    'id_admin' => null,
-                    'status' => 'Belum Diverifikasi',
+                    'id_user' => Auth::id(),
                     'status_operasional' => $request->status_operasional,
                     'jenis_pengajuan' => 'Perubahan',
                     'waktu_dibuat' => $wisataKuliner->waktu_dibuat,
@@ -789,9 +777,7 @@ class PengajuanWKulinerController extends Controller
 
     public function tampilkanRiwayatPengajuan()
     {
-        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
-        $id_wisatawan = $wisatawan->id_wisatawan;
-        $wisataKuliner = PengajuanWisataKuliner::where('id_wisatawan', $id_wisatawan)
+        $wisataKuliner = PengajuanWisataKuliner::where('id_user', Auth::id())
             ->orderByRaw("
                 CASE 
                     WHEN status = 'Belum Diverifikasi' THEN 1
@@ -808,7 +794,7 @@ class PengajuanWKulinerController extends Controller
             return $item;
         });
 
-        $ulasan = Ulasan::where('id_wisatawan', $id_wisatawan)
+        $ulasan = Ulasan::where('id_user', Auth::id())
             ->orderByRaw("
                 CASE 
                     WHEN status = 'Belum Diverifikasi' THEN 1

@@ -74,7 +74,7 @@
                 </div>
 
                 <!-- Asal Kota -->
-                <div>
+                {{-- <div>
                     <label for="asal_kota" class="text-sm text-[#004440]">Asal Kota</label>
                     <input id="asal_kota" type="text" name="asal_kota" value="{{ old('asal_kota') }}"
                         class="w-full mt-1 px-4 py-2 rounded-lg border border-[#004440]
@@ -83,7 +83,7 @@
                     @error('nama')
                         <span class="text-sm text-orange-500">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> --}}
 
                 <!-- Password -->
                 <div class="relative">

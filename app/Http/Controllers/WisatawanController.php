@@ -74,7 +74,7 @@ class WisatawanController extends Controller
     public function halamantambah()
     {
         $fasilitas = Fasilitas::all();
-        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
+        $wkuliner = WisataKuliner::get();
         return view('wisatawan.wisata-kuliner.tambah-kuliner', compact('fasilitas', 'wkuliner'));
     }
 
@@ -245,14 +245,6 @@ class WisatawanController extends Controller
 
         $email_pengaju = Auth::user()->email;
 
-        $id_wisatawan = null;
-        $id_admin = null;
-        if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
-            $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
-        } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
-            $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
-        }
-
         $waktu_dibuat = Carbon::now('Asia/Jakarta');
         $waktu_diubah = Carbon::now('Asia/Jakarta');
 
@@ -311,8 +303,7 @@ class WisatawanController extends Controller
                 'harga_max' => 0,
                 'penilaian' => 0,
                 'email_pengaju' => $email_pengaju,
-                'id_wisatawan' => $id_wisatawan ?? null,
-                'id_admin' => $id_admin ?? null,
+                'id_user' => Auth::id(),
                 'status' => $status,
                 'jenis_pengajuan' => 'Baru',
                 'waktu_dibuat' => $waktu_dibuat,
@@ -372,7 +363,7 @@ class WisatawanController extends Controller
     public function halamanedit($id)
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
-        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
+        $wkuliner = WisataKuliner::get();
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
             // ->where('status', '!=', 'Belum Diverifikasi')
@@ -556,14 +547,6 @@ class WisatawanController extends Controller
 
             $email_pengaju = Auth::user()->email;
 
-            $id_wisatawan = null;
-            $id_admin = null;
-            if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
-                $id_wisatawan = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
-            } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
-                $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
-            }
-
             $waktu_diubah = Carbon::now('Asia/Jakarta');
 
             $status = 'Belum Diverifikasi';
@@ -612,8 +595,7 @@ class WisatawanController extends Controller
                 'harga_min' => $harga_min,
                 'harga_max' => $harga_max,
                 'penilaian' => $penilaian,
-                'id_wisatawan' => $id_wisatawan ?? null,
-                'id_admin' => $id_admin ?? null,
+                'id_user' => Auth::id(),
                 'status' => $status,
                 'jenis_pengajuan' => 'Perubahan',
                 'waktu_diubah' => $waktu_diubah,
@@ -992,7 +974,7 @@ class WisatawanController extends Controller
     public function halamaneditTidakLogin($id)
     {
         $wisataKuliner = WisataKuliner::findOrFail($id);
-        $wkuliner = WisataKuliner::where('status', 'Disetujui')->get();
+        $wkuliner = WisataKuliner::get();
         $fasilitas = FasilitasWisataKuliner::with('fasilitas')
             ->where('id_wisata_kuliner', $id)
             // ->where('status', '!=', 'Belum Diverifikasi')
@@ -1046,14 +1028,6 @@ class WisatawanController extends Controller
 
             // $email_pengaju = Auth::user()->email;
 
-            $id_wisatawan = null;
-            $id_admin = null;
-            if (Auth::check() && Auth::user()->peran === 'Wisatawan') {
-                $id_admin = Wisatawan::where('user_id', Auth::id())->value('id_wisatawan');
-            } elseif (Auth::check() && Auth::user()->peran === 'Admin') {
-                $id_admin = Admin::where('user_id', Auth::id())->value('id_admin');
-            }
-
             $waktu_diubah = Carbon::now('Asia/Jakarta');
 
             $status = 'Belum Diverifikasi';
@@ -1084,8 +1058,7 @@ class WisatawanController extends Controller
                 'harga_min' => $harga_min,
                 'harga_max' => $harga_max,
                 'penilaian' => $penilaian,
-                'id_wisatawan' => $id_wisatawan ?? null,
-                'id_admin' => $id_admin ?? null,
+                'id_user' => Auth::id(),
                 'status' => $status,
                 'jenis_pengajuan' => 'Perubahan',
                 'waktu_diubah' => $waktu_diubah,
@@ -1349,10 +1322,9 @@ class WisatawanController extends Controller
         $keyword = $request->keyword ?? 'Rekomendasi Kuliner';
         $kategori = Kategori::all();
         $fasilitas = Fasilitas::all();
-        $wisatawan = Wisatawan::where('user_id', Auth::id())->first();
         $favoritIds = [];
-        if ($wisatawan) {
-            $favoritIds = KulinerFavorit::where('id_wisatawan', $wisatawan->id_wisatawan)
+        if (Auth::check() && Auth::user()->peran == 'Wisatawan') {
+            $favoritIds = KulinerFavorit::where('id_user', Auth::id())
                 ->pluck('id_wisata_kuliner')
                 ->toArray();
         }
@@ -1362,7 +1334,7 @@ class WisatawanController extends Controller
         //     ? $user->wisatawan->preferensi()->pluck('id_kategori')->toArray()
         //     : [];
 
-        $query = WisataKuliner::query()->with(['fasilitas', 'kategori'])->where('status', 'Disetujui');
+        $query = WisataKuliner::query()->with(['fasilitas', 'kategori']);
 
         $lat = $request->lat;
         $lng = $request->lng;
@@ -1531,7 +1503,7 @@ class WisatawanController extends Controller
 
             // $isFallback = !$isKeywordKhusus;
 
-            $query2 = WisataKuliner::with(['fasilitas', 'kategori'])->where('status', 'Disetujui');
+            $query2 = WisataKuliner::with(['fasilitas', 'kategori']);
             // $query2 = WisataKuliner::query()
             //     ->with([
             //         'fasilitas' => function ($q) {
