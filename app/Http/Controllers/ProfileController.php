@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Preferensi;
-use App\Models\Wisatawan;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +24,7 @@ class ProfileController extends Controller
     public function tampilkanProfil()
     {
         $user = Auth::user();
-        return view('profile.show', compact('user', 'wisatawan'));
+        return view('profile.show', compact('user'));
     }
 
     public function tampilkanEditProfil(Request $request): View

@@ -423,7 +423,7 @@ class BerandaController extends Controller
                 // dump("Hasil Akhir Skor Cosine: " . $cosineScore);
             }
 
-            $rekomendasiCosine = collect($hasilMatriks)->sortByDesc('score_cosine')->take(6)->values();
+            $rekomendasiCosine = collect($hasilMatriks)->sortByDesc('score_cosine')->values();
             $isHasilCosine = true;
         }
 

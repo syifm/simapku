@@ -24,12 +24,12 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             UserSeeder::class,
-            PengajuanWisataKulinerSeeder::class,
+            // PengajuanWisataKulinerSeeder::class,
             WisataKulinerSeeder::class,
             KategoriSeeder::class,
             FasilitasSeeder::class,
-            PengajuanKategoriWisataKulinerSeeder::class,
-            PengajuanFasilitasWisataKulinerSeeder::class,
+            // PengajuanKategoriWisataKulinerSeeder::class,
+            // PengajuanFasilitasWisataKulinerSeeder::class,
             KategoriWisataKulinerSeeder::class,
             FasilitasWisataKulinerSeeder::class,
             KulinerFavoritSeeder::class,

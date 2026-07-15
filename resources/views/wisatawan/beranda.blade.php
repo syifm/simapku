@@ -983,10 +983,18 @@
                 </h2>
             </div>
         @endif --}}
-        @php
+        {{-- @php
             $dataRekomendasi = $isHasilCosine ? $rekomendasiCosine : $wisataKuliner;
+        @endphp --}}
+        @php
+            if (request('rekomendasi') == 1) {
+                $dataRekomendasi = $rekomendasiCosine;
+            } else {
+                $dataRekomendasi = $wisataKuliner;
+            }
         @endphp
-        @if ($wisataKuliner->count() > 0)
+        {{-- @if ($wisataKuliner->count() > 0) --}}
+        @if ($dataRekomendasi->count() > 0)
             @if ($namaKategoriDipilih)
                 <div class="mb-4">
                     <h2 class="text-xl text-center font-bold text-gray-800">
@@ -1091,7 +1099,7 @@
                     @elseif (request('rekomendasi') == 1)
                         Silakan tambahkan wisata kuliner ke kuliner favorit Anda terlebih dahulu
                     @else
-                        Belum ada data wisata kuliner yang dapat ditampilkan.
+                        Belum tersedia data wisata kuliner yang dapat ditampilkan
                     @endif
                 </p>
 
